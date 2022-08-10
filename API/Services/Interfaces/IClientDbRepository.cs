@@ -9,5 +9,6 @@ namespace API.Services.Interfaces
     public interface IClientDbRepository
     {
         public Task<ICollection<ClientDTO>> GetClients();
+        public Task<ClientDTO> GetClientById(int id);
     }
 }

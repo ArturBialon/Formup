@@ -20,12 +20,27 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetOsobyDoKontaktu()
+        public async Task<IActionResult> GetClients()
         {
 
             ICollection<ClientDTO> clients = await _repository.GetClients();
 
-            return Ok(clients);
+            if (clients != null)
+                return Ok(clients);
+            else
+                return BadRequest("Brak rekorów w bazie");
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetClientById(int id)
+        {
+
+            ClientDTO client = await _repository.GetClientById(id);
+
+            if (client != null)
+                return Ok(client);
+            else
+                return BadRequest("Brak rekordu o podanym id");
         }
     }
 }
