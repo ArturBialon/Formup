@@ -89,6 +89,7 @@ namespace API.Services.Implementations
 
             var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
 
+            //check if exists
             if (contactorFromDB != null)
             {
                 flag = true;
@@ -118,6 +119,7 @@ namespace API.Services.Implementations
             bool flag = false;
             string message = "";
 
+            //check if exists
             var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
             if (contactorFromDB == null)
             {
