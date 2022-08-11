@@ -78,6 +78,7 @@ namespace API.Services.Implementations
                 );
 
                 await _context.SaveChangesAsync();
+                message = "contractor successfully added";
             }
             return message;
         }
@@ -105,13 +106,36 @@ namespace API.Services.Implementations
             }
 
             if (flag)
+            {
                 await _context.SaveChangesAsync();
+                message = "contractor successfully edited";
+            }
 
             return message;
         }
-        public Task<string> DeleteClientById(int id)
+        public async Task<string> DeleteClientById(int id)
         {
-            throw new NotImplementedException();
+            bool flag = false;
+            string message = "";
+
+            var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
+            if (contactorFromDB == null)
+            {
+                flag = false;
+                message = "cannot find contractor";
+            }
+            else
+            {
+                flag = true;
+                _context.Remove(contactorFromDB);
+            }
+            if (flag) 
+            {
+                await _context.SaveChangesAsync();
+                message = "contractor removed";
+            }
+
+            return message;
         }
     }
 }

@@ -42,5 +42,45 @@ namespace API.Controllers
             else
                 return BadRequest("Brak rekordu o podanym id");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddClient(ClientDTO client)
+        {
+
+            var result = await _repository.AddClient(client);
+
+            if (result == "contractor successfully added")
+            {
+                return Ok(result);
+            }
+            else
+                return BadRequest(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditClient(int id, ClientDTO client)
+        {
+            var result = await _repository.EditClient(id, client);
+
+            if (result == "contractor successfully edited")
+            {
+                return Ok(result);
+            }
+            else
+                return BadRequest(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClient(int id)
+        {
+            var result = await _repository.DeleteClientById(id);
+
+            if (result == "contractor removed")
+            {
+                return Ok(result);
+            }
+            else
+                return BadRequest(result);
+        }
     }
 }
