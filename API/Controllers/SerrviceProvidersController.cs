@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/serviceProviders")]
-    public class SerrviceProvidersController : Controller
+    public class SerrviceProvidersController : ControllerBase
     {
 
         public readonly IServiceProviderDbRepository _repository;
