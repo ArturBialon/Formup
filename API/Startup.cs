@@ -29,6 +29,7 @@ namespace API
             });
 
             services.AddTransient<IClientDbRepository, ClientDbRepository>();
+            services.AddTransient<IServiceProviderDbRepository, ServiceProviderDbRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
