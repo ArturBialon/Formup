@@ -28,7 +28,7 @@ namespace API.Controllers
             if (clients != null)
                 return Ok(clients);
             else
-                return BadRequest("Brak rekorów w bazie");
+                return NotFound("Brak rekorów w bazie");
         }
 
         [HttpGet("{id}")]
@@ -40,7 +40,7 @@ namespace API.Controllers
             if (client != null)
                 return Ok(client);
             else
-                return BadRequest("Brak rekordu o podanym id");
+                return NotFound("No records matching to given id");
         }
 
         [HttpPost]
