@@ -30,6 +30,7 @@ namespace API
 
             services.AddTransient<IClientDbRepository, ClientDbRepository>();
             services.AddTransient<IServiceProviderDbRepository, ServiceProviderDbRepository>();
+            services.AddTransient<IForwardersDbRepository, ForwardersDbRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
