@@ -88,22 +88,32 @@ namespace API.Services.Implementations
             string message = "";
 
             var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
+            //duplicate check
+            var duplicate = await _context.Clients.Where(x => x.Tax == editedClient.Tax && x.Id != id).SingleOrDefaultAsync();
 
-            //check if exists
-            if (contactorFromDB != null)
+            if (duplicate == null)
             {
-                flag = true;
-                contactorFromDB.Name = editedClient.Name;
-                contactorFromDB.Tax = editedClient.Tax;
-                contactorFromDB.Zip = editedClient.Zip;
-                contactorFromDB.Street = editedClient.Street;
-                contactorFromDB.Coutry = editedClient.Coutry;
-                contactorFromDB.Credit = editedClient.Credit;
+                //check if exists
+                if (contactorFromDB != null)
+                {
+                    flag = true;
+                    contactorFromDB.Name = editedClient.Name;
+                    contactorFromDB.Tax = editedClient.Tax;
+                    contactorFromDB.Zip = editedClient.Zip;
+                    contactorFromDB.Street = editedClient.Street;
+                    contactorFromDB.Coutry = editedClient.Coutry;
+                    contactorFromDB.Credit = editedClient.Credit;
+                }
+                else
+                {
+                    message = "could not edit contractor";
+                    flag = false;
+                }
             }
-            else
+            else 
             {
-                message = "could not edit contractor";
                 flag = false;
+                message = "contractor with given tax already exists";
             }
 
             if (flag)

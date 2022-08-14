@@ -87,19 +87,31 @@ namespace API.Services.Implementations
             string message = "";
 
             var forwarderFromDB = await _context.Forwarders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
-
-            //check if exists
-            if (forwarderFromDB != null)
+            
+            //duplicate chceck
+            var duplicate = await _context.Forwarders
+                .Where(x => x.Name == editedForwarder.Name && x.Surname == editedForwarder.Surname && x.Prefix == editedForwarder.Prefix && x.Id != id)
+                .SingleOrDefaultAsync();
+            if (duplicate == null)
             {
-                flag = true;
-                forwarderFromDB.Name = editedForwarder.Name;
-                forwarderFromDB.Surname = editedForwarder.Surname;
-                forwarderFromDB.Prefix = editedForwarder.Prefix;
+                //check if exists
+                if (forwarderFromDB != null)
+                {
+                    flag = true;
+                    forwarderFromDB.Name = editedForwarder.Name;
+                    forwarderFromDB.Surname = editedForwarder.Surname;
+                    forwarderFromDB.Prefix = editedForwarder.Prefix;
+                }
+                else
+                {
+                    message = "could not edit forwarder that does not exists";
+                    flag = false;
+                }
             }
             else
             {
-                message = "could not edit forwarder";
                 flag = false;
+                message = "forwarde with given parameters already exists";
             }
 
             if (flag)
