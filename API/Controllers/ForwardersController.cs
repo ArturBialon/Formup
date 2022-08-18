@@ -28,7 +28,7 @@ namespace API.Controllers
             if (forwarders != null)
                 return Ok(forwarders);
             else
-                return NotFound("Brak rekorów w bazie");
+                return NotFound("No data");
         }
 
         [HttpGet("{id}")]
