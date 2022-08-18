@@ -74,8 +74,10 @@ namespace API.Services.Implementations
                 }
                 );
 
-                await _context.SaveChangesAsync();
+                flag = await _context.SaveChangesAsync() > 0;
                 message = "provider successfully added";
+                if (!flag)
+                    message += " could not save changes";
             }
             return message;
         }
@@ -101,7 +103,7 @@ namespace API.Services.Implementations
                 }
                 else
                 {
-                    message = "could not edit provider";
+                    message = "provider with given id does not exists";
                     flag = false;
                 }
             }
@@ -110,11 +112,13 @@ namespace API.Services.Implementations
                 flag = false;
                 message = "contractor with given tax already exists";
             }
-
             if (flag)
             {
-                await _context.SaveChangesAsync();
-                message = "provider successfully edited";
+                flag = await _context.SaveChangesAsync() > 0;
+                if (flag)
+                    message = "provider successfully edited";
+                else
+                    message += " could not save changes";
             }
 
             return message;
@@ -133,13 +137,17 @@ namespace API.Services.Implementations
             }
             else
             {
-                flag = true;
                 _context.Remove(providerFromDB);
+                flag = await _context.SaveChangesAsync() > 0;
             }
+
             if (flag)
             {
-                await _context.SaveChangesAsync();
                 message = "provider removed";
+            }
+            else 
+            {
+                message += "could not save changes";
             }
 
             return message;

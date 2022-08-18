@@ -29,7 +29,7 @@ namespace API.Controllers
             if (seriveProviders != null)
                 return Ok(seriveProviders);
             else
-                return NotFound("Brak rekorów w bazie");
+                return NotFound("No data");
         }
 
         [HttpGet("{id}")]
