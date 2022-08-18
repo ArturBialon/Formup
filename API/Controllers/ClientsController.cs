@@ -28,7 +28,7 @@ namespace API.Controllers
             if (clients != null)
                 return Ok(clients);
             else
-                return NotFound("Brak rekorów w bazie");
+                return NotFound("No data");
         }
 
         [HttpGet("{id}")]

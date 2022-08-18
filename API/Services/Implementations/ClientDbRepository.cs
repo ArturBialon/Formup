@@ -77,8 +77,11 @@ namespace API.Services.Implementations
                 }
                 );
 
-                await _context.SaveChangesAsync();
+                flag = await _context.SaveChangesAsync() > 0;
                 message = "contractor successfully added";
+
+                if (!flag)
+                    message += "could not save changes";
             }
             return message;
         }
@@ -118,8 +121,10 @@ namespace API.Services.Implementations
 
             if (flag)
             {
-                await _context.SaveChangesAsync();
+                flag = await _context.SaveChangesAsync() > 0;
                 message = "contractor successfully edited";
+                if (!flag)
+                    message += "could not save changes";
             }
 
             return message;
@@ -143,8 +148,10 @@ namespace API.Services.Implementations
             }
             if (flag) 
             {
-                await _context.SaveChangesAsync();
+                flag = await _context.SaveChangesAsync() > 0;
                 message = "contractor removed";
+                if (!flag)
+                    message += "could not svae changes";
             }
 
             return message;
