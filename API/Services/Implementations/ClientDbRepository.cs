@@ -6,6 +6,7 @@ using API.Models;
 using API.Services.Interfaces;
 using API.DTO;
 using Microsoft.EntityFrameworkCore;
+using API.Enum;
 
 namespace API.Services.Implementations
 {
@@ -49,17 +50,18 @@ namespace API.Services.Implementations
 
             return clients;
         }
-        public async Task<string> AddClient(ClientDTO client)
+        public async Task<CommonEnum> AddClient(ClientDTO client)
         {
             bool flag = false;
-            string message = "";
+            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             //check if exists
             string tax = await _context.Clients.Where(x => x.Tax == client.Tax).Select(x => x.Tax).SingleOrDefaultAsync();
             if (tax == client.Tax)
             {
                 flag = false;
-                message = "contractor with given tax already exists";
+                message = CommonEnum.ALREADY_EXISTS;
+                    //"contractor with given tax already exists";
             }
             else
                 flag = true;
@@ -78,17 +80,19 @@ namespace API.Services.Implementations
                 );
 
                 flag = await _context.SaveChangesAsync() > 0;
-                message = "contractor successfully added";
+                message = CommonEnum.SUCCESSFULLY_ADDED;
+                //"contractor successfully added";
 
                 if (!flag)
-                    message += "could not save changes";
+                    message = CommonEnum.CANNOT_SAVE;
+                        //"could not save changes";
             }
             return message;
         }
-        public async Task<string> EditClient(int id, ClientDTO editedClient)
+        public async Task<CommonEnum> EditClient(int id, ClientDTO editedClient)
         {
             bool flag = false;
-            string message = "";
+            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
             //duplicate check
@@ -109,37 +113,42 @@ namespace API.Services.Implementations
                 }
                 else
                 {
-                    message = "could not edit contractor";
+                    message = CommonEnum.CANNOT_EDIT;
+                        //"could not edit contractor";
                     flag = false;
                 }
             }
             else 
             {
                 flag = false;
-                message = "contractor with given tax already exists";
+                message = CommonEnum.ALREADY_EXISTS;
+                    //"contractor with given tax already exists";
             }
 
             if (flag)
             {
                 flag = await _context.SaveChangesAsync() > 0;
-                message = "contractor successfully edited";
+                message = CommonEnum.CHANGES_SAVED;
+                //"contractor successfully edited";
                 if (!flag)
-                    message += "could not save changes";
+                    message = CommonEnum.CANNOT_SAVE;
+                        //"could not save changes";
             }
 
             return message;
         }
-        public async Task<string> DeleteClientById(int id)
+        public async Task<CommonEnum> DeleteClientById(int id)
         {
             bool flag = false;
-            string message = "";
+            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             //check if exists
             var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
             if (contactorFromDB == null)
             {
                 flag = false;
-                message = "cannot find contractor";
+                message = CommonEnum.CANNO_FIND;
+                    //"cannot find contractor";
             }
             else
             {
@@ -149,9 +158,11 @@ namespace API.Services.Implementations
             if (flag) 
             {
                 flag = await _context.SaveChangesAsync() > 0;
-                message = "contractor removed";
+                message = CommonEnum.SUCCESSFULLY_REMOVED;
+                //"contractor removed";
                 if (!flag)
-                    message += "could not svae changes";
+                    message = CommonEnum.CANNOT_SAVE;
+                        //"could not svae changes";
             }
 
             return message;

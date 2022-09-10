@@ -49,12 +49,12 @@ namespace API.Controllers
 
             var result = await _repository.AddClient(client);
 
-            if (result == "contractor successfully added")
+            if (result == Enum.CommonEnum.SUCCESSFULLY_ADDED)
             {
-                return Ok(result);
+                return Ok("contractor successfully added");
             }
             else
-                return BadRequest(result);
+                return BadRequest(result.ToString());
         }
 
         [HttpPut("{id}")]
@@ -62,9 +62,9 @@ namespace API.Controllers
         {
             var result = await _repository.EditClient(id, client);
 
-            if (result == "contractor successfully edited")
+            if (result == Enum.CommonEnum.CHANGES_SAVED)
             {
-                return Ok(result);
+                return Ok("contractor successfully edited");
             }
             else
                 return BadRequest(result);
@@ -75,9 +75,9 @@ namespace API.Controllers
         {
             var result = await _repository.DeleteClientById(id);
 
-            if (result == "contractor removed")
+            if (result == Enum.CommonEnum.SUCCESSFULLY_REMOVED)
             {
-                return Ok(result);
+                return Ok("contractor removed");
             }
             else
                 return BadRequest(result);
