@@ -147,7 +147,7 @@ namespace API.Services.Implementations
             if (contactorFromDB == null)
             {
                 flag = false;
-                message = CommonEnum.CANNO_FIND;
+                message = CommonEnum.CANNOT_FIND;
                     //"cannot find contractor";
             }
             else

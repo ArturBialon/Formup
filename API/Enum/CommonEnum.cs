@@ -11,7 +11,7 @@ namespace API.Enum
         ALREADY_EXISTS,
         CANNOT_SAVE,
         CANNOT_EDIT,
-        CANNO_FIND,
+        CANNOT_FIND,
         CANNOT_REMOVE,
         SUCCESSFULLY_ADDED,
         SUCCESSFULLY_REMOVED,

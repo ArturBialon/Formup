@@ -6,6 +6,7 @@ using API.Models;
 using API.Services.Interfaces;
 using API.DTO;
 using Microsoft.EntityFrameworkCore;
+using API.Enum;
 
 namespace API.Services.Implementations
 {
@@ -47,17 +48,18 @@ namespace API.Services.Implementations
 
             return providers;
         }
-        public async Task<string> AddProvider(ServiceProviderDTO provider)
+        public async Task<CommonEnum> AddProvider(ServiceProviderDTO provider)
         {
             bool flag = false;
-            string message = "";
+            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             //check if exists
             string tax = await _context.ServiceProviders.Where(x => x.Tax == provider.Tax).Select(x => x.Tax).SingleOrDefaultAsync();
             if (tax == provider.Tax)
             {
                 flag = false;
-                message = "provider with given tax already exists";
+                message = CommonEnum.ALREADY_EXISTS;
+                    //"provider with given tax already exists";
             }
             else
                 flag = true;
@@ -75,16 +77,18 @@ namespace API.Services.Implementations
                 );
 
                 flag = await _context.SaveChangesAsync() > 0;
-                message = "provider successfully added";
+                message = CommonEnum.SUCCESSFULLY_ADDED;
+                //"provider successfully added";
                 if (!flag)
-                    message += " could not save changes";
+                    message = CommonEnum.CANNOT_SAVE;
+                        //" could not save changes";
             }
             return message;
         }
-        public async Task<string> EditProvider(int id, ServiceProviderDTO editedProvider)
+        public async Task<CommonEnum> EditProvider(int id, ServiceProviderDTO editedProvider)
         {
             bool flag = false;
-            string message = "";
+            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             var contactorFromDB = await _context.ServiceProviders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
             //check for duplicate
@@ -103,37 +107,42 @@ namespace API.Services.Implementations
                 }
                 else
                 {
-                    message = "provider with given id does not exists";
+                    message = CommonEnum.CANNOT_FIND;
+                        //"provider with given id does not exists";
                     flag = false;
                 }
             }
             else
             {
                 flag = false;
-                message = "contractor with given tax already exists";
+                message = CommonEnum.ALREADY_EXISTS;
+                    //"contractor with given tax already exists";
             }
             if (flag)
             {
                 flag = await _context.SaveChangesAsync() > 0;
                 if (flag)
-                    message = "provider successfully edited";
+                    message = CommonEnum.CHANGES_SAVED;
+                //"provider successfully edited";
                 else
-                    message += " could not save changes";
+                    message = CommonEnum.CANNOT_SAVE;
+                        //" could not save changes";
             }
 
             return message;
         }
-        public async Task<string> DeleteProviderById(int id)
+        public async Task<CommonEnum> DeleteProviderById(int id)
         {
             bool flag = false;
-            string message = "";
+            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             //check if exists
             var providerFromDB = await _context.ServiceProviders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
             if (providerFromDB == null)
             {
                 flag = false;
-                message = "cannot find provider";
+                message = CommonEnum.CANNOT_FIND;
+                    //"cannot find provider";
             }
             else
             {
@@ -143,11 +152,13 @@ namespace API.Services.Implementations
 
             if (flag)
             {
-                message = "provider removed";
+                message = CommonEnum.SUCCESSFULLY_REMOVED;
+                    //"provider removed";
             }
             else 
             {
-                message += "could not save changes";
+                message = CommonEnum.CANNOT_SAVE;
+                    //"could not save changes";
             }
 
             return message;
