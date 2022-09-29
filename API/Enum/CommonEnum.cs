@@ -15,6 +15,7 @@ namespace API.Enum
         CANNOT_REMOVE,
         SUCCESSFULLY_ADDED,
         SUCCESSFULLY_REMOVED,
+        SUCCESSFULLY_FOUND,
         CHANGES_SAVED
     }
 }
