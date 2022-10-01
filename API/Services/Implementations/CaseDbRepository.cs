@@ -22,7 +22,6 @@ namespace API.Services.Implementations
         }
         public async Task<CommonEnum> AddCase(CaseRequestDTO caseDTO)
         {
-            bool flag;
             CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
             await _context.AddAsync(new Case
@@ -33,8 +32,7 @@ namespace API.Services.Implementations
                 Relation = caseDTO.Relation
             });
 
-            flag = await _context.SaveChangesAsync() > 0;
-            if (flag)
+            if (await _context.SaveChangesAsync() > 0)
                 message = CommonEnum.SUCCESSFULLY_ADDED;
                     //"case successfully added";
             else
