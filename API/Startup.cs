@@ -28,12 +28,13 @@ namespace API
                 options.UseSqlServer(Configuration.GetConnectionString("MssqlDbConnString"));
             });
 
-            services.AddTransient<IClientDbRepository, ClientDbRepository>();
-            services.AddTransient<IServiceProviderDbRepository, ServiceProviderDbRepository>();
-            services.AddTransient<IForwardersDbRepository, ForwardersDbRepository>();
-            services.AddTransient<ICaseDbRepository, CaseDbRepository>();
+            services.AddScoped<IClientDbRepository, ClientDbRepository>();
+            services.AddScoped<IServiceProviderDbRepository, ServiceProviderDbRepository>();
+            services.AddScoped<IForwardersDbRepository, ForwardersDbRepository>();
+            services.AddScoped<ICaseDbRepository, CaseDbRepository>();
 
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -53,6 +54,10 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(policy => policy.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:4200/"));
 
             app.UseAuthorization();
 
