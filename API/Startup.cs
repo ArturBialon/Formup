@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using API.Services.Implementations;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 namespace API
 {
@@ -34,7 +35,17 @@ namespace API
             services.AddScoped<ICaseDbRepository, CaseDbRepository>();
 
             services.AddControllers();
-            services.AddCors();
+
+            services.AddAuthentication(
+            CertificateAuthenticationDefaults.AuthenticationScheme)
+            .AddCertificate();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
+                    .AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -55,9 +66,7 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(policy => policy.AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .WithOrigins("http://localhost:4200/"));
+            app.UseCors();
 
             app.UseAuthorization();
 
