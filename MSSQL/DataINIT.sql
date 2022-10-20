@@ -17,13 +17,13 @@ Insert into Service_Providers values
 ('8080144373','MagMaster','Polna 50','24-633','Poland')
 
 Insert into Forwarders values
-('Tomasz','Bal','TBA', 'pass1')
+('Tomasz','Bal','TBA', convert(VARBINARY(max), 'pass1'), convert(VARBINARY(max), 'pass1'))
 
 Insert into Forwarders values
-('Anastazja','Wolska','AWO', 'pass2')
+('Anastazja','Wolska','AWO', convert(VARBINARY(max), 'pass2'), convert(VARBINARY(max), 'pass2'))
 
 Insert into Forwarders values
-('Kamil','Kotarski','KKO', 'pass3')
+('Kamil','Kotarski','KKO', convert(VARBINARY(max), 'pass3'), convert(VARBINARY(max), 'pass3'))
 
 Insert into Cases values
 ('SI/1/TBA/8/2022',10000,'SI',1)
