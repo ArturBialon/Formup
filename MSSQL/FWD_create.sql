@@ -41,6 +41,7 @@ CREATE TABLE Forwarders (
     Name varchar(30)  NOT NULL,
     Surname varchar(40)  NOT NULL,
     Prefix varchar(5)  NOT NULL,
+    Pass varchar(30) NOT NULL,
     CONSTRAINT Forwarders_pk PRIMARY KEY  (ID)
 );
 
