@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTO;
+using API.DTO.Request;
 
 namespace API.Services.Interfaces
 {
@@ -10,7 +11,7 @@ namespace API.Services.Interfaces
     {
         public Task<ICollection<ForwarderDTO>> GetForwarders();
         public Task<ForwarderDTO> GetForwarderById(int id);
-        public Task<string> AddForwarder(ForwarderDTO client);
+        public Task<string> AddForwarder(ForwarderAddDTO client);
         public Task<string> EditForwarder(int id, ForwarderDTO editedClient);
         public Task<string> DeleteForwarderById(int id);
     }

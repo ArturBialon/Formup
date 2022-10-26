@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Models;
 using API.DTO;
 using API.Services.Interfaces;
+using API.DTO.Request;
 
 namespace API.Controllers
 {
@@ -43,8 +44,8 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddForwarder(ForwarderDTO forwarder)
+        [HttpPost("register")]
+        public async Task<IActionResult> AddForwarder(ForwarderAddDTO forwarder)
         {
 
             var result = await _repository.AddForwarder(forwarder);

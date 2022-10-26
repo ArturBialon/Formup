@@ -134,6 +134,16 @@ namespace API.Models
                     .IsRequired()
                     .HasMaxLength(40)
                     .IsUnicode(false);
+
+                entity.Property(e => e.PassHash)
+                    .IsRequired()
+                    .HasColumnType("varbinary")
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PassSalt)
+                    .IsRequired()
+                    .HasColumnType("varbinary")
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Invoice>(entity =>

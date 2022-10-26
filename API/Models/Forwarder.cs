@@ -16,6 +16,8 @@ namespace API.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Prefix { get; set; }
+        public byte[] PassHash { get; set; }
+        public byte[] PassSalt { get; set; }
 
         public virtual ICollection<Case> Cases { get; set; }
     }

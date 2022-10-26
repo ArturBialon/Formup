@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using API.Services.Interfaces;
 using API.Models;
 using API.DTO;
+using API.DTO.Request;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace API.Services.Implementations
 {
@@ -18,7 +21,7 @@ namespace API.Services.Implementations
             _context = context;
         }
 
-        public async Task<string> AddForwarder(ForwarderDTO forwarder)
+        public async Task<string> AddForwarder(ForwarderAddDTO forwarder)
         {
             bool flag = false;
             string message = "";
@@ -41,18 +44,27 @@ namespace API.Services.Implementations
 
             if (flag)
             {
+                using var hmac = new HMACSHA512();
+
                 await _context.AddAsync(new Forwarder
                 {
                     Name = forwarder.Name,
                     Surname = forwarder.Surname,
-                    Prefix = forwarder.Prefix
+                    Prefix = forwarder.Prefix,
+                    PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(forwarder.PassHash)),
+                    PassSalt = hmac.Key
                 }
                 );
 
                 flag = await _context.SaveChangesAsync() > 0;
                 message = "forwarder successfully added";
-                if (!flag)
-                    message += "could not save changes";
+
+                if (!flag) 
+                { 
+                    message += "could not save changes"; 
+                }
+
+                hmac.Dispose();
             }
             return message;
         }

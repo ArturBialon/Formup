@@ -25,7 +25,7 @@ namespace API.Controllers
 
             ICollection<ClientDTO> clients = await _repository.GetClients();
 
-            if (clients != null)
+            if (clients.Count != 0)
                 return Ok(clients);
             else
                 return NotFound("No data");
