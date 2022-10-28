@@ -28,16 +28,16 @@ namespace API.Services.Implementations
 
             //check if exists
             Forwarder fwd = await _context.Forwarders
-                .Where(x => x.Name == forwarder.Login && x.Surname == forwarder.Surname && x.Prefix == forwarder.Prefix)
+                .Where(x => x.Name == forwarder.Login)
                 .SingleOrDefaultAsync();
 
             if (fwd != null)
             {
-                if(fwd.Name == forwarder.Login)
+                if(fwd.Name.Equals(forwarder.Login))
                 {
                     message = "login taken : ";
                 }
-                if (fwd.Name == forwarder.Login && fwd.Surname == forwarder.Surname && fwd.Prefix == forwarder.Prefix)
+                if (fwd.Name.Equals(forwarder.Login) && fwd.Surname.Equals(forwarder.Surname) && fwd.Prefix.Equals(forwarder.Prefix))
                 {
                     flag = false;
                     message += "forwarder with given parameters already exists (surname + prefix)";
