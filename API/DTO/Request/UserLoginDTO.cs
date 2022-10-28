@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace API.DTO.Request
 {
-    public class ForwarderAddDTO
+    public class UserLoginDTO
     {
         [Required]
         public string Login { get; set; }
         [Required]
-        public string Surname { get; set; }
-        [Required]
-        public string Prefix { get; set; }
-        [Required]
-        public string PassHash { get; set; }
-
+        public string Password { get; set; }
     }
 }

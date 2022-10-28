@@ -16,6 +16,8 @@ namespace API.Enum
         SUCCESSFULLY_ADDED,
         SUCCESSFULLY_REMOVED,
         SUCCESSFULLY_FOUND,
-        CHANGES_SAVED
+        CHANGES_SAVED,
+        INVALID_LOGIN,
+        INVALID_PASSWORD
     }
 }

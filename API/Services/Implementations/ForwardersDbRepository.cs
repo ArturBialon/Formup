@@ -28,15 +28,19 @@ namespace API.Services.Implementations
 
             //check if exists
             Forwarder fwd = await _context.Forwarders
-                .Where(x => x.Name == forwarder.Name && x.Surname == forwarder.Surname && x.Prefix == forwarder.Prefix)
+                .Where(x => x.Name == forwarder.Login && x.Surname == forwarder.Surname && x.Prefix == forwarder.Prefix)
                 .SingleOrDefaultAsync();
 
             if (fwd != null)
             {
-                if (fwd.Name == forwarder.Name && fwd.Surname == forwarder.Surname && fwd.Prefix == forwarder.Prefix)
+                if(fwd.Name == forwarder.Login)
+                {
+                    message = "login taken : ";
+                }
+                if (fwd.Name == forwarder.Login && fwd.Surname == forwarder.Surname && fwd.Prefix == forwarder.Prefix)
                 {
                     flag = false;
-                    message = "forwarder with given parameters already exists";
+                    message += "forwarder with given parameters already exists (surname + prefix)";
                 }
             }
             else
@@ -48,7 +52,7 @@ namespace API.Services.Implementations
 
                 await _context.AddAsync(new Forwarder
                 {
-                    Name = forwarder.Name,
+                    Name = forwarder.Login,
                     Surname = forwarder.Surname,
                     Prefix = forwarder.Prefix,
                     PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(forwarder.PassHash)),
@@ -106,7 +110,7 @@ namespace API.Services.Implementations
             
             //duplicate chceck
             var duplicate = await _context.Forwarders
-                .Where(x => x.Name == editedForwarder.Name && x.Surname == editedForwarder.Surname && x.Prefix == editedForwarder.Prefix && x.Id != id)
+                .Where(x => x.Name == editedForwarder.Login && x.Surname == editedForwarder.Surname && x.Prefix == editedForwarder.Prefix && x.Id != id)
                 .SingleOrDefaultAsync();
             if (duplicate == null)
             {
@@ -114,7 +118,7 @@ namespace API.Services.Implementations
                 if (forwarderFromDB != null)
                 {
                     flag = true;
-                    forwarderFromDB.Name = editedForwarder.Name;
+                    forwarderFromDB.Name = editedForwarder.Login;
                     forwarderFromDB.Surname = editedForwarder.Surname;
                     forwarderFromDB.Prefix = editedForwarder.Prefix;
                 }
@@ -146,7 +150,7 @@ namespace API.Services.Implementations
             var forwarder = await _context.Forwarders.Where(x => x.Id == id)
                 .Select(m => new ForwarderDTO
                 {
-                    Name = m.Name,
+                    Login = m.Name,
                     Surname = m.Surname,
                     Prefix = m.Prefix
                 })
@@ -160,7 +164,7 @@ namespace API.Services.Implementations
             var forwarders = await _context.Forwarders
                 .Select(m => new ForwarderDTO
                 {
-                    Name = m.Name,
+                    Login = m.Name,
                     Surname = m.Surname,
                     Prefix = m.Prefix
                 })

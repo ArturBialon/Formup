@@ -33,6 +33,7 @@ namespace API
             services.AddScoped<IServiceProviderDbRepository, ServiceProviderDbRepository>();
             services.AddScoped<IForwardersDbRepository, ForwardersDbRepository>();
             services.AddScoped<ICaseDbRepository, CaseDbRepository>();
+            services.AddScoped<ILogin, Login>();
 
             services.AddControllers();
 
