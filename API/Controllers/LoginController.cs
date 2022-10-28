@@ -48,7 +48,7 @@ namespace API.Controllers
             else if (newUser.Status == Enum.CommonEnum.INVALID_PASSWORD)
                 return BadRequest("Password invalid - must be at least 6 chars");
             else
-                return BadRequest("Error occoured " + newUser.Status.ToString());
+                return BadRequest("Error occoured \n" + newUser.Status.ToString());
 
         }
     }
