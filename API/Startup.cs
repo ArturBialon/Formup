@@ -34,6 +34,7 @@ namespace API
             services.AddScoped<IForwardersDbRepository, ForwardersDbRepository>();
             services.AddScoped<ICaseDbRepository, CaseDbRepository>();
             services.AddScoped<ILogin, Login>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddControllers();
 
