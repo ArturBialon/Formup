@@ -44,21 +44,6 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> AddForwarder(ForwarderAddDTO forwarder)
-        {
-
-            var result = await _repository.AddForwarder(forwarder);
-
-            if (result == "forwarder successfully added")
-            {
-                return Ok(result);
-            }
-            else
-                return BadRequest(result);
-
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> EditForwarder(int id, ForwarderDTO forwarder)
         {

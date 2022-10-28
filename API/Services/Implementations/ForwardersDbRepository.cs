@@ -21,58 +21,6 @@ namespace API.Services.Implementations
             _context = context;
         }
 
-        public async Task<string> AddForwarder(ForwarderAddDTO forwarder)
-        {
-            bool flag = false;
-            string message = "";
-
-            //check if exists
-            Forwarder fwd = await _context.Forwarders
-                .Where(x => x.Name == forwarder.Login)
-                .SingleOrDefaultAsync();
-
-            if (fwd != null)
-            {
-                if(fwd.Name.Equals(forwarder.Login))
-                {
-                    message = "login taken : ";
-                }
-                if (fwd.Name.Equals(forwarder.Login) && fwd.Surname.Equals(forwarder.Surname) && fwd.Prefix.Equals(forwarder.Prefix))
-                {
-                    flag = false;
-                    message += "forwarder with given parameters already exists (surname + prefix)";
-                }
-            }
-            else
-                flag = true;
-
-            if (flag)
-            {
-                using var hmac = new HMACSHA512();
-
-                await _context.AddAsync(new Forwarder
-                {
-                    Name = forwarder.Login,
-                    Surname = forwarder.Surname,
-                    Prefix = forwarder.Prefix,
-                    PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(forwarder.PassHash)),
-                    PassSalt = hmac.Key
-                }
-                );
-
-                flag = await _context.SaveChangesAsync() > 0;
-                message = "forwarder successfully added";
-
-                if (!flag) 
-                { 
-                    message += "could not save changes"; 
-                }
-
-                hmac.Dispose();
-            }
-            return message;
-        }
-
         public async Task<string> DeleteForwarderById(int id)
         {
             bool flag = false;

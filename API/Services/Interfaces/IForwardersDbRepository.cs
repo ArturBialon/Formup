@@ -11,7 +11,6 @@ namespace API.Services.Interfaces
     {
         public Task<ICollection<ForwarderDTO>> GetForwarders();
         public Task<ForwarderDTO> GetForwarderById(int id);
-        public Task<string> AddForwarder(ForwarderAddDTO client);
         public Task<string> EditForwarder(int id, ForwarderDTO editedClient);
         public Task<string> DeleteForwarderById(int id);
     }

@@ -9,6 +9,7 @@ namespace API.Services.Interfaces
 {
     public interface ILogin
     {
-        Task<CommonEnum> UserLogin(UserLoginDTO user);
+        Task<UserDTO> AddForwarder(ForwarderAddDTO forwarder);
+        Task<UserDTO> UserLoginStatus(UserLoginDTO user);
     }
 }
