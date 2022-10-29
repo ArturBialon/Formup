@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Models;
 using API.DTO;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -19,6 +20,7 @@ namespace API.Controllers
             _repository = clientRep;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetClients()
         {
@@ -31,6 +33,7 @@ namespace API.Controllers
                 return NotFound("No data");
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientById(int id)
         {
@@ -43,6 +46,7 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddClient(ClientDTO client)
         {
@@ -57,6 +61,7 @@ namespace API.Controllers
                 return BadRequest(result.ToString());
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditClient(int id, ClientDTO client)
         {
@@ -70,6 +75,7 @@ namespace API.Controllers
                 return BadRequest(result);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(int id)
         {

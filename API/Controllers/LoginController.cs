@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Services.Interfaces;
 using API.DTO.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -18,6 +19,7 @@ namespace API.Controllers
             _repository = forwardersRep;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> UserLogin(UserLoginDTO user)
         {
@@ -33,6 +35,7 @@ namespace API.Controllers
                 return BadRequest("Error occoured " + userLoged.Status.ToString());
         }
 
+        [Authorize]
         [HttpPost("register")]
         public async Task<IActionResult> AddForwarder(ForwarderAddDTO forwarder)
         {

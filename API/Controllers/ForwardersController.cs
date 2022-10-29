@@ -7,6 +7,7 @@ using API.Models;
 using API.DTO;
 using API.Services.Interfaces;
 using API.DTO.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -19,7 +20,8 @@ namespace API.Controllers
         {
             _repository = forwardersRep;
         }
-        
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetForwarders()
         {
@@ -32,6 +34,7 @@ namespace API.Controllers
                 return NotFound("No data");
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetForwarderById(int id)
         {
@@ -44,6 +47,7 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditForwarder(int id, ForwarderDTO forwarder)
         {
@@ -57,6 +61,7 @@ namespace API.Controllers
                 return BadRequest(result);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteForwarder(int id)
         {

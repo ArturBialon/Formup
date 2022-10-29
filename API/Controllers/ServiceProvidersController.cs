@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.DTO;
 using API.Services;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -20,6 +21,7 @@ namespace API.Controllers
             _repository = proversRep;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetProviders()
         {
@@ -32,6 +34,7 @@ namespace API.Controllers
                 return NotFound("No data");
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProviderById(int id)
         {
@@ -44,6 +47,7 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
         {
@@ -58,6 +62,7 @@ namespace API.Controllers
                 return BadRequest(result);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditProvider(int id, ServiceProviderDTO provider)
         {
@@ -71,6 +76,7 @@ namespace API.Controllers
                 return BadRequest(result);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {

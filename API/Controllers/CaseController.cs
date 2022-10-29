@@ -7,6 +7,7 @@ using API.Models;
 using API.DTO.Request;
 using API.DTO.Response;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -20,6 +21,7 @@ namespace API.Controllers
             _repository = clientRep;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCases()
         {
@@ -32,6 +34,7 @@ namespace API.Controllers
                 return NotFound("No data");
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCaseById(int id)
         {
@@ -44,6 +47,7 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCase(CaseRequestDTO @case)
         {
@@ -60,6 +64,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditCase(int id, CaseRequestDTO @case)
         {
@@ -80,6 +85,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCase(int id)
         {
