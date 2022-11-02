@@ -26,7 +26,7 @@ namespace API.Controllers
             var userLoged = await _repository.UserLoginStatus(user);
 
             if (userLoged.Status == Enum.CommonEnum.SUCCESSFULLY_FOUND)
-                return Ok("You are logged into system \n" + userLoged.Token.ToString());
+                return Ok(userLoged);
             else if (userLoged.Status == Enum.CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login invalid");
             else if (userLoged.Status == Enum.CommonEnum.INVALID_PASSWORD)
@@ -35,7 +35,7 @@ namespace API.Controllers
                 return BadRequest("Error occoured " + userLoged.Status.ToString());
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("register")]
         public async Task<IActionResult> AddForwarder(ForwarderAddDTO forwarder)
         {

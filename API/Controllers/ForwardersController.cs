@@ -21,7 +21,8 @@ namespace API.Controllers
             _repository = forwardersRep;
         }
 
-        [Authorize]
+        //[Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetForwarders()
         {

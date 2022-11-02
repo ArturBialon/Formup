@@ -96,6 +96,12 @@ namespace API.Services.Implementations
             if (userFromDb == null)
             {
                 status = CommonEnum.INVALID_LOGIN;
+                return new UserDTO
+                {
+                    UserName = "Empty",
+                    Token = "Empty",
+                    Status = status
+                };
             }
             else
             {
