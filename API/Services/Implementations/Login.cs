@@ -79,11 +79,17 @@ namespace API.Services.Implementations
                 }
 
                 hmac.Dispose();
+                return new UserDTO
+                {
+                    UserName = newForwarder.Name,
+                    Token = _tokenService.CreateToken(newForwarder),
+                    Status = status
+                };
             }
             return new UserDTO 
             { 
-                UserName = newForwarder.Name,
-                Token = _tokenService.CreateToken(newForwarder),
+                UserName = "",
+                Token = "",
                 Status = status
             };
         }

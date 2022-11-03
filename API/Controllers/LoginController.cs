@@ -42,7 +42,7 @@ namespace API.Controllers
 
             var newUser = await _repository.AddForwarder(forwarder);
 
-            if (newUser.Status == Enum.CommonEnum.SUCCESSFULLY_FOUND)
+            if (newUser.Status == Enum.CommonEnum.SUCCESSFULLY_ADDED)
                 return Ok("You are signed into system");
             else if (newUser.Status == Enum.CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login is taken");
