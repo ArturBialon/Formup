@@ -35,7 +35,7 @@ namespace API.Controllers
                 return NotFound("No data");
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetForwarderById(int id)
         {
@@ -48,9 +48,9 @@ namespace API.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditForwarder(int id, ForwarderDTO forwarder)
+        public async Task<IActionResult> EditForwarder(int id, ForwarderAddDTO forwarder)
         {
             var result = await _repository.EditForwarder(id, forwarder);
 

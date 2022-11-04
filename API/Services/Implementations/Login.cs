@@ -122,6 +122,8 @@ namespace API.Services.Implementations
 
                 if (status != CommonEnum.INVALID_PASSWORD)
                     status = CommonEnum.SUCCESSFULLY_FOUND;
+
+                hmac.Dispose();
             }
             return new UserDTO
             {

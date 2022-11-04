@@ -49,16 +49,16 @@ namespace API.Services.Implementations
             return message;
         }
 
-        public async Task<string> EditForwarder(int id, ForwarderDTO editedForwarder)
+        public async Task<string> EditForwarder(int id, ForwarderAddDTO editedForwarder)
         {
             bool flag = false;
             string message = "";
 
             var forwarderFromDB = await _context.Forwarders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
-            
+            using var hmac = new HMACSHA512();
             //duplicate chceck
             var duplicate = await _context.Forwarders
-                .Where(x => x.Name == editedForwarder.Login && x.Surname == editedForwarder.Surname && x.Prefix == editedForwarder.Prefix && x.Id != id)
+                .Where(x => x.Name == editedForwarder.Login && x.Id != id || x.Surname == editedForwarder.Surname && x.Prefix == editedForwarder.Prefix && x.Id != id)
                 .SingleOrDefaultAsync();
             if (duplicate == null)
             {
@@ -69,6 +69,8 @@ namespace API.Services.Implementations
                     forwarderFromDB.Name = editedForwarder.Login;
                     forwarderFromDB.Surname = editedForwarder.Surname;
                     forwarderFromDB.Prefix = editedForwarder.Prefix;
+                    forwarderFromDB.PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(editedForwarder.PassHash));
+                    forwarderFromDB.PassSalt = hmac.Key;
                 }
                 else
                 {
