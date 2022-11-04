@@ -33,6 +33,10 @@ namespace API.Services.Implementations
                 .Where(x => x.Name == forwarder.Login)
                 .SingleOrDefaultAsync();
 
+            if (forwarder.PassHash.Length < 6)
+            {
+                status = CommonEnum.INVALID_PASSWORD;
+            }
             if (fwd != null)
             {
                 if (fwd.Name.Equals(forwarder.Login))
@@ -44,10 +48,6 @@ namespace API.Services.Implementations
                 {
                     status = CommonEnum.ALREADY_EXISTS;
                     //forwarder with given parameters already exists (surname + prefix)
-                }
-                if (forwarder.PassHash.Length < 6)
-                {
-                    status = CommonEnum.INVALID_PASSWORD;
                 }
             }
             else

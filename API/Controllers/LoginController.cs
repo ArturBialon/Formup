@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/Login")]
+    [Route("api/login")]
     public class LoginController : ControllerBase
     {
         public readonly ILogin _repository;
@@ -43,7 +43,7 @@ namespace API.Controllers
             var newUser = await _repository.AddForwarder(forwarder);
 
             if (newUser.Status == Enum.CommonEnum.SUCCESSFULLY_ADDED)
-                return Ok("You are signed into system");
+                return Ok(newUser);
             else if (newUser.Status == Enum.CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login is taken");
             else if (newUser.Status == Enum.CommonEnum.ALREADY_EXISTS)
