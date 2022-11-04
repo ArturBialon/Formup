@@ -10,7 +10,6 @@ import { AccountService } from '../_services/account.service';
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
-  newUser: UserAdd;
 
   constructor(private accountService: AccountService) { }
 
@@ -18,12 +17,11 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    this.accountService.register(this.newUser).subscribe(res =>{
+    this.accountService.register(this.model).subscribe(res =>{
       console.log(res);
       this.cancel();
-    }, err=>{
-      console.error(err);
-      
+    }, error=>{
+      console.error(error);
     });
   }
 
