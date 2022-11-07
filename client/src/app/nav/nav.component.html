@@ -1,19 +1,19 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-left bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">Formup</a>
+      <a class="navbar-brand" routerLink="/">Formup</a>
 
         <ul class="navbar-nav mr-auto" *ngIf="accountService.currentUser$ | async">
           <li class="nav-item">
-            <a class="nav-link" href="#">Clinets</a>
+            <a class="nav-link" routerLink="/members" routerLinkActive="active">Clinets</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Cases</a>
+            <a class="nav-link" routerLink="/lists" routerLinkActive="active">Cases</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Account</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Mess</a>
+            <a class="nav-link" routerLink="messages" routerLinkActive="active">Mess</a>
           </li>
         </ul>
 
