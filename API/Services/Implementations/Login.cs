@@ -39,12 +39,12 @@ namespace API.Services.Implementations
             }
             if (fwd != null)
             {
-                if (fwd.Name.Equals(forwarder.Login))
+                if (fwd.Name.ToLower().Equals(forwarder.Login.ToLower()))
                 {
                     status = CommonEnum.INVALID_LOGIN;
                     //login taken
                 }
-                if (fwd.Surname.Equals(forwarder.Surname) && fwd.Prefix.Equals(forwarder.Prefix))
+                if (fwd.Surname.ToLower().Equals(forwarder.Surname.ToLower()) && fwd.Prefix.ToLower().Equals(forwarder.Prefix.ToLower()))
                 {
                     status = CommonEnum.ALREADY_EXISTS;
                     //forwarder with given parameters already exists (surname + prefix)
@@ -61,7 +61,7 @@ namespace API.Services.Implementations
                 {
                     Name = forwarder.Login,
                     Surname = forwarder.Surname,
-                    Prefix = forwarder.Prefix,
+                    Prefix = forwarder.Prefix.ToUpper(),
                     PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(forwarder.PassHash)),
                     PassSalt = hmac.Key
                 };

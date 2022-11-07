@@ -58,7 +58,12 @@ namespace API.Services.Implementations
             using var hmac = new HMACSHA512();
             //duplicate chceck
             var duplicate = await _context.Forwarders
-                .Where(x => x.Name == editedForwarder.Login && x.Id != id || x.Surname == editedForwarder.Surname && x.Prefix == editedForwarder.Prefix && x.Id != id)
+                .Where(
+                x => x.Name.ToLower() == editedForwarder.Login.ToLower() 
+                && x.Id != id 
+                || x.Surname.ToLower() == editedForwarder.Surname.ToLower() 
+                && x.Prefix.ToLower() == editedForwarder.Prefix.ToLower() 
+                && x.Id != id)
                 .SingleOrDefaultAsync();
             if (duplicate == null)
             {
@@ -68,7 +73,7 @@ namespace API.Services.Implementations
                     flag = true;
                     forwarderFromDB.Name = editedForwarder.Login;
                     forwarderFromDB.Surname = editedForwarder.Surname;
-                    forwarderFromDB.Prefix = editedForwarder.Prefix;
+                    forwarderFromDB.Prefix = editedForwarder.Prefix.ToUpper();
                     forwarderFromDB.PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(editedForwarder.PassHash));
                     forwarderFromDB.PassSalt = hmac.Key;
                 }
@@ -81,7 +86,7 @@ namespace API.Services.Implementations
             else
             {
                 flag = false;
-                message = "forwarde with given parameters already exists";
+                message = "forwarder with given parameters already exists";
             }
 
             if (flag)
