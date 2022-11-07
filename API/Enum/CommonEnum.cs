@@ -18,6 +18,8 @@ namespace API.Enum
         SUCCESSFULLY_FOUND,
         CHANGES_SAVED,
         INVALID_LOGIN,
-        INVALID_PASSWORD
+        INVALID_PASSWORD,
+        STRING_TOO_LONG,
+        STRING_TOO_SHORT
     }
 }

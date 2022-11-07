@@ -33,10 +33,6 @@ namespace API.Services.Implementations
                 .Where(x => x.Name == forwarder.Login)
                 .SingleOrDefaultAsync();
 
-            if (forwarder.PassHash.Length < 6)
-            {
-                status = CommonEnum.INVALID_PASSWORD;
-            }
             if (fwd != null)
             {
                 if (fwd.Name.ToLower().Equals(forwarder.Login.ToLower()))
@@ -52,6 +48,16 @@ namespace API.Services.Implementations
             }
             else
                 flag = true;
+            if (forwarder.PassHash.Length < 6)
+            {
+                status = CommonEnum.INVALID_PASSWORD;
+                flag = false;
+            }
+            if (forwarder.Prefix.Length > 3)
+            {
+                status = CommonEnum.STRING_TOO_LONG;
+                flag = false;
+            }
 
             if (flag)
             {
