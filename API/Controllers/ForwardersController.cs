@@ -62,7 +62,7 @@ namespace API.Controllers
                 return BadRequest(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteForwarder(int id)
         {
