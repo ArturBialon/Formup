@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using API.Services.Interfaces;
+﻿using API.Models;
 using API.Services.Implementations;
+using API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API.Extensions
 {

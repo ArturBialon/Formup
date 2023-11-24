@@ -1,12 +1,12 @@
+using API.Extensions;
+using API.Middleware;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.Certificate;
-using API.Extensions;
-using API.Middleware;
 
 namespace API
 {
@@ -37,7 +37,7 @@ namespace API
                 options.AddDefaultPolicy(policy => policy.AllowAnyHeader()
                     .AllowAnyMethod().WithOrigins("https://localhost:4200"));
             });
-            
+
 
             services.AddSwaggerGen(c =>
             {

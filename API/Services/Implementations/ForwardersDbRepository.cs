@@ -1,14 +1,13 @@
-﻿using System;
+﻿using API.DTO;
+using API.DTO.Request;
+using API.Models;
+using API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using API.Services.Interfaces;
-using API.Models;
-using API.DTO;
-using API.DTO.Request;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace API.Services.Implementations
 {
@@ -59,10 +58,10 @@ namespace API.Services.Implementations
             //duplicate chceck
             var duplicate = await _context.Forwarders
                 .Where(
-                x => x.Name.ToLower() == editedForwarder.Login.ToLower() 
-                && x.Id != id 
-                || x.Surname.ToLower() == editedForwarder.Surname.ToLower() 
-                && x.Prefix.ToLower() == editedForwarder.Prefix.ToLower() 
+                x => x.Name.ToLower() == editedForwarder.Login.ToLower()
+                && x.Id != id
+                || x.Surname.ToLower() == editedForwarder.Surname.ToLower()
+                && x.Prefix.ToLower() == editedForwarder.Prefix.ToLower()
                 && x.Id != id)
                 .SingleOrDefaultAsync();
             if (duplicate == null)
@@ -91,7 +90,7 @@ namespace API.Services.Implementations
 
             if (flag)
             {
-                flag = await _context.SaveChangesAsync() >0;
+                flag = await _context.SaveChangesAsync() > 0;
                 message = "forwarder successfully edited";
                 if (!flag)
                     message += "could not save changes";

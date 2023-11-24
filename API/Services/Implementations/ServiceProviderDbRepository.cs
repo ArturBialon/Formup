@@ -1,12 +1,11 @@
-﻿using System;
+﻿using API.DTO;
+using API.Enum;
+using API.Models;
+using API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Models;
-using API.Services.Interfaces;
-using API.DTO;
-using Microsoft.EntityFrameworkCore;
-using API.Enum;
 
 namespace API.Services.Implementations
 {
@@ -59,7 +58,7 @@ namespace API.Services.Implementations
             {
                 flag = false;
                 message = CommonEnum.ALREADY_EXISTS;
-                    //"provider with given tax already exists";
+                //"provider with given tax already exists";
             }
             else
                 flag = true;
@@ -81,7 +80,7 @@ namespace API.Services.Implementations
                 //"provider successfully added";
                 if (!flag)
                     message = CommonEnum.CANNOT_SAVE;
-                        //" could not save changes";
+                //" could not save changes";
             }
             return message;
         }
@@ -108,7 +107,7 @@ namespace API.Services.Implementations
                 else
                 {
                     message = CommonEnum.CANNOT_FIND;
-                        //"provider with given id does not exists";
+                    //"provider with given id does not exists";
                     flag = false;
                 }
             }
@@ -116,7 +115,7 @@ namespace API.Services.Implementations
             {
                 flag = false;
                 message = CommonEnum.ALREADY_EXISTS;
-                    //"contractor with given tax already exists";
+                //"contractor with given tax already exists";
             }
             if (flag)
             {
@@ -126,7 +125,7 @@ namespace API.Services.Implementations
                 //"provider successfully edited";
                 else
                     message = CommonEnum.CANNOT_SAVE;
-                        //" could not save changes";
+                //" could not save changes";
             }
 
             return message;
@@ -142,7 +141,7 @@ namespace API.Services.Implementations
             {
                 flag = false;
                 message = CommonEnum.CANNOT_FIND;
-                    //"cannot find provider";
+                //"cannot find provider";
             }
             else
             {
@@ -153,12 +152,12 @@ namespace API.Services.Implementations
             if (flag)
             {
                 message = CommonEnum.SUCCESSFULLY_REMOVED;
-                    //"provider removed";
+                //"provider removed";
             }
-            else 
+            else
             {
                 message = CommonEnum.CANNOT_SAVE;
-                    //"could not save changes";
+                //"could not save changes";
             }
 
             return message;

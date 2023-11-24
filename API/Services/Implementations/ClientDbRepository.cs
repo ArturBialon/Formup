@@ -1,12 +1,11 @@
-﻿using System;
+﻿using API.DTO;
+using API.Enum;
+using API.Models;
+using API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Models;
-using API.Services.Interfaces;
-using API.DTO;
-using Microsoft.EntityFrameworkCore;
-using API.Enum;
 
 namespace API.Services.Implementations
 {
@@ -61,7 +60,7 @@ namespace API.Services.Implementations
             {
                 flag = false;
                 message = CommonEnum.ALREADY_EXISTS;
-                    //"contractor with given tax already exists";
+                //"contractor with given tax already exists";
             }
             else
                 flag = true;
@@ -70,12 +69,12 @@ namespace API.Services.Implementations
             {
                 await _context.AddAsync(new Client
                 {
-                   Name = client.Name,
-                   Tax = client.Tax,
-                   Street = client.Street,
-                   Zip = client.Zip,
-                   Coutry = client.Coutry,
-                   Credit = client.Credit
+                    Name = client.Name,
+                    Tax = client.Tax,
+                    Street = client.Street,
+                    Zip = client.Zip,
+                    Coutry = client.Coutry,
+                    Credit = client.Credit
                 }
                 );
 
@@ -85,7 +84,7 @@ namespace API.Services.Implementations
 
                 if (!flag)
                     message = CommonEnum.CANNOT_SAVE;
-                        //"could not save changes";
+                //"could not save changes";
             }
             return message;
         }
@@ -114,15 +113,15 @@ namespace API.Services.Implementations
                 else
                 {
                     message = CommonEnum.CANNOT_EDIT;
-                        //"could not edit contractor";
+                    //"could not edit contractor";
                     flag = false;
                 }
             }
-            else 
+            else
             {
                 flag = false;
                 message = CommonEnum.ALREADY_EXISTS;
-                    //"contractor with given tax already exists";
+                //"contractor with given tax already exists";
             }
 
             if (flag)
@@ -132,7 +131,7 @@ namespace API.Services.Implementations
                 //"contractor successfully edited";
                 if (!flag)
                     message = CommonEnum.CANNOT_SAVE;
-                        //"could not save changes";
+                //"could not save changes";
             }
 
             return message;
@@ -148,21 +147,21 @@ namespace API.Services.Implementations
             {
                 flag = false;
                 message = CommonEnum.CANNOT_FIND;
-                    //"cannot find contractor";
+                //"cannot find contractor";
             }
             else
             {
                 flag = true;
                 _context.Remove(contactorFromDB);
             }
-            if (flag) 
+            if (flag)
             {
                 flag = await _context.SaveChangesAsync() > 0;
                 message = CommonEnum.SUCCESSFULLY_REMOVED;
                 //"contractor removed";
                 if (!flag)
                     message = CommonEnum.CANNOT_SAVE;
-                        //"could not svae changes";
+                //"could not svae changes";
             }
 
             return message;

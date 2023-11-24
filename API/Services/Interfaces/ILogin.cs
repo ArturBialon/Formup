@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using API.DTO.Request;
 using System.Threading.Tasks;
-using API.DTO.Request;
-using API.Enum;
 
 namespace API.Services.Interfaces
 {

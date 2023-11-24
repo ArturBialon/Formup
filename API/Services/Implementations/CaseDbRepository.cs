@@ -1,13 +1,13 @@
-﻿using System;
+﻿using API.DTO.Request;
+using API.DTO.Response;
+using API.Enum;
+using API.Models;
+using API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Models;
-using API.Services.Interfaces;
-using API.DTO.Request;
-using API.DTO.Response;
-using Microsoft.EntityFrameworkCore;
-using API.Enum;
 
 namespace API.Services.Implementations
 {
@@ -34,10 +34,10 @@ namespace API.Services.Implementations
 
             if (await _context.SaveChangesAsync() > 0)
                 message = CommonEnum.SUCCESSFULLY_ADDED;
-                    //"case successfully added";
+            //"case successfully added";
             else
                 message = CommonEnum.CANNOT_SAVE;
-                    //"could not save changes";
+            //"could not save changes";
 
             return message;
         }
@@ -54,13 +54,13 @@ namespace API.Services.Implementations
                 _context.Remove(caseFromDb);
                 flag = true;
                 message = CommonEnum.SUCCESSFULLY_FOUND;
-                    //"case found";
+                //"case found";
             }
             else
             {
                 flag = false;
                 message = CommonEnum.CANNOT_FIND;
-                    //"could not find case with given ID";
+                //"could not find case with given ID";
             }
             if (flag)
             {
@@ -68,10 +68,10 @@ namespace API.Services.Implementations
 
                 if (flag)
                     message = CommonEnum.SUCCESSFULLY_REMOVED;
-                        //"case successfully removed";
+                //"case successfully removed";
                 else
                     message = CommonEnum.CANNOT_SAVE;
-                        //" could not save changes";
+                //" could not save changes";
             }
 
 
@@ -92,13 +92,13 @@ namespace API.Services.Implementations
                 caseToEdit.ForwardersId = editedCase.ForwarderId;
 
                 flag = true;
-                    //"case found";
+                //"case found";
             }
             else
             {
                 flag = false;
                 message = CommonEnum.CANNOT_FIND;
-                    //"could not find case";
+                //"could not find case";
             }
 
             if (flag)
@@ -109,12 +109,12 @@ namespace API.Services.Implementations
                 //"case successfully updated";
                 else
                     message = CommonEnum.CANNOT_SAVE;
-                        //" cannot save changes";
+                //" cannot save changes";
             }
 
             return message;
         }
-        
+
         public async Task<CaseResponseDTO> GetCaseById(int id)
         {
 

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.DTO.Request;
+﻿using API.DTO.Request;
+using API.Enum;
 using API.Models;
 using API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using API.Enum;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace API.Services.Implementations
 {
@@ -92,8 +90,8 @@ namespace API.Services.Implementations
                     Status = status
                 };
             }
-            return new UserDTO 
-            { 
+            return new UserDTO
+            {
                 UserName = "",
                 Token = "",
                 Status = status
