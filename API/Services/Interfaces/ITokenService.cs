@@ -1,6 +1,6 @@
-﻿using API.Models;
+﻿using Infrastructure.Models;
 
-namespace API.Services.Interfaces
+namespace Infrastructure.Services.Interfaces
 {
     public interface ITokenService
     {

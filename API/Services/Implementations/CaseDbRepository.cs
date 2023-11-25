@@ -1,22 +1,23 @@
-﻿using API.DTO.Request;
-using API.DTO.Response;
-using API.Enum;
-using API.Models;
-using API.Services.Interfaces;
+﻿using Infrastructure.Context;
+using Infrastructure.DTO.Request;
+using Infrastructure.DTO.Response;
+using Infrastructure.Enum;
+using Infrastructure.Models;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Services.Implementations
+namespace Infrastructure.Services.Implementations
 {
     public class CaseDbRepository : ICaseDbRepository
     {
 
-        private readonly FWD_CompContext _context;
+        private readonly FormupContext _context;
 
-        public CaseDbRepository(FWD_CompContext context)
+        public CaseDbRepository(FormupContext context)
         {
             _context = context;
         }

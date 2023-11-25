@@ -1,17 +1,17 @@
-﻿using API.Models;
-using API.Services.Implementations;
-using API.Services.Interfaces;
+﻿using Infrastructure.Context;
+using Infrastructure.Services.Implementations;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace API.Extensions
+namespace Infrastructure.Extensions
 {
     public static class AppServiceExtensions
     {
         public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<FWD_CompContext>(options =>
+            services.AddDbContext<FormupContext>(options =>
             {
                 options.UseSqlServer(config.GetConnectionString("MssqlDbConnString"));
             });

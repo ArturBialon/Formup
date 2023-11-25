@@ -1,21 +1,22 @@
-﻿using API.DTO.Request;
-using API.Enum;
-using API.Models;
-using API.Services.Interfaces;
+﻿using Infrastructure.Context;
+using Infrastructure.DTO.Request;
+using Infrastructure.Enum;
+using Infrastructure.Models;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace API.Services.Implementations
+namespace Infrastructure.Services.Implementations
 {
     public class Login : ILogin
     {
-        private readonly FWD_CompContext _context;
+        private readonly FormupContext _context;
         private readonly ITokenService _tokenService;
 
-        public Login(FWD_CompContext context, ITokenService tokenService)
+        public Login(FormupContext context, ITokenService tokenService)
         {
             _context = context;
             _tokenService = tokenService;

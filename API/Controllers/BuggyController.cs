@@ -1,15 +1,16 @@
-﻿using API.Models;
+﻿using Infrastructure.Context;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace Infrastructure.Controllers
 {
     [ApiController]
     [Route("api/bug")]
     public class BuggyController : ControllerBase
     {
-        private readonly FWD_CompContext _context;
-        public BuggyController(FWD_CompContext compContext)
+        private readonly FormupContext _context;
+        public BuggyController(FormupContext compContext)
         {
             _context = compContext;
         }

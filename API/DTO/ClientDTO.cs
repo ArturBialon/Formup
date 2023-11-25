@@ -1,4 +1,4 @@
-﻿namespace API.DTO
+﻿namespace Infrastructure.DTO
 {
     public class ClientDTO
     {

@@ -1,7 +1,7 @@
-﻿using API.DTO;
-using API.DTO.Request;
-using API.Models;
-using API.Services.Interfaces;
+﻿using Infrastructure.Context;
+using Infrastructure.DTO;
+using Infrastructure.DTO.Request;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +9,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace API.Services.Implementations
+namespace Infrastructure.Services.Implementations
 {
     public class ForwardersDbRepository : IForwardersDbRepository
     {
-        private readonly FWD_CompContext _context;
+        private readonly FormupContext _context;
 
-        public ForwardersDbRepository(FWD_CompContext context)
+        public ForwardersDbRepository(FormupContext context)
         {
             _context = context;
         }

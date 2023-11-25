@@ -1,9 +1,9 @@
-﻿using API.DTO;
-using API.DTO.Request;
+﻿using Infrastructure.DTO;
+using Infrastructure.DTO.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace API.Services.Interfaces
+namespace Infrastructure.Services.Interfaces
 {
     public interface IForwardersDbRepository
     {

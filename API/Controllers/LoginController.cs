@@ -1,10 +1,10 @@
-﻿using API.DTO.Request;
-using API.Services.Interfaces;
+﻿using Infrastructure.DTO.Request;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace API.Controllers
+namespace Infrastructure.Controllers
 {
     [ApiController]
     [Route("api/login")]
