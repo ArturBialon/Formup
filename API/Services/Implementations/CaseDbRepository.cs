@@ -1,16 +1,16 @@
 ﻿using Infrastructure.Context;
-using Infrastructure.DTO.Request;
-using Infrastructure.DTO.Response;
-using Infrastructure.Enum;
+using Domain.DTO.Request;
+using Domain.DTO.Response;
+using Domain.Enum;
 using Infrastructure.Models;
-using Infrastructure.Services.Interfaces;
+using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services.Implementations
+namespace Application.Services.Implementations
 {
     public class CaseDbRepository : ICaseDbRepository
     {

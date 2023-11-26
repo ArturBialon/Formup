@@ -1,12 +1,13 @@
-﻿using Infrastructure.DTO.Request;
-using Infrastructure.DTO.Response;
-using Infrastructure.Services.Interfaces;
+﻿using Domain.DTO.Request;
+using Domain.DTO.Response;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Enum;
 
-namespace Infrastructure.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/Cases")]
@@ -51,7 +52,7 @@ namespace Infrastructure.Controllers
 
             var result = await _repository.AddCase(@case);
 
-            if (result == Enum.CommonEnum.CHANGES_SAVED)
+            if (result == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("case successfully added");
             }
@@ -67,12 +68,12 @@ namespace Infrastructure.Controllers
         {
             var result = await _repository.EditCase(id, @case);
 
-            if (result == Enum.CommonEnum.CHANGES_SAVED)
+            if (result == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("case successfully updated");
             }
 
-            else if (result == Enum.CommonEnum.CANNOT_FIND)
+            else if (result == CommonEnum.CANNOT_FIND)
             {
                 return BadRequest("could not find case");
             }
@@ -88,11 +89,11 @@ namespace Infrastructure.Controllers
         {
             var result = await _repository.DeleteCaseById(id);
 
-            if (result == Enum.CommonEnum.SUCCESSFULLY_REMOVED)
+            if (result == CommonEnum.SUCCESSFULLY_REMOVED)
             {
                 return Ok("case successfully removed");
             }
-            else if (result == Enum.CommonEnum.CANNOT_FIND)
+            else if (result == CommonEnum.CANNOT_FIND)
             {
                 return BadRequest("could not find case");
             }

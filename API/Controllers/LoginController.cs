@@ -1,10 +1,11 @@
-﻿using Infrastructure.DTO.Request;
-using Infrastructure.Services.Interfaces;
+﻿using Domain.DTO.Request;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Domain.Enum;
 
-namespace Infrastructure.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/login")]
@@ -22,11 +23,11 @@ namespace Infrastructure.Controllers
         {
             var userLoged = await _repository.UserLoginStatus(user);
 
-            if (userLoged.Status == Enum.CommonEnum.SUCCESSFULLY_FOUND)
+            if (userLoged.Status == CommonEnum.SUCCESSFULLY_FOUND)
                 return Ok(userLoged);
-            else if (userLoged.Status == Enum.CommonEnum.INVALID_LOGIN)
+            else if (userLoged.Status == CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login invalid");
-            else if (userLoged.Status == Enum.CommonEnum.INVALID_PASSWORD)
+            else if (userLoged.Status == CommonEnum.INVALID_PASSWORD)
                 return Unauthorized("Password invalid");
             else
                 return BadRequest("Error occoured " + userLoged.Status.ToString());
@@ -39,13 +40,13 @@ namespace Infrastructure.Controllers
 
             var newUser = await _repository.AddForwarder(forwarder);
 
-            if (newUser.Status == Enum.CommonEnum.SUCCESSFULLY_ADDED)
+            if (newUser.Status == CommonEnum.SUCCESSFULLY_ADDED)
                 return Ok(newUser);
-            else if (newUser.Status == Enum.CommonEnum.INVALID_LOGIN)
+            else if (newUser.Status == CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login is taken");
-            else if (newUser.Status == Enum.CommonEnum.ALREADY_EXISTS)
+            else if (newUser.Status == CommonEnum.ALREADY_EXISTS)
                 return BadRequest("This forwarder alredy exists");
-            else if (newUser.Status == Enum.CommonEnum.INVALID_PASSWORD)
+            else if (newUser.Status == CommonEnum.INVALID_PASSWORD)
                 return BadRequest("Password invalid - must be at least 6 chars");
             else
                 return BadRequest("Error occoured \n" + newUser.Status.ToString());

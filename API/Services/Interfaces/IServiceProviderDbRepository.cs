@@ -1,9 +1,9 @@
-﻿using Infrastructure.DTO;
-using Infrastructure.Enum;
+﻿using Domain.DTO;
+using Domain.Enum;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services.Interfaces
+namespace Application.Services.Interfaces
 {
     public interface IServiceProviderDbRepository
     {
