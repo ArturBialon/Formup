@@ -1,5 +1,5 @@
-using Infrastructure.Extensions;
-using Infrastructure.Middleware;
+using Application.Extensions;
+using Application.Middleware;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace Infrastructure
+namespace Application
 {
     public class Startup
     {

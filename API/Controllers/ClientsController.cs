@@ -1,11 +1,12 @@
-﻿using Infrastructure.DTO;
-using Infrastructure.Services.Interfaces;
+﻿using Domain.DTO;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Enum;
 
-namespace Infrastructure.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/Clients")]
@@ -50,7 +51,7 @@ namespace Infrastructure.Controllers
 
             var result = await _repository.AddClient(client);
 
-            if (result == Enum.CommonEnum.SUCCESSFULLY_ADDED)
+            if (result == CommonEnum.SUCCESSFULLY_ADDED)
             {
                 return Ok("contractor successfully added");
             }
@@ -64,7 +65,7 @@ namespace Infrastructure.Controllers
         {
             var result = await _repository.EditClient(id, client);
 
-            if (result == Enum.CommonEnum.CHANGES_SAVED)
+            if (result == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("contractor successfully edited");
             }
@@ -78,7 +79,7 @@ namespace Infrastructure.Controllers
         {
             var result = await _repository.DeleteClientById(id);
 
-            if (result == Enum.CommonEnum.SUCCESSFULLY_REMOVED)
+            if (result == CommonEnum.SUCCESSFULLY_REMOVED)
             {
                 return Ok("contractor removed");
             }

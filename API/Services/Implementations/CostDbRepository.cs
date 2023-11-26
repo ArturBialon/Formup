@@ -1,15 +1,15 @@
 ﻿using Infrastructure.Context;
-using Infrastructure.DTO.Request;
-using Infrastructure.DTO.Response;
-using Infrastructure.Enum;
-using Infrastructure.Services.Interfaces;
+using Domain.DTO.Request;
+using Domain.DTO.Response;
+using Domain.Enum;
+using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services.Implementations
+namespace Application.Services.Implementations
 {
     public class CostDbRepository : ICostDbRepository
     {

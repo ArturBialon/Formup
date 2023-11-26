@@ -1,10 +1,10 @@
-﻿using Infrastructure.DTO.Request;
-using Infrastructure.DTO.Response;
-using Infrastructure.Enum;
+﻿using Domain.DTO.Request;
+using Domain.DTO.Response;
+using Domain.Enum;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services.Interfaces
+namespace Application.Services.Interfaces
 {
     public interface ICostDbRepository
     {

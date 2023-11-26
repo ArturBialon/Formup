@@ -1,11 +1,11 @@
 ﻿using Infrastructure.Context;
-using Infrastructure.Services.Implementations;
-using Infrastructure.Services.Interfaces;
+using Application.Services.Implementations;
+using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Extensions
+namespace Application.Extensions
 {
     public static class AppServiceExtensions
     {

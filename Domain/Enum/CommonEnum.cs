@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Enum
+﻿namespace Domain.Enum
 {
     public enum CommonEnum
     {

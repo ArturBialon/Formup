@@ -1,12 +1,12 @@
-﻿using Infrastructure.DTO;
-using Infrastructure.DTO.Request;
-using Infrastructure.Services.Interfaces;
+﻿using Domain.DTO;
+using Domain.DTO.Request;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("api/Forwarders")]

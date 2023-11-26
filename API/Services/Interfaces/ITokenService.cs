@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Models;
 
-namespace Infrastructure.Services.Interfaces
+namespace Application.Services.Interfaces
 {
     public interface ITokenService
     {

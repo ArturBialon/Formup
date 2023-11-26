@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Context;
-using Infrastructure.DTO;
-using Infrastructure.DTO.Request;
-using Infrastructure.Services.Interfaces;
+using Domain.DTO;
+using Domain.DTO.Request;
+using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services.Implementations
+namespace Application.Services.Implementations
 {
     public class ForwardersDbRepository : IForwardersDbRepository
     {
