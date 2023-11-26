@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.DTO.Request
+namespace Infrastructure.DTO.Request
 {
     public class CaseRequestDTO
     {

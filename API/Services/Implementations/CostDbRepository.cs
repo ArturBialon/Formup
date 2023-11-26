@@ -1,20 +1,20 @@
-﻿using API.DTO.Request;
-using API.DTO.Response;
-using API.Enum;
-using API.Models;
-using API.Services.Interfaces;
+﻿using Infrastructure.Context;
+using Infrastructure.DTO.Request;
+using Infrastructure.DTO.Response;
+using Infrastructure.Enum;
+using Infrastructure.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Services.Implementations
+namespace Infrastructure.Services.Implementations
 {
     public class CostDbRepository : ICostDbRepository
     {
-        private readonly FWD_CompContext _context;
-        public CostDbRepository(FWD_CompContext compContext)
+        private readonly FormupContext _context;
+        public CostDbRepository(FormupContext compContext)
         {
             _context = compContext;
         }

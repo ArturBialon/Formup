@@ -1,5 +1,5 @@
-﻿using API.Models;
-using API.Services.Interfaces;
+﻿using Infrastructure.Models;
+using Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace API.Services.Implementations
+namespace Infrastructure.Services.Implementations
 {
     public class TokenService : ITokenService
     {

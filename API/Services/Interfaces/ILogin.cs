@@ -1,7 +1,7 @@
-﻿using API.DTO.Request;
+﻿using Infrastructure.DTO.Request;
 using System.Threading.Tasks;
 
-namespace API.Services.Interfaces
+namespace Infrastructure.Services.Interfaces
 {
     public interface ILogin
     {

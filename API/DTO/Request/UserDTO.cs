@@ -1,6 +1,6 @@
-﻿using API.Enum;
+﻿using Infrastructure.Enum;
 
-namespace API.DTO.Request
+namespace Infrastructure.DTO.Request
 {
     public class UserDTO
     {

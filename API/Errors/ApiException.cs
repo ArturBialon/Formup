@@ -1,4 +1,4 @@
-﻿namespace API.Errors
+﻿namespace Infrastructure.Errors
 {
     public class ApiException
     {

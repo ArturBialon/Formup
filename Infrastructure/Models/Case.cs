@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-
+﻿
 #nullable disable
 
-namespace API.Models
+namespace Infrastructure.Models
 {
     public partial class Case
     {

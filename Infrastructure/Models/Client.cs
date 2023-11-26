@@ -2,13 +2,13 @@
 
 #nullable disable
 
-namespace API.Models
+namespace Infrastructure.Models
 {
-    public partial class ServiceProvider
+    public partial class Client
     {
-        public ServiceProvider()
+        public Client()
         {
-            Costs = new HashSet<Cost>();
+            Invoices = new HashSet<Invoice>();
         }
 
         public int Id { get; set; }
@@ -17,7 +17,8 @@ namespace API.Models
         public string Street { get; set; }
         public string Zip { get; set; }
         public string Coutry { get; set; }
+        public decimal Credit { get; set; }
 
-        public virtual ICollection<Cost> Costs { get; set; }
+        public virtual ICollection<Invoice> Invoices { get; set; }
     }
 }

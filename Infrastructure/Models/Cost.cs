@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace API.Models
+namespace Infrastructure.Models
 {
     public partial class Cost
     {

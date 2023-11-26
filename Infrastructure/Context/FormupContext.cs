@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace API.Models
+namespace Infrastructure.Context
 {
-    public partial class FWD_CompContext : DbContext
+    public partial class FormupContext
+        : DbContext
     {
-        public FWD_CompContext()
+        public FormupContext()
         {
         }
 
-        public FWD_CompContext(DbContextOptions<FWD_CompContext> options)
+        public FormupContext(DbContextOptions<FormupContext> options)
             : base(options)
         {
         }

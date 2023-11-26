@@ -1,4 +1,4 @@
-﻿namespace API.DTO.Response
+﻿namespace Infrastructure.DTO.Response
 {
     public class CostResponseDTO
     {

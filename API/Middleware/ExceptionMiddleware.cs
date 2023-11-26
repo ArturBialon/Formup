@@ -1,4 +1,4 @@
-﻿using API.Errors;
+﻿using Infrastructure.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace API.Middleware
+namespace Infrastructure.Middleware
 {
     public class ExceptionMiddleware
     {

@@ -1,9 +1,9 @@
-﻿using API.DTO;
-using API.Enum;
+﻿using Infrastructure.DTO;
+using Infrastructure.Enum;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace API.Services.Interfaces
+namespace Infrastructure.Services.Interfaces
 {
     public interface IClientDbRepository
     {
