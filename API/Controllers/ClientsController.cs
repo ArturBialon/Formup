@@ -9,6 +9,7 @@ using Domain.Enum;
 namespace Application.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/Clients")]
     public class ClientsController : ControllerBase
     {
@@ -18,7 +19,6 @@ namespace Application.Controllers
             _repository = clientRep;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetClients()
         {
@@ -31,7 +31,6 @@ namespace Application.Controllers
                 return NotFound("No data");
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientById(int id)
         {
@@ -44,7 +43,6 @@ namespace Application.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddClient(ClientDTO client)
         {
@@ -59,7 +57,6 @@ namespace Application.Controllers
                 return BadRequest(result.ToString());
         }
 
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditClient(int id, ClientDTO client)
         {
@@ -73,7 +70,6 @@ namespace Application.Controllers
                 return BadRequest(result);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(int id)
         {

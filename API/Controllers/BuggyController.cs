@@ -22,7 +22,6 @@ namespace Application.Controllers
             return Ok("secret text");
         }
 
-        //[Authorize]
         [HttpGet("not-found")]
         public ActionResult<Forwarder> GetNotFound()
         {
@@ -31,7 +30,6 @@ namespace Application.Controllers
             return Ok();
         }
 
-        //[Authorize]
         [HttpGet("server-error")]
         public ActionResult<string> GetServerError()
         {
@@ -43,7 +41,6 @@ namespace Application.Controllers
 
         }
 
-        //[Authorize]
         [HttpGet("bad-request")]
         public ActionResult<string> GetBadRequest()
         {

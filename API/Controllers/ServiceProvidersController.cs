@@ -9,6 +9,7 @@ using Domain.Enum;
 namespace Application.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/serviceProviders")]
     public class ServiceProvidersController : ControllerBase
     {
@@ -19,7 +20,6 @@ namespace Application.Controllers
             _repository = proversRep;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetProviders()
         {
@@ -32,7 +32,6 @@ namespace Application.Controllers
                 return NotFound("No data");
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProviderById(int id)
         {
@@ -45,7 +44,6 @@ namespace Application.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
         {
@@ -60,7 +58,6 @@ namespace Application.Controllers
                 return BadRequest(result);
         }
 
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditProvider(int id, ServiceProviderDTO provider)
         {
@@ -74,7 +71,6 @@ namespace Application.Controllers
                 return BadRequest(result);
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {

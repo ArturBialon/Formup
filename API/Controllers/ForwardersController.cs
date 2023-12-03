@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Application.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/Forwarders")]
     public class ForwardersController : ControllerBase
     {
@@ -18,7 +19,6 @@ namespace Application.Controllers
             _repository = forwardersRep;
         }
 
-        //[Authorize]
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetForwarders()
@@ -32,7 +32,6 @@ namespace Application.Controllers
                 return NotFound("No data");
         }
 
-        //[Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetForwarderById(int id)
         {
@@ -45,7 +44,6 @@ namespace Application.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        //[Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditForwarder(int id, ForwarderAddDTO forwarder)
         {
@@ -59,7 +57,6 @@ namespace Application.Controllers
                 return BadRequest(result);
         }
 
-        //[Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteForwarder(int id)
         {

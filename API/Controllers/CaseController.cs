@@ -10,6 +10,7 @@ using Domain.Enum;
 namespace Application.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/Cases")]
     public class CaseController : ControllerBase
     {
@@ -19,7 +20,6 @@ namespace Application.Controllers
             _repository = clientRep;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCases()
         {
@@ -32,7 +32,6 @@ namespace Application.Controllers
                 return NotFound("No data");
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCaseById(int id)
         {
@@ -45,7 +44,6 @@ namespace Application.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCase(CaseRequestDTO @case)
         {
@@ -62,7 +60,6 @@ namespace Application.Controllers
             }
         }
 
-        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditCase(int id, CaseRequestDTO @case)
         {
@@ -83,7 +80,6 @@ namespace Application.Controllers
             }
         }
 
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCase(int id)
         {

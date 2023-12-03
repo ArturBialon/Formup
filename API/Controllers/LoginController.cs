@@ -33,7 +33,7 @@ namespace Application.Controllers
                 return BadRequest("Error occoured " + userLoged.Status.ToString());
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("register")]
         public async Task<IActionResult> AddForwarder(ForwarderAddDTO forwarder)
         {
