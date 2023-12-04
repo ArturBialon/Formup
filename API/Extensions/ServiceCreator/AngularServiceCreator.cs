@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using NSwag.Generation.WebApi;
-using System;
-using System.Reflection;
-using System.Linq;
-using Application.Controllers.Base;
-using System.Collections.Generic;
+﻿using Application.Controllers.Base;
+using NJsonSchema.CodeGeneration.TypeScript;
 using NSwag;
 using NSwag.CodeGeneration.TypeScript;
-using NJsonSchema.CodeGeneration.TypeScript;
+using NSwag.Generation.WebApi;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Application.Extensions.ServiceCreator
 {

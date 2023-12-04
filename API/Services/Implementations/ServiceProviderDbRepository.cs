@@ -1,8 +1,8 @@
-﻿using Infrastructure.Context;
+﻿using Application.Services.Interfaces;
 using Domain.DTO;
 using Domain.Enum;
+using Infrastructure.Context;
 using Infrastructure.Models;
-using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

@@ -12,9 +12,9 @@
 
                 return newString;
             }
-            
+
             return line;
-            
+
         }
 
         public static string ExtendTypes(this string line)

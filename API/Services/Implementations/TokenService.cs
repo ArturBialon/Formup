@@ -1,5 +1,5 @@
-﻿using Infrastructure.Models;
-using Application.Services.Interfaces;
+﻿using Application.Services.Interfaces;
+using Infrastructure.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;

@@ -20,7 +20,7 @@ namespace Application.Extensions.ServiceCreator
                 CreateNewLines(newLines, line, ref metInterface);
             }
         }
-        private static void CreateNewLines(List<string> newLines, string line, ref bool metInterface) 
+        private static void CreateNewLines(List<string> newLines, string line, ref bool metInterface)
         {
             string newLine;
 
@@ -32,16 +32,16 @@ namespace Application.Extensions.ServiceCreator
 
                 return;
             }
-            
-            if(!metInterface)
+
+            if (!metInterface)
             {
                 newLine = line;
                 newLines.Add(newLine);
-                
+
                 return;
             }
 
-            if(Validators.IsViewMdelInterfaceEnded(line))
+            if (Validators.IsViewMdelInterfaceEnded(line))
             {
                 metInterface = false;
                 newLine = line;

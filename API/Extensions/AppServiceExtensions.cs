@@ -1,10 +1,10 @@
-﻿using Infrastructure.Context;
+﻿using Application.Extensions.ServiceCreator;
 using Application.Services.Implementations;
 using Application.Services.Interfaces;
+using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Application.Extensions.ServiceCreator;
 
 namespace Application.Extensions
 {

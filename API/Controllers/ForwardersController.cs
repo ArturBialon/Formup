@@ -1,11 +1,11 @@
-﻿using Domain.DTO;
-using Domain.DTO.Request;
+﻿using Application.Controllers.Base;
 using Application.Services.Interfaces;
+using Domain.DTO;
+using Domain.DTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.Controllers.Base;
 
 namespace Application.Controllers
 {

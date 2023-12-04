@@ -1,7 +1,7 @@
-﻿using Infrastructure.Context;
+﻿using Application.Services.Interfaces;
 using Domain.DTO;
 using Domain.DTO.Request;
-using Application.Services.Interfaces;
+using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

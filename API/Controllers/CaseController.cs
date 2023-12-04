@@ -1,12 +1,12 @@
-﻿using Domain.DTO.Request;
-using Domain.DTO.Response;
+﻿using Application.Controllers.Base;
 using Application.Services.Interfaces;
+using Domain.DTO.Request;
+using Domain.DTO.Response;
+using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Enum;
-using Application.Controllers.Base;
 
 namespace Application.Controllers
 {
