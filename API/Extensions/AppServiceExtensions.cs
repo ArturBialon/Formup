@@ -4,6 +4,7 @@ using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Application.Extensions.ServiceCreator;
 
 namespace Application.Extensions
 {
@@ -15,6 +16,8 @@ namespace Application.Extensions
             {
                 options.UseSqlServer(config.GetConnectionString("MssqlDbConnString"));
             });
+
+            AngularServiceCreator.ConfigureSwaggerAsync().Wait();
 
             //database conn logic
             services.AddScoped<IClientDbRepository, ClientDbRepository>();
