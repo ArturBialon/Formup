@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Domain.Enum;
+using Application.Controllers.Base;
 
 namespace Application.Controllers
 {
-    [ApiController]
-    [Route("api/login")]
-    public class LoginController : ControllerBase
+    public class LoginController : ApiControllerBase
     {
         public readonly ILogin _repository;
         public LoginController(ILogin forwardersRep)

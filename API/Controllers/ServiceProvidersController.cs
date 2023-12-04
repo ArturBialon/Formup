@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Enum;
+using Application.Controllers.Base;
 
 namespace Application.Controllers
 {
-    [ApiController]
     [Authorize]
-    [Route("api/serviceProviders")]
-    public class ServiceProvidersController : ControllerBase
+    public class ServiceProvidersController : ApiControllerBase
     {
 
         public readonly IServiceProviderDbRepository _repository;

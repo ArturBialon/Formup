@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Controllers.Base;
 
 namespace Application.Controllers
 {
-    [ApiController]
     [Authorize]
-    [Route("api/Forwarders")]
-    public class ForwardersController : ControllerBase
+    public class ForwardersController : ApiControllerBase
     {
         public readonly IForwardersDbRepository _repository;
         public ForwardersController(IForwardersDbRepository forwardersRep)

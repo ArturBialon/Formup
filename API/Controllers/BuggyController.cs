@@ -1,4 +1,5 @@
-﻿using Infrastructure.Context;
+﻿using Application.Controllers.Base;
+using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace Application.Controllers
 {
     [ApiController]
     [Route("api/bug")]
-    public class BuggyController : ControllerBase
+    public class BuggyController : ApiControllerBase
     {
         private readonly FormupContext _context;
         public BuggyController(FormupContext compContext)
@@ -17,7 +18,7 @@ namespace Application.Controllers
 
         [Authorize]
         [HttpGet("auth")]
-        public ActionResult<string> GetSecret()
+        public ActionResult<string> GetSecretIfLogged()
         {
             return Ok("secret text");
         }

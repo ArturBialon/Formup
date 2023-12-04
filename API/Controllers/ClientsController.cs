@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Enum;
+using Application.Controllers.Base;
 
 namespace Application.Controllers
 {
-    [ApiController]
     [Authorize]
-    [Route("api/Clients")]
-    public class ClientsController : ControllerBase
+    public class ClientsController : ApiControllerBase
     {
         public readonly IClientDbRepository _repository;
         public ClientsController(IClientDbRepository clientRep)
