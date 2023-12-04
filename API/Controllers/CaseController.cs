@@ -1,18 +1,17 @@
-﻿using Domain.DTO.Request;
-using Domain.DTO.Response;
+﻿using Application.Controllers.Base;
 using Application.Services.Interfaces;
+using Domain.DTO.Request;
+using Domain.DTO.Response;
+using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Enum;
 
 namespace Application.Controllers
 {
-    [ApiController]
     [Authorize]
-    [Route("api/Cases")]
-    public class CaseController : ControllerBase
+    public class CaseController : ApiControllerBase
     {
         public readonly ICaseDbRepository _repository;
         public CaseController(ICaseDbRepository clientRep)
@@ -36,19 +35,19 @@ namespace Application.Controllers
         public async Task<IActionResult> GetCaseById(int id)
         {
 
-            CaseResponseDTO @case = await _repository.GetCaseById(id);
+            CaseResponseDTO transportCase = await _repository.GetCaseById(id);
 
-            if (@case != null)
-                return Ok(@case);
+            if (transportCase != null)
+                return Ok(transportCase);
             else
                 return NotFound("No records matching to given id");
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCase(CaseRequestDTO @case)
+        public async Task<IActionResult> AddCase(CaseRequestDTO transportCase)
         {
 
-            var result = await _repository.AddCase(@case);
+            var result = await _repository.AddCase(transportCase);
 
             if (result == CommonEnum.CHANGES_SAVED)
             {
@@ -61,9 +60,9 @@ namespace Application.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditCase(int id, CaseRequestDTO @case)
+        public async Task<IActionResult> EditCase(int id, CaseRequestDTO transportCase)
         {
-            var result = await _repository.EditCase(id, @case);
+            var result = await _repository.EditCase(id, transportCase);
 
             if (result == CommonEnum.CHANGES_SAVED)
             {

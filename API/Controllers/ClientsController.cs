@@ -1,17 +1,16 @@
-﻿using Domain.DTO;
+﻿using Application.Controllers.Base;
 using Application.Services.Interfaces;
+using Domain.DTO;
+using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Enum;
 
 namespace Application.Controllers
 {
-    [ApiController]
     [Authorize]
-    [Route("api/Clients")]
-    public class ClientsController : ControllerBase
+    public class ClientsController : ApiControllerBase
     {
         public readonly IClientDbRepository _repository;
         public ClientsController(IClientDbRepository clientRep)

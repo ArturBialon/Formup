@@ -1,9 +1,9 @@
-﻿using Infrastructure.Context;
+﻿using Application.Services.Interfaces;
 using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Enum;
+using Infrastructure.Context;
 using Infrastructure.Models;
-using Application.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -146,7 +146,7 @@ namespace Application.Services.Implementations
                 Console.WriteLine(ex.ToString());
             }
 
-            var @case = await _context.Cases
+            var transportCase = await _context.Cases
                 .Where(x => x.Id == id)
                 .Select(x => new CaseResponseDTO
                 {
@@ -161,7 +161,7 @@ namespace Application.Services.Implementations
                 })
                 .SingleOrDefaultAsync();
 
-            return @case;
+            return transportCase;
         }
 
         public async Task<ICollection<CaseListResponseDTO>> GetCases()

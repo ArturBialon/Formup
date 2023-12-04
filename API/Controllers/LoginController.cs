@@ -1,15 +1,14 @@
-﻿using Domain.DTO.Request;
+﻿using Application.Controllers.Base;
 using Application.Services.Interfaces;
+using Domain.DTO.Request;
+using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Domain.Enum;
 
 namespace Application.Controllers
 {
-    [ApiController]
-    [Route("api/login")]
-    public class LoginController : ControllerBase
+    public class LoginController : ApiControllerBase
     {
         public readonly ILogin _repository;
         public LoginController(ILogin forwardersRep)
