@@ -10,11 +10,11 @@ namespace Infrastructure.Models
         }
 
         public int Id { get; set; }
-        public string Tax { get; set; }
-        public string Name { get; set; }
-        public string Street { get; set; }
-        public string Zip { get; set; }
-        public string Coutry { get; set; }
+        public required string Tax { get; set; }
+        public required string Name { get; set; }
+        public required string Street { get; set; }
+        public required string Zip { get; set; }
+        public required string Coutry { get; set; }
 
         public virtual ICollection<Cost> Costs { get; set; }
     }

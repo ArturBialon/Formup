@@ -12,9 +12,9 @@ namespace Infrastructure.Models
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public required string Name { get; set; }
         public int Amount { get; set; }
-        public string Relation { get; set; }
+        public required string Relation { get; set; }
         public int ForwardersId { get; set; }
 
         public virtual Forwarder Forwarders { get; set; }

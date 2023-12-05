@@ -24,9 +24,9 @@ namespace Application.Controllers
 
             if (userLoged.Status == CommonEnum.SUCCESSFULLY_FOUND)
                 return Ok(userLoged);
-            else if (userLoged.Status == CommonEnum.INVALID_LOGIN)
+            if (userLoged.Status == CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login invalid");
-            else if (userLoged.Status == CommonEnum.INVALID_PASSWORD)
+            if (userLoged.Status == CommonEnum.INVALID_PASSWORD)
                 return Unauthorized("Password invalid");
             else
                 return BadRequest("Error occoured " + userLoged.Status.ToString());
@@ -41,12 +41,12 @@ namespace Application.Controllers
 
             if (newUser.Status == CommonEnum.SUCCESSFULLY_ADDED)
                 return Ok(newUser);
-            else if (newUser.Status == CommonEnum.INVALID_LOGIN)
+            if (newUser.Status == CommonEnum.INVALID_LOGIN)
                 return Unauthorized("Login is taken");
-            else if (newUser.Status == CommonEnum.ALREADY_EXISTS)
+            if (newUser.Status == CommonEnum.ALREADY_EXISTS)
                 return BadRequest("This forwarder alredy exists");
-            else if (newUser.Status == CommonEnum.INVALID_PASSWORD)
-                return BadRequest("Password invalid - must be at least 6 chars");
+            if (newUser.Status == CommonEnum.INVALID_PASSWORD)
+                return BadRequest("Password invalid - must be at least 6 characters");
             else
                 return BadRequest("Error occoured \n" + newUser.Status.ToString());
 
