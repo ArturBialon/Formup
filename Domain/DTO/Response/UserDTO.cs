@@ -1,6 +1,6 @@
 ﻿using Domain.Enum;
 
-namespace Domain.DTO.Request
+namespace Domain.DTO.Response
 {
     public class UserDTO
     {

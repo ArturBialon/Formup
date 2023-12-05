@@ -1,4 +1,5 @@
 ﻿using Domain.DTO.Request;
+using Domain.DTO.Response;
 using System.Threading.Tasks;
 
 namespace Application.Services.Interfaces
