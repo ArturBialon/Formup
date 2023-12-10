@@ -1,6 +1,5 @@
-﻿using Application.Services.Interfaces;
-using Domain.DTO;
-using Domain.Enum;
+﻿using Domain.DTO;
+using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Application.Repository.Implementations
 {
     public class ServiceProviderDbRepository : IServiceProviderDbRepository
     {
@@ -48,17 +47,17 @@ namespace Application.Services.Implementations
 
             return providers;
         }
-        public async Task<CommonEnum> AddProvider(ServiceProviderDTO provider)
+        public async Task<ServiceProviderDTO> AddProvider(ServiceProviderDTO provider)
         {
             bool flag = false;
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
+            ServiceProviderDTO response = null;
 
             //check if exists
             string tax = await _context.ServiceProviders.Where(x => x.Tax == provider.Tax).Select(x => x.Tax).SingleOrDefaultAsync();
             if (tax == provider.Tax)
             {
                 flag = false;
-                message = CommonEnum.ALREADY_EXISTS;
+                response.ErrorMessage = "";
                 //"provider with given tax already exists";
             }
             else
@@ -77,18 +76,18 @@ namespace Application.Services.Implementations
                 );
 
                 flag = await _context.SaveChangesAsync() > 0;
-                message = CommonEnum.SUCCESSFULLY_ADDED;
+                response.ErrorMessage = "TODO";
                 //"provider successfully added";
                 if (!flag)
-                    message = CommonEnum.CANNOT_SAVE;
+                    response.ErrorMessage = "TODO";
                 //" could not save changes";
             }
-            return message;
+            return response;
         }
-        public async Task<CommonEnum> EditProvider(int id, ServiceProviderDTO editedProvider)
+        public async Task<ServiceProviderDTO> EditProvider(int id, ServiceProviderDTO editedProvider)
         {
             bool flag = false;
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
+            ServiceProviderDTO response = null;
 
             var contactorFromDB = await _context.ServiceProviders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
             //check for duplicate
@@ -107,61 +106,58 @@ namespace Application.Services.Implementations
                 }
                 else
                 {
-                    message = CommonEnum.CANNOT_FIND;
-                    //"provider with given id does not exists";
                     flag = false;
+                    response.ErrorMessage = "TODO";
+                    //"provider with given id does not exists";
                 }
             }
             else
             {
                 flag = false;
-                message = CommonEnum.ALREADY_EXISTS;
+                response.ErrorMessage = "TODO";
                 //"contractor with given tax already exists";
             }
             if (flag)
             {
                 flag = await _context.SaveChangesAsync() > 0;
                 if (flag)
-                    message = CommonEnum.CHANGES_SAVED;
+                    response.ErrorMessage = "TODO";
                 //"provider successfully edited";
                 else
-                    message = CommonEnum.CANNOT_SAVE;
+                    response.ErrorMessage = "TODO";
                 //" could not save changes";
             }
 
-            return message;
+            return response;
         }
-        public async Task<CommonEnum> DeleteProviderById(int id)
+        public async Task<ServiceProviderDTO> DeleteProviderById(int id)
         {
-            bool flag = false;
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
+            bool isDeleted = false;
+            ServiceProviderDTO response = null;
 
-            //check if exists
             var providerFromDB = await _context.ServiceProviders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
+
             if (providerFromDB == null)
             {
-                flag = false;
-                message = CommonEnum.CANNOT_FIND;
-                //"cannot find provider";
+                isDeleted = false;
+                response.ErrorMessage = "Cannot find service provider";
             }
             else
             {
                 _context.Remove(providerFromDB);
-                flag = await _context.SaveChangesAsync() > 0;
+                isDeleted = await _context.SaveChangesAsync() > 0;
             }
 
-            if (flag)
+            if (isDeleted)
             {
-                message = CommonEnum.SUCCESSFULLY_REMOVED;
-                //"provider removed";
+                response.ErrorMessage = "";
             }
             else
             {
-                message = CommonEnum.CANNOT_SAVE;
-                //"could not save changes";
+                response.ErrorMessage = "Could not save changes";
             }
 
-            return message;
+            return response;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Application.Services.Interfaces;
+﻿using Domain.Interfaces.Repository;
 using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Enum;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Application.Repository.Implementations
 {
     public class CostDbRepository : ICostDbRepository
     {

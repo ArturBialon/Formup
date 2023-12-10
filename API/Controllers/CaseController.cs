@@ -1,5 +1,5 @@
 ﻿using Application.Controllers.Base;
-using Application.Services.Interfaces;
+using Domain.Interfaces.Repository;
 using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Enum;
@@ -20,15 +20,11 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCases()
+        public async Task<ICollection<CaseListResponseDTO>> GetCases()
         {
 
             ICollection<CaseListResponseDTO> cases = await _repository.GetCases();
-
-            if (cases != null)
-                return Ok(cases);
-            else
-                return NotFound("No data");
+            return cases;
         }
 
         [HttpGet("{id}")]

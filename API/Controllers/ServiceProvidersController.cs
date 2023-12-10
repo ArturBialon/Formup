@@ -1,5 +1,5 @@
 ﻿using Application.Controllers.Base;
-using Application.Services.Interfaces;
+using Domain.Interfaces.Repository;
 using Domain.DTO;
 using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;

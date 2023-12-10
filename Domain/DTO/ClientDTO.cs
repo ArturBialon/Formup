@@ -8,5 +8,6 @@
         public required string Zip { get; set; }
         public required string Coutry { get; set; }
         public decimal Credit { get; set; }
+        public required string ErrorMessage { get; set; }
     }
 }

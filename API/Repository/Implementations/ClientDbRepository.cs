@@ -1,4 +1,4 @@
-﻿using Application.Services.Interfaces;
+﻿using Domain.Interfaces.Repository;
 using Domain.DTO;
 using Domain.Enum;
 using Infrastructure.Context;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Application.Repository.Implementations
 {
     public class ClientDbRepository : IClientDbRepository
     {
@@ -18,10 +18,10 @@ namespace Application.Services.Implementations
         {
             _context = context;
         }
-        public async Task<ClientDTO> GetClientById(int id)
+        public async Task<ClientRquestDTO> GetClientById(int id)
         {
             var client = await _context.Clients.Where(x => x.Id == id)
-                .Select(m => new ClientDTO
+                .Select(m => new ClientRquestDTO
                 {
                     Name = m.Name,
                     Coutry = m.Coutry,
@@ -34,10 +34,10 @@ namespace Application.Services.Implementations
 
             return client;
         }
-        public async Task<ICollection<ClientDTO>> GetClients()
+        public async Task<ICollection<ClientRquestDTO>> GetClients()
         {
             var clients = await _context.Clients
-                .Select(m => new ClientDTO
+                .Select(m => new ClientRquestDTO
                 {
                     Name = m.Name,
                     Coutry = m.Coutry,
@@ -50,7 +50,7 @@ namespace Application.Services.Implementations
 
             return clients;
         }
-        public async Task<CommonEnum> AddClient(ClientDTO client)
+        public async Task<CommonEnum> AddClient(ClientRquestDTO client)
         {
             bool flag = false;
             CommonEnum message = CommonEnum.UNKNOWN_ERROR;
@@ -89,7 +89,7 @@ namespace Application.Services.Implementations
             }
             return message;
         }
-        public async Task<CommonEnum> EditClient(int id, ClientDTO editedClient)
+        public async Task<CommonEnum> EditClient(int id, ClientRquestDTO editedClient)
         {
             bool flag = false;
             CommonEnum message = CommonEnum.UNKNOWN_ERROR;

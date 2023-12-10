@@ -8,5 +8,6 @@
         public int? NumberOfInvoices { get; set; }
         public decimal? TotalCosts { get; set; }
         public decimal? TotalSales { get; set; }
+        public required string ErrorMessage { get; set; }
     }
 }

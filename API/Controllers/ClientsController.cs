@@ -1,5 +1,5 @@
 ﻿using Application.Controllers.Base;
-using Application.Services.Interfaces;
+using Domain.Interfaces.Repository;
 using Domain.DTO;
 using Domain.Enum;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +22,7 @@ namespace Application.Controllers
         public async Task<IActionResult> GetClients()
         {
 
-            ICollection<ClientDTO> clients = await _repository.GetClients();
+            ICollection<ClientRquestDTO> clients = await _repository.GetClients();
 
             if (clients.Count != 0)
                 return Ok(clients);
@@ -34,7 +34,7 @@ namespace Application.Controllers
         public async Task<IActionResult> GetClientById(int id)
         {
 
-            ClientDTO client = await _repository.GetClientById(id);
+            ClientRquestDTO client = await _repository.GetClientById(id);
 
             if (client != null)
                 return Ok(client);
@@ -43,7 +43,7 @@ namespace Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddClient(ClientDTO client)
+        public async Task<IActionResult> AddClient(ClientRquestDTO client)
         {
 
             var result = await _repository.AddClient(client);
@@ -57,7 +57,7 @@ namespace Application.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditClient(int id, ClientDTO client)
+        public async Task<IActionResult> EditClient(int id, ClientRquestDTO client)
         {
             var result = await _repository.EditClient(id, client);
 

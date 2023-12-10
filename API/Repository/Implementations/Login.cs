@@ -1,7 +1,6 @@
-﻿using Application.Services.Interfaces;
-using Domain.DTO.Request;
+﻿using Domain.DTO.Request;
 using Domain.DTO.Response;
-using Domain.Enum;
+using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +9,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Application.Repository.Implementations
 {
-    public class Login : ILogin
+    public class Login : ILoginService
     {
         private readonly FormupContext _context;
         private readonly ITokenService _tokenService;
@@ -22,10 +21,10 @@ namespace Application.Services.Implementations
             _context = context;
             _tokenService = tokenService;
         }
-        public async Task<UserDTO> AddForwarder(ForwarderAddDTO forwarder)
+        public async Task<UserResponseDTO> AddForwarder(ForwarderRequestDTO forwarder)
         {
             bool flag = false;
-            CommonEnum status = CommonEnum.UNKNOWN_ERROR;
+            UserResponseDTO response = null;
             Forwarder newForwarder = null;
 
             //check if exists
@@ -37,12 +36,12 @@ namespace Application.Services.Implementations
             {
                 if (fwd.Name.ToLower().Equals(forwarder.Login.ToLower()))
                 {
-                    status = CommonEnum.INVALID_LOGIN;
+                    response.ErrorMessage = "TODO";
                     //login taken
                 }
                 if (fwd.Surname.ToLower().Equals(forwarder.Surname.ToLower()) && fwd.Prefix.ToLower().Equals(forwarder.Prefix.ToLower()))
                 {
-                    status = CommonEnum.ALREADY_EXISTS;
+                    response.ErrorMessage = "TODO";
                     //forwarder with given parameters already exists (surname + prefix)
                 }
             }
@@ -50,12 +49,12 @@ namespace Application.Services.Implementations
                 flag = true;
             if (forwarder.PassHash.Length < 6)
             {
-                status = CommonEnum.INVALID_PASSWORD;
+                response.ErrorMessage = "TODO";
                 flag = false;
             }
             if (forwarder.Prefix.Length > 3)
             {
-                status = CommonEnum.STRING_TOO_LONG;
+                response.ErrorMessage = "TODO";
                 flag = false;
             }
 
@@ -75,44 +74,38 @@ namespace Application.Services.Implementations
                 await _context.AddAsync(newForwarder);
 
                 flag = await _context.SaveChangesAsync() > 0;
-                status = CommonEnum.SUCCESSFULLY_ADDED;
+                response.ErrorMessage = "TODO";
                 //forwarder successfully added
 
                 if (!flag)
                 {
-                    status = CommonEnum.CANNOT_SAVE;
+                    response.ErrorMessage = "TODO";
                     //could not save changes
                 }
 
                 hmac.Dispose();
-                return new UserDTO
-                {
-                    UserName = newForwarder.Name,
-                    Token = _tokenService.CreateToken(newForwarder),
-                    Status = status
-                };
+                response.UserName = newForwarder.Name;
+                response.Token = _tokenService.CreateToken(newForwarder);
+                response.ErrorMessage = "";
+
+                return response;
             }
-            return new UserDTO
-            {
-                UserName = "",
-                Token = "",
-                Status = status
-            };
+
+            return response;
         }
-        public async Task<UserDTO> UserLoginStatus(UserLoginDTO userDTO)
+        public async Task<UserResponseDTO> UserLoginStatus(UserLoginDTO userDTO)
         {
-            CommonEnum status = CommonEnum.UNKNOWN_ERROR;
             var userFromDb = await _context.Forwarders
                 .SingleOrDefaultAsync(x => x.Name == userDTO.Login);
+            UserResponseDTO userWithAccess = null;
 
             if (userFromDb == null)
             {
-                status = CommonEnum.INVALID_LOGIN;
-                return new UserDTO
+                return new UserResponseDTO
                 {
-                    UserName = "Empty",
-                    Token = "Empty",
-                    Status = status
+                    UserName = string.Empty,
+                    Token = string.Empty,
+                    ErrorMessage = string.Empty
                 };
             }
             else
@@ -123,20 +116,19 @@ namespace Application.Services.Implementations
                 for (int i = 0; i < computedHash.Length; i++)
                 {
                     if (computedHash[i] != userFromDb.PassHash[i])
-                        status = CommonEnum.INVALID_PASSWORD;
+                        userWithAccess.ErrorMessage = "invalid credentials";
                 }
-
-                if (status != CommonEnum.INVALID_PASSWORD)
-                    status = CommonEnum.SUCCESSFULLY_FOUND;
+                userWithAccess = new
+                {
+                    UserName = userFromDb.Name,
+                    Token = _tokenService.CreateToken(userFromDb),
+                    ErrorMessage = string.Empty
+                };
 
                 hmac.Dispose();
             }
-            return new UserDTO
-            {
-                UserName = userFromDb.Name,
-                Token = _tokenService.CreateToken(userFromDb),
-                Status = status
-            };
+
+            return userWithAccess;
         }
     }
 }

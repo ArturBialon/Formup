@@ -1,7 +1,7 @@
 ﻿using Application.Controllers.Base;
-using Application.Services.Interfaces;
-using Domain.DTO;
+using Domain.Interfaces.Repository;
 using Domain.DTO.Request;
+using Domain.DTO.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Application.Controllers
         public async Task<IActionResult> GetForwarders()
         {
 
-            ICollection<ForwarderDTO> forwarders = await _repository.GetForwarders();
+            ICollection<ForwarderResponseDTO> forwarders = await _repository.GetForwarders();
 
             if (forwarders != null)
                 return Ok(forwarders);
@@ -35,7 +35,7 @@ namespace Application.Controllers
         public async Task<IActionResult> GetForwarderById(int id)
         {
 
-            ForwarderDTO forwarder = await _repository.GetForwarderById(id);
+            ForwarderResponseDTO forwarder = await _repository.GetForwarderById(id);
 
             if (forwarder != null)
                 return Ok(forwarder);
@@ -44,7 +44,7 @@ namespace Application.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditForwarder(int id, ForwarderAddDTO forwarder)
+        public async Task<IActionResult> EditForwarder(int id, ForwarderRequestDTO forwarder)
         {
             var result = await _repository.EditForwarder(id, forwarder);
 

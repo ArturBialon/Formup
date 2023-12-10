@@ -1,6 +1,7 @@
 ﻿using Application.Extensions.ServiceCreator;
-using Application.Services.Implementations;
-using Application.Services.Interfaces;
+using Application.Repository.Implementations;
+using Domain.Interfaces.Repository;
+using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,7 @@ namespace Application.Extensions
             services.AddScoped<IServiceProviderDbRepository, ServiceProviderDbRepository>();
             services.AddScoped<IForwardersDbRepository, ForwardersDbRepository>();
             services.AddScoped<ICaseDbRepository, CaseDbRepository>();
-            services.AddScoped<ILogin, Login>();
+            services.AddScoped<ILoginService, Login>();
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

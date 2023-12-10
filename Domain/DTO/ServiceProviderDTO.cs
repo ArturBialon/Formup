@@ -7,5 +7,6 @@
         public required string Street { get; set; }
         public required string Zip { get; set; }
         public required string Coutry { get; set; }
+        public required string ErrorMessage { get; set; }
     }
 }

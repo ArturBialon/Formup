@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Models;
 
-namespace Application.Services.Interfaces
+namespace Domain.Interfaces.UserAccessService
 {
     public interface ITokenService
     {

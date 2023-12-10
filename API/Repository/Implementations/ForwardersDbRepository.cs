@@ -1,6 +1,6 @@
-﻿using Application.Services.Interfaces;
-using Domain.DTO;
+﻿using Domain.Interfaces.Repository;
 using Domain.DTO.Request;
+using Domain.DTO.Response;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Application.Repository.Implementations
 {
     public class ForwardersDbRepository : IForwardersDbRepository
     {
@@ -48,7 +48,7 @@ namespace Application.Services.Implementations
             return message;
         }
 
-        public async Task<string> EditForwarder(int id, ForwarderAddDTO editedForwarder)
+        public async Task<string> EditForwarder(int id, ForwarderRequestDTO editedForwarder)
         {
             bool flag = false;
             string message = "";
@@ -99,10 +99,10 @@ namespace Application.Services.Implementations
             return message;
         }
 
-        public async Task<ForwarderDTO> GetForwarderById(int id)
+        public async Task<ForwarderResponseDTO> GetForwarderById(int id)
         {
             var forwarder = await _context.Forwarders.Where(x => x.Id == id)
-                .Select(m => new ForwarderDTO
+                .Select(m => new ForwarderResponseDTO
                 {
                     Login = m.Name,
                     Surname = m.Surname,
@@ -113,10 +113,10 @@ namespace Application.Services.Implementations
             return forwarder;
         }
 
-        public async Task<ICollection<ForwarderDTO>> GetForwarders()
+        public async Task<ICollection<ForwarderResponseDTO>> GetForwarders()
         {
             var forwarders = await _context.Forwarders
-                .Select(m => new ForwarderDTO
+                .Select(m => new ForwarderResponseDTO
                 {
                     Login = m.Name,
                     Surname = m.Surname,

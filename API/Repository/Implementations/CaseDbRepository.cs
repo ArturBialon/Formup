@@ -1,29 +1,31 @@
-﻿using Application.Services.Interfaces;
-using Domain.DTO.Request;
+﻿using Domain.DTO.Request;
 using Domain.DTO.Response;
-using Domain.Enum;
+using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Services.Implementations
+namespace Application.Repository.Implementations
 {
     public class CaseDbRepository : ICaseDbRepository
     {
 
         private readonly FormupContext _context;
+        private readonly ILogger _logger;
 
-        public CaseDbRepository(FormupContext context)
+        public CaseDbRepository(FormupContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
-        public async Task<CommonEnum> AddCase(CaseRequestDTO caseDTO)
+        public async Task<CaseResponseDTO> AddCase(CaseRequestDTO caseDTO)
         {
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
+            CaseResponseDTO response = null;
 
             await _context.AddAsync(new Case
             {
@@ -33,53 +35,40 @@ namespace Application.Services.Implementations
                 Relation = caseDTO.Relation
             });
 
-            if (await _context.SaveChangesAsync() > 0)
-                message = CommonEnum.SUCCESSFULLY_ADDED;
-            //"case successfully added";
-            else
-                message = CommonEnum.CANNOT_SAVE;
-            //"could not save changes";
+            try
+            {
+                await _context.SaveChangesAsync();
+                response.ErrorMessage = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Unable to add case {caseDTO?.Name ?? "invalid request"}", ex);
+                response.ErrorMessage = $"Unable to add case: {caseDTO?.Name ?? "invalid request"}";
+            }
 
-            return message;
+            return response;
         }
 
-        public async Task<CommonEnum> DeleteCaseById(int id)
+        public async Task<CaseResponseDTO> DeleteCaseById(int id)
         {
-            bool flag;
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
-
+            CaseResponseDTO response = null;
             var caseFromDb = await _context.Cases.Where(x => x.Id == id).SingleOrDefaultAsync();
 
-            if (caseFromDb != null)
+            try
             {
                 _context.Remove(caseFromDb);
-                flag = true;
-                message = CommonEnum.SUCCESSFULLY_FOUND;
-                //"case found";
+                await _context.SaveChangesAsync();
             }
-            else
+            catch (Exception ex)
             {
-                flag = false;
-                message = CommonEnum.CANNOT_FIND;
-                //"could not find case with given ID";
-            }
-            if (flag)
-            {
-                flag = await _context.SaveChangesAsync() > 0;
-
-                if (flag)
-                    message = CommonEnum.SUCCESSFULLY_REMOVED;
-                //"case successfully removed";
-                else
-                    message = CommonEnum.CANNOT_SAVE;
-                //" could not save changes";
+                Log.Error($"Could not remove case: {caseFromDb?.Name ?? "invalid request"}", ex);
+                response.ErrorMessage = $"Could not remove case: {caseFromDb.Name}";
             }
 
-
-            return message;
+            return response;
         }
 
-        public async Task<CommonEnum> EditCase(int idCase, CaseRequestDTO editedCase)
+        public async Task<CaseResponseDTO> EditCase(int idCase, CaseRequestDTO editedCase)
         {
             bool flag;
             CommonEnum message = CommonEnum.UNKNOWN_ERROR;
@@ -166,7 +155,10 @@ namespace Application.Services.Implementations
 
         public async Task<ICollection<CaseListResponseDTO>> GetCases()
         {
-            var cases = await _context.Cases
+            var cases = new List<CaseListResponseDTO>();
+            try
+            {
+                cases = await _context.Cases
                 .Select(x => new CaseListResponseDTO
                 {
                     Name = x.Name,
@@ -174,9 +166,16 @@ namespace Application.Services.Implementations
                     ForwarderName = x.Forwarders.Name,
                     NumberOfInvoices = x.Invoices.Count,
                     TotalCosts = x.Costs.ToList().Sum(x => x.Amount),
-                    TotalSales = x.Invoices.ToList().Sum(x => x.Amount)
+                    TotalSales = x.Invoices.ToList().Sum(x => x.Amount),
+                    ErrorMessage = ""
                 })
                 .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 
             return cases;
         }

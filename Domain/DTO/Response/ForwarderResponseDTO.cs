@@ -1,9 +1,10 @@
-﻿namespace Domain.DTO
+﻿namespace Domain.DTO.Response
 {
-    public class ForwarderDTO
+    public class ForwarderResponseDTO
     {
         public required string Login { get; set; }
         public required string Surname { get; set; }
         public required string Prefix { get; set; }
+        public required string ErrorMessage { get; set; }
     }
 }
