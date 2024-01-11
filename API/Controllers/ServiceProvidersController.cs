@@ -1,7 +1,6 @@
 ﻿using Application.Controllers.Base;
-using Domain.Interfaces.Repository;
 using Domain.DTO;
-using Domain.Enum;
+using Domain.Interfaces.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -47,40 +46,40 @@ namespace Application.Controllers
         public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
         {
 
-            var result = await _repository.AddProvider(provider);
+            var response = await _repository.AddProvider(provider);
 
-            if (result == CommonEnum.SUCCESSFULLY_ADDED)
+            if (response == CommonEnum.SUCCESSFULLY_ADDED)
             {
                 return Ok("provider successfully added");
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditProvider(int id, ServiceProviderDTO provider)
         {
-            var result = await _repository.EditProvider(id, provider);
+            var response = await _repository.EditProvider(id, provider);
 
-            if (result == CommonEnum.CHANGES_SAVED)
+            if (response == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("provider successfully edited");
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {
-            var result = await _repository.DeleteProviderById(id);
+            var response = await _repository.DeleteProviderById(id);
 
-            if (result == CommonEnum.SUCCESSFULLY_REMOVED)
+            if (response == CommonEnum.SUCCESSFULLY_REMOVED)
             {
                 return Ok("provider removed");
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
     }
 }

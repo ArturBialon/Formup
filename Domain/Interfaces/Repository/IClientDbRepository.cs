@@ -7,7 +7,7 @@ namespace Domain.Interfaces.Repository
         public Task<ICollection<ClientDTO>> GetClients();
         public Task<ClientDTO> GetClientById(int id);
         public Task<ClientDTO> AddClient(ClientDTO client);
-        public Task<ClientDTO> EditClient(int id, ClientDTO editedClient);
+        public Task<ClientDTO> EditClient(ClientDTO editedClient);
         public Task<ClientDTO> DeleteClientById(int id);
     }
 }

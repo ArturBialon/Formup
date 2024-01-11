@@ -12,8 +12,8 @@ namespace Application.Controllers
     [Authorize]
     public class ForwardersController : ApiControllerBase
     {
-        public readonly IForwardersDbRepository _repository;
-        public ForwardersController(IForwardersDbRepository forwardersRep)
+        public readonly IForwarderDbRepository _repository;
+        public ForwardersController(IForwarderDbRepository forwardersRep)
         {
             _repository = forwardersRep;
         }
@@ -46,27 +46,27 @@ namespace Application.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> EditForwarder(int id, ForwarderRequestDTO forwarder)
         {
-            var result = await _repository.EditForwarder(id, forwarder);
+            var response = await _repository.EditForwarder(id, forwarder);
 
-            if (result == "forwarder successfully edited")
+            if (response == "forwarder successfully edited")
             {
-                return Ok(result);
+                return Ok(response);
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteForwarder(int id)
         {
-            var result = await _repository.DeleteForwarderById(id);
+            var response = await _repository.DeleteForwarderById(id);
 
-            if (result == "forwarder removed")
+            if (response == "forwarder removed")
             {
-                return Ok(result);
+                return Ok(response);
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
 
     }

@@ -7,7 +7,7 @@ namespace Domain.Interfaces.Repository
     {
         Task<ICollection<CostResponseDTO>> GetCosts(int caseId);
         Task<CostResponseDTO> AddCost(CostRequestDTO cost);
-        Task<CostResponseDTO> EditCost(int id, CostRequestDTO cost);
+        Task<CostResponseDTO> EditCost(CostRequestDTO cost);
         Task<CostResponseDTO> DeleteCost(int id);
     }
 }

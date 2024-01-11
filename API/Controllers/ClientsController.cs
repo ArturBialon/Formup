@@ -46,40 +46,40 @@ namespace Application.Controllers
         public async Task<IActionResult> AddClient(ClientRquestDTO client)
         {
 
-            var result = await _repository.AddClient(client);
+            var response = await _repository.AddClient(client);
 
-            if (result == CommonEnum.SUCCESSFULLY_ADDED)
+            if (response == CommonEnum.SUCCESSFULLY_ADDED)
             {
                 return Ok("contractor successfully added");
             }
             else
-                return BadRequest(result.ToString());
+                return BadRequest(response.ToString());
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditClient(int id, ClientRquestDTO client)
         {
-            var result = await _repository.EditClient(id, client);
+            var response = await _repository.EditClient(id, client);
 
-            if (result == CommonEnum.CHANGES_SAVED)
+            if (response == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("contractor successfully edited");
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(int id)
         {
-            var result = await _repository.DeleteClientById(id);
+            var response = await _repository.DeleteClientById(id);
 
-            if (result == CommonEnum.SUCCESSFULLY_REMOVED)
+            if (response == CommonEnum.SUCCESSFULLY_REMOVED)
             {
                 return Ok("contractor removed");
             }
             else
-                return BadRequest(result);
+                return BadRequest(response);
         }
     }
 }

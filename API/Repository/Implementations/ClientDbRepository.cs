@@ -1,9 +1,10 @@
-﻿using Domain.Interfaces.Repository;
-using Domain.DTO;
-using Domain.Enum;
+﻿using Domain.DTO;
+using Domain.Helpers;
+using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,90 +14,96 @@ namespace Application.Repository.Implementations
     public class ClientDbRepository : IClientDbRepository
     {
         private readonly FormupContext _context;
+        private readonly ILogger _logger;
 
-        public ClientDbRepository(FormupContext context)
+        public ClientDbRepository(FormupContext context, ILogger logger)
         {
             _context = context;
+            _logger = logger;
         }
-        public async Task<ClientRquestDTO> GetClientById(int id)
-        {
-            var client = await _context.Clients.Where(x => x.Id == id)
-                .Select(m => new ClientRquestDTO
-                {
-                    Name = m.Name,
-                    Coutry = m.Coutry,
-                    Zip = m.Zip,
-                    Street = m.Street,
-                    Tax = m.Tax,
-                    Credit = m.Credit
-                })
-            .SingleOrDefaultAsync();
 
-            return client;
-        }
-        public async Task<ICollection<ClientRquestDTO>> GetClients()
+        public async Task<ClientDTO> GetClientById(int id)
         {
-            var clients = await _context.Clients
-                .Select(m => new ClientRquestDTO
+            var response = await _context.Clients
+                .Where(x => x.Id == id)
+                .Select(m => new ClientDTO
                 {
                     Name = m.Name,
                     Coutry = m.Coutry,
                     Zip = m.Zip,
                     Street = m.Street,
                     Tax = m.Tax,
-                    Credit = m.Credit
+                    Credit = m.Credit,
+                    ErrorMessage = ""
+                })
+                .SingleOrDefaultAsync();
+
+
+            return response;
+        }
+
+        public async Task<ICollection<ClientDTO>> GetClients()
+        {
+
+            var response = await _context.Clients
+                .Select(m => new ClientDTO
+                {
+                    Name = m.Name,
+                    Coutry = m.Coutry,
+                    Zip = m.Zip,
+                    Street = m.Street,
+                    Tax = m.Tax,
+                    Credit = m.Credit,
+                    ErrorMessage = ""
                 })
                 .ToListAsync();
 
-            return clients;
-        }
-        public async Task<CommonEnum> AddClient(ClientRquestDTO client)
-        {
-            bool flag = false;
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
-            //check if exists
-            string tax = await _context.Clients.Where(x => x.Tax == client.Tax).Select(x => x.Tax).SingleOrDefaultAsync();
+            return response;
+        }
+
+        public async Task<ClientDTO> AddClient(ClientDTO client)
+        {
+            ClientDTO response = (ClientDTO)ObjectCreationHelper.GenerateObject(typeof(ClientDTO));
+
+            string tax = await _context.Clients
+                    .Where(x => x.Tax == client.Tax)
+                    .Select(x => x.Tax)
+                    .SingleOrDefaultAsync();
+
             if (tax == client.Tax)
             {
-                flag = false;
-                message = CommonEnum.ALREADY_EXISTS;
-                //"contractor with given tax already exists";
+                response.ErrorMessage = "this tax already exists";
+                _logger.Warning($"Tried to add existing tax: {tax}");
+                return response;
             }
-            else
-                flag = true;
 
-            if (flag)
+            await _context.AddAsync(new Client
             {
-                await _context.AddAsync(new Client
-                {
-                    Name = client.Name,
-                    Tax = client.Tax,
-                    Street = client.Street,
-                    Zip = client.Zip,
-                    Coutry = client.Coutry,
-                    Credit = client.Credit
-                }
-                );
+                Name = client.Name,
+                Tax = client.Tax,
+                Street = client.Street,
+                Zip = client.Zip,
+                Coutry = client.Coutry,
+                Credit = client.Credit
+            });
 
-                flag = await _context.SaveChangesAsync() > 0;
-                message = CommonEnum.SUCCESSFULLY_ADDED;
-                //"contractor successfully added";
-
-                if (!flag)
-                    message = CommonEnum.CANNOT_SAVE;
-                //"could not save changes";
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                response = client;
             }
-            return message;
+
+
+            return response;
         }
-        public async Task<CommonEnum> EditClient(int id, ClientRquestDTO editedClient)
+        public async Task<ClientDTO> EditClient(ClientDTO editedClient)
         {
             bool flag = false;
             CommonEnum message = CommonEnum.UNKNOWN_ERROR;
 
-            var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
+            var contactorFromDB = await _context.Clients.Where(x => x.Id.Equals(editedClient.Id)).SingleOrDefaultAsync();
             //duplicate check
-            var duplicate = await _context.Clients.Where(x => x.Tax == editedClient.Tax && x.Id != id).SingleOrDefaultAsync();
+            var duplicate = await _context.Clients.Where(x => x.Tax == editedClient.Tax && x.Id != editedClient.Id).SingleOrDefaultAsync();
 
             if (duplicate == null)
             {
@@ -135,9 +142,9 @@ namespace Application.Repository.Implementations
                 //"could not save changes";
             }
 
-            return message;
+            return response;
         }
-        public async Task<CommonEnum> DeleteClientById(int id)
+        public async Task<ClientDTO> DeleteClientById(int id)
         {
             bool flag = false;
             CommonEnum message = CommonEnum.UNKNOWN_ERROR;
@@ -165,7 +172,7 @@ namespace Application.Repository.Implementations
                 //"could not svae changes";
             }
 
-            return message;
+            return response;
         }
     }
 }

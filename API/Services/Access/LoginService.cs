@@ -9,14 +9,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Repository.Implementations
+namespace Application.Services
 {
-    public class Login : ILoginService
+    public class LoginService : ILoginService
     {
         private readonly FormupContext _context;
         private readonly ITokenService _tokenService;
 
-        public Login(FormupContext context, ITokenService tokenService)
+        public LoginService(FormupContext context, ITokenService tokenService)
         {
             _context = context;
             _tokenService = tokenService;

@@ -23,7 +23,7 @@ namespace Application.Controllers
         public async Task<ICollection<CaseListResponseDTO>> GetCases()
         {
 
-            ICollection<CaseListResponseDTO> cases = await _repository.GetCases();
+            ICollection<CaseListResponseDTO> cases = await _repository.GetAllCases();
             return cases;
         }
 
@@ -43,54 +43,54 @@ namespace Application.Controllers
         public async Task<IActionResult> AddCase(CaseRequestDTO transportCase)
         {
 
-            var result = await _repository.AddCase(transportCase);
+            var response = await _repository.AddCase(transportCase);
 
-            if (result == CommonEnum.CHANGES_SAVED)
+            if (response == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("case successfully added");
             }
             else
             {
-                return BadRequest("Error: " + result.ToString());
+                return BadRequest("Error: " + response.ToString());
             }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditCase(int id, CaseRequestDTO transportCase)
         {
-            var result = await _repository.EditCase(id, transportCase);
+            var response = await _repository.EditCase(id, transportCase);
 
-            if (result == CommonEnum.CHANGES_SAVED)
+            if (response == CommonEnum.CHANGES_SAVED)
             {
                 return Ok("case successfully updated");
             }
 
-            else if (result == CommonEnum.CANNOT_FIND)
+            else if (response == CommonEnum.CANNOT_FIND)
             {
                 return BadRequest("could not find case");
             }
             else
             {
-                return BadRequest("Error: " + result.ToString());
+                return BadRequest("Error: " + response.ToString());
             }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCase(int id)
         {
-            var result = await _repository.DeleteCaseById(id);
+            var response = await _repository.DeleteCaseById(id);
 
-            if (result == CommonEnum.SUCCESSFULLY_REMOVED)
+            if (response == CommonEnum.SUCCESSFULLY_REMOVED)
             {
                 return Ok("case successfully removed");
             }
-            else if (result == CommonEnum.CANNOT_FIND)
+            else if (response == CommonEnum.CANNOT_FIND)
             {
                 return BadRequest("could not find case");
             }
             else
             {
-                return BadRequest("Error: " + result.ToString());
+                return BadRequest("Error: " + response.ToString());
             }
         }
     }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repository.Implementations
 {
-    public class ForwardersDbRepository : IForwardersDbRepository
+    public class ForwardersDbRepository : IForwarderDbRepository
     {
         private readonly FormupContext _context;
 

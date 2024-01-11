@@ -2,6 +2,7 @@
 {
     public class CaseResponseDTO
     {
+        public int Id { get; set; }
         public required string Name { get; set; }
         public int Amount { get; set; }
         public required string Relation { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Application.Extensions.ServiceCreator;
 using Application.Repository.Implementations;
+using Application.Services;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
@@ -20,12 +21,11 @@ namespace Application.Extensions
 
             AngularServiceCreator.ConfigureSwaggerAsync().Wait();
 
-            //database conn logic
             services.AddScoped<IClientDbRepository, ClientDbRepository>();
             services.AddScoped<IServiceProviderDbRepository, ServiceProviderDbRepository>();
-            services.AddScoped<IForwardersDbRepository, ForwardersDbRepository>();
+            services.AddScoped<IForwarderDbRepository, ForwardersDbRepository>();
             services.AddScoped<ICaseDbRepository, CaseDbRepository>();
-            services.AddScoped<ILoginService, Login>();
+            services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

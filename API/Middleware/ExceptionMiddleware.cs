@@ -1,7 +1,7 @@
 ﻿using Application.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Net;
 using System.Text.Json;
@@ -12,11 +12,11 @@ namespace Application.Middleware
     public class ExceptionMiddleware
     {
         public readonly RequestDelegate _next;
-        public readonly ILogger<ExceptionMiddleware> _logger;
+        public readonly ILogger _logger;
         public readonly IHostEnvironment _env;
         public ExceptionMiddleware(
             RequestDelegate next,
-            ILogger<ExceptionMiddleware> logger,
+            ILogger logger,
             IHostEnvironment env)
         {
             _next = next;
@@ -32,7 +32,7 @@ namespace Application.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.Error(ex, ex.Message);
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 

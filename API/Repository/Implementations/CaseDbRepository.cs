@@ -1,11 +1,11 @@
 ﻿using Domain.DTO.Request;
 using Domain.DTO.Response;
+using Domain.Helpers;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace Application.Repository.Implementations
         }
         public async Task<CaseResponseDTO> AddCase(CaseRequestDTO caseDTO)
         {
-            CaseResponseDTO response = null;
+            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
 
             await _context.AddAsync(new Case
             {
@@ -35,15 +35,13 @@ namespace Application.Repository.Implementations
                 Relation = caseDTO.Relation
             });
 
-            try
+            if (await _context.SaveChangesAsync() > 0)
             {
-                await _context.SaveChangesAsync();
                 response.ErrorMessage = string.Empty;
             }
-            catch (Exception ex)
+            else
             {
-                Log.Error($"Unable to add case {caseDTO?.Name ?? "invalid request"}", ex);
-                response.ErrorMessage = $"Unable to add case: {caseDTO?.Name ?? "invalid request"}";
+                response.ErrorMessage = "No changes made";
             }
 
             return response;
@@ -51,76 +49,75 @@ namespace Application.Repository.Implementations
 
         public async Task<CaseResponseDTO> DeleteCaseById(int id)
         {
-            CaseResponseDTO response = null;
-            var caseFromDb = await _context.Cases.Where(x => x.Id == id).SingleOrDefaultAsync();
+            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
 
-            try
+            var caseFromDb = await _context.Cases
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync();
+
+            if (caseFromDb == null)
             {
-                _context.Remove(caseFromDb);
-                await _context.SaveChangesAsync();
+                response.ErrorMessage = $"Could not find case: {caseFromDb.Name}";
+                return response;
             }
-            catch (Exception ex)
+
+            _context.Remove(caseFromDb);
+            if (await _context.SaveChangesAsync() > 0)
             {
-                Log.Error($"Could not remove case: {caseFromDb?.Name ?? "invalid request"}", ex);
-                response.ErrorMessage = $"Could not remove case: {caseFromDb.Name}";
+                response.ErrorMessage = string.Empty;
+            }
+            else
+            {
+                response.ErrorMessage = "No changes made";
             }
 
             return response;
         }
 
-        public async Task<CaseResponseDTO> EditCase(int idCase, CaseRequestDTO editedCase)
+        public async Task<CaseResponseDTO> EditCase(CaseRequestDTO editedCase)
         {
-            bool flag;
-            CommonEnum message = CommonEnum.UNKNOWN_ERROR;
+            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
 
-            var caseToEdit = await _context.Cases.Where(x => x.Id == idCase).SingleOrDefaultAsync();
+            var caseToEdit = await _context.Cases.Where(x => x.Id == editedCase.Id).SingleOrDefaultAsync();
+
             if (caseToEdit != null)
             {
+                _logger.Information($"EditCase: Found id: {caseToEdit.Id}");
                 caseToEdit.Name = editedCase.Name;
                 caseToEdit.Relation = editedCase.Relation;
                 caseToEdit.Amount = editedCase.Amount;
                 caseToEdit.ForwardersId = editedCase.ForwarderId;
 
-                flag = true;
-                //"case found";
-            }
-            else
-            {
-                flag = false;
-                message = CommonEnum.CANNOT_FIND;
-                //"could not find case";
-            }
-
-            if (flag)
-            {
-                flag = await _context.SaveChangesAsync() > 0;
-                if (flag)
-                    message = CommonEnum.CHANGES_SAVED;
-                //"case successfully updated";
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    response.ErrorMessage = string.Empty;
+                }
                 else
-                    message = CommonEnum.CANNOT_SAVE;
-                //" cannot save changes";
+                {
+                    response.ErrorMessage = "No changes made";
+                }
             }
 
-            return message;
+            return response;
         }
 
         public async Task<CaseResponseDTO> GetCaseById(int id)
         {
+            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
 
             decimal totalCost = 0;
             decimal totalSales = 0;
 
-            try
+            var costsList = await _context.Costs
+                .Where(x => x.CasesId == id)
+                .ToListAsync();
+
+            var salesList = await _context.Invoices
+                .Where(x => x.CasesId == id)
+                .ToListAsync();
+
+            if (costsList != null && salesList != null)
             {
-                var costsList = await _context.Costs
-                    .Where(x => x.CasesId == id)
-                    .ToListAsync();
-
-                var salesList = await _context.Invoices
-                    .Where(x => x.CasesId == id)
-                    .ToListAsync();
-
                 foreach (Cost cost in costsList)
                 {
                     totalCost += cost.Amount;
@@ -130,54 +127,45 @@ namespace Application.Repository.Implementations
                     totalSales += invoice.Amount;
                 }
             }
-            catch (Exception ex)
+
+            response = await _context.Cases
+            .Where(x => x.Id == id)
+            .Select(x => new CaseResponseDTO
             {
-                Console.WriteLine(ex.ToString());
-            }
+                Id = x.Id,
+                Name = x.Name,
+                Amount = x.Amount,
+                Relation = x.Relation,
+                ClientName = x.Invoices.FirstOrDefault().Clients.Name,
+                ForwarderName = x.Forwarders.Name,
+                NumberOfInvoices = x.Invoices.Count,
+                TotalCosts = totalCost,
+                TotalSales = totalSales,
+                ErrorMessage = string.Empty
+            })
+            .SingleOrDefaultAsync();
 
-            var transportCase = await _context.Cases
-                .Where(x => x.Id == id)
-                .Select(x => new CaseResponseDTO
-                {
-                    Name = x.Name,
-                    Amount = x.Amount,
-                    Relation = x.Relation,
-                    ClientName = x.Invoices.FirstOrDefault().Clients.Name,
-                    ForwarderName = x.Forwarders.Name,
-                    NumberOfInvoices = x.Invoices.Count,
-                    TotalCosts = totalCost,
-                    TotalSales = totalSales
-                })
-                .SingleOrDefaultAsync();
-
-            return transportCase;
+            return response;
         }
 
-        public async Task<ICollection<CaseListResponseDTO>> GetCases()
+        public async Task<ICollection<CaseListResponseDTO>> GetAllCases()
         {
-            var cases = new List<CaseListResponseDTO>();
-            try
+            var response = new List<CaseListResponseDTO>();
+
+            response = await _context.Cases
+            .Select(x => new CaseListResponseDTO
             {
-                cases = await _context.Cases
-                .Select(x => new CaseListResponseDTO
-                {
-                    Name = x.Name,
-                    ClientName = x.Invoices.FirstOrDefault().Clients.Name,
-                    ForwarderName = x.Forwarders.Name,
-                    NumberOfInvoices = x.Invoices.Count,
-                    TotalCosts = x.Costs.ToList().Sum(x => x.Amount),
-                    TotalSales = x.Invoices.ToList().Sum(x => x.Amount),
-                    ErrorMessage = ""
-                })
-                .ToListAsync();
-            }
-            catch (Exception ex)
-            {
+                Name = x.Name,
+                ClientName = x.Invoices.FirstOrDefault().Clients.Name,
+                ForwarderName = x.Forwarders.Name,
+                NumberOfInvoices = x.Invoices.Count,
+                TotalCosts = x.Costs.ToList().Sum(x => x.Amount),
+                TotalSales = x.Invoices.ToList().Sum(x => x.Amount),
+                ErrorMessage = string.Empty
+            })
+            .ToListAsync();
 
-            }
-
-
-            return cases;
+            return response;
         }
     }
 }
