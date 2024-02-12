@@ -1,7 +1,6 @@
-﻿using Domain.Interfaces.Repository;
-using Domain.DTO.Request;
+﻿using Domain.DTO.Request;
 using Domain.DTO.Response;
-using Domain.Enum;
+using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,17 +18,17 @@ namespace Application.Repository.Implementations
             _context = compContext;
         }
 
-        public async Task<CommonEnum> AddCost(CostRequestDTO cost)
+        public Task<CostResponseDTO> AddCost(CostRequestDTO cost)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<CommonEnum> EditCost(int id, CostRequestDTO cost)
+        public Task<CostResponseDTO> DeleteCost(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<CommonEnum> DeleteCost(int id)
+        public Task<CostResponseDTO> EditCost(CostRequestDTO cost)
         {
             throw new NotImplementedException();
         }

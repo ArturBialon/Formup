@@ -1,6 +1,8 @@
-﻿namespace Application.Services
+﻿using Domain.Interfaces.Services;
+
+namespace Application.Services
 {
-    internal interface IServiceProviderService
+    public class ServiceProviderService : IServiceProviderService
     {
     }
 }

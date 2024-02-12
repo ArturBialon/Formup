@@ -1,10 +1,10 @@
 ﻿using Application.Controllers.Base;
 using Domain.DTO.Request;
 using Domain.DTO.Response;
+using Domain.Interfaces.UserAccessService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Domain.Interfaces.UserAccessService;
 
 namespace Application.Controllers
 {

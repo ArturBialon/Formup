@@ -7,6 +7,5 @@
         public int Amount { get; set; }
         public required string Relation { get; set; }
         public int ForwarderId { get; set; }
-        public required string ErrorMessage { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.DTO.Request;
+﻿using Domain.CustomExceptions;
+using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
@@ -23,90 +24,63 @@ namespace Application.Services
         }
         public async Task<UserResponseDTO> AddForwarder(ForwarderRequestDTO forwarder)
         {
-            bool flag = false;
             UserResponseDTO response = null;
             Forwarder newForwarder = null;
 
-            //check if exists
             Forwarder fwd = await _context.Forwarders
                 .Where(x => x.Name == forwarder.Login)
                 .SingleOrDefaultAsync();
 
             if (fwd != null)
             {
-                if (fwd.Name.ToLower().Equals(forwarder.Login.ToLower()))
+                if (fwd.Name.ToLower().Equals(forwarder.Login.ToLower()) || fwd.Prefix.ToLower().Equals(forwarder.Prefix.ToLower()))
                 {
-                    response.ErrorMessage = "TODO";
-                    //login taken
-                }
-                if (fwd.Surname.ToLower().Equals(forwarder.Surname.ToLower()) && fwd.Prefix.ToLower().Equals(forwarder.Prefix.ToLower()))
-                {
-                    response.ErrorMessage = "TODO";
-                    //forwarder with given parameters already exists (surname + prefix)
+                    throw new RegistrationException("Login or prefix taken");
                 }
             }
-            else
-                flag = true;
             if (forwarder.PassHash.Length < 6)
             {
-                response.ErrorMessage = "TODO";
-                flag = false;
+                throw new RegistrationException("Password is to short, must be minimum 6 characters long");
             }
-            if (forwarder.Prefix.Length > 3)
+            if (forwarder.Prefix.Length > 4)
             {
-                response.ErrorMessage = "TODO";
-                flag = false;
+                throw new RegistrationException("Prefix must be maximum 4 characters long");
             }
 
-            if (flag)
+            using var hmac = new HMACSHA512();
+
+            newForwarder = new Forwarder
             {
-                using var hmac = new HMACSHA512();
+                Name = forwarder.Login,
+                Surname = forwarder.Surname,
+                Prefix = forwarder.Prefix.ToUpper(),
+                PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(forwarder.PassHash)),
+                PassSalt = hmac.Key
+            };
 
-                newForwarder = new Forwarder
-                {
-                    Name = forwarder.Login,
-                    Surname = forwarder.Surname,
-                    Prefix = forwarder.Prefix.ToUpper(),
-                    PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(forwarder.PassHash)),
-                    PassSalt = hmac.Key
-                };
+            _context.Add(newForwarder);
 
-                await _context.AddAsync(newForwarder);
-
-                flag = await _context.SaveChangesAsync() > 0;
-                response.ErrorMessage = "TODO";
-                //forwarder successfully added
-
-                if (!flag)
-                {
-                    response.ErrorMessage = "TODO";
-                    //could not save changes
-                }
-
-                hmac.Dispose();
+            if (await _context.SaveChangesAsync() > 0)
+            {
                 response.UserName = newForwarder.Name;
                 response.Token = _tokenService.CreateToken(newForwarder);
-                response.ErrorMessage = "";
+                hmac.Dispose();
 
                 return response;
             }
 
-            return response;
+            throw new SavingException();
         }
+
+
         public async Task<UserResponseDTO> UserLoginStatus(UserLoginDTO userDTO)
         {
             var userFromDb = await _context.Forwarders
                 .SingleOrDefaultAsync(x => x.Name == userDTO.Login);
-            UserResponseDTO userWithAccess = null;
 
             if (userFromDb == null)
             {
-                return new UserResponseDTO
-                {
-                    UserName = string.Empty,
-                    Token = string.Empty,
-                    ErrorMessage = string.Empty
-                };
+                throw new LoginException();
             }
             else
             {
@@ -116,19 +90,17 @@ namespace Application.Services
                 for (int i = 0; i < computedHash.Length; i++)
                 {
                     if (computedHash[i] != userFromDb.PassHash[i])
-                        userWithAccess.ErrorMessage = "invalid credentials";
+                        throw new LoginException();
                 }
-                userWithAccess = new
-                {
-                    UserName = userFromDb.Name,
-                    Token = _tokenService.CreateToken(userFromDb),
-                    ErrorMessage = string.Empty
-                };
 
                 hmac.Dispose();
-            }
 
-            return userWithAccess;
+                return new UserResponseDTO
+                {
+                    UserName = userFromDb.Name,
+                    Token = _tokenService.CreateToken(userFromDb)
+                };
+            }
         }
     }
 }

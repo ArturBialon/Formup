@@ -24,6 +24,7 @@ namespace Application
 
             services.AddAppServices(_config);
             services.AddIdentityServices(_config);
+            services.AddIdentityServices();
             services.AddControllers();
 
             //cert
@@ -61,9 +62,9 @@ namespace Application
             app.UseRouting();
             //cors
             app.UseCors();
-            //auth
-            app.UseAuthentication();
             //cert
+            app.UseAuthentication();
+            //auth
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -1,4 +1,5 @@
-﻿using Domain.DTO.Request;
+﻿using Domain.CustomExceptions;
+using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Helpers;
 using Domain.Interfaces.Repository;
@@ -37,68 +38,52 @@ namespace Application.Repository.Implementations
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                response.ErrorMessage = string.Empty;
+                return response;
             }
             else
             {
-                response.ErrorMessage = "No changes made";
+                throw new SavingException($"Could not save entity + {caseDTO.Name}");
             }
-
-            return response;
         }
 
         public async Task<CaseResponseDTO> DeleteCaseById(int id)
         {
             CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
 
-            var caseFromDb = await _context.Cases
-                .Where(x => x.Id == id)
-                .SingleOrDefaultAsync();
-
-            if (caseFromDb == null)
-            {
-                response.ErrorMessage = $"Could not find case: {caseFromDb.Name}";
-                return response;
-            }
+            var caseFromDb = await _context.Cases.Where(x => x.Id == id).SingleOrDefaultAsync() ?? throw new GetEntityException($"Could not find case, Id: {id}");
 
             _context.Remove(caseFromDb);
             if (await _context.SaveChangesAsync() > 0)
             {
-                response.ErrorMessage = string.Empty;
+                return response;
             }
             else
             {
-                response.ErrorMessage = "No changes made";
+                throw new SavingException($"No changes made, Id: {id}");
             }
-
-            return response;
         }
 
         public async Task<CaseResponseDTO> EditCase(CaseRequestDTO editedCase)
         {
             CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
 
-            var caseToEdit = await _context.Cases.Where(x => x.Id == editedCase.Id).SingleOrDefaultAsync();
+            var caseToEdit = await _context.Cases.Where(x => x.Id == editedCase.Id).SingleOrDefaultAsync() ?? throw new GetEntityException($"Could not find case: {editedCase.Name}");
 
-            if (caseToEdit != null)
+            _logger.Information($"Case to edit found: {caseToEdit} - {editedCase}");
+            caseToEdit.Name = editedCase.Name;
+            caseToEdit.Relation = editedCase.Relation;
+            caseToEdit.Amount = editedCase.Amount;
+            caseToEdit.ForwardersId = editedCase.ForwarderId;
+
+            if (await _context.SaveChangesAsync() > 0)
             {
-                _logger.Information($"EditCase: Found id: {caseToEdit.Id}");
-                caseToEdit.Name = editedCase.Name;
-                caseToEdit.Relation = editedCase.Relation;
-                caseToEdit.Amount = editedCase.Amount;
-                caseToEdit.ForwardersId = editedCase.ForwarderId;
-
-                if (await _context.SaveChangesAsync() > 0)
-                {
-                    response.ErrorMessage = string.Empty;
-                }
-                else
-                {
-                    response.ErrorMessage = "No changes made";
-                }
+                return response;
             }
-
-            return response;
+            else
+            {
+                _logger.Warning($"No changes were made, Id: {editedCase.Id}");
+                throw new SavingException($"No changes were made, Id: {editedCase.Id}");
+            }
         }
 
         public async Task<CaseResponseDTO> GetCaseById(int id)
@@ -140,8 +125,7 @@ namespace Application.Repository.Implementations
                 ForwarderName = x.Forwarders.Name,
                 NumberOfInvoices = x.Invoices.Count,
                 TotalCosts = totalCost,
-                TotalSales = totalSales,
-                ErrorMessage = string.Empty
+                TotalSales = totalSales
             })
             .SingleOrDefaultAsync();
 
@@ -160,8 +144,7 @@ namespace Application.Repository.Implementations
                 ForwarderName = x.Forwarders.Name,
                 NumberOfInvoices = x.Invoices.Count,
                 TotalCosts = x.Costs.ToList().Sum(x => x.Amount),
-                TotalSales = x.Invoices.ToList().Sum(x => x.Amount),
-                ErrorMessage = string.Empty
+                TotalSales = x.Invoices.ToList().Sum(x => x.Amount)
             })
             .ToListAsync();
 

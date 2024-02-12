@@ -225,10 +225,10 @@ export class BuggyService implements IBuggyService {
 }
 
 export interface ICaseService {
-    getCases(): Observable<FileResponse | null>;
+    getCases(): Observable<CaseListResponseDTO[] | null>;
     getCaseById(id: number): Observable<FileResponse | null>;
     addCase(transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null>;
-    editCase(id: number, transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null>;
+    editCase(transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null>;
     deleteCase(id: number): Observable<FileResponse | null>;
 }
 
@@ -245,7 +245,7 @@ export class CaseService implements ICaseService {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getCases(): Observable<FileResponse | null> {
+    getCases(): Observable<CaseListResponseDTO[] | null> {
         let url_ = this.baseUrl + "/api/Case/GetCases";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -264,37 +264,32 @@ export class CaseService implements ICaseService {
                 try {
                     return this.processGetCases(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                    return _observableThrow(e) as any as Observable<CaseListResponseDTO[] | null>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+                return _observableThrow(response_) as any as Observable<CaseListResponseDTO[] | null>;
         }));
     }
 
-    protected processGetCases(response: HttpResponseBase): Observable<FileResponse | null> {
+    protected processGetCases(response: HttpResponseBase): Observable<CaseListResponseDTO[] | null> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as CaseListResponseDTO[];
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse | null>(null as any);
+        return _observableOf<CaseListResponseDTO[] | null>(null as any);
     }
 
     getCaseById(id: number): Observable<FileResponse | null> {
@@ -408,11 +403,8 @@ export class CaseService implements ICaseService {
         return _observableOf<FileResponse | null>(null as any);
     }
 
-    editCase(id: number, transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Case/EditCase/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    editCase(transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Case/EditCase";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(transportCase);
@@ -523,18 +515,18 @@ export class CaseService implements ICaseService {
     }
 }
 
-export interface IClientsService {
+export interface IClientService {
     getClients(): Observable<FileResponse | null>;
     getClientById(id: number): Observable<FileResponse | null>;
     addClient(client: ClientDTO | null | undefined): Observable<FileResponse | null>;
-    editClient(id: number, client: ClientDTO | null | undefined): Observable<FileResponse | null>;
+    editClient(client: ClientDTO | null | undefined): Observable<FileResponse | null>;
     deleteClient(id: number): Observable<FileResponse | null>;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class ClientsService implements IClientsService {
+export class ClientService implements IClientService {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -545,7 +537,7 @@ export class ClientsService implements IClientsService {
     }
 
     getClients(): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Clients/GetClients";
+        let url_ = this.baseUrl + "/api/Client/GetClients";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -597,7 +589,7 @@ export class ClientsService implements IClientsService {
     }
 
     getClientById(id: number): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Clients/GetClientById/{id}";
+        let url_ = this.baseUrl + "/api/Client/GetClientById/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -652,7 +644,7 @@ export class ClientsService implements IClientsService {
     }
 
     addClient(client: ClientDTO | null | undefined): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Clients/AddClient";
+        let url_ = this.baseUrl + "/api/Client/AddClient";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(client);
@@ -707,11 +699,8 @@ export class ClientsService implements IClientsService {
         return _observableOf<FileResponse | null>(null as any);
     }
 
-    editClient(id: number, client: ClientDTO | null | undefined): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Clients/EditClient/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    editClient(client: ClientDTO | null | undefined): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Client/EditClient";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(client);
@@ -767,7 +756,7 @@ export class ClientsService implements IClientsService {
     }
 
     deleteClient(id: number): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Clients/DeleteClient/{id}";
+        let url_ = this.baseUrl + "/api/Client/DeleteClient/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -822,17 +811,17 @@ export class ClientsService implements IClientsService {
     }
 }
 
-export interface IForwardersService {
+export interface IForwarderService {
     getForwarders(): Observable<FileResponse | null>;
     getForwarderById(id: number): Observable<FileResponse | null>;
-    editForwarder(id: number, forwarder: ForwarderAddDTO | null | undefined): Observable<FileResponse | null>;
+    editForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<FileResponse | null>;
     deleteForwarder(id: number): Observable<FileResponse | null>;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class ForwardersService implements IForwardersService {
+export class ForwarderService implements IForwarderService {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -843,7 +832,7 @@ export class ForwardersService implements IForwardersService {
     }
 
     getForwarders(): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Forwarders/GetForwarders";
+        let url_ = this.baseUrl + "/api/Forwarder/GetForwarders";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -895,7 +884,7 @@ export class ForwardersService implements IForwardersService {
     }
 
     getForwarderById(id: number): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Forwarders/GetForwarderById/{id}";
+        let url_ = this.baseUrl + "/api/Forwarder/GetForwarderById/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -949,11 +938,8 @@ export class ForwardersService implements IForwardersService {
         return _observableOf<FileResponse | null>(null as any);
     }
 
-    editForwarder(id: number, forwarder: ForwarderAddDTO | null | undefined): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Forwarders/EditForwarder/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    editForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Forwarder/EditForwarder";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(forwarder);
@@ -1009,7 +995,7 @@ export class ForwardersService implements IForwardersService {
     }
 
     deleteForwarder(id: number): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/Forwarders/DeleteForwarder/{id}";
+        let url_ = this.baseUrl + "/api/Forwarder/DeleteForwarder/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1065,8 +1051,8 @@ export class ForwardersService implements IForwardersService {
 }
 
 export interface ILoginService {
-    userLogin(user: UserLoginDTO | null | undefined): Observable<FileResponse | null>;
-    addForwarder(forwarder: ForwarderAddDTO | null | undefined): Observable<FileResponse | null>;
+    userLogin(user: UserLoginDTO | null | undefined): Observable<UserResponseDTO | null>;
+    addForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<UserResponseDTO | null>;
 }
 
 @Injectable({
@@ -1082,7 +1068,7 @@ export class LoginService implements ILoginService {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    userLogin(user: UserLoginDTO | null | undefined): Observable<FileResponse | null> {
+    userLogin(user: UserLoginDTO | null | undefined): Observable<UserResponseDTO | null> {
         let url_ = this.baseUrl + "/api/Login/UserLogin";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1105,40 +1091,35 @@ export class LoginService implements ILoginService {
                 try {
                     return this.processUserLogin(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                    return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+                return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
         }));
     }
 
-    protected processUserLogin(response: HttpResponseBase): Observable<FileResponse | null> {
+    protected processUserLogin(response: HttpResponseBase): Observable<UserResponseDTO | null> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponseDTO;
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse | null>(null as any);
+        return _observableOf<UserResponseDTO | null>(null as any);
     }
 
-    addForwarder(forwarder: ForwarderAddDTO | null | undefined): Observable<FileResponse | null> {
+    addForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<UserResponseDTO | null> {
         let url_ = this.baseUrl + "/api/Login/AddForwarder/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1161,37 +1142,32 @@ export class LoginService implements ILoginService {
                 try {
                     return this.processAddForwarder(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<FileResponse | null>;
+                    return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<FileResponse | null>;
+                return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
         }));
     }
 
-    protected processAddForwarder(response: HttpResponseBase): Observable<FileResponse | null> {
+    protected processAddForwarder(response: HttpResponseBase): Observable<UserResponseDTO | null> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponseDTO;
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FileResponse | null>(null as any);
+        return _observableOf<UserResponseDTO | null>(null as any);
     }
 }
 
@@ -1199,7 +1175,7 @@ export interface IServiceProvidersService {
     getProviders(): Observable<FileResponse | null>;
     getProviderById(id: number): Observable<FileResponse | null>;
     addProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse | null>;
-    editProvider(id: number, provider: ServiceProviderDTO | null | undefined): Observable<FileResponse | null>;
+    editProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse | null>;
     deleteProvider(id: number): Observable<FileResponse | null>;
 }
 
@@ -1379,11 +1355,8 @@ export class ServiceProvidersService implements IServiceProvidersService {
         return _observableOf<FileResponse | null>(null as any);
     }
 
-    editProvider(id: number, provider: ServiceProviderDTO | null | undefined): Observable<FileResponse | null> {
-        let url_ = this.baseUrl + "/api/ServiceProviders/EditProvider/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    editProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/ServiceProviders/EditProvider";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(provider);
@@ -1569,7 +1542,18 @@ export interface Service {
     Invoices?: Invoice | null;
 }
 
+export interface CaseListResponseDTO {
+    Id: number;
+    Name: string;
+    ClientName: string;
+    ForwarderName: string;
+    NumberOfInvoices?: number | null;
+    TotalCosts?: number | null;
+    TotalSales?: number | null;
+}
+
 export interface CaseRequestDTO {
+    Id: number;
     Name: string;
     Amount: number;
     Relation: string;
@@ -1577,6 +1561,7 @@ export interface CaseRequestDTO {
 }
 
 export interface ClientDTO {
+    Id: number;
     Tax: string;
     Name: string;
     Street: string;
@@ -1585,19 +1570,29 @@ export interface ClientDTO {
     Credit: number;
 }
 
-export interface ForwarderAddDTO {
+export interface ForwarderRequestDTO {
+    Id: number;
     Login: string;
     Surname: string;
     Prefix: string;
     PassHash: string;
 }
 
+export interface UserResponseDTO {
+    Id: number;
+    UserName: string;
+    Token: string;
+}
+
 export interface UserLoginDTO {
+    Id: number;
     Login: string;
+    Prefix: string;
     Password: string;
 }
 
 export interface ServiceProviderDTO {
+    Id: number;
     Tax: string;
     Name: string;
     Street: string;

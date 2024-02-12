@@ -57,7 +57,6 @@ namespace Application.Repository.Implementations
             if (tax == provider.Tax)
             {
                 flag = false;
-                response.ErrorMessage = "";
                 //"provider with given tax already exists";
             }
             else
@@ -76,22 +75,17 @@ namespace Application.Repository.Implementations
                 );
 
                 flag = await _context.SaveChangesAsync() > 0;
-                response.ErrorMessage = "TODO";
-                //"provider successfully added";
-                if (!flag)
-                    response.ErrorMessage = "TODO";
-                //" could not save changes";
             }
             return response;
         }
-        public async Task<ServiceProviderDTO> EditProvider(int id, ServiceProviderDTO editedProvider)
+        public async Task<ServiceProviderDTO> EditProvider(ServiceProviderDTO editedProvider)
         {
             bool flag = false;
             ServiceProviderDTO response = null;
 
-            var contactorFromDB = await _context.ServiceProviders.Where(x => x.Id.Equals(id)).SingleOrDefaultAsync();
+            var contactorFromDB = await _context.ServiceProviders.Where(x => x.Id.Equals(editedProvider.Id)).SingleOrDefaultAsync();
             //check for duplicate
-            var duplicate = await _context.ServiceProviders.Where(x => x.Tax == editedProvider.Tax && x.Id != id).SingleOrDefaultAsync();
+            var duplicate = await _context.ServiceProviders.Where(x => x.Tax == editedProvider.Tax && x.Id != editedProvider.Id).SingleOrDefaultAsync();
             if (duplicate == null)
             {
                 //check if exists
@@ -107,25 +101,17 @@ namespace Application.Repository.Implementations
                 else
                 {
                     flag = false;
-                    response.ErrorMessage = "TODO";
                     //"provider with given id does not exists";
                 }
             }
             else
             {
                 flag = false;
-                response.ErrorMessage = "TODO";
                 //"contractor with given tax already exists";
             }
             if (flag)
             {
                 flag = await _context.SaveChangesAsync() > 0;
-                if (flag)
-                    response.ErrorMessage = "TODO";
-                //"provider successfully edited";
-                else
-                    response.ErrorMessage = "TODO";
-                //" could not save changes";
             }
 
             return response;
@@ -140,21 +126,11 @@ namespace Application.Repository.Implementations
             if (providerFromDB == null)
             {
                 isDeleted = false;
-                response.ErrorMessage = "Cannot find service provider";
             }
             else
             {
                 _context.Remove(providerFromDB);
                 isDeleted = await _context.SaveChangesAsync() > 0;
-            }
-
-            if (isDeleted)
-            {
-                response.ErrorMessage = "";
-            }
-            else
-            {
-                response.ErrorMessage = "Could not save changes";
             }
 
             return response;

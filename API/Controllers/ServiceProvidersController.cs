@@ -1,14 +1,13 @@
 ﻿using Application.Controllers.Base;
 using Domain.DTO;
 using Domain.Interfaces.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ServiceProvidersController : ApiControllerBase
     {
 
@@ -45,41 +44,22 @@ namespace Application.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
         {
-
             var response = await _repository.AddProvider(provider);
-
-            if (response == CommonEnum.SUCCESSFULLY_ADDED)
-            {
-                return Ok("provider successfully added");
-            }
-            else
-                return BadRequest(response);
+            return Ok(response);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditProvider(int id, ServiceProviderDTO provider)
+        public async Task<IActionResult> EditProvider(ServiceProviderDTO provider)
         {
-            var response = await _repository.EditProvider(id, provider);
-
-            if (response == CommonEnum.CHANGES_SAVED)
-            {
-                return Ok("provider successfully edited");
-            }
-            else
-                return BadRequest(response);
+            var response = await _repository.EditProvider(provider);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {
             var response = await _repository.DeleteProviderById(id);
-
-            if (response == CommonEnum.SUCCESSFULLY_REMOVED)
-            {
-                return Ok("provider removed");
-            }
-            else
-                return BadRequest(response);
+            return Ok(response);
         }
     }
 }
