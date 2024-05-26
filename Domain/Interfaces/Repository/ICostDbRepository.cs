@@ -5,9 +5,9 @@ namespace Domain.Interfaces.Repository
 {
     public interface ICostDbRepository
     {
-        Task<ICollection<CostResponseDTO>> GetCosts(int caseId);
+        Task<ICollection<CostResponseDTO>> GetCostsAttachedToCase(int caseId);
         Task<CostResponseDTO> AddCost(CostRequestDTO cost);
         Task<CostResponseDTO> EditCost(CostRequestDTO cost);
-        Task<CostResponseDTO> DeleteCost(int id);
+        Task<bool> DeleteCost(int costId);
     }
 }

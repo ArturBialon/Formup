@@ -1,6 +1,6 @@
 ﻿using Application.Controllers.Base;
 using Domain.DTO;
-using Domain.Interfaces.Repository;
+using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,17 +11,17 @@ namespace Application.Controllers
     public class ServiceProvidersController : ApiControllerBase
     {
 
-        public readonly IServiceProviderDbRepository _repository;
-        public ServiceProvidersController(IServiceProviderDbRepository proversRep)
+        public readonly IServiceProviderService _service;
+        public ServiceProvidersController(IServiceProviderService proversService)
         {
-            _repository = proversRep;
+            _service = proversService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProviders()
         {
 
-            ICollection<ServiceProviderDTO> seriveProviders = await _repository.GetProviders();
+            ICollection<ServiceProviderDTO> seriveProviders = await _service.GetProviders();
 
             if (seriveProviders != null)
                 return Ok(seriveProviders);
@@ -33,7 +33,7 @@ namespace Application.Controllers
         public async Task<IActionResult> GetProviderById(int id)
         {
 
-            ServiceProviderDTO provider = await _repository.GetProviderById(id);
+            var provider = await _service.GetProviderById(id);
 
             if (provider != null)
                 return Ok(provider);
@@ -44,21 +44,21 @@ namespace Application.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
         {
-            var response = await _repository.AddProvider(provider);
+            var response = await _service.AddProvider(provider);
             return Ok(response);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditProvider(ServiceProviderDTO provider)
         {
-            var response = await _repository.EditProvider(provider);
+            var response = await _service.EditProvider(provider);
             return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvider(int id)
         {
-            var response = await _repository.DeleteProviderById(id);
+            var response = await _service.DeleteProvider(id);
             return Ok(response);
         }
     }

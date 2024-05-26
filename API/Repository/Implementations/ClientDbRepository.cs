@@ -28,7 +28,7 @@ namespace Application.Repository.Implementations
                 .Where(x => x.Id == id)
                 .SingleOrDefaultAsync();
 
-            return response == null ? throw new GetEntityException() : response;
+            return response ?? throw new GetEntityException();
         }
 
         public async Task<Client> GetClientByTax(string tax)
@@ -37,7 +37,7 @@ namespace Application.Repository.Implementations
                 .Where(x => x.Tax == tax)
                 .SingleOrDefaultAsync();
 
-            return response == null ? throw new GetEntityException() : response;
+            return response ?? throw new GetEntityException();
         }
 
         public async Task<Client> GetDuplicatedClient(string tax, int id)
@@ -46,7 +46,7 @@ namespace Application.Repository.Implementations
                 .Where(x => x.Tax == tax && x.Id != id)
                 .SingleOrDefaultAsync();
 
-            return response == null ? throw new GetEntityException() : response;
+            return response;
         }
 
         public async Task<ICollection<ClientDTO>> GetClients()

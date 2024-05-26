@@ -41,12 +41,12 @@ namespace Application.Services
 
         public async Task<ClientDTO> AddClient(ClientDTO client)
         {
-            var clientFromDb = await _clientDbRepository.GetClientByTax(client.Tax);
+            var contractorFromDb = await _clientDbRepository.GetClientByTax(client.Tax);
 
-            if (clientFromDb.Tax == client.Tax)
+            if (contractorFromDb.Tax == client.Tax)
             {
-                _logger.Information($"Tried to add existing tax: {clientFromDb.Tax}, {clientFromDb.Name}");
-                throw new GetEntityException($"Tax is already in database:  {clientFromDb.Tax}, {clientFromDb.Name}");
+                _logger.Information($"Tried to add existing tax: {contractorFromDb.Tax}, {contractorFromDb.Name}");
+                throw new GetEntityException($"Tax is already in database:  {contractorFromDb.Tax}, {contractorFromDb.Name}");
             }
 
             return await _clientDbRepository.AddClient(client);
@@ -54,14 +54,14 @@ namespace Application.Services
 
         public async Task<ClientDTO> EditClient(ClientDTO editedClient)
         {
-            var contactorFromDB = await _clientDbRepository.GetClientById(editedClient.Id);
+            var contractorFromDb = await _clientDbRepository.GetClientById(editedClient.Id);
             var duplicate = await _clientDbRepository.GetDuplicatedClient(editedClient.Tax, editedClient.Id);
 
             if (duplicate == null)
             {
-                if (contactorFromDB != null)
+                if (contractorFromDb != null)
                 {
-                    return await _clientDbRepository.EditClient(editedClient, contactorFromDB);
+                    return await _clientDbRepository.EditClient(editedClient, contractorFromDb);
                 }
                 else
                 {
@@ -70,6 +70,7 @@ namespace Application.Services
             }
             else
             {
+                _logger.Information($"Tax is already in database:  {duplicate.Tax}, {duplicate.Name}");
                 throw new SavingException("Client with this tax already exists");
             }
 

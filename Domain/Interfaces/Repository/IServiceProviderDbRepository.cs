@@ -1,13 +1,15 @@
 ﻿using Domain.DTO;
+using Infrastructure.Models;
 
 namespace Domain.Interfaces.Repository
 {
     public interface IServiceProviderDbRepository
     {
-        public Task<ICollection<ServiceProviderDTO>> GetProviders();
-        public Task<ServiceProviderDTO> GetProviderById(int id);
-        public Task<ServiceProviderDTO> AddProvider(ServiceProviderDTO providerDTO);
-        public Task<ServiceProviderDTO> EditProvider(ServiceProviderDTO editedProvider);
-        public Task<ServiceProviderDTO> DeleteProviderById(int id);
+        Task<ICollection<ServiceProviderDTO>> GetProviders();
+        Task<ServiceProvider> GetProviderById(int id);
+        Task<ServiceProvider> GetDuplicatedProvider(int id, string tax);
+        Task<ServiceProviderDTO> AddProvider(ServiceProviderDTO providerDTO);
+        Task<ServiceProviderDTO> EditProvider(ServiceProviderDTO editedProvider);
+        Task<bool> DeleteProvider(ServiceProvider providerToDelete);
     }
 }
