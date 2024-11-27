@@ -7,7 +7,7 @@ namespace Domain.Interfaces.Services
     {
         public Task<ICollection<ForwarderResponseDTO>> GetForwarders();
         public Task<ForwarderResponseDTO> GetForwarderById(int id);
-        public Task<ForwarderResponseDTO> EditForwarder(ForwarderRequestDTO forwarderToEdit);
+        public Task<bool> EditForwarder(ForwarderRequestDTO forwarderToEdit);
         public Task<bool> DeleteForwarderById(int id);
     }
 }

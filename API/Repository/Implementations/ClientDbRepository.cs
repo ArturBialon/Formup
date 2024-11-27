@@ -1,10 +1,10 @@
 ﻿using Domain.CustomExceptions;
 using Domain.DTO;
 using Domain.Interfaces.Repository;
+using Domain.StaticMappers;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +14,10 @@ namespace Application.Repository.Implementations
     public class ClientDbRepository : IClientDbRepository
     {
         private readonly FormupContext _context;
-        private readonly ILogger _logger;
 
-        public ClientDbRepository(FormupContext context, ILogger logger)
+        public ClientDbRepository(FormupContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task<Client> GetClientById(int id)
@@ -37,7 +35,7 @@ namespace Application.Repository.Implementations
                 .Where(x => x.Tax == tax)
                 .SingleOrDefaultAsync();
 
-            return response ?? throw new GetEntityException();
+            return response;
         }
 
         public async Task<Client> GetDuplicatedClient(string tax, int id)
@@ -52,21 +50,13 @@ namespace Application.Repository.Implementations
         public async Task<ICollection<ClientDTO>> GetClients()
         {
             var response = await _context.Clients
-                .Select(m => new ClientDTO
-                {
-                    Name = m.Name,
-                    Coutry = m.Coutry,
-                    Zip = m.Zip,
-                    Street = m.Street,
-                    Tax = m.Tax,
-                    Credit = m.Credit
-                })
+                .Select(client => ClientMapper.MapClientToClientDto(client))
                 .ToListAsync();
 
             return response;
         }
 
-        public async Task<ClientDTO> AddClient(ClientDTO client)
+        public async Task<bool> AddClient(ClientDTO client)
         {
             await _context.AddAsync(new Client
             {
@@ -80,13 +70,13 @@ namespace Application.Repository.Implementations
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return client;
+                return true;
             }
 
             throw new SavingException();
         }
 
-        public async Task<ClientDTO> EditClient(ClientDTO editedClient, Client contactorFromDB)
+        public async Task<bool> EditClient(ClientDTO editedClient, Client contactorFromDB)
         {
             contactorFromDB.Name = editedClient.Name;
             contactorFromDB.Tax = editedClient.Tax;
@@ -97,7 +87,7 @@ namespace Application.Repository.Implementations
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return editedClient;
+                return true;
             }
 
             throw new SavingException();

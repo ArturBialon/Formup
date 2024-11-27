@@ -3,6 +3,7 @@ using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
+using Domain.StaticMappers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,32 +24,27 @@ namespace Application.Services
             return forwarderToDelete == null ? throw new GetEntityException() : await _forwarderDbRepository.DeleteForwarder(forwarderToDelete);
         }
 
-        public async Task<ForwarderResponseDTO> EditForwarder(ForwarderRequestDTO forwarderToEdit)
+        public async Task<bool> EditForwarder(ForwarderRequestDTO forwarderToEdit)
         {
             var forwarderFromDb = await _forwarderDbRepository.GetForwarderById(forwarderToEdit.Id);
             var duplicate = await _forwarderDbRepository.GetDuplicatedForwarder(forwarderToEdit);
-            if (duplicate == null)
+
+            if (duplicate != null)
             {
-                if (forwarderFromDb != null)
-                {
-                    return await _forwarderDbRepository.EditForwarder(forwarderToEdit, forwarderFromDb);
-                }
+                throw new SavingException($"Forwarder already exists {duplicate.Prefix}");
+            }
+            if (forwarderFromDb == null)
+            {
                 throw new GetEntityException();
             }
-            throw new GetEntityException($"Forwarder already exists {duplicate.Prefix}");
+
+            return await _forwarderDbRepository.EditForwarder(forwarderToEdit, forwarderFromDb);
         }
 
         public async Task<ForwarderResponseDTO> GetForwarderById(int id)
         {
             var forwarderFromDb = await _forwarderDbRepository.GetForwarderById(id);
-
-            return new ForwarderResponseDTO
-            {
-                Login = forwarderFromDb.Name,
-                Prefix = forwarderFromDb.Prefix,
-                Surname = forwarderFromDb.Surname,
-                Id = forwarderFromDb.Id,
-            };
+            return ForwarderMapper.MapForwarderToForwarderResponseDTO(forwarderFromDb);
         }
 
         public async Task<ICollection<ForwarderResponseDTO>> GetForwarders()

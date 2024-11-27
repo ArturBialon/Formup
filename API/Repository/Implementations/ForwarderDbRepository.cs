@@ -70,7 +70,7 @@ namespace Application.Repository.Implementations
             throw new SavingException();
         }
 
-        public async Task<ForwarderResponseDTO> EditForwarder(ForwarderRequestDTO editedForwarder, Forwarder forwarderFromDB)
+        public async Task<bool> EditForwarder(ForwarderRequestDTO editedForwarder, Forwarder forwarderFromDB)
         {
             using var hmac = new HMACSHA512();
 
@@ -82,13 +82,7 @@ namespace Application.Repository.Implementations
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return new ForwarderResponseDTO
-                {
-                    Login = forwarderFromDB.Name,
-                    Surname = forwarderFromDB.Surname,
-                    Prefix = forwarderFromDB.Prefix,
-                    Id = forwarderFromDB.Id
-                };
+                return true;
             }
 
             throw new SavingException();

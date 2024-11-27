@@ -2,7 +2,6 @@
 using Domain.DTO;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
-using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@ namespace Application.Services
     public class ClientService : IClientService
     {
         private readonly IClientDbRepository _clientDbRepository;
-        private readonly ILogger _logger;
 
         public ClientService(IClientDbRepository clientDbRepository)
         {
@@ -39,42 +37,34 @@ namespace Application.Services
             };
         }
 
-        public async Task<ClientDTO> AddClient(ClientDTO client)
+        public async Task<bool> AddClient(ClientDTO client)
         {
             var contractorFromDb = await _clientDbRepository.GetClientByTax(client.Tax);
 
-            if (contractorFromDb.Tax == client.Tax)
+            if (contractorFromDb != null)
             {
-                _logger.Information($"Tried to add existing tax: {contractorFromDb.Tax}, {contractorFromDb.Name}");
                 throw new GetEntityException($"Tax is already in database:  {contractorFromDb.Tax}, {contractorFromDb.Name}");
             }
 
             return await _clientDbRepository.AddClient(client);
         }
 
-        public async Task<ClientDTO> EditClient(ClientDTO editedClient)
+        public async Task<bool> EditClient(ClientDTO editedClient)
         {
             var contractorFromDb = await _clientDbRepository.GetClientById(editedClient.Id);
             var duplicate = await _clientDbRepository.GetDuplicatedClient(editedClient.Tax, editedClient.Id);
 
-            if (duplicate == null)
+            if (duplicate != null)
             {
-                if (contractorFromDb != null)
-                {
-                    return await _clientDbRepository.EditClient(editedClient, contractorFromDb);
-                }
-                else
-                {
-                    throw new GetEntityException();
-                }
-            }
-            else
-            {
-                _logger.Information($"Tax is already in database:  {duplicate.Tax}, {duplicate.Name}");
                 throw new SavingException("Client with this tax already exists");
             }
 
-            throw new SavingException();
+            if (contractorFromDb == null)
+            {
+                throw new GetEntityException();
+            }
+
+            return await _clientDbRepository.EditClient(editedClient, contractorFromDb);
         }
 
         public async Task<bool> DeleteClientById(int id)

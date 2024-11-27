@@ -26,19 +26,21 @@ namespace Application.Services
             return await _dbRepository.GetCaseById(id);
         }
 
-        public async Task<CaseResponseDTO> CreateNewCase(CaseRequestDTO caseDTO)
+        public async Task<bool> CreateNewCase(CaseRequestDTO caseDTO)
         {
             return await _dbRepository.AddCase(caseDTO);
         }
 
-        public async Task<CaseResponseDTO> EditCase(CaseRequestDTO editedCase)
+        public async Task<bool> EditCase(CaseRequestDTO editedCase)
         {
-            return await _dbRepository.EditCase(editedCase);
+            var caseFromDb = await _dbRepository.GetRawCaseById(editedCase.Id);
+            return await _dbRepository.EditCase(editedCase, caseFromDb);
         }
 
-        public async Task<CaseResponseDTO> DeleteCaseById(int id)
+        public async Task<bool> DeleteCaseById(int id)
         {
-            return await _dbRepository.DeleteCaseById(id);
+            var caseFromDb = await _dbRepository.GetRawCaseById(id);
+            return await _dbRepository.DeleteCase(caseFromDb);
         }
     }
 }

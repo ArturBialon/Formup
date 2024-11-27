@@ -1,12 +1,10 @@
 ﻿using Domain.CustomExceptions;
 using Domain.DTO.Request;
 using Domain.DTO.Response;
-using Domain.Helpers;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,17 +15,13 @@ namespace Application.Repository.Implementations
     {
 
         private readonly FormupContext _context;
-        private readonly ILogger _logger;
 
-        public CaseDbRepository(FormupContext context, ILogger logger)
+        public CaseDbRepository(FormupContext context)
         {
             _context = context;
-            _logger = logger;
         }
-        public async Task<CaseResponseDTO> AddCase(CaseRequestDTO caseDTO)
+        public async Task<bool> AddCase(CaseRequestDTO caseDTO)
         {
-            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
-
             await _context.AddAsync(new Case
             {
                 Name = caseDTO.Name,
@@ -38,58 +32,40 @@ namespace Application.Repository.Implementations
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return response;
+                return true;
             }
-            else
-            {
-                throw new SavingException($"Could not save entity + {caseDTO.Name}");
-            }
+
+            throw new SavingException($"Could not save entity + {caseDTO.Name}");
         }
 
-        public async Task<CaseResponseDTO> DeleteCaseById(int id)
+        public async Task<bool> DeleteCase(Case caseFromDb)
         {
-            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
-
-            var caseFromDb = await _context.Cases.Where(x => x.Id == id).SingleOrDefaultAsync() ?? throw new GetEntityException($"Could not find case, Id: {id}");
-
             _context.Remove(caseFromDb);
             if (await _context.SaveChangesAsync() > 0)
             {
-                return response;
+                return true;
             }
-            else
-            {
-                throw new SavingException($"No changes made, Id: {id}");
-            }
+
+            throw new SavingException($"No changes made, Id: {caseFromDb.Id}");
         }
 
-        public async Task<CaseResponseDTO> EditCase(CaseRequestDTO editedCase)
+        public async Task<bool> EditCase(CaseRequestDTO editedCase, Case caseFromDb)
         {
-            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
-
-            var caseToEdit = await _context.Cases.Where(x => x.Id == editedCase.Id).SingleOrDefaultAsync() ?? throw new GetEntityException($"Could not find case: {editedCase.Name}");
-
-            _logger.Information($"Case to edit found: {caseToEdit} - {editedCase}");
-            caseToEdit.Name = editedCase.Name;
-            caseToEdit.Relation = editedCase.Relation;
-            caseToEdit.Amount = editedCase.Amount;
-            caseToEdit.ForwardersId = editedCase.ForwarderId;
+            caseFromDb.Name = editedCase.Name;
+            caseFromDb.Relation = editedCase.Relation;
+            caseFromDb.Amount = editedCase.Amount;
+            caseFromDb.ForwardersId = editedCase.ForwarderId;
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return response;
+                return true;
             }
-            else
-            {
-                _logger.Warning($"No changes were made, Id: {editedCase.Id}");
-                throw new SavingException($"No changes were made, Id: {editedCase.Id}");
-            }
+
+            throw new SavingException($"No changes were made, Id: {editedCase.Id}");
         }
 
         public async Task<CaseResponseDTO> GetCaseById(int id)
         {
-            CaseResponseDTO response = (CaseResponseDTO)ObjectCreationHelper.GenerateObject(typeof(CaseResponseDTO));
-
             decimal totalCost = 0;
             decimal totalSales = 0;
 
@@ -101,19 +77,10 @@ namespace Application.Repository.Implementations
                 .Where(x => x.CasesId == id)
                 .ToListAsync();
 
-            if (costsList != null && salesList != null)
-            {
-                foreach (Cost cost in costsList)
-                {
-                    totalCost += cost.Amount;
-                }
-                foreach (Invoice invoice in salesList)
-                {
-                    totalSales += invoice.Amount;
-                }
-            }
+            totalCost = costsList.Sum(x => x.Amount);
+            totalSales = salesList.Sum(x => x.Amount);
 
-            response = await _context.Cases
+            var response = await _context.Cases
             .Where(x => x.Id == id)
             .Select(x => new CaseResponseDTO
             {
@@ -129,7 +96,7 @@ namespace Application.Repository.Implementations
             })
             .SingleOrDefaultAsync();
 
-            return response;
+            return response ?? throw new GetEntityException();
         }
 
         public async Task<ICollection<CaseListResponseDTO>> GetAllCases()
@@ -149,6 +116,12 @@ namespace Application.Repository.Implementations
             .ToListAsync();
 
             return response;
+        }
+
+        public async Task<Case> GetRawCaseById(int id)
+        {
+            var response = await _context.Cases.Where(x => x.Id == id).SingleOrDefaultAsync();
+            return response ?? throw new GetEntityException();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Domain.Interfaces.Repository
         public Task<ICollection<ForwarderResponseDTO>> GetForwarders();
         public Task<Forwarder> GetForwarderById(int id);
         public Task<Forwarder> GetDuplicatedForwarder(ForwarderRequestDTO duplicatedForwarder);
-        public Task<ForwarderResponseDTO> EditForwarder(ForwarderRequestDTO forwarderToEdit, Forwarder forwarderFromDB);
+        public Task<bool> EditForwarder(ForwarderRequestDTO forwarderToEdit, Forwarder forwarderFromDB);
         public Task<bool> DeleteForwarder(Forwarder forwarderToDelete);
     }
 }

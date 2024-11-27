@@ -13,7 +13,7 @@ namespace Domain.StaticMappers
                 Id = cost.Id,
                 Name = cost.Name,
                 Tax = cost.Tax,
-                AmountBrut = Decimal.Multiply(cost.Amount, cost.Tax),
+                AmountBrut = decimal.Multiply(cost.Amount, cost.Tax),
                 AmountNet = cost.Amount
             };
         }
@@ -37,7 +37,7 @@ namespace Domain.StaticMappers
             {
                 Id = cost.Id,
                 AmountNet = cost.Amount,
-                AmountBrut = Decimal.Multiply(cost.Amount, cost.Tax),
+                AmountBrut = decimal.Multiply(cost.Amount, cost.Tax),
                 Tax = cost.Tax,
                 Name = cost.Name
             };

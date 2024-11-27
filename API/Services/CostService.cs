@@ -16,19 +16,24 @@ namespace Application.Services
             _dbRepository = dbRepository;
         }
 
-        public async Task<CostResponseDTO> AddCost(CostRequestDTO cost)
+        public async Task<bool> AddCost(CostRequestDTO cost)
         {
-            return await _dbRepository.AddCost(cost);
+            var isAdded = await _dbRepository.AddCost(cost);
+            return isAdded;
         }
 
         public async Task<bool> DeleteCost(int costId)
         {
-            return await _dbRepository.DeleteCost(costId);
+            var costFromDb = await _dbRepository.GetCostById(costId);
+            var isDeleted = await _dbRepository.DeleteCost(costFromDb);
+            return isDeleted;
         }
 
-        public async Task<CostResponseDTO> EditCost(CostRequestDTO cost)
+        public async Task<bool> EditCost(CostRequestDTO cost)
         {
-            return await _dbRepository.EditCost(cost);
+            var costFromDb = await _dbRepository.GetCostById(cost.Id);
+            var isEdited = await _dbRepository.EditCost(cost, costFromDb);
+            return isEdited;
         }
 
         public async Task<ICollection<CostResponseDTO>> GetCostsAttachedToCase(int caseId)

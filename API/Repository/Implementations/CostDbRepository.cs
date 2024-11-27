@@ -20,39 +20,42 @@ namespace Application.Repository.Implementations
             _context = compContext;
         }
 
-        public async Task<CostResponseDTO> AddCost(CostRequestDTO cost)
+        public async Task<bool> AddCost(CostRequestDTO cost)
         {
             _context.Costs.Add(CostMapper.MapCostRequestToBase(cost));
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return CostMapper.MapCostRequestToResponse(cost);
+                return true;
             }
 
             throw new SavingException();
         }
 
-        public async Task<bool> DeleteCost(int costId)
+        public async Task<bool> DeleteCost(Cost costFromDb)
         {
-            var costFromDb = await GetCostById(costId);
             _context.Costs.Remove(costFromDb);
 
-            if (await _context.SaveChangesAsync() > 0) return true;
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
 
             throw new SavingException();
         }
 
-        public async Task<CostResponseDTO> EditCost(CostRequestDTO cost)
+        public async Task<bool> EditCost(CostRequestDTO cost, Cost costFromDb)
         {
-            var costFromDb = await GetCostById(cost.Id);
-
             costFromDb.Amount = cost.Amount;
             costFromDb.ServiceProvidersId = cost.ServiceProvidersId;
             costFromDb.CasesId = cost.CasesId;
             costFromDb.Name = cost.Name;
             costFromDb.Tax = cost.Tax;
 
-            if (await _context.SaveChangesAsync() > 0) return CostMapper.MapCostBaseToResponse(costFromDb);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
 
             throw new SavingException();
         }
@@ -71,9 +74,9 @@ namespace Application.Repository.Implementations
         {
             var cost = await _context.Costs
                 .Where(x => x.Id == costId)
-                .SingleOrDefaultAsync() ?? throw new GetEntityException();
+                .SingleOrDefaultAsync();
 
-            return cost;
+            return cost ?? throw new GetEntityException();
         }
     }
 }

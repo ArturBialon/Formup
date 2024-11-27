@@ -43,7 +43,7 @@ namespace Application.Repository.Implementations
             return providers;
         }
 
-        public async Task<ServiceProviderDTO> AddProvider(ServiceProviderDTO provider)
+        public async Task<bool> AddProvider(ServiceProviderDTO provider)
         {
 
             await _context.AddAsync(new ServiceProvider
@@ -55,21 +55,27 @@ namespace Application.Repository.Implementations
                 Coutry = provider.Coutry
             });
 
-            if (await _context.SaveChangesAsync() > 0) return provider;
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
+
             throw new SavingException();
         }
 
-        public async Task<ServiceProviderDTO> EditProvider(ServiceProviderDTO editedProvider)
+        public async Task<bool> EditProvider(ServiceProviderDTO editedProvider, ServiceProvider providerFromDb)
         {
-            var contactorFromDB = await GetProviderById(editedProvider.Id);
+            providerFromDb.Name = editedProvider.Name;
+            providerFromDb.Tax = editedProvider.Tax;
+            providerFromDb.Zip = editedProvider.Zip;
+            providerFromDb.Street = editedProvider.Street;
+            providerFromDb.Coutry = editedProvider.Coutry;
 
-            contactorFromDB.Name = editedProvider.Name;
-            contactorFromDB.Tax = editedProvider.Tax;
-            contactorFromDB.Zip = editedProvider.Zip;
-            contactorFromDB.Street = editedProvider.Street;
-            contactorFromDB.Coutry = editedProvider.Coutry;
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
 
-            if (await _context.SaveChangesAsync() > 0) return editedProvider;
             throw new SavingException();
         }
 
@@ -77,7 +83,11 @@ namespace Application.Repository.Implementations
         {
             _context.Remove(providerToDelete);
 
-            if (await _context.SaveChangesAsync() > 0) return true;
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                return true;
+            }
+
             throw new SavingException("Could not save changes");
         }
     }

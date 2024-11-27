@@ -29,15 +29,23 @@ namespace Application.Services
             return providers;
         }
 
-        public async Task<ServiceProviderDTO> AddProvider(ServiceProviderDTO provider)
+        public async Task<bool> AddProvider(ServiceProviderDTO provider)
         {
             var isAdded = await _serviceProviderRepository.AddProvider(provider);
             return isAdded;
         }
 
-        public async Task<ServiceProviderDTO> EditProvider(ServiceProviderDTO editedProvider)
+        public async Task<bool> EditProvider(ServiceProviderDTO editedProvider)
         {
-            var isEdited = await _serviceProviderRepository.EditProvider(editedProvider);
+            var duplicatedProvider = await _serviceProviderRepository.GetDuplicatedProvider(editedProvider.Id, editedProvider.Tax);
+            var providerFromDb = await _serviceProviderRepository.GetProviderById(editedProvider.Id);
+
+            if (duplicatedProvider != null)
+            {
+                throw new SavingException("Provided tax already exists in database");
+            }
+
+            var isEdited = await _serviceProviderRepository.EditProvider(editedProvider, providerFromDb);
             return isEdited;
         }
 
