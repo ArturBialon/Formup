@@ -2,6 +2,7 @@
 {
     public class CaseListResponseDTO
     {
+        public int Id { get; set; }
         public required string Name { get; set; }
         public required string ClientName { get; set; }
         public required string ForwarderName { get; set; }

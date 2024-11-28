@@ -1,41 +1,36 @@
 ﻿using Application.Controllers.Base;
-using Application.Services.Interfaces;
 using Domain.DTO.Request;
 using Domain.DTO.Response;
-using Domain.Enum;
-using Microsoft.AspNetCore.Authorization;
+using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CaseController : ApiControllerBase
     {
-        public readonly ICaseDbRepository _repository;
-        public CaseController(ICaseDbRepository clientRep)
+        private readonly ICaseService _caseService;
+
+        public CaseController(ICaseService caseService)
         {
-            _repository = clientRep;
+            _caseService = caseService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCases()
+        public async Task<ICollection<CaseListResponseDTO>> GetCases()
         {
 
-            ICollection<CaseListResponseDTO> cases = await _repository.GetCases();
-
-            if (cases != null)
-                return Ok(cases);
-            else
-                return NotFound("No data");
+            ICollection<CaseListResponseDTO> cases = await _caseService.GetCases();
+            return cases;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCaseById(int id)
         {
 
-            CaseResponseDTO transportCase = await _repository.GetCaseById(id);
+            CaseResponseDTO transportCase = await _caseService.GetCaseById(id);
 
             if (transportCase != null)
                 return Ok(transportCase);
@@ -46,56 +41,22 @@ namespace Application.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCase(CaseRequestDTO transportCase)
         {
-
-            var result = await _repository.AddCase(transportCase);
-
-            if (result == CommonEnum.CHANGES_SAVED)
-            {
-                return Ok("case successfully added");
-            }
-            else
-            {
-                return BadRequest("Error: " + result.ToString());
-            }
+            var response = await _caseService.CreateNewCase(transportCase);
+            return Ok(response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditCase(int id, CaseRequestDTO transportCase)
+        [HttpPut]
+        public async Task<IActionResult> EditCase(CaseRequestDTO transportCase)
         {
-            var result = await _repository.EditCase(id, transportCase);
-
-            if (result == CommonEnum.CHANGES_SAVED)
-            {
-                return Ok("case successfully updated");
-            }
-
-            else if (result == CommonEnum.CANNOT_FIND)
-            {
-                return BadRequest("could not find case");
-            }
-            else
-            {
-                return BadRequest("Error: " + result.ToString());
-            }
+            var response = await _caseService.EditCase(transportCase);
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCase(int id)
         {
-            var result = await _repository.DeleteCaseById(id);
-
-            if (result == CommonEnum.SUCCESSFULLY_REMOVED)
-            {
-                return Ok("case successfully removed");
-            }
-            else if (result == CommonEnum.CANNOT_FIND)
-            {
-                return BadRequest("could not find case");
-            }
-            else
-            {
-                return BadRequest("Error: " + result.ToString());
-            }
+            var response = await _caseService.DeleteCaseById(id);
+            return Ok(response);
         }
     }
 }

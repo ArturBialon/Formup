@@ -2,6 +2,7 @@
 {
     public class ServiceProviderDTO
     {
+        public int Id { get; set; }
         public required string Tax { get; set; }
         public required string Name { get; set; }
         public required string Street { get; set; }
