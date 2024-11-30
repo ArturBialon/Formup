@@ -52,7 +52,6 @@ namespace Application.Extensions.ServiceCreator
             var code = generator.GenerateFile();
             File.WriteAllText(path, code);
             InterfaceConverter.ReadFile(path);
-
         }
 
         private static TypeScriptClientGeneratorSettings GetSettings()
@@ -61,16 +60,16 @@ namespace Application.Extensions.ServiceCreator
 
             settings.TypeScriptGeneratorSettings.TypeScriptVersion = 4.3M;
             settings.TypeScriptGeneratorSettings.TypeStyle = TypeScriptTypeStyle.Interface;
+            settings.TypeScriptGeneratorSettings.ExportTypes = true;
+            settings.TypeScriptGeneratorSettings.DateTimeType = TypeScriptDateTimeType.Date;
+            settings.TypeScriptGeneratorSettings.MarkOptionalProperties = true;
+            settings.TypeScriptGeneratorSettings.NullValue = TypeScriptNullValue.Null;
             settings.Template = TypeScriptTemplate.Angular;
             settings.RxJsVersion = 6.0M;
             settings.HttpClass = HttpClass.HttpClient;
             settings.UseSingletonProvider = true;
             settings.InjectionTokenType = InjectionTokenType.InjectionToken;
             settings.GenerateDtoTypes = true;
-            settings.TypeScriptGeneratorSettings.ExportTypes = true;
-            settings.TypeScriptGeneratorSettings.DateTimeType = TypeScriptDateTimeType.Date;
-            settings.TypeScriptGeneratorSettings.MarkOptionalProperties = true;
-            settings.TypeScriptGeneratorSettings.NullValue = TypeScriptNullValue.Null;
             settings.ClassName = "{controller}Service";
             settings.GenerateClientInterfaces = true;
 

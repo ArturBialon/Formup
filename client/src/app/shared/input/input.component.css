@@ -1,16 +1,42 @@
-.input-container {
-    margin-bottom: 15px;
-}
-
-label {
+:host {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    width: 100%;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.input {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    &.invalid {
+        padding-bottom: 6px;
+        border-bottom: 3px solid #d9001b;
+
+        &:focus {
+            border-bottom: 3px solid #d9001b;
+        }
+    }
+
+    &:focus {
+        padding-bottom: 6px;
+        border-bottom: 3px solid #0052a5;
+    }
+}
+
+.form-group.required .control-label:after {
+    content: "*";
+    color: #d9001b;
+}
+
+.show-invalid {
+    display: block;
+}
+
+@keyframes fadeIn {
+    99% {
+        visibility: hidden;
+    }
+
+    100% {
+        visibility: visible;
+    }
 }

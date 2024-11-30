@@ -13,7 +13,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: any) => {
         if (error instanceof HttpErrorResponse) {
-          // Handle Blob error response
           if (error.error instanceof Blob) {
             const reader = new FileReader();
             const blob = error.error;
@@ -23,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 try {
                   const jsonResponse = JSON.parse(reader.result as string);
                   this.handleErrorResponse(jsonResponse, error.status);
-                  observer.error(jsonResponse); // Pass the parsed JSON error to the observer
+                  observer.error(jsonResponse);
                 } catch (e) {
                   this.toastr.error('Failed to parse error response');
                   observer.error('Failed to parse error response');
@@ -35,14 +34,13 @@ export class ErrorInterceptor implements HttpInterceptor {
                 observer.error('Failed to read error response as Blob');
               };
 
-              reader.readAsText(blob); // Read the Blob as text
+              reader.readAsText(blob);
             });
           } else {
-            // Handle standard error responses
             this.handleErrorResponse(error.error, error.status);
           }
         }
-        return throwError(error);
+        return throwError(() => new Error(error));
       })
     );
   }

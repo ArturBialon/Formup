@@ -1,12 +1,12 @@
-<div class="login-container">
-    <div class="login-tile">
+<div class="main-container">
+    <div class="login-tile" *ngIf="!isTokenValid">
         <form [formGroup]="loginForm">
             <div class="row">
-                <app-input controlName="login" placeholder="Username" label="Login" [required]="true" type="text"
+                <app-input controlName="login" label="Login" [required]="true" type="text"
                     [lzErrorMessage]="{
                     required:'This field is required'
                     }"/>
-                <app-input controlName="password" placeholder="Password" label="Password" [required]="true" type="password"
+                <app-input controlName="password" label="Password" [required]="true" type="password"
                     [lzErrorMessage]="{
                     required: 'This field is required'
                     }">
@@ -19,4 +19,5 @@
             </div>
         </form>
     </div>
+    <app-dashboard *ngIf="isTokenValid"></app-dashboard>
 </div>

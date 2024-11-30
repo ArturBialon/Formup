@@ -8,7 +8,7 @@
             if (line.Length > 0 && !line.Contains('?'))
             {
                 var wordNameLastIndex = line.IndexOf(':');
-                var newString = line.Substring(0, wordNameLastIndex) + '?' + line.Substring(wordNameLastIndex);
+                var newString = line[..wordNameLastIndex] + '?' + line[wordNameLastIndex..];
 
                 return newString;
             }
@@ -23,7 +23,7 @@
             {
                 if (line.Contains(": boolean;"))
                 {
-                    line = line.Replace(": boolean;", ":boolean | null | undefiened;");
+                    line = line.Replace(": boolean;", ":boolean | null;");
                 }
 
                 if (line.Contains(": Date") || line.Contains(": Date;"))
@@ -33,16 +33,17 @@
 
                 if (line.Contains(": number;"))
                 {
-                    line = line.Replace(": number;", ": number | null | undefiened;");
+                    line = line.Replace(": number;", ": number | null;");
                 }
             }
 
             return line;
         }
 
-        public static string ChangeSecondLetterToLower(this string line)
+        public static string ChangeFirstLetterToLower(this string line)
         {
-            return line.Substring(0, 4) + char.ToLower(line[4]) + line.Substring(5);
+            var value = line.Substring(0, 4) + char.ToLower(line[4]) + line.Substring(5);
+            return value;
         }
     }
 }
