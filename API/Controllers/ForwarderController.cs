@@ -43,7 +43,7 @@ namespace Application.Controllers
                 return NotFound("No records matching to given id");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> EditForwarder(ForwarderRequestDTO forwarder)
         {
             var response = await _forwarderService.EditForwarder(forwarder);

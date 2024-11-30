@@ -19,11 +19,11 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ICollection<CaseListResponseDTO>> GetCases()
+        public async Task<IActionResult> GetCases()
         {
 
             ICollection<CaseListResponseDTO> cases = await _caseService.GetCases();
-            return cases;
+            return Ok(cases);
         }
 
         [HttpGet("{id}")]

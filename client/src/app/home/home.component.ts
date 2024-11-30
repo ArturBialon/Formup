@@ -1,25 +1,36 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  registerMode = false;
+  loginForm: FormGroup;
 
-  constructor() { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.formWrapper();
   }
 
-  registerToggle(){
-    this.registerMode = !this.registerMode;
-  }
+  onSubmit(): void {}
 
-  cancelRegisterMode(event: boolean){
-    this.registerMode = event;
+  formWrapper() {
+    this.loginForm = this.fb.group({
+      password: [null, Validators.compose([Validators.required])],
+      email: [
+        null,
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(/([\w\.\-]+)@([\w\-]+)((\.(\w){2,9})+)$/),
+        ]),
+      ],
+    });
   }
-
 }

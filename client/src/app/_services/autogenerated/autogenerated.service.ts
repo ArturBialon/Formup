@@ -225,7 +225,7 @@ export class BuggyService implements IBuggyService {
 }
 
 export interface ICaseService {
-    getCases(): Observable<CaseListResponseDTO[] | null>;
+    getCases(): Observable<FileResponse | null>;
     getCaseById(id: number): Observable<FileResponse | null>;
     addCase(transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null>;
     editCase(transportCase: CaseRequestDTO | null | undefined): Observable<FileResponse | null>;
@@ -245,7 +245,7 @@ export class CaseService implements ICaseService {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getCases(): Observable<CaseListResponseDTO[] | null> {
+    getCases(): Observable<FileResponse | null> {
         let url_ = this.baseUrl + "/api/Case/GetCases";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -264,32 +264,37 @@ export class CaseService implements ICaseService {
                 try {
                     return this.processGetCases(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<CaseListResponseDTO[] | null>;
+                    return _observableThrow(e) as any as Observable<FileResponse | null>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<CaseListResponseDTO[] | null>;
+                return _observableThrow(response_) as any as Observable<FileResponse | null>;
         }));
     }
 
-    protected processGetCases(response: HttpResponseBase): Observable<CaseListResponseDTO[] | null> {
+    protected processGetCases(response: HttpResponseBase): Observable<FileResponse | null> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as CaseListResponseDTO[];
-            return _observableOf(result200);
-            }));
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<CaseListResponseDTO[] | null>(null as any);
+        return _observableOf<FileResponse | null>(null as any);
     }
 
     getCaseById(id: number): Observable<FileResponse | null> {
@@ -1540,16 +1545,6 @@ export interface Service {
     Tax: number;
     InvoicesId: number;
     Invoices?: Invoice | null;
-}
-
-export interface CaseListResponseDTO {
-    Id: number;
-    Name: string;
-    ClientName: string;
-    ForwarderName: string;
-    NumberOfInvoices?: number | null;
-    TotalCosts?: number | null;
-    TotalSales?: number | null;
 }
 
 export interface CaseRequestDTO {

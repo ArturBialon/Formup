@@ -48,7 +48,7 @@ namespace Application.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> EditProvider(ServiceProviderDTO provider)
         {
             var response = await _service.EditProvider(provider);
