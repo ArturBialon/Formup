@@ -4,13 +4,14 @@
 >
   <label
     *ngIf="label"
-    class="control-label"
+    class="dark-text"
     [for]="controlName"
   >
     {{ label }}
   </label>
 
   <input
+    [autocomplete]="false"
     [id]="controlName"
     class="input form-control shadow-none"
     [type]="type"

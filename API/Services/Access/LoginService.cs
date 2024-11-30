@@ -63,7 +63,7 @@ namespace Application.Services
             if (await _context.SaveChangesAsync() > 0)
             {
                 response.UserName = newForwarder.Name;
-                response.Token = _tokenService.CreateToken(newForwarder);
+                response.Token.AccessToken = _tokenService.CreateToken(newForwarder);
                 hmac.Dispose();
 
                 return response;
@@ -98,7 +98,7 @@ namespace Application.Services
                 return new UserResponseDTO
                 {
                     UserName = userFromDb.Name,
-                    Token = _tokenService.CreateToken(userFromDb)
+                    Token = new Domain.DTO.ResponseTokenDTO { AccessToken = _tokenService.CreateToken(userFromDb) }
                 };
             }
         }

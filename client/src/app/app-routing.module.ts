@@ -14,7 +14,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      //{path: 'members', component: MemberListComponent, canActivate: [AuthGuard]},
+      //{path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
     ],
   },
   { path: 'errors', component: TestErrorsComponent },
@@ -24,7 +24,6 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent, children: [
     //{ path: 'cases', component: CaseComponent },
-    // Other child routes can be added here
   ]},
 ];
 

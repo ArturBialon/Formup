@@ -1,9 +1,22 @@
 <div class="login-container">
     <div class="login-tile">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <app-input type="text" formControlName="username" placeholder="Username" />
-            <app-input type="password" formControlName="password" placeholder="Password" />
-            <button type="submit">Login</button>
-      </form>
-  </div>
+        <form [formGroup]="loginForm">
+            <div class="row">
+                <app-input controlName="login" placeholder="Username" label="Login" [required]="true" type="text"
+                    [lzErrorMessage]="{
+                    required:'This field is required'
+                    }"/>
+                <app-input controlName="password" placeholder="Password" label="Password" [required]="true" type="password"
+                    [lzErrorMessage]="{
+                    required: 'This field is required'
+                    }">
+                </app-input>
+            </div>
+            
+            <div class="row d-flex mt-4">
+                <div class="col"><button class="btn btn-yellow dark-text">Reset password</button></div>
+                <div class="col"><button class="btn btn-blue dark-text" type="submit" (click)="onSubmit()">Login</button></div>
+            </div>
+        </form>
+    </div>
 </div>

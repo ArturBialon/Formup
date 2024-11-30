@@ -1,60 +1,84 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { NavigationExtras, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr'; // Assuming you're using ngx-toastr for notifications
+import { Router, NavigationExtras } from '@angular/router';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-
-  constructor(private router: Router, private toastr: ToastrService) { }
+  constructor(private toastr: ToastrService, private router: Router) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      catchError(error => {
-        if (error) {
-          switch (error.status) {
-            case 400:
-              if (error.error.errors) {
-                const modalStateErrors = [];
-                for (const key in error.error.errors) {
-                  if (error.error.errors[key]) {
-                    modalStateErrors.push(error.error.errors[key])
-                  }
+      catchError((error: any) => {
+        if (error instanceof HttpErrorResponse) {
+          // Handle Blob error response
+          if (error.error instanceof Blob) {
+            const reader = new FileReader();
+            const blob = error.error;
+
+            return new Observable<HttpEvent<unknown>>(observer => {
+              reader.onload = () => {
+                try {
+                  const jsonResponse = JSON.parse(reader.result as string);
+                  this.handleErrorResponse(jsonResponse, error.status);
+                  observer.error(jsonResponse); // Pass the parsed JSON error to the observer
+                } catch (e) {
+                  this.toastr.error('Failed to parse error response');
+                  observer.error('Failed to parse error response');
                 }
-                this.toastr.error(modalStateErrors.flat().toString());
-              } else {
-                this.toastr.error(error.error, error.status);
-              }
-              break;
-            case 401:
-              this.toastr.error(error.error, error.status);
-              break;
-            case 403:
-              this.toastr.error("Unauthorized", error.status);
-              break;
-            case 404:
-              this.toastr.error(error.error.title, error.status);
-              this.router.navigateByUrl('/not-found');
-              break;
-            case 500:
-              const navigationExtras: NavigationExtras = { state: { error: error.error } }
-              this.router.navigateByUrl('/server-error', navigationExtras);
-              break;
-            default:
-              this.toastr.error('Invalid api URL');
-              console.log(error);
-              break;
+              };
+
+              reader.onerror = () => {
+                this.toastr.error('Failed to read error response as Blob');
+                observer.error('Failed to read error response as Blob');
+              };
+
+              reader.readAsText(blob); // Read the Blob as text
+            });
+          } else {
+            // Handle standard error responses
+            this.handleErrorResponse(error.error, error.status);
           }
         }
         return throwError(error);
       })
-    )
+    );
+  }
+
+  private handleErrorResponse(error: any, status: any) {
+    switch (status) {
+      case 400:
+        if (error.errors) {
+          const modalStateErrors = [];
+          for (const key in error.errors) {
+            if (error.errors[key]) {
+              modalStateErrors.push(error.errors[key]);
+            }
+          }
+          this.toastr.error(modalStateErrors.flat().toString());
+        } else {
+          this.toastr.error(error.message, status);
+        }
+        break;
+      case 401:
+        this.toastr.error(error.error, status);
+        break;
+      case 403:
+        this.toastr.error("Unauthorized", status);
+        break;
+      case 404:
+        this.toastr.error(error.message, status);
+        break;
+      case 500:
+        const navigationExtras: NavigationExtras = { state: { error: error.error } };
+        this.router.navigateByUrl('/server-error', navigationExtras);
+        break;
+      default:
+        this.toastr.error('Invalid API URL');
+        console.log(error);
+        break;
+    }
   }
 }

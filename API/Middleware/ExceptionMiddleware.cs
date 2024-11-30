@@ -34,11 +34,11 @@ namespace Application.Middleware
             {
                 _logger.Error(ex, ex.Message);
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
                 var response = _env.IsDevelopment()
                     ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
-                    : new ApiException(context.Response.StatusCode, "Internal server error");
+                    : new ApiException(context.Response.StatusCode, "Bad request");
 
                 var options = new JsonSerializerOptions
                 { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };

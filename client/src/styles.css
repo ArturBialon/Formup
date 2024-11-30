@@ -16,15 +16,38 @@ body {
 button {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background-color: #0487FF;
+  border-color: black;
   border-radius: 5px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #0056b3;
+.btn-blue {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-color: black;
+  color: black;
+  background-color: #0487FF;
+}
+
+.btn-blue:hover {
+  background-color: #005db4;
+  color: rgb(0, 0, 0);
+}
+
+.btn-yellow {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-color: black;
+  color: black;
+  background-color: #FFD977;
+}
+
+.btn-yellow:hover {
+  background-color: #caac5e;
+  color: rgb(0, 0, 0);
 }
 
 .dashboard-layout {
@@ -39,4 +62,8 @@ button:hover {
 .content {
   flex-grow: 1;
   padding: 20px;
+}
+
+.dark-text {
+  color: #1a1a1a;
 }

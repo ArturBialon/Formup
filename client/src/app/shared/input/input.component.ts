@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ControlContainer, FormControl, FormGroupDirective } from '@angular/forms';
 import { ErrorMessage } from 'src/app/_interfaces/error-message.interface';
 import { DEFAULT_ERROR_MESSAGES } from '../validators/default-error-message';
@@ -8,7 +7,13 @@ import { createMask } from '@ngneat/input-mask';
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrl: './input.component.css'
+  styleUrl: './input.component.css',
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useExisting: FormGroupDirective
+    }
+  ],
 })
 export class InputComponent {
   @Input() controlName: string;

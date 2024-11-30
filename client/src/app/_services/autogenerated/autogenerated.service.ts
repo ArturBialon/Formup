@@ -1078,6 +1078,7 @@ export class LoginService implements ILoginService {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(user);
+        console.log('payload', content_);
 
         let options_ : any = {
             body: content_,
@@ -1092,6 +1093,7 @@ export class LoginService implements ILoginService {
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUserLogin(response_);
         })).pipe(_observableCatch((response_: any) => {
+            console.log('Error Response:', response_); // Log the full response
             if (response_ instanceof HttpResponseBase) {
                 try {
                     return this.processUserLogin(response_ as any);
@@ -1099,6 +1101,7 @@ export class LoginService implements ILoginService {
                     return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
                 }
             } else
+                console.error('Error Response:', response_); // Log the error response
                 return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
         }));
     }
@@ -1576,7 +1579,12 @@ export interface ForwarderRequestDTO {
 export interface UserResponseDTO {
     Id: number;
     UserName: string;
-    Token: string;
+    Token: ResponseTokenDTO;
+}
+
+export interface ResponseTokenDTO {
+    TokenType: string;
+    AccessToken: string;
 }
 
 export interface UserLoginDTO {
