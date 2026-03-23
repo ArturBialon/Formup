@@ -2,6 +2,7 @@
 using Domain.DTO;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
+using Domain.StaticMappers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,16 +26,7 @@ namespace Application.Services
         {
             var client = await _clientDbRepository.GetClientById(id);
 
-            return new ClientDTO
-            {
-                Id = id,
-                Name = client.Name,
-                Tax = client.Tax,
-                Street = client.Street,
-                Zip = client.Zip,
-                Coutry = client.Coutry,
-                Credit = client.Credit
-            };
+            return ClientMapper.MapClientToClientDto(client);
         }
 
         public async Task<bool> AddClient(ClientDTO client)

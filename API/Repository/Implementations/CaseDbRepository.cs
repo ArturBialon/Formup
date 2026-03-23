@@ -20,6 +20,7 @@ namespace Application.Repository.Implementations
         {
             _context = context;
         }
+
         public async Task<bool> AddCase(CaseRequestDTO caseDTO)
         {
             await _context.AddAsync(new Case
