@@ -4,6 +4,7 @@ using Domain.DTO.Response;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace Application.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetForwarderById(int id)
+        public async Task<IActionResult> GetForwarderById(Guid id)
         {
 
             ForwarderResponseDTO forwarder = await _forwarderService.GetForwarderById(id);
@@ -51,7 +52,7 @@ namespace Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteForwarder(int id)
+        public async Task<IActionResult> DeleteForwarder(Guid id)
         {
             var response = await _forwarderService.DeleteForwarderById(id);
             return Ok(response);

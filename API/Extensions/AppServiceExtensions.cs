@@ -17,7 +17,9 @@ namespace Application.Extensions
         {
             services.AddDbContext<FormupContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString("MssqlDbConnString"));
+                options.UseSqlServer(
+                    config.GetConnectionString("MssqlDbConnString"),
+                    b => b.MigrationsAssembly("Infrastructure"));
             });
 
             AngularServiceCreator.ConfigureSwaggerAsync().Wait();
@@ -28,8 +30,8 @@ namespace Application.Extensions
             services.AddTransient<IServiceProviderDbRepository, ServiceProviderDbRepository>();
             services.AddTransient<IForwarderService, ForwarderService>();
             services.AddTransient<IForwarderDbRepository, ForwarderDbRepository>();
-            services.AddTransient<ICaseService, CaseService>();
-            services.AddTransient<ICaseDbRepository, CaseDbRepository>();
+            services.AddTransient<IWorkCaseService, WorkCaseService>();
+            services.AddTransient<IWorkCaseDbRepository, WorkCaseDbRepository>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ITokenService, TokenService>();
 

@@ -2,6 +2,7 @@
 using Domain.DTO.Response;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Application.Services
             return isAdded;
         }
 
-        public async Task<bool> DeleteCost(int costId)
+        public async Task<bool> DeleteCost(Guid costId)
         {
             var costFromDb = await _dbRepository.GetCostById(costId);
             var isDeleted = await _dbRepository.DeleteCost(costFromDb);
@@ -36,9 +37,9 @@ namespace Application.Services
             return isEdited;
         }
 
-        public async Task<ICollection<CostResponseDTO>> GetCostsAttachedToCase(int caseId)
+        public async Task<ICollection<CostResponseDTO>> GetCostsAttachedToWorkCase(Guid caseId)
         {
-            return await _dbRepository.GetCostsAttachedToCase(caseId);
+            return await _dbRepository.GetCostsAttachedToWorkCase(caseId);
         }
     }
 }

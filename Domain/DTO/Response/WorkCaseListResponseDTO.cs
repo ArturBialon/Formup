@@ -1,8 +1,8 @@
 ﻿namespace Domain.DTO.Response
 {
-    public class CaseListResponseDTO
+    public class WorkCaseListResponseDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         public required string ClientName { get; set; }
         public required string ForwarderName { get; set; }

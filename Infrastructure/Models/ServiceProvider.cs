@@ -1,15 +1,15 @@
 ﻿#nullable disable
 
+using Infrastructure.Entity;
+
 namespace Infrastructure.Models
 {
-    public partial class ServiceProvider
+    public partial class ServiceProvider : Entity<ServiceProvider>
     {
         public ServiceProvider()
         {
             Costs = new HashSet<Cost>();
         }
-
-        public int Id { get; set; }
         public required string Tax { get; set; }
         public required string Name { get; set; }
         public required string Street { get; set; }

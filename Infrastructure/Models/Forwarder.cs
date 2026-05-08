@@ -1,21 +1,22 @@
 ﻿#nullable disable
 
+using Infrastructure.Entity;
+
 namespace Infrastructure.Models
 {
-    public partial class Forwarder
+    public partial class Forwarder : Entity<Forwarder>
     {
         public Forwarder()
         {
-            Cases = new HashSet<Case>();
+            WorkCases = new HashSet<WorkCase>();
         }
 
-        public int Id { get; set; }
         public required string Name { get; set; }
         public required string Surname { get; set; }
         public required string Prefix { get; set; }
         public byte[] PassHash { get; set; }
         public byte[] PassSalt { get; set; }
 
-        public virtual ICollection<Case> Cases { get; set; }
+        public virtual ICollection<WorkCase> WorkCases { get; set; }
     }
 }

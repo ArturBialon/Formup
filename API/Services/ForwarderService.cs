@@ -4,6 +4,7 @@ using Domain.DTO.Response;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
 using Domain.StaticMappers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace Application.Services
             _forwarderDbRepository = forwarderDbRepository;
         }
 
-        public async Task<bool> DeleteForwarderById(int id)
+        public async Task<bool> DeleteForwarderById(Guid id)
         {
             var forwarderToDelete = await _forwarderDbRepository.GetForwarderById(id);
             return forwarderToDelete == null ? throw new GetEntityException() : await _forwarderDbRepository.DeleteForwarder(forwarderToDelete);
@@ -41,7 +42,7 @@ namespace Application.Services
             return await _forwarderDbRepository.EditForwarder(forwarderToEdit, forwarderFromDb);
         }
 
-        public async Task<ForwarderResponseDTO> GetForwarderById(int id)
+        public async Task<ForwarderResponseDTO> GetForwarderById(Guid id)
         {
             var forwarderFromDb = await _forwarderDbRepository.GetForwarderById(id);
             return ForwarderMapper.MapForwarderToForwarderResponseDTO(forwarderFromDb);

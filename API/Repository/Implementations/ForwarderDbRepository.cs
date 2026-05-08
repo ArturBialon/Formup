@@ -22,7 +22,7 @@ namespace Application.Repository.Implementations
             _context = context;
         }
 
-        public async Task<Forwarder> GetForwarderById(int id)
+        public async Task<Forwarder> GetForwarderById(Forwarder.EntityId id)
         {
             var forwarder = await _context.Forwarders.Where(x => x.Id == id)
             .SingleOrDefaultAsync();

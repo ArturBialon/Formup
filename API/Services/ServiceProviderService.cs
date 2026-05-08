@@ -3,6 +3,7 @@ using Domain.DTO;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
 using Domain.StaticMappers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace Application.Services
             _serviceProviderRepository = serviceProviderRepository;
         }
 
-        public async Task<ServiceProviderDTO> GetProviderById(int id)
+        public async Task<ServiceProviderDTO> GetProviderById(Guid id)
         {
             var provider = await _serviceProviderRepository.GetProviderById(id);
             return ServiceProviderMapper.MapServiceProviderToDto(provider);
@@ -49,7 +50,7 @@ namespace Application.Services
             return isEdited;
         }
 
-        public async Task<bool> DeleteProvider(int id)
+        public async Task<bool> DeleteProvider(Guid id)
         {
             var providerFromDB = await _serviceProviderRepository.GetProviderById(id);
             return providerFromDB == null ? throw new GetEntityException() : await _serviceProviderRepository.DeleteProvider(providerFromDB);

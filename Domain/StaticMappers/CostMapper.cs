@@ -26,8 +26,6 @@ namespace Domain.StaticMappers
                 Name = cost.Name,
                 Amount = cost.Amount,
                 Tax = cost.Tax,
-                CasesId = cost.CasesId,
-                ServiceProvidersId = cost.ServiceProvidersId
             };
         }
 

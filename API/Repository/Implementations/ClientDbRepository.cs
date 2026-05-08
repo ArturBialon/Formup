@@ -20,7 +20,7 @@ namespace Application.Repository.Implementations
             _context = context;
         }
 
-        public async Task<Client> GetClientById(int id)
+        public async Task<Client> GetClientById(Client.EntityId id)
         {
             var response = await _context.Clients
                 .Where(x => x.Id == id)
@@ -38,7 +38,7 @@ namespace Application.Repository.Implementations
             return response;
         }
 
-        public async Task<Client> GetDuplicatedClient(string tax, int id)
+        public async Task<Client> GetDuplicatedClient(string tax, Client.EntityId id)
         {
             var response = await _context.Clients
                 .Where(x => x.Tax == tax && x.Id != id)

@@ -2,6 +2,7 @@
 using Domain.DTO;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Application.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetClientById(int id)
+        public async Task<IActionResult> GetClientById(Guid id)
         {
 
             var client = await _clientService.GetClientById(id);
@@ -56,7 +57,7 @@ namespace Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClient(int id)
+        public async Task<IActionResult> DeleteClient(Guid id)
         {
             var response = await _clientService.DeleteClientById(id);
             return Ok(response);

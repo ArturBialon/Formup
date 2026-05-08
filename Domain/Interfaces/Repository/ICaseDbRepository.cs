@@ -4,13 +4,14 @@ using Infrastructure.Models;
 
 namespace Domain.Interfaces.Repository
 {
-    public interface ICaseDbRepository
+    public interface IWorkCaseDbRepository
     {
-        public Task<ICollection<CaseListResponseDTO>> GetAllCases();
-        public Task<CaseResponseDTO> GetCaseById(int id);
-        public Task<Case> GetRawCaseById(int id);
-        public Task<bool> AddCase(CaseRequestDTO caseDTO);
-        public Task<bool> EditCase(CaseRequestDTO caseToEdit, Case caseFromDb);
-        public Task<bool> DeleteCase(Case caseFromDb);
+        public Task<ICollection<WorkCaseListResponseDTO>> GetAllWorkCases();
+        public Task<IEnumerable<WorkCase>> GetForwardersWorkCases(Forwarder.EntityId forwarderId);
+        public Task<WorkCaseResponseDTO> GetWorkCaseById(WorkCase.EntityId id);
+        public Task<WorkCase> GetRawWorkCaseById(WorkCase.EntityId id);
+        public Task<bool> AddWorkCase(WorkCaseRequestDTO caseDTO);
+        public Task<bool> EditWorkCase(WorkCaseRequestDTO caseToEdit, WorkCase caseFromDb);
+        public Task<bool> DeleteWorkCase(WorkCase caseFromDb);
     }
 }

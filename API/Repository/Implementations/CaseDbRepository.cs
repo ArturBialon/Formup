@@ -11,27 +11,22 @@ using System.Threading.Tasks;
 
 namespace Application.Repository.Implementations
 {
-    public class CaseDbRepository : ICaseDbRepository
+    public class WorkCaseDbRepository(FormupContext context, IForwarderDbRepository forwarderDbRepository) : IWorkCaseDbRepository
     {
-
-        private readonly FormupContext _context;
-
-        public CaseDbRepository(FormupContext context)
+        
+        public async Task<bool> AddWorkCase(WorkCaseRequestDTO caseDTO)
         {
-            _context = context;
-        }
+            var forwarder = await forwarderDbRepository.GetForwarderById(caseDTO.ForwarderId);
 
-        public async Task<bool> AddCase(CaseRequestDTO caseDTO)
-        {
-            await _context.AddAsync(new Case
+            await context.AddAsync(new WorkCase
             {
                 Name = caseDTO.Name,
                 Amount = caseDTO.Amount,
-                ForwardersId = caseDTO.ForwarderId,
+                Forwarders = forwarder,
                 Relation = caseDTO.Relation
             });
 
-            if (await _context.SaveChangesAsync() > 0)
+            if (await context.SaveChangesAsync() > 0)
             {
                 return true;
             }
@@ -39,10 +34,10 @@ namespace Application.Repository.Implementations
             throw new SavingException($"Could not save entity + {caseDTO.Name}");
         }
 
-        public async Task<bool> DeleteCase(Case caseFromDb)
+        public async Task<bool> DeleteWorkCase(WorkCase caseFromDb)
         {
-            _context.Remove(caseFromDb);
-            if (await _context.SaveChangesAsync() > 0)
+            context.Remove(caseFromDb);
+            if (await context.SaveChangesAsync() > 0)
             {
                 return true;
             }
@@ -50,46 +45,48 @@ namespace Application.Repository.Implementations
             throw new SavingException($"No changes made, Id: {caseFromDb.Id}");
         }
 
-        public async Task<bool> EditCase(CaseRequestDTO editedCase, Case caseFromDb)
+        public async Task<bool> EditWorkCase(WorkCaseRequestDTO editedWorkCase, WorkCase caseFromDb)
         {
-            caseFromDb.Name = editedCase.Name;
-            caseFromDb.Relation = editedCase.Relation;
-            caseFromDb.Amount = editedCase.Amount;
-            caseFromDb.ForwardersId = editedCase.ForwarderId;
+            var forwarder = await forwarderDbRepository.GetForwarderById(editedWorkCase.ForwarderId);
 
-            if (await _context.SaveChangesAsync() > 0)
+            caseFromDb.Name = editedWorkCase.Name;
+            caseFromDb.Relation = editedWorkCase.Relation;
+            caseFromDb.Amount = editedWorkCase.Amount;
+            caseFromDb.Forwarders = forwarder;
+
+            if (await context.SaveChangesAsync() > 0)
             {
                 return true;
             }
 
-            throw new SavingException($"No changes were made, Id: {editedCase.Id}");
+            throw new SavingException($"No changes were made, Id: {editedWorkCase.Id}");
         }
 
-        public async Task<CaseResponseDTO> GetCaseById(int id)
+        public async Task<WorkCaseResponseDTO> GetWorkCaseById(WorkCase.EntityId id)
         {
             decimal totalCost = 0;
             decimal totalSales = 0;
 
-            var costsList = await _context.Costs
-                .Where(x => x.CasesId == id)
+            var costsList = await context.Costs
+                .Where(x => x.WorkCase.Id == id)
                 .ToListAsync();
 
-            var salesList = await _context.Invoices
-                .Where(x => x.CasesId == id)
+            var salesList = await context.Invoices
+                .Where(x => x.WorkCase.Id == id)
                 .ToListAsync();
 
             totalCost = costsList.Sum(x => x.Amount);
             totalSales = salesList.Sum(x => x.Amount);
 
-            var response = await _context.Cases
+            var response = await context.WorkCases
             .Where(x => x.Id == id)
-            .Select(x => new CaseResponseDTO
+            .Select(x => new WorkCaseResponseDTO
             {
                 Id = x.Id,
                 Name = x.Name,
                 Amount = x.Amount,
                 Relation = x.Relation,
-                ClientName = x.Invoices.FirstOrDefault().Clients.Name,
+                ClientName = x.Invoices.FirstOrDefault().Client.Name,
                 ForwarderName = x.Forwarders.Name,
                 NumberOfInvoices = x.Invoices.Count,
                 TotalCosts = totalCost,
@@ -100,15 +97,15 @@ namespace Application.Repository.Implementations
             return response ?? throw new GetEntityException();
         }
 
-        public async Task<ICollection<CaseListResponseDTO>> GetAllCases()
+        public async Task<ICollection<WorkCaseListResponseDTO>> GetAllWorkCases()
         {
-            var response = new List<CaseListResponseDTO>();
+            var response = new List<WorkCaseListResponseDTO>();
 
-            response = await _context.Cases
-            .Select(x => new CaseListResponseDTO
+            response = await context.WorkCases
+            .Select(x => new WorkCaseListResponseDTO
             {
                 Name = x.Name,
-                ClientName = x.Invoices.FirstOrDefault().Clients.Name,
+                ClientName = x.Invoices.FirstOrDefault().Client.Name,
                 ForwarderName = x.Forwarders.Name,
                 NumberOfInvoices = x.Invoices.Count,
                 TotalCosts = x.Costs.ToList().Sum(x => x.Amount),
@@ -119,10 +116,16 @@ namespace Application.Repository.Implementations
             return response;
         }
 
-        public async Task<Case> GetRawCaseById(int id)
+        public async Task<WorkCase> GetRawWorkCaseById(WorkCase.EntityId id)
         {
-            var response = await _context.Cases.Where(x => x.Id == id).SingleOrDefaultAsync();
+            var response = await context.WorkCases.Where(x => x.Id == id).SingleOrDefaultAsync();
             return response ?? throw new GetEntityException();
+        }
+
+        public async Task<IEnumerable<WorkCase>> GetForwardersWorkCases(Forwarder.EntityId forwarderId)
+        {
+            var response = await context.WorkCases.Where(x => x.Forwarders.Id == forwarderId).ToListAsync();
+            return response;
         }
     }
 }

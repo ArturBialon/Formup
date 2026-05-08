@@ -1,23 +1,29 @@
 html {
   background-image: url('./assets/images/background.png');
   background-size: cover;
-  margin: 0;
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 body {
   background-color: #ffffff00;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .app-root {
   background-color: #ffffff00;
+  display: flex;
+  height: 100%;
 }
 
 .main-container {
+  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 button {

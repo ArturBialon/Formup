@@ -2,6 +2,7 @@
 using Domain.DTO;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Application.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProviderById(int id)
+        public async Task<IActionResult> GetProviderById(Guid id)
         {
 
             var provider = await _service.GetProviderById(id);
@@ -56,7 +57,7 @@ namespace Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProvider(int id)
+        public async Task<IActionResult> DeleteProvider(Guid id)
         {
             var response = await _service.DeleteProvider(id);
             return Ok(response);

@@ -20,7 +20,7 @@ namespace Application.Repository.Implementations
             _context = context;
         }
 
-        public async Task<ServiceProvider> GetProviderById(int id)
+        public async Task<ServiceProvider> GetProviderById(ServiceProvider.EntityId id)
         {
             var provider = await _context.ServiceProviders.Where(x => x.Id == id)
             .SingleOrDefaultAsync();
@@ -28,7 +28,7 @@ namespace Application.Repository.Implementations
             return provider ?? throw new GetEntityException();
         }
 
-        public async Task<ServiceProvider> GetDuplicatedProvider(int id, string tax)
+        public async Task<ServiceProvider> GetDuplicatedProvider(ServiceProvider.EntityId id, string tax)
         {
             var duplicate = await _context.ServiceProviders.Where(x => x.Tax == tax && x.Id != id).SingleOrDefaultAsync();
             return duplicate;

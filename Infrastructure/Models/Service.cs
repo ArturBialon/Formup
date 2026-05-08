@@ -1,15 +1,15 @@
 ﻿#nullable disable
 
+using Infrastructure.Entity;
+
 namespace Infrastructure.Models
 {
-    public partial class Service
+    public partial class Service : Entity<Service>
     {
-        public int Id { get; set; }
         public required string Name { get; set; }
         public decimal Amonut { get; set; }
         public int Tax { get; set; }
-        public int InvoicesId { get; set; }
 
-        public virtual Invoice Invoices { get; set; }
+        public virtual Invoice Invoice { get; set; }
     }
 }

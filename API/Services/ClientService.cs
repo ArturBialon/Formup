@@ -3,6 +3,7 @@ using Domain.DTO;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Services;
 using Domain.StaticMappers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace Application.Services
             return await _clientDbRepository.GetClients();
         }
 
-        public async Task<ClientDTO> GetClientById(int id)
+        public async Task<ClientDTO> GetClientById(Guid id)
         {
             var client = await _clientDbRepository.GetClientById(id);
 
@@ -59,7 +60,7 @@ namespace Application.Services
             return await _clientDbRepository.EditClient(editedClient, contractorFromDb);
         }
 
-        public async Task<bool> DeleteClientById(int id)
+        public async Task<bool> DeleteClientById(Guid id)
         {
             var clientToDelete = await _clientDbRepository.GetClientById(id);
             return await _clientDbRepository.DeleteClient(clientToDelete);
