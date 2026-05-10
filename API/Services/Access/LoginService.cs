@@ -22,6 +22,7 @@ namespace Application.Services
             _context = context;
             _tokenService = tokenService;
         }
+
         public async Task<UserResponseDTO> AddForwarder(ForwarderRequestDTO forwarder)
         {
             UserResponseDTO response = null;
@@ -69,7 +70,7 @@ namespace Application.Services
                 return response;
             }
 
-            throw new SavingException();
+            throw new RegistrationException();
         }
 
 

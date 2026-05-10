@@ -1,8 +1,5 @@
 ﻿using Application.Extensions.ServiceCreator;
-using Application.Repository.Implementations;
 using Application.Services;
-using Domain.Interfaces.Repository;
-using Domain.Interfaces.Services;
 using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -24,14 +21,6 @@ namespace Application.Extensions
 
             AngularServiceCreator.ConfigureSwaggerAsync().Wait();
 
-            services.AddTransient<IClientService, ClientService>();
-            services.AddTransient<IClientDbRepository, ClientDbRepository>();
-            services.AddTransient<IServiceProviderService, ServiceProviderService>();
-            services.AddTransient<IServiceProviderDbRepository, ServiceProviderDbRepository>();
-            services.AddTransient<IForwarderService, ForwarderService>();
-            services.AddTransient<IForwarderDbRepository, ForwarderDbRepository>();
-            services.AddTransient<IWorkCaseService, WorkCaseService>();
-            services.AddTransient<IWorkCaseDbRepository, WorkCaseDbRepository>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ITokenService, TokenService>();
 

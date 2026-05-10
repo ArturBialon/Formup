@@ -26,7 +26,7 @@ namespace Application
 
             services.AddAppServices(_config);
             services.AddIdentityServices(_config);
-            services.AddIdentityServices();
+            services.AddLoggingServices();
             services.AddControllers();
 
             //cert
