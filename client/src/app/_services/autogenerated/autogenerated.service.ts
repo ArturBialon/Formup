@@ -14,6 +14,127 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
+export interface IAuthService {
+    login(command: LoginCommand | null | undefined): Observable<UserResponseDTO | null>;
+    register(command: RegisterForwarderCommand | null | undefined): Observable<UserResponseDTO | null>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class AuthService implements IAuthService {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    login(command: LoginCommand | null | undefined): Observable<UserResponseDTO | null> {
+        let url_ = this.baseUrl + "/api/Auth/Login/login";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLogin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLogin(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
+        }));
+    }
+
+    protected processLogin(response: HttpResponseBase): Observable<UserResponseDTO | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponseDTO;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserResponseDTO | null>(null as any);
+    }
+
+    register(command: RegisterForwarderCommand | null | undefined): Observable<UserResponseDTO | null> {
+        let url_ = this.baseUrl + "/api/Auth/Register/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegister(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegister(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
+        }));
+    }
+
+    protected processRegister(response: HttpResponseBase): Observable<UserResponseDTO | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponseDTO;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserResponseDTO | null>(null as any);
+    }
+}
+
 export interface IBuggyService {
     getSecretIfLogged(): Observable<string | null>;
     getNotFound(): Observable<Forwarder | null>;
@@ -226,8 +347,8 @@ export class BuggyService implements IBuggyService {
 export interface IWorkCaseService {
     getWorkCases(): Observable<FileResponse>;
     getWorkCaseById(id: string): Observable<FileResponse>;
-    addWorkCase(transportWorkCase: WorkCaseRequestDTO | null | undefined): Observable<FileResponse>;
-    editWorkCase(transportWorkCase: WorkCaseRequestDTO | null | undefined): Observable<FileResponse>;
+    addWorkCase(): Observable<FileResponse>;
+    editWorkCase(): Observable<FileResponse>;
     deleteWorkCase(id: string): Observable<FileResponse>;
 }
 
@@ -351,18 +472,14 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    addWorkCase(transportWorkCase: WorkCaseRequestDTO | null | undefined): Observable<FileResponse> {
+    addWorkCase(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/AddWorkCase";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(transportWorkCase);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -407,18 +524,14 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    editWorkCase(transportWorkCase: WorkCaseRequestDTO | null | undefined): Observable<FileResponse> {
+    editWorkCase(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/EditWorkCase";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(transportWorkCase);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -522,8 +635,8 @@ export class WorkCaseService implements IWorkCaseService {
 export interface IClientService {
     getClients(): Observable<FileResponse>;
     getClientById(id: string): Observable<FileResponse>;
-    addClient(client: ClientDTO | null | undefined): Observable<FileResponse>;
-    editClient(client: ClientDTO | null | undefined): Observable<FileResponse>;
+    addClient(): Observable<FileResponse>;
+    editClient(): Observable<FileResponse>;
     deleteClient(id: string): Observable<FileResponse>;
 }
 
@@ -647,18 +760,14 @@ export class ClientService implements IClientService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    addClient(client: ClientDTO | null | undefined): Observable<FileResponse> {
+    addClient(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Client/AddClient";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(client);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -703,18 +812,14 @@ export class ClientService implements IClientService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    editClient(client: ClientDTO | null | undefined): Observable<FileResponse> {
+    editClient(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Client/EditClient";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(client);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -818,7 +923,7 @@ export class ClientService implements IClientService {
 export interface IForwarderService {
     getForwarders(): Observable<FileResponse>;
     getForwarderById(id: string): Observable<FileResponse>;
-    editForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<FileResponse>;
+    editForwarder(): Observable<FileResponse>;
     deleteForwarder(id: string): Observable<FileResponse>;
 }
 
@@ -942,18 +1047,14 @@ export class ForwarderService implements IForwarderService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    editForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<FileResponse> {
+    editForwarder(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Forwarder/EditForwarder";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(forwarder);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -1054,132 +1155,11 @@ export class ForwarderService implements IForwarderService {
     }
 }
 
-export interface ILoginService {
-    userLogin(user: UserLoginDTO | null | undefined): Observable<UserResponseDTO | null>;
-    addForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<UserResponseDTO | null>;
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class LoginService implements ILoginService {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    userLogin(user: UserLoginDTO | null | undefined): Observable<UserResponseDTO | null> {
-        let url_ = this.baseUrl + "/api/Login/UserLogin";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(user);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUserLogin(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUserLogin(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
-        }));
-    }
-
-    protected processUserLogin(response: HttpResponseBase): Observable<UserResponseDTO | null> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponseDTO;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<UserResponseDTO | null>(null as any);
-    }
-
-    addForwarder(forwarder: ForwarderRequestDTO | null | undefined): Observable<UserResponseDTO | null> {
-        let url_ = this.baseUrl + "/api/Login/AddForwarder/register";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(forwarder);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddForwarder(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAddForwarder(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<UserResponseDTO | null>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<UserResponseDTO | null>;
-        }));
-    }
-
-    protected processAddForwarder(response: HttpResponseBase): Observable<UserResponseDTO | null> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponseDTO;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<UserResponseDTO | null>(null as any);
-    }
-}
-
 export interface IServiceProvidersService {
     getProviders(): Observable<FileResponse>;
     getProviderById(id: string): Observable<FileResponse>;
-    addProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse>;
-    editProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse>;
+    addProvider(): Observable<FileResponse>;
+    editProvider(): Observable<FileResponse>;
     deleteProvider(id: string): Observable<FileResponse>;
 }
 
@@ -1303,18 +1283,14 @@ export class ServiceProvidersService implements IServiceProvidersService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    addProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse> {
+    addProvider(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/ServiceProviders/AddProvider";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(provider);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -1359,18 +1335,14 @@ export class ServiceProvidersService implements IServiceProvidersService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    editProvider(provider: ServiceProviderDTO | null | undefined): Observable<FileResponse> {
+    editProvider(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/ServiceProviders/EditProvider";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(provider);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             })
         };
@@ -1469,6 +1441,32 @@ export class ServiceProvidersService implements IServiceProvidersService {
         }
         return _observableOf<FileResponse>(null as any);
     }
+}
+
+export interface UserResponseDTO {
+    id?: EntityIdOfForwarder;
+    userName?: string | null;
+    token?: ResponseTokenDTO | null;
+}
+
+export interface EntityIdOfForwarder {
+    Value?: string;
+}
+
+export interface ResponseTokenDTO {
+    accessToken?: string | null;
+}
+
+export interface LoginCommand {
+    Name?: string | null;
+    Password?: string | null;
+}
+
+export interface RegisterForwarderCommand {
+    Name?: string | null;
+    Surname?: string | null;
+    Prefix?: string | null;
+    Password?: string | null;
 }
 
 export interface EntityOfForwarder {
@@ -1583,62 +1581,6 @@ export interface EntityIdOfInvoice {
 
 export interface EntityIdOfWorkCase {
     Value?: string;
-}
-
-export interface EntityIdOfForwarder {
-    Value?: string;
-}
-
-export interface WorkCaseRequestDTO {
-    id?: EntityIdOfWorkCase;
-    name?: string;
-    amount?: number | null;
-    relation?: string;
-    forwarderId?: string;
-}
-
-export interface ClientDTO {
-    id?: string;
-    tax?: string;
-    name?: string;
-    street?: string;
-    zip?: string;
-    coutry?: string;
-    credit?: number | null;
-}
-
-export interface ForwarderRequestDTO {
-    id?: EntityIdOfForwarder;
-    login?: string;
-    surname?: string;
-    prefix?: string;
-    passHash?: string;
-}
-
-export interface UserResponseDTO {
-    id?: string;
-    userName?: string;
-    token?: ResponseTokenDTO;
-}
-
-export interface ResponseTokenDTO {
-    accessToken?: string;
-}
-
-export interface UserLoginDTO {
-    id?: EntityIdOfForwarder;
-    login?: string;
-    prefix?: string;
-    password?: string;
-}
-
-export interface ServiceProviderDTO {
-    id?: string;
-    tax?: string;
-    name?: string;
-    street?: string;
-    zip?: string;
-    coutry?: string;
 }
 
 export interface FileResponse {

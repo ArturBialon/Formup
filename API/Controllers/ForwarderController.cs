@@ -1,5 +1,4 @@
 ﻿using Application.Controllers.Base;
-using Domain.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace Application.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditForwarder(ForwarderRequestDTO forwarder)
+        public async Task<IActionResult> EditForwarder()
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Models;
 
-namespace Domain.DTO.Request
+namespace Application.DTOs.Response
 {
     public class UserLoginDTO
     {

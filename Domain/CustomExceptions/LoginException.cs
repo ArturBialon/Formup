@@ -2,7 +2,7 @@
 {
     public class LoginException : Exception
     {
-        public LoginException() : base("Login failed due to invalid username or password.")
+        public LoginException() : base("Invalid username or password.")
         {
         }
 

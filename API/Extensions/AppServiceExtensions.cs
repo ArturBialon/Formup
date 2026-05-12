@@ -20,8 +20,6 @@ namespace Application.Extensions
             });
 
             AngularServiceCreator.ConfigureSwaggerAsync().Wait();
-
-            services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

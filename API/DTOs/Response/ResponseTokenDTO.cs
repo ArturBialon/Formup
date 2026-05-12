@@ -1,4 +1,4 @@
-﻿namespace Domain.DTO
+﻿namespace Application.DTOs.Response
 {
     public class ResponseTokenDTO
     {

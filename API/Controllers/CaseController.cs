@@ -1,5 +1,4 @@
 ﻿using Application.Controllers.Base;
-using Domain.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -22,13 +21,13 @@ namespace Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddWorkCase(WorkCaseRequestDTO transportWorkCase)
+        public async Task<IActionResult> AddWorkCase()
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditWorkCase(WorkCaseRequestDTO transportWorkCase)
+        public async Task<IActionResult> EditWorkCase()
         {
             throw new NotImplementedException();
         }

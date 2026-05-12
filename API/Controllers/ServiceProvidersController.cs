@@ -1,8 +1,6 @@
 ﻿using Application.Controllers.Base;
-using Domain.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.Controllers
@@ -23,13 +21,13 @@ namespace Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
+        public async Task<IActionResult> AddProvider()
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditProvider(ServiceProviderDTO provider)
+        public async Task<IActionResult> EditProvider()
         {
             throw new NotImplementedException();
         }

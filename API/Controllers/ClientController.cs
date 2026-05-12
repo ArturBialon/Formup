@@ -1,5 +1,4 @@
 ﻿using Application.Controllers.Base;
-using Domain.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -22,13 +21,13 @@ namespace Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddClient(ClientDTO client)
+        public async Task<IActionResult> AddClient()
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditClient(ClientDTO client)
+        public async Task<IActionResult> EditClient()
         {
             throw new NotImplementedException();
         }
