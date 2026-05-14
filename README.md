@@ -2,8 +2,7 @@
 
 Simplified system for forwarders that helps to track briefcase clearance.
 
-♦ You need to install SQL Server (microsoft) and create database with Management studio,
-then create tables with script (MSSQL/FWD_create.sql) and insert data (MSSQL/dataINIT.sql)
+♦ You need to install SQL Server (microsoft)
 
 ♦ After that change data source in appsettingss.json, specify name of Your server (mine is i4790k)
 <h3></h3>
