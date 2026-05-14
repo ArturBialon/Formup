@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+html {
+  background-image: url('./assets/images/background.png');
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: #ffffff00;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.app-root {
+  background-color: #ffffff00;
+  display: flex;
+  height: 100%;
+}
+
+.main-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #0487FF;
+  border-color: black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-blue {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-color: black;
+  color: black;
+  background-color: #0487FF;
+}
+
+.btn-blue:hover {
+  background-color: #005db4;
+  color: rgb(0, 0, 0);
+}
+
+.btn-yellow {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-color: black;
+  color: black;
+  background-color: #FFD977;
+}
+
+.btn-yellow:hover {
+  background-color: #caac5e;
+  color: rgb(0, 0, 0);
+}
+
+.dashboard-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: rgba(70, 70, 70, 0.8);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.dark-text {
+  color: #1a1a1a;
+}

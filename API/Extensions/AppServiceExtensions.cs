@@ -1,8 +1,5 @@
-﻿using Application.Extensions.ServiceCreator;
-using Application.Repository.Implementations;
+﻿using API.Extensions.ServiceCreator;
 using Application.Services;
-using Domain.Interfaces.Repository;
-using Domain.Interfaces.Services;
 using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -17,20 +14,15 @@ namespace Application.Extensions
         {
             services.AddDbContext<FormupContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString("MssqlDbConnString"));
+                options.UseSqlServer(
+                    config.GetConnectionString("MssqlDbConnString"),
+                    b => b.MigrationsAssembly("Infrastructure"));
             });
 
-            AngularServiceCreator.ConfigureSwaggerAsync().Wait();
+            services.AddMediatR(cfg => {
+                cfg.RegisterServicesFromAssembly(typeof(AppServiceExtensions).Assembly);
+            });
 
-            services.AddTransient<IClientService, ClientService>();
-            services.AddTransient<IClientDbRepository, ClientDbRepository>();
-            services.AddTransient<IServiceProviderService, ServiceProviderService>();
-            services.AddTransient<IServiceProviderDbRepository, ServiceProviderDbRepository>();
-            services.AddTransient<IForwarderService, ForwarderService>();
-            services.AddTransient<IForwarderDbRepository, ForwarderDbRepository>();
-            services.AddTransient<ICaseService, CaseService>();
-            services.AddTransient<ICaseDbRepository, CaseDbRepository>();
-            services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

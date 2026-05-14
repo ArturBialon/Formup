@@ -5,7 +5,7 @@ namespace Application.Extensions
 {
     public static class LoggerExtension
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        public static IServiceCollection AddLoggingServices(this IServiceCollection services)
         {
             Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()

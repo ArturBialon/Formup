@@ -1,10 +1,6 @@
 ﻿using Application.Controllers.Base;
-using Domain.DTO.Request;
-using Domain.DTO.Response;
-using Domain.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 
 namespace Application.Controllers
@@ -12,49 +8,28 @@ namespace Application.Controllers
     //[Authorize]
     public class ForwarderController : ApiControllerBase
     {
-        public readonly IForwarderService _forwarderService;
-        public ForwarderController(IForwarderService forwarderService)
-        {
-            _forwarderService = forwarderService;
-        }
-
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetForwarders()
         {
-
-            ICollection<ForwarderResponseDTO> forwarders = await _forwarderService.GetForwarders();
-
-            if (forwarders != null)
-                return Ok(forwarders);
-            else
-                return NotFound("No data");
+            throw new NotImplementedException();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetForwarderById(int id)
+        public async Task<IActionResult> GetForwarderById(Guid id)
         {
-
-            ForwarderResponseDTO forwarder = await _forwarderService.GetForwarderById(id);
-
-            if (forwarder != null)
-                return Ok(forwarder);
-            else
-                return NotFound("No records matching to given id");
+            throw new NotImplementedException();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditForwarder(ForwarderRequestDTO forwarder)
+        [HttpPut]
+        public async Task<IActionResult> EditForwarder()
         {
-            var response = await _forwarderService.EditForwarder(forwarder);
-            return Ok(response);
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteForwarder(int id)
+        public async Task<IActionResult> DeleteForwarder(Guid id)
         {
-            var response = await _forwarderService.DeleteForwarderById(id);
-            return Ok(response);
+            throw new NotImplementedException();
         }
 
     }

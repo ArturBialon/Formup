@@ -1,0 +1,1 @@
+dotnet ef migrations add --project "\Infrastructure\Infrastructure.csproj" --startup-project "\API\Application.csproj"

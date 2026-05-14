@@ -1,16 +1,24 @@
-﻿using System.Collections.Generic;
-using System.IO;
-
-namespace Application.Extensions.ServiceCreator
+﻿namespace API.Extensions.ServiceCreator
 {
     public static class InterfaceConverter
     {
         public static void ReadFile(string path)
         {
-            var lines = File.ReadLines(path);
-            LoopLines(lines, path);
+            List<string> lines;
+            using (var reader = new StreamReader(path))
+            {
+                lines = new List<string>();
+                while (!reader.EndOfStream)
+                {
+                    lines.Add(reader.ReadLine());
+                }
+            }
+
+            lines = LoopLines(lines);
+            SaveFile(lines, path);
         }
-        private static void LoopLines(IEnumerable<string> lines, string path)
+
+        private static List<string> LoopLines(IEnumerable<string> lines)
         {
             var newLines = new List<string>();
             var metInterface = false;
@@ -19,12 +27,15 @@ namespace Application.Extensions.ServiceCreator
             {
                 CreateNewLines(newLines, line, ref metInterface);
             }
+
+            return newLines;
         }
+
         private static void CreateNewLines(List<string> newLines, string line, ref bool metInterface)
         {
             string newLine;
 
-            if (Validators.IsViewModelInterfaceMet(line))
+            if (line.Contains("export interface") && line.Contains("DTO"))
             {
                 metInterface = true;
                 newLine = line;
@@ -41,7 +52,7 @@ namespace Application.Extensions.ServiceCreator
                 return;
             }
 
-            if (Validators.IsViewMdelInterfaceEnded(line))
+            if (line.Contains('}'))
             {
                 metInterface = false;
                 newLine = line;
@@ -50,7 +61,7 @@ namespace Application.Extensions.ServiceCreator
                 return;
             }
 
-            newLine = line.ChangeSecondLetterToLower();
+            newLine = line.ChangeFirstLetterToLower();
             newLine = newLine.ExtendTypes();
             newLine = newLine.AddOptional();
 

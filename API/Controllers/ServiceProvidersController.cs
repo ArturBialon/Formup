@@ -1,8 +1,7 @@
 ﻿using Application.Controllers.Base;
-using Domain.DTO;
-using Domain.Interfaces.Services;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 
 namespace Application.Controllers
@@ -10,56 +9,34 @@ namespace Application.Controllers
     //[Authorize]
     public class ServiceProvidersController : ApiControllerBase
     {
-
-        public readonly IServiceProviderService _service;
-        public ServiceProvidersController(IServiceProviderService proversService)
-        {
-            _service = proversService;
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetProviders()
         {
-
-            ICollection<ServiceProviderDTO> seriveProviders = await _service.GetProviders();
-
-            if (seriveProviders != null)
-                return Ok(seriveProviders);
-            else
-                return NotFound("No data");
+            throw new NotImplementedException();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProviderById(int id)
+        public async Task<IActionResult> GetProviderById(ServiceContractor.EntityId id)
         {
-
-            var provider = await _service.GetProviderById(id);
-
-            if (provider != null)
-                return Ok(provider);
-            else
-                return NotFound("No records matching to given id");
+            throw new NotImplementedException();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProvider(ServiceProviderDTO provider)
+        public async Task<IActionResult> AddProvider()
         {
-            var response = await _service.AddProvider(provider);
-            return Ok(response);
+            throw new NotImplementedException();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditProvider(ServiceProviderDTO provider)
+        [HttpPut]
+        public async Task<IActionResult> EditProvider()
         {
-            var response = await _service.EditProvider(provider);
-            return Ok(response);
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProvider(int id)
+        public async Task<IActionResult> DeleteProvider(ServiceContractor.EntityId id)
         {
-            var response = await _service.DeleteProvider(id);
-            return Ok(response);
+            throw new NotImplementedException();
         }
     }
 }

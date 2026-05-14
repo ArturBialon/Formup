@@ -1,0 +1,34 @@
+<div
+  class="form-group"
+  [class.required]="required"
+>
+  <label
+    *ngIf="label"
+    class="dark-text"
+    [for]="controlName"
+  >
+    {{ label }}
+  </label>
+
+  <input
+    [autocomplete]="false"
+    [id]="controlName"
+    class="input form-control shadow-none"
+    [type]="type"
+    [inputMask]="isMask && telephone"
+    [formControlName]="controlName"
+    [placeholder]="placeholder"
+    [attr.disabled]="disabled"
+    [autocomplete]="autocomplete"
+    [class.invalid]="getControl.invalid && (getControl.dirty || getControl.touched)"
+    [value]="formatAsCurrency(getControl.value)"
+  />
+  <div
+    class="invalid-feedback"
+    [class.show-invalid]="
+      getControl.invalid && (getControl.dirty || getControl.touched)
+    "
+  >
+    {{ errorMessage }}
+  </div>
+</div>
