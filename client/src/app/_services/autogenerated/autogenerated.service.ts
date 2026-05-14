@@ -346,7 +346,7 @@ export class BuggyService implements IBuggyService {
 
 export interface IWorkCaseService {
     getWorkCases(): Observable<FileResponse>;
-    getWorkCaseById(id: string): Observable<FileResponse>;
+    getWorkCaseById(id: EntityIdOfWorkCase): Observable<FileResponse>;
     addWorkCase(): Observable<FileResponse>;
     editWorkCase(): Observable<FileResponse>;
     deleteWorkCase(id: string): Observable<FileResponse>;
@@ -417,7 +417,7 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf<FileResponse>(null as any);
     }
 
-    getWorkCaseById(id: string): Observable<FileResponse> {
+    getWorkCaseById(id: EntityIdOfWorkCase): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/GetWorkCaseById/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");

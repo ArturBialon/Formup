@@ -1,12 +1,12 @@
-﻿using Infrastructure.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
 {
-    public class ServiceProviderConfiguration : EntityConfiguration<ServiceProvider>
+    public class ServiceProviderConfiguration : EntityConfiguration<ServiceContractor>
     {
-        protected override void ConfigureEntity(EntityTypeBuilder<ServiceProvider> entity)
+        protected override void ConfigureEntity(EntityTypeBuilder<ServiceContractor> entity)
         {
             entity.Property(e => e.Coutry)
                     .IsRequired()

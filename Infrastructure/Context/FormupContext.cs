@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 #nullable disable
@@ -23,7 +23,7 @@ namespace Infrastructure.Context
         public virtual DbSet<Forwarder> Forwarders { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Service> Services { get; set; }
-        public virtual DbSet<ServiceProvider> ServiceProviders { get; set; }
+        public virtual DbSet<ServiceContractor> ServiceProviders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

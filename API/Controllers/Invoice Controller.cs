@@ -1,5 +1,4 @@
 ﻿using Application.Controllers.Base;
-using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -7,34 +6,34 @@ using System.Threading.Tasks;
 namespace Application.Controllers
 {
     //[Authorize]
-    public class ServiceProvidersController : ApiControllerBase
+    public class InvoiceController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetProviders()
+        public async Task<IActionResult> GetInvoice()
         {
             throw new NotImplementedException();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProviderById(ServiceContractor.EntityId id)
+        public async Task<IActionResult> GetInvoiceById(Guid id)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProvider()
+        public async Task<IActionResult> AddInvoiceCase()
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditProvider()
+        public async Task<IActionResult> EditInvoiceCase()
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProvider(ServiceContractor.EntityId id)
+        public async Task<IActionResult> DeleteInvoiceCase(Guid id)
         {
             throw new NotImplementedException();
         }

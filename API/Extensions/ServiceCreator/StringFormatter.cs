@@ -1,4 +1,4 @@
-﻿namespace Application.Extensions.ServiceCreator
+﻿namespace API.Extensions.ServiceCreator
 {
     public static class StringFormatter
     {

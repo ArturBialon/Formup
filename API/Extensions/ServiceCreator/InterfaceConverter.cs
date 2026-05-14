@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-
-namespace Application.Extensions.ServiceCreator
+﻿namespace API.Extensions.ServiceCreator
 {
     public static class InterfaceConverter
     {

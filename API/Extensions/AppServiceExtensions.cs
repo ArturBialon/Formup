@@ -1,4 +1,4 @@
-﻿using Application.Extensions.ServiceCreator;
+﻿using API.Extensions.ServiceCreator;
 using Application.Services;
 using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
@@ -19,7 +19,10 @@ namespace Application.Extensions
                     b => b.MigrationsAssembly("Infrastructure"));
             });
 
-            AngularServiceCreator.ConfigureSwaggerAsync().Wait();
+            services.AddMediatR(cfg => {
+                cfg.RegisterServicesFromAssembly(typeof(AppServiceExtensions).Assembly);
+            });
+
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

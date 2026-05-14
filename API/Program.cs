@@ -2,16 +2,17 @@ using Application.Extensions;
 using Application.Middleware;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.Certificate;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi;
 using Serilog;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (args.Contains("--generate-angular"))
+{
+    await API.Extensions.ServiceCreator.AngularServiceCreator.ConfigureSwaggerAsync();
+    Environment.Exit(0);
+}
 
 // Serilog
 builder.Host.UseSerilog((context, services, configuration) => configuration
@@ -25,11 +26,6 @@ builder.Services.AddAppServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddLoggingServices();
 builder.Services.AddControllers();
-
-// CQRS setup
-builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
-});
 
 builder.Services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
     .AddCertificate();

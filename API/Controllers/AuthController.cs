@@ -4,14 +4,12 @@ using Application.Features.Forwarders.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Application.Controllers
 {
-    public class AuthController : ApiControllerBase
+    public class AuthController(IMediator mediator) : ApiControllerBase
     {
-        private readonly IMediator _mediator;
-        public AuthController(IMediator mediator) => _mediator = mediator;
+        private readonly IMediator _mediator = mediator;
 
         [AllowAnonymous]
         [HttpPost("login")]

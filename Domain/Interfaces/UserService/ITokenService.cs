@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models;
+﻿using Domain.Models;
 
 namespace Domain.Interfaces.UserAccessService
 {

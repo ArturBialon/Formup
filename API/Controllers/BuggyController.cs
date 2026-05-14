@@ -1,6 +1,6 @@
 ﻿using Application.Controllers.Base;
 using Infrastructure.Context;
-using Infrastructure.Models;
+using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ namespace Application.Controllers
         [HttpGet("not-found")]
         public ActionResult<Forwarder> GetNotFound()
         {
-            var thing = _context.Forwarders.Find(-1);
+            var thing = _context.Forwarders.Find(1);
             if (thing == null) return NotFound();
             return Ok();
         }

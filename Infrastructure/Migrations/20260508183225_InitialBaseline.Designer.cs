@@ -26,7 +26,7 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Infrastructure.Models.Client", b =>
+            modelBuilder.Entity("Domain.Models.Client", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -71,7 +71,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Cost", b =>
+            modelBuilder.Entity("Domain.Models.Cost", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -104,7 +104,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Costs");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Forwarder", b =>
+            modelBuilder.Entity("Domain.Models.Forwarder", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -142,7 +142,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Forwarders");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Invoice", b =>
+            modelBuilder.Entity("Domain.Models.Invoice", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -177,7 +177,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Service", b =>
+            modelBuilder.Entity("Domain.Models.Service", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -205,7 +205,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ServiceProvider", b =>
+            modelBuilder.Entity("Domain.Models.ServiceProvider", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -247,7 +247,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("ServiceProviders");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.WorkCase", b =>
+            modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -277,14 +277,14 @@ namespace Infrastructure.Migrations
                     b.ToTable("WorkCases");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Cost", b =>
+            modelBuilder.Entity("Domain.Models.Cost", b =>
                 {
-                    b.HasOne("Infrastructure.Models.ServiceProvider", "ServiceProvider")
+                    b.HasOne("Domain.Models.ServiceProvider", "ServiceProvider")
                         .WithMany("Costs")
                         .HasForeignKey("ServiceProviderId")
                         .HasConstraintName("Costs_Service_Providers");
 
-                    b.HasOne("Infrastructure.Models.WorkCase", "WorkCase")
+                    b.HasOne("Domain.Models.WorkCase", "WorkCase")
                         .WithMany("Costs")
                         .HasForeignKey("WorkCaseId")
                         .HasConstraintName("Costs_WorkCases");
@@ -294,14 +294,14 @@ namespace Infrastructure.Migrations
                     b.Navigation("WorkCase");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Invoice", b =>
+            modelBuilder.Entity("Domain.Models.Invoice", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Client", "Client")
+                    b.HasOne("Domain.Models.Client", "Client")
                         .WithMany("Invoices")
                         .HasForeignKey("ClientId")
                         .HasConstraintName("Invoices_Clients");
 
-                    b.HasOne("Infrastructure.Models.WorkCase", "WorkCase")
+                    b.HasOne("Domain.Models.WorkCase", "WorkCase")
                         .WithMany("Invoices")
                         .HasForeignKey("WorkCaseId")
                         .HasConstraintName("Invoices_WorkCases");
@@ -311,9 +311,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("WorkCase");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Service", b =>
+            modelBuilder.Entity("Domain.Models.Service", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Invoice", "Invoice")
+                    b.HasOne("Domain.Models.Invoice", "Invoice")
                         .WithMany("Services")
                         .HasForeignKey("InvoiceId")
                         .HasConstraintName("Service_Invoices");
@@ -321,9 +321,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.WorkCase", b =>
+            modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Forwarder", "Forwarders")
+                    b.HasOne("Domain.Models.Forwarder", "Forwarders")
                         .WithMany("WorkCases")
                         .HasForeignKey("ForwardersId")
                         .HasConstraintName("WorkCases_Forwarders");
@@ -331,27 +331,27 @@ namespace Infrastructure.Migrations
                     b.Navigation("Forwarders");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Client", b =>
+            modelBuilder.Entity("Domain.Models.Client", b =>
                 {
                     b.Navigation("Invoices");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Forwarder", b =>
+            modelBuilder.Entity("Domain.Models.Forwarder", b =>
                 {
                     b.Navigation("WorkCases");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.Invoice", b =>
+            modelBuilder.Entity("Domain.Models.Invoice", b =>
                 {
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.ServiceProvider", b =>
+            modelBuilder.Entity("Domain.Models.ServiceProvider", b =>
                 {
                     b.Navigation("Costs");
                 });
 
-            modelBuilder.Entity("Infrastructure.Models.WorkCase", b =>
+            modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
                     b.Navigation("Costs");
 

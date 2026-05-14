@@ -1,4 +1,4 @@
-﻿using Infrastructure.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +18,7 @@ namespace Infrastructure.Configurations
                 .HasMaxLength(2)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Forwarders)
+            entity.HasOne(d => d.Forwarder)
                 .WithMany(p => p.WorkCases)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("WorkCases_Forwarders");
