@@ -1,8 +1,6 @@
 ﻿using Application.Controllers.Base;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace Application.Controllers
 {

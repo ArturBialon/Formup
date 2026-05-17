@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
 {
-    public class ServiceProviderConfiguration : EntityConfiguration<ServiceContractor>
+    public class ServiceContractorConfiguration : EntityConfiguration<ServiceContractor>
     {
         protected override void ConfigureEntity(EntityTypeBuilder<ServiceContractor> entity)
         {

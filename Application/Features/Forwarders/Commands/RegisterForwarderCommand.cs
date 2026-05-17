@@ -1,8 +1,8 @@
 ﻿using Application.DTOs.Response;
 using Domain.CustomExceptions;
 using Domain.Interfaces.UserAccessService;
-using Infrastructure.Context;
 using Domain.Models;
+using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -21,9 +21,9 @@ namespace Application.Features.Forwarders.Commands
         public async Task<UserResponseDTO> Handle(RegisterForwarderCommand request, CancellationToken ct)
         {
             if (request.Password.Length < 6)
-                throw new RegistrationException("Password is too short");
+                throw new RegistrationException("Password is too short (min 30 characters)");
             if (request.Password.Length > 30)
-                throw new RegistrationException("Password is too long");
+                throw new RegistrationException("Password is too long (max 30 characters)");
 
             bool exists = await _context.Forwarders.AnyAsync(x =>
                 x.Name.Equals(request.Name, StringComparison.CurrentCultureIgnoreCase) ||

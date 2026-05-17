@@ -1,6 +1,6 @@
 ﻿using Application.Controllers.Base;
-using Infrastructure.Context;
 using Domain.Models;
+using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

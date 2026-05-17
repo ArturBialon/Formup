@@ -19,5 +19,6 @@ namespace Domain.Models
         public decimal Credit { get; set; }
 
         public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual ICollection<WorkCase> WorkCases { get; set; }
     }
 }

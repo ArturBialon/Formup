@@ -1,10 +1,7 @@
-﻿using API.Extensions.ServiceCreator;
-using Application.Services;
+﻿using Application.Services;
 using Domain.Interfaces.UserAccessService;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Extensions
 {
@@ -19,7 +16,8 @@ namespace Application.Extensions
                     b => b.MigrationsAssembly("Infrastructure"));
             });
 
-            services.AddMediatR(cfg => {
+            services.AddMediatR(cfg =>
+            {
                 cfg.RegisterServicesFromAssembly(typeof(AppServiceExtensions).Assembly);
             });
 

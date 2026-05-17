@@ -1,1 +1,1 @@
-dotnet ef database update --project "\Infrastructure\Infrastructure.csproj" --startup-project "\API\Application.csproj"
+dotnet ef database update WorkCaseAmendments --project Infrastructure --startup-project API

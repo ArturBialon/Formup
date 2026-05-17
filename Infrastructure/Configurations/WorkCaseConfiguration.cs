@@ -22,6 +22,11 @@ namespace Infrastructure.Configurations
                 .WithMany(p => p.WorkCases)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("WorkCases_Forwarders");
+
+            entity.HasOne(d => d.Client)
+                .WithMany(p => p.WorkCases)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("WorkCases_Clients");
         }
     }
 }
