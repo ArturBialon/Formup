@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Response;
+using Azure.Core;
 using Domain.CustomExceptions;
 using Domain.Models;
 using Infrastructure.Context;
@@ -7,28 +8,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Cases.Commands
 {
-    public record CreateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId) : IRequest<WorkCaseResponseDTO>;
+    public record CreateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId) : IRequest<WorkCaseResponseDTO>;
     public class CreateWorkCaseHandler(FormupContext context) : IRequestHandler<CreateWorkCaseCommand, WorkCaseResponseDTO>
     {
         private readonly FormupContext _context = context;
 
         public async Task<WorkCaseResponseDTO> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
-            var now = DateTime.Now;
             var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId, ct], ct) ?? throw new InstanceException(nameof(Forwarder), request.ForwarderId);
-
-            var monthlyWorkCaseAmount = await _context.WorkCases
-                .CountAsync(x => x.Forwarder.Id == forwarder.Id
-                && x.CreatedAt.Month == now.Month, ct);
-
-            var name = $"{request.Relation}/{monthlyWorkCaseAmount + 1}/{forwarder.Prefix}/{DateTime.Now.Month}/{DateTime.Now.Year}";
+            var client = await _context.Clients.FindAsync([request.ClientId, ct], ct) ?? throw new InstanceException(nameof(Client), request.ClientId);
+            
+            var name = await CreateWorkCaseName(request, forwarder, ct);
 
             _context.WorkCases.Add(new WorkCase
             {
                 Name = name,
                 Amount = request.Amount,
                 Relation = request.Relation,
-                Forwarder = forwarder
+                Forwarder = forwarder,
+                Client = client
             });
 
             await _context.SaveChangesAsync(ct);
@@ -36,8 +34,19 @@ namespace Application.Features.Cases.Commands
             {
                 Name = name,
                 Amount = request.Amount,
-                Relation = request.Relation
+                Relation = request.Relation,
+                IsAbandoned = false
             };
+        }
+
+        public async Task<string> CreateWorkCaseName(CreateWorkCaseCommand request, Forwarder forwarder, CancellationToken ct)
+        {
+            var now = DateTime.Now;
+            var monthlyWorkCaseAmount = await _context.WorkCases
+                .CountAsync(x => x.Forwarder.Id == forwarder.Id
+                && x.CreatedAt.Month == now.Month, ct);
+
+            return $"{request.Relation}/{monthlyWorkCaseAmount + 1}/{forwarder.Prefix}/{DateTime.Now.Month}/{DateTime.Now.Year}";
         }
     }
 }

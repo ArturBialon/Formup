@@ -1,4 +1,4 @@
-﻿using Application.Controllers.Base;
+﻿using API.Controllers.Base;
 using NJsonSchema.CodeGeneration.TypeScript;
 using NSwag;
 using NSwag.CodeGeneration.TypeScript;

@@ -1,8 +1,8 @@
-﻿using Application.Controllers.Base;
+﻿using API.Controllers.Base;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Controllers
+namespace API.Controllers
 {
     //[Authorize]
     public class ServiceProvidersController : ApiControllerBase

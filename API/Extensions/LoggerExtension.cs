@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace Application.Extensions
+namespace API.Extensions
 {
     public static class LoggerExtension
     {

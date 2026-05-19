@@ -1,11 +1,11 @@
-﻿using Application.Controllers.Base;
+﻿using API.Controllers.Base;
 using Application.DTOs.Response;
 using Application.Features.Forwarders.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Controllers
+namespace API.Controllers
 {
     public class AuthController(IMediator mediator) : ApiControllerBase
     {

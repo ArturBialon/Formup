@@ -1,9 +1,12 @@
-﻿using Application.Services;
+﻿using Application;
+using Application.Common;
+using Application.Services;
 using Domain.Interfaces.UserAccessService;
+using FluentValidation;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Extensions
+namespace API.Extensions
 {
     public static class AppServiceExtensions
     {
@@ -18,9 +21,11 @@ namespace Application.Extensions
 
             services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssembly(typeof(AppServiceExtensions).Assembly);
+                cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly);
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
-
+            services.AddValidatorsFromAssembly(typeof(CreateWorkCaseCommandValidator).Assembly);
+            services.AddValidatorsFromAssembly(typeof(UpdateWorkCaseCommandValidator).Assembly);
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

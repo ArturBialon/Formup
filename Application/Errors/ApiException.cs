@@ -1,15 +1,9 @@
 ﻿namespace Application.Errors
 {
-    public class ApiException
+    public class ApiException(int statusCode, string message = "null", string details = "null")
     {
-        public ApiException(int statusCode, string message = null, string details = null)
-        {
-            Status = statusCode;
-            Message = message;
-            Details = details;
-        }
-        public int Status { get; set; }
-        public string Message { get; set; }
-        public string Details { get; set; }
+        public int Status { get; set; } = statusCode;
+        public string Message { get; set; } = message;
+        public string Details { get; set; } = details;
     }
 }

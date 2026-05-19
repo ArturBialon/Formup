@@ -1,10 +1,10 @@
-﻿using Application.Controllers.Base;
+﻿using API.Controllers.Base;
 using Domain.Models;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Controllers
+namespace API.Controllers
 {
     [ApiController]
     [Route("api/bug")]

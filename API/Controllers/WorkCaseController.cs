@@ -1,15 +1,20 @@
-﻿using Application.Controllers.Base;
+﻿using API.Controllers.Base;
+using Application.Common.Models;
+using Application.DTOs.Response;
+using Application.Features.WorkCases.Queries;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Controllers
+namespace API.Controllers
 {
     //[Authorize]
     public class WorkCaseController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetWorkCases()
+        [ProducesResponseType(typeof(PagedResult<WorkCaseListDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetWorkCases([FromQuery] GetWorkCasesQuery query, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(query, ct);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
