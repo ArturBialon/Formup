@@ -14,7 +14,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProviderById(ServiceContractor.EntityId id)
+        public async Task<IActionResult> GetProviderById(Guid id)
         {
             throw new NotImplementedException();
         }

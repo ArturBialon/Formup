@@ -9,5 +9,5 @@
         public required string ForwarderName { get; set; }
         public required string ClientName { get; set; }
     }
-        
+
 }

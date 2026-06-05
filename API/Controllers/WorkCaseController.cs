@@ -1,6 +1,7 @@
 ﻿using API.Controllers.Base;
 using Application.Common.Models;
 using Application.DTOs.Response;
+using Application.Features.WorkCases.Commands;
 using Application.Features.WorkCases.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,27 +19,42 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWorkCaseById(Guid id)
+        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetWorkCaseById(Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetWorkCaseByIdQuery(id), ct);
+
+            if (result == null) return NotFound();
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddWorkCase()
+        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status201Created)]
+        public async Task<IActionResult> AddWorkCase([FromBody] CreateWorkCaseCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+            return CreatedAtAction(nameof(GetWorkCaseById), new { id = result.Id }, result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditWorkCase()
+        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> EditWorkCase([FromBody] UpdateWorkCaseCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+
+            if (result == null) return NotFound();
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWorkCase(Guid id)
+        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AbandonWorkCase(Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new AbandonWorkCaseCommand(id), ct);
+            return Ok(result);
         }
     }
 }

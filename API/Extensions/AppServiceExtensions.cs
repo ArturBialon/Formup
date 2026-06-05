@@ -1,7 +1,7 @@
 ﻿using Application;
 using Application.Common;
 using Application.Services;
-using Domain.Interfaces.UserAccessService;
+using Domain.Interfaces.UserService;
 using FluentValidation;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,7 @@ namespace API.Extensions
                 cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly);
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
-            services.AddValidatorsFromAssembly(typeof(CreateWorkCaseCommandValidator).Assembly);
-            services.AddValidatorsFromAssembly(typeof(UpdateWorkCaseCommandValidator).Assembly);
+            services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);
             services.AddScoped<ITokenService, TokenService>();
 
             return services;

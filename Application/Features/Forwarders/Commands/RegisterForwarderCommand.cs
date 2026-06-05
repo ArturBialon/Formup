@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Response;
 using Domain.CustomExceptions;
-using Domain.Interfaces.UserAccessService;
+using Domain.Interfaces.UserService;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -21,7 +21,7 @@ namespace Application.Features.Forwarders.Commands
         public async Task<UserResponseDTO> Handle(RegisterForwarderCommand request, CancellationToken ct)
         {
             if (request.Password.Length < 6)
-                throw new RegistrationException("Password is too short (min 30 characters)");
+                throw new RegistrationException("Password is too short (min 6 characters)");
             if (request.Password.Length > 30)
                 throw new RegistrationException("Password is too long (max 30 characters)");
 

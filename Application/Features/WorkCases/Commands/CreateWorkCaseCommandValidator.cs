@@ -1,5 +1,5 @@
 ﻿using Application.Common;
-using Application.Features.Cases.Commands;
+using Application.Features.WorkCases.Commands;
 using FluentValidation;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;

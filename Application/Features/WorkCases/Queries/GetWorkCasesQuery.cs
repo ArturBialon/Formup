@@ -43,7 +43,8 @@ namespace Application.Features.WorkCases.Queries
                 .OrderByDescending(x => x.Id)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
-                .Select(x => new WorkCaseListDTO {
+                .Select(x => new WorkCaseListDTO
+                {
                     Id = x.Id.Value,
                     Name = x.Name,
                     Amount = x.Amount,

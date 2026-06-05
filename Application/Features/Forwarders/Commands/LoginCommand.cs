@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Response;
 using Domain.CustomExceptions;
-using Domain.Interfaces.UserAccessService;
+using Domain.Interfaces.UserService;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

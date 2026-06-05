@@ -1,12 +1,11 @@
 ﻿using Application.DTOs.Response;
-using Azure.Core;
 using Domain.CustomExceptions;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Cases.Commands
+namespace Application.Features.WorkCases.Commands
 {
     public record CreateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId) : IRequest<WorkCaseResponseDTO>;
     public class CreateWorkCaseHandler(FormupContext context) : IRequestHandler<CreateWorkCaseCommand, WorkCaseResponseDTO>
@@ -15,12 +14,12 @@ namespace Application.Features.Cases.Commands
 
         public async Task<WorkCaseResponseDTO> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
-            var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId, ct], ct) ?? throw new InstanceException(nameof(Forwarder), request.ForwarderId);
-            var client = await _context.Clients.FindAsync([request.ClientId, ct], ct) ?? throw new InstanceException(nameof(Client), request.ClientId);
-            
+            var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId], ct) ?? throw new InstanceException(nameof(Forwarder), request.ForwarderId);
+            var client = await _context.Clients.FindAsync([request.ClientId], ct) ?? throw new InstanceException(nameof(Client), request.ClientId);
+
             var name = await CreateWorkCaseName(request, forwarder, ct);
 
-            _context.WorkCases.Add(new WorkCase
+            var created = _context.WorkCases.Add(new WorkCase
             {
                 Name = name,
                 Amount = request.Amount,
@@ -32,9 +31,15 @@ namespace Application.Features.Cases.Commands
             await _context.SaveChangesAsync(ct);
             return new WorkCaseResponseDTO
             {
+                Id = created.Entity.Id.Value,
                 Name = name,
                 Amount = request.Amount,
                 Relation = request.Relation,
+                ForwarderId = forwarder.Id.Value,
+                ForwarderName = forwarder.Name,
+                ClientId = client.Id.Value,
+                ClientName = client.Name,
+                Message = "Work case created successfully",
                 IsAbandoned = false
             };
         }

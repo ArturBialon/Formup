@@ -1,8 +1,9 @@
 ﻿using Application.Common;
-using Application.Features.Cases.Commands;
 using FluentValidation;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+
+namespace Application.Features.WorkCases.Commands;
 
 public class UpdateWorkCaseCommandValidator : AbstractValidator<UpdateWorkCaseCommand>
 {
