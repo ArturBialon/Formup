@@ -53,15 +53,13 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("TAX");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Zip")
                         .IsRequired()
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("ZIP");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
@@ -82,19 +80,20 @@ namespace Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<Guid?>("ServiceProviderId")
+                    b.Property<Guid?>("ServiceContractorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Tax")
-                        .HasColumnType("int")
-                        .HasColumnName("TAX");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("WorkCaseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceProviderId");
+                    b.HasIndex("ServiceContractorId");
 
                     b.HasIndex("WorkCaseId");
 
@@ -151,16 +150,17 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("IssueDate")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("Issue_Date");
 
                     b.Property<DateTime>("ServiceDate")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("Service_Date");
 
                     b.Property<int>("Tax")
-                        .HasColumnType("int")
-                        .HasColumnName("TAX");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("WorkCaseId")
                         .HasColumnType("uniqueidentifier");
@@ -192,8 +192,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.Property<int>("Tax")
-                        .HasColumnType("int")
-                        .HasColumnName("TAX");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -207,41 +208,66 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Coutry")
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(54)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(54)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(254)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(54)");
+                        .HasColumnType("varchar(254)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(150)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(80)");
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Tax")
                         .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("TAX");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Zip")
                         .IsRequired()
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("ZIP");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceProviders");
+                    b.ToTable("ServiceContractors");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkCase", b =>
@@ -256,13 +282,15 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<Guid?>("ForwarderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsAbandoned")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -287,17 +315,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Cost", b =>
                 {
-                    b.HasOne("Domain.Models.ServiceContractor", "ServiceProvider")
+                    b.HasOne("Domain.Models.ServiceContractor", "ServiceContractor")
                         .WithMany("Costs")
-                        .HasForeignKey("ServiceProviderId")
-                        .HasConstraintName("Costs_Service_Providers");
+                        .HasForeignKey("ServiceContractorId")
+                        .HasConstraintName("Costs_Service_Contractors");
 
                     b.HasOne("Domain.Models.WorkCase", "WorkCase")
                         .WithMany("Costs")
                         .HasForeignKey("WorkCaseId")
                         .HasConstraintName("Costs_WorkCases");
 
-                    b.Navigation("ServiceProvider");
+                    b.Navigation("ServiceContractor");
 
                     b.Navigation("WorkCase");
                 });

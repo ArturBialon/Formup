@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FormupContext))]
-    [Migration("20260508183225_InitialBaseline")]
+    [Migration("20260606170629_InitialBaseline")]
     partial class InitialBaseline
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("Polish_CI_AS")
-                .HasAnnotation("ProductVersion", "10.0.7")
+                .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -56,15 +56,13 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("TAX");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Zip")
                         .IsRequired()
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("ZIP");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
@@ -85,19 +83,20 @@ namespace Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<Guid?>("ServiceProviderId")
+                    b.Property<Guid?>("ServiceContractorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Tax")
-                        .HasColumnType("int")
-                        .HasColumnName("TAX");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("WorkCaseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceProviderId");
+                    b.HasIndex("ServiceContractorId");
 
                     b.HasIndex("WorkCaseId");
 
@@ -154,16 +153,17 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("IssueDate")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("Issue_Date");
 
                     b.Property<DateTime>("ServiceDate")
-                        .HasColumnType("date")
+                        .HasColumnType("datetime")
                         .HasColumnName("Service_Date");
 
                     b.Property<int>("Tax")
-                        .HasColumnType("int")
-                        .HasColumnName("TAX");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("WorkCaseId")
                         .HasColumnType("uniqueidentifier");
@@ -195,8 +195,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.Property<int>("Tax")
-                        .HasColumnType("int")
-                        .HasColumnName("TAX");
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -205,46 +206,71 @@ namespace Infrastructure.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("Domain.Models.ServiceProvider", b =>
+            modelBuilder.Entity("Domain.Models.ServiceContractor", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Coutry")
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(54)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(54)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(254)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(54)");
+                        .HasColumnType("varchar(254)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(150)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(80)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(80)");
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Tax")
                         .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("TAX");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Zip")
                         .IsRequired()
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("ZIP");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceProviders");
+                    b.ToTable("ServiceContractors");
                 });
 
             modelBuilder.Entity("Domain.Models.WorkCase", b =>
@@ -255,8 +281,19 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ForwardersId")
+                    b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("ForwarderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsAbandoned")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -272,24 +309,26 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ForwardersId");
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ForwarderId");
 
                     b.ToTable("WorkCases");
                 });
 
             modelBuilder.Entity("Domain.Models.Cost", b =>
                 {
-                    b.HasOne("Domain.Models.ServiceProvider", "ServiceProvider")
+                    b.HasOne("Domain.Models.ServiceContractor", "ServiceContractor")
                         .WithMany("Costs")
-                        .HasForeignKey("ServiceProviderId")
-                        .HasConstraintName("Costs_Service_Providers");
+                        .HasForeignKey("ServiceContractorId")
+                        .HasConstraintName("Costs_Service_Contractors");
 
                     b.HasOne("Domain.Models.WorkCase", "WorkCase")
                         .WithMany("Costs")
                         .HasForeignKey("WorkCaseId")
                         .HasConstraintName("Costs_WorkCases");
 
-                    b.Navigation("ServiceProvider");
+                    b.Navigation("ServiceContractor");
 
                     b.Navigation("WorkCase");
                 });
@@ -323,17 +362,26 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
-                    b.HasOne("Domain.Models.Forwarder", "Forwarders")
+                    b.HasOne("Domain.Models.Client", "Client")
                         .WithMany("WorkCases")
-                        .HasForeignKey("ForwardersId")
+                        .HasForeignKey("ClientId")
+                        .HasConstraintName("WorkCases_Clients");
+
+                    b.HasOne("Domain.Models.Forwarder", "Forwarder")
+                        .WithMany("WorkCases")
+                        .HasForeignKey("ForwarderId")
                         .HasConstraintName("WorkCases_Forwarders");
 
-                    b.Navigation("Forwarders");
+                    b.Navigation("Client");
+
+                    b.Navigation("Forwarder");
                 });
 
             modelBuilder.Entity("Domain.Models.Client", b =>
                 {
                     b.Navigation("Invoices");
+
+                    b.Navigation("WorkCases");
                 });
 
             modelBuilder.Entity("Domain.Models.Forwarder", b =>
@@ -346,7 +394,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("Domain.Models.ServiceProvider", b =>
+            modelBuilder.Entity("Domain.Models.ServiceContractor", b =>
                 {
                     b.Navigation("Costs");
                 });

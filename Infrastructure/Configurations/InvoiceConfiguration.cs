@@ -18,7 +18,10 @@ namespace Infrastructure.Configurations
                 .HasColumnType("datetime")
                 .HasColumnName("Service_Date");
 
-            entity.Property(e => e.Tax).HasColumnName("Tax");
+            entity.Property(e => e.Tax)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Invoices)

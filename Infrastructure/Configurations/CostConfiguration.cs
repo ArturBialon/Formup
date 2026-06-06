@@ -15,17 +15,20 @@ namespace Infrastructure.Configurations
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.Property(e => e.Tax).HasColumnName("TAX");
+            entity.Property(e => e.Tax)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Costs)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Costs_WorkCases");
 
-            entity.HasOne(d => d.ServiceProvider)
+            entity.HasOne(d => d.ServiceContractor)
                 .WithMany(p => p.Costs)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Costs_Service_Providers");
+                .HasConstraintName("Costs_Service_Contractors");
         }
     }
 }

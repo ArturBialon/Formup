@@ -1,5 +1,4 @@
 ﻿using Domain.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
@@ -8,8 +7,6 @@ namespace Infrastructure.Configurations
     {
         protected override void ConfigureEntity(EntityTypeBuilder<ServiceContractor> entity)
         {
-            entity.ToTable("ServiceContractors");
-
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(150)
