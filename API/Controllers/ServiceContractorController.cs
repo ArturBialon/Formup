@@ -1,11 +1,13 @@
 ﻿using API.Controllers.Base;
+using Application.DTOs.Response;
+using Application.Features.ServiceContractors.Commands;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     //[Authorize]
-    public class ServiceProvidersController : ApiControllerBase
+    public class ServiceContractorController : ApiControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetProviders()
@@ -20,9 +22,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProvider()
+        [ProducesResponseType(typeof(ServiceContractorResponseDTO), StatusCodes.Status201Created)]
+        public async Task<IActionResult> AddServiceContractor([FromBody] CreateServiceContractorCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+            return Ok(result);
         }
 
         [HttpPut]

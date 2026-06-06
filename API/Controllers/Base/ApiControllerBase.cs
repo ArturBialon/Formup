@@ -7,7 +7,7 @@ namespace API.Controllers.Base
     [ApiController]
     public abstract class ApiControllerBase() : ControllerBase
     {
-        private IMediator? _mediator;
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+        private ISender? _mediator;
+        protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
     }
 }

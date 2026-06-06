@@ -48,7 +48,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpPatch("abandon/{id}")]
         [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AbandonWorkCase(Guid id, CancellationToken ct)

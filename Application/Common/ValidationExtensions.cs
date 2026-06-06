@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Domain.Constants;
+using FluentValidation;
 namespace Application.Common
 {
     public static class ValidationExtensions

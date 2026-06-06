@@ -36,8 +36,6 @@ namespace Application.Features.Forwarders.Commands
                         throw new LoginException();
                 }
 
-                hmac.Dispose();
-
                 return new UserResponseDTO
                 {
                     UserName = userFromDb.Name,

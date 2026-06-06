@@ -51,7 +51,7 @@ namespace Application.Features.WorkCases.Commands
                 .CountAsync(x => x.Forwarder.Id == forwarder.Id
                 && x.CreatedAt.Month == now.Month, ct);
 
-            return $"{request.Relation}/{monthlyWorkCaseAmount + 1}/{forwarder.Prefix}/{DateTime.Now.Month}/{DateTime.Now.Year}";
+            return $"{request.Relation}/{monthlyWorkCaseAmount + 1}/{forwarder.Prefix}/{now.Month}/{now.Year}";
         }
     }
 }
