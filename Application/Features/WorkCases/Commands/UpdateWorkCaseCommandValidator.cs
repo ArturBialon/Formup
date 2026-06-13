@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkCases.Commands;
 
-public class CreateServiceContractorCommandValidator : AbstractValidator<CreateWorkCaseCommand>
+public class UpdateWorkCaseCommandValidator : AbstractValidator<UpdateWorkCaseCommand>
 {
     private readonly FormupContext _context;
 
-    public CreateServiceContractorCommandValidator(FormupContext context)
+    public UpdateWorkCaseCommandValidator(FormupContext context)
     {
         _context = context;
 
@@ -37,7 +37,7 @@ public class CreateServiceContractorCommandValidator : AbstractValidator<CreateW
                 if (client == null) return;
 
                 var totalAmountTaken = await _context.WorkCases
-                    .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
+                    .Where(x => x.Client.Id == client.Id && x.Id.Value != cmd.WorkCaseId && !x.IsAbandoned)
                     .SumAsync(x => x.Amount, ct);
 
                 var availableCredit = client.Credit - totalAmountTaken;
@@ -58,6 +58,5 @@ public class CreateServiceContractorCommandValidator : AbstractValidator<CreateW
                     context.AddFailure(failure);
                 }
             });
-
     }
 }

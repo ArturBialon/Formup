@@ -1,0 +1,92 @@
+{
+  "CLIENT": {
+    "VALIDATION": {
+      "NAME": {
+        "REQUIRED": "Client name is required.",
+        "TOO_LONG": "Client name cannot exceed 150 characters."
+      },
+      "TAX": {
+        "REQUIRED": "Tax number is required.",
+        "TOO_LONG": "Tax number cannot exceed 20 characters.",
+        "NOT_UNIQUE": "A client with this tax number already exists."
+      },
+      "COUNTRY": {
+        "REQUIRED": "Country is required.",
+        "TOO_LONG": "Country name is too long."
+      },
+      "CITY": {
+        "REQUIRED": "City is required.",
+        "TOO_LONG": "City name is too long."
+      },
+      "ZIP": {
+        "REQUIRED": "Postal code is required.",
+        "TOO_LONG": "Postal code is too long."
+      },
+      "STREET": {
+        "REQUIRED": "Street is required.",
+        "TOO_LONG": "Street name is too long."
+      },
+      "HOUSE_NUMBER": {
+        "REQUIRED": "House number is required.",
+        "TOO_LONG": "House number is too long."
+      },
+      "APARTMENT_NUMBER": {
+        "TOO_LONG": "Apartment number is too long."
+      },
+      "EMAIL": {
+        "INVALID_FORMAT": "The provided email address format is invalid.",
+        "TOO_LONG": "Email address is too long."
+      },
+      "PHONE_NUMBER": {
+        "TOO_LONG": "Phone number is too long."
+      }
+    }
+  },
+  "CONTRACTOR": {
+    "VALIDATION": {
+      "NAME": {
+        "REQUIRED": "Contractor name is required.",
+        "TOO_LONG": "Contractor name cannot exceed 150 characters."
+      },
+      "TAX": {
+        "REQUIRED": "Tax number is required.",
+        "TOO_LONG": "Tax number cannot exceed 20 characters.",
+        "NOT_UNIQUE": "A contractor with this tax number already exists."
+      },
+      "COUNTRY": {
+        "REQUIRED": "Country is required.",
+        "TOO_LONG": "Country name is too long."
+      },
+      "CITY": {
+        "REQUIRED": "City is required.",
+        "TOO_LONG": "City name is too long."
+      },
+      "ZIP": {
+        "REQUIRED": "Postal code is required.",
+        "TOO_LONG": "Postal code is too long."
+      },
+      "STREET": {
+        "REQUIRED": "Street is required.",
+        "TOO_LONG": "Street name is too long."
+      },
+      "HOUSE_NUMBER": {
+        "REQUIRED": "House number is required.",
+        "TOO_LONG": "House number is too long."
+      },
+      "APARTMENT_NUMBER": {
+        "TOO_LONG": "Apartment number is too long."
+      },
+      "EMAIL": {
+        "INVALID_FORMAT": "The provided email address format is invalid.",
+        "TOO_LONG": "Email address is too long."
+      },
+      "PHONE_NUMBER": {
+        "TOO_LONG": "Phone number is too long."
+      },
+      "RELATION": {
+        "REQUIRED": "Relation type required.",
+        "INVALID": "Invalid relation type, please select a valid option from the list."
+      }
+    }
+  }
+}
