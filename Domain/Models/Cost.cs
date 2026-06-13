@@ -11,6 +11,6 @@ namespace Domain.Models
         public required string Name { get; set; }
 
         public virtual WorkCase WorkCase { get; set; }
-        public virtual ServiceContractor ServiceProvider { get; set; }
+        public virtual ServiceContractor ServiceContractor { get; set; }
     }
 }

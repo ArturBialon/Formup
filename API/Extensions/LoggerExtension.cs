@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+﻿using Serilog;
 
-namespace Application.Extensions
+namespace API.Extensions
 {
     public static class LoggerExtension
     {

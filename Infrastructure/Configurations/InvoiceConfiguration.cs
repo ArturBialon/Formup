@@ -11,14 +11,17 @@ namespace Infrastructure.Configurations
             entity.Property(e => e.Amount).HasColumnType("decimal(15, 2)");
 
             entity.Property(e => e.IssueDate)
-                .HasColumnType("date")
+                .HasColumnType("datetime")
                 .HasColumnName("Issue_Date");
 
             entity.Property(e => e.ServiceDate)
-                .HasColumnType("date")
+                .HasColumnType("datetime")
                 .HasColumnName("Service_Date");
 
-            entity.Property(e => e.Tax).HasColumnName("TAX");
+            entity.Property(e => e.Tax)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Invoices)

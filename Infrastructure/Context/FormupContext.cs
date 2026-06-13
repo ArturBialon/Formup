@@ -23,7 +23,7 @@ namespace Infrastructure.Context
         public virtual DbSet<Forwarder> Forwarders { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Service> Services { get; set; }
-        public virtual DbSet<ServiceContractor> ServiceProviders { get; set; }
+        public virtual DbSet<ServiceContractor> ServiceContractors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

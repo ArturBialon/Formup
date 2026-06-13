@@ -1,0 +1,111 @@
+{
+  "WORK_CASE": {
+    "VALIDATION": {
+      "ID": {
+        "REQUIRED": "ID sprawy jest wymagane.",
+        "NOT_FOUND": "Sprawa o podanym ID nie istnieje."
+      },
+      "AMOUNT": {
+        "REQUIRED": "Kwota jest wymagana.",
+        "MUST_BE_POSITIVE": "Kwota musi być liczbą dodatnią."
+      },
+      "RELATION": {
+        "REQUIRED": "Relacja jest wymagana.",
+        "INVALID": "Niepoprawna relacja, wybierz prawidłową opcję z listy."
+      },
+      "CANNOT_ABANDON": "Nie można porzucić sprawy, do której przypisano koszty.",
+      "FORWARDER_NOT_FOUND": "Nie można znaleźć spedytora o podanym ID.",
+      "CLIENT_NOT_FOUND": "Nie można znaleźć klienta o podanym ID."
+    }
+  },
+  "CLIENT": {
+    "VALIDATION": {
+      "NAME": {
+        "REQUIRED": "Nazwa klienta jest wymagana.",
+        "TOO_LONG": "Nazwa klienta nie może przekraczać 150 znaków."
+      },
+      "TAX": {
+        "REQUIRED": "Numer NIP/podatkowy jest wymagany.",
+        "TOO_LONG": "Numer NIP/podatkowy nie może przekraczać 20 znaków.",
+        "NOT_UNIQUE": "Klient o podanym numerze NIP już istnieje w systemie."
+      },
+      "COUNTRY": {
+        "REQUIRED": "Kraj jest wymagany.",
+        "TOO_LONG": "Nazwa kraju jest za długa."
+      },
+      "CITY": {
+        "REQUIRED": "Miasto jest wymagane.",
+        "TOO_LONG": "Nazwa miasta jest za długa."
+      },
+      "ZIP": {
+        "REQUIRED": "Kod pocztowy jest wymagany.",
+        "TOO_LONG": "Kod pocztowy jest za długi."
+      },
+      "STREET": {
+        "REQUIRED": "Ulica jest wymagana.",
+        "TOO_LONG": "Nazwa ulicy jest za długa."
+      },
+      "HOUSE_NUMBER": {
+        "REQUIRED": "Numer budynku jest wymagany.",
+        "TOO_LONG": "Numer budynku jest za długi."
+      },
+      "APARTMENT_NUMBER": {
+        "TOO_LONG": "Numer lokalu jest za długi."
+      },
+      "EMAIL": {
+        "INVALID_FORMAT": "Podany adres e-mail ma niepoprawny format.",
+        "TOO_LONG": "Adres e-mail jest za długi."
+      },
+      "PHONE_NUMBER": {
+        "TOO_LONG": "Numer telefonu jest za długi."
+      }
+    }
+  },
+  "CONTRACTOR": {
+    "VALIDATION": {
+      "NAME": {
+        "REQUIRED": "Nazwa kontrahenta jest wymagana.",
+        "TOO_LONG": "Nazwa kontrahenta nie może przekraczać 150 znaków."
+      },
+      "TAX": {
+        "REQUIRED": "Numer NIP/podatkowy jest wymagany.",
+        "TOO_LONG": "Numer NIP/podatkowy nie może przekraczać 20 znaków.",
+        "NOT_UNIQUE": "Kontrahent o podanym numerze NIP już istnieje w systemie."
+      },
+      "COUNTRY": {
+        "REQUIRED": "Kraj jest wymagany.",
+        "TOO_LONG": "Nazwa kraju jest za długa."
+      },
+      "CITY": {
+        "REQUIRED": "Miasto jest wymagane.",
+        "TOO_LONG": "Nazwa miasta jest za długa."
+      },
+      "ZIP": {
+        "REQUIRED": "Kod pocztowy jest wymagany.",
+        "TOO_LONG": "Kod pocztowy jest za długi."
+      },
+      "STREET": {
+        "REQUIRED": "Ulica jest wymagana.",
+        "TOO_LONG": "Nazwa ulicy jest za długa."
+      },
+      "HOUSE_NUMBER": {
+        "REQUIRED": "Numer budynku jest wymagany.",
+        "TOO_LONG": "Numer budynku jest za długi."
+      },
+      "APARTMENT_NUMBER": {
+        "TOO_LONG": "Numer lokalu jest za długi."
+      },
+      "EMAIL": {
+        "INVALID_FORMAT": "Podany adres e-mail ma niepoprawny format.",
+        "TOO_LONG": "Adres e-mail jest za długi."
+      },
+      "PHONE_NUMBER": {
+        "TOO_LONG": "Numer telefonu jest za długi."
+      },
+      "RELATION": {
+        "REQUIRED": "Typ relacji jest wymagany.",
+        "INVALID": "Niepoprawny typ relacji, wybierz prawidłową opcję z listy."
+      }
+    }
+  }
+}

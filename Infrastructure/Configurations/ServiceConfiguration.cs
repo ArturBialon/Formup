@@ -15,7 +15,10 @@ namespace Infrastructure.Configurations
                 .HasMaxLength(30)
                 .IsUnicode(false);
 
-            entity.Property(e => e.Tax).HasColumnName("TAX");
+            entity.Property(e => e.Tax)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Invoice)
                 .WithMany(p => p.Services)

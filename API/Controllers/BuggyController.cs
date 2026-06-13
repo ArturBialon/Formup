@@ -1,20 +1,16 @@
-﻿using Application.Controllers.Base;
-using Infrastructure.Context;
+﻿using API.Controllers.Base;
 using Domain.Models;
+using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Application.Controllers
+namespace API.Controllers
 {
     [ApiController]
     [Route("api/bug")]
-    public class BuggyController : ApiControllerBase
+    public class BuggyController(FormupContext compContext) : ApiControllerBase
     {
-        private readonly FormupContext _context;
-        public BuggyController(FormupContext compContext)
-        {
-            _context = compContext;
-        }
+        private readonly FormupContext _context = compContext;
 
         [Authorize]
         [HttpGet("auth")]

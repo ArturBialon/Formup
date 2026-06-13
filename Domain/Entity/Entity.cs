@@ -16,7 +16,7 @@
             public readonly int CompareTo(EntityId other) => Value.CompareTo(other.Value);
 
             public static implicit operator Guid(EntityId value) => value.Value;
-            public static implicit operator EntityId(Guid entityId) => new EntityId(entityId);
+            public static implicit operator EntityId(Guid entityId) => new(entityId);
         }
     }
 }

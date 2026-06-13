@@ -1,6 +1,6 @@
 ﻿using Application.DTOs.Response;
 using Domain.CustomExceptions;
-using Domain.Interfaces.UserAccessService;
+using Domain.Interfaces.UserService;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -35,8 +35,6 @@ namespace Application.Features.Forwarders.Commands
                     if (computedHash[i] != userFromDb.PassHash[i])
                         throw new LoginException();
                 }
-
-                hmac.Dispose();
 
                 return new UserResponseDTO
                 {

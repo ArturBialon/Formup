@@ -1,9 +1,7 @@
-﻿using Application.Controllers.Base;
+﻿using API.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
-namespace Application.Controllers
+namespace API.Controllers
 {
     //[Authorize]
     public class ForwarderController : ApiControllerBase

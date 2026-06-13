@@ -28,14 +28,12 @@ namespace Infrastructure.Configurations
             entity.Property(e => e.Tax)
                 .IsRequired()
                 .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("TAX");
+                .IsUnicode(false);
 
             entity.Property(e => e.Zip)
                 .IsRequired()
                 .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("ZIP");
+                .IsUnicode(false);
         }
     }
 }

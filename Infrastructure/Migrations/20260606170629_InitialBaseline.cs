@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -16,10 +15,10 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TAX = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
+                    Tax = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Street = table.Column<string>(type: "varchar(80)", unicode: false, maxLength: 80, nullable: false),
-                    ZIP = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    Zip = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     Coutry = table.Column<string>(type: "varchar(54)", unicode: false, maxLength: 54, nullable: false),
                     Credit = table.Column<decimal>(type: "decimal(15,2)", nullable: false)
                 },
@@ -45,19 +44,24 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ServiceProviders",
+                name: "ServiceContractors",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TAX = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Street = table.Column<string>(type: "varchar(80)", unicode: false, maxLength: 80, nullable: false),
-                    ZIP = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    Coutry = table.Column<string>(type: "varchar(54)", unicode: false, maxLength: 54, nullable: false)
+                    Tax = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(54)", maxLength: 54, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Zip = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    HouseNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    ApartmentNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
+                    Email = table.Column<string>(type: "varchar(254)", unicode: false, maxLength: 254, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceProviders", x => x.Id);
+                    table.PrimaryKey("PK_ServiceContractors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,14 +72,22 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Relation = table.Column<string>(type: "varchar(2)", unicode: false, maxLength: 2, nullable: false),
-                    ForwardersId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    IsAbandoned = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    ForwarderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkCases", x => x.Id);
                     table.ForeignKey(
+                        name: "WorkCases_Clients",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "WorkCases_Forwarders",
-                        column: x => x.ForwardersId,
+                        column: x => x.ForwarderId,
                         principalTable: "Forwarders",
                         principalColumn: "Id");
                 });
@@ -86,18 +98,18 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(15,2)", nullable: false),
-                    TAX = table.Column<int>(type: "int", nullable: false),
+                    Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ServiceProviderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ServiceContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Costs", x => x.Id);
                     table.ForeignKey(
-                        name: "Costs_Service_Providers",
-                        column: x => x.ServiceProviderId,
-                        principalTable: "ServiceProviders",
+                        name: "Costs_Service_Contractors",
+                        column: x => x.ServiceContractorId,
+                        principalTable: "ServiceContractors",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "Costs_WorkCases",
@@ -111,9 +123,9 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TAX = table.Column<int>(type: "int", nullable: false),
-                    Issue_Date = table.Column<DateTime>(type: "date", nullable: false),
-                    Service_Date = table.Column<DateTime>(type: "date", nullable: false),
+                    Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
+                    Issue_Date = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Service_Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(15,2)", nullable: false),
                     WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -140,7 +152,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
                     Amonut = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    TAX = table.Column<int>(type: "int", nullable: false),
+                    Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
                     InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -154,9 +166,9 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Costs_ServiceProviderId",
+                name: "IX_Costs_ServiceContractorId",
                 table: "Costs",
-                column: "ServiceProviderId");
+                column: "ServiceContractorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Costs_WorkCaseId",
@@ -179,9 +191,14 @@ namespace Infrastructure.Migrations
                 column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkCases_ForwardersId",
+                name: "IX_WorkCases_ClientId",
                 table: "WorkCases",
-                column: "ForwardersId");
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkCases_ForwarderId",
+                table: "WorkCases",
+                column: "ForwarderId");
         }
 
         /// <inheritdoc />
@@ -194,16 +211,16 @@ namespace Infrastructure.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "ServiceProviders");
+                name: "ServiceContractors");
 
             migrationBuilder.DropTable(
                 name: "Invoices");
 
             migrationBuilder.DropTable(
-                name: "Clients");
+                name: "WorkCases");
 
             migrationBuilder.DropTable(
-                name: "WorkCases");
+                name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "Forwarders");
