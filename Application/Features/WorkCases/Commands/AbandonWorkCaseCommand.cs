@@ -4,12 +4,12 @@ using MediatR;
 
 namespace Application.Features.WorkCases.Commands
 {
-    public record AbandonWorkCaseCommand(Guid WorkCaseId) : IRequest<WorkCaseResponseDTO>;
-    public class AbandonWorkCaseHandler(FormupContext context) : IRequestHandler<AbandonWorkCaseCommand, WorkCaseResponseDTO?>
+    public record AbandonWorkCaseCommand(Guid WorkCaseId) : IRequest<WorkCaseResponse>;
+    public class AbandonWorkCaseHandler(FormupContext context) : IRequestHandler<AbandonWorkCaseCommand, WorkCaseResponse?>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<WorkCaseResponseDTO?> Handle(AbandonWorkCaseCommand request, CancellationToken ct)
+        public async Task<WorkCaseResponse?> Handle(AbandonWorkCaseCommand request, CancellationToken ct)
         {
             var workCase = await _context.WorkCases.FindAsync([request.WorkCaseId], ct);
             if (workCase == null) return null;
@@ -17,7 +17,7 @@ namespace Application.Features.WorkCases.Commands
             workCase.IsAbandoned = true;
             await _context.SaveChangesAsync(ct);
 
-            return new WorkCaseResponseDTO
+            return new WorkCaseResponse
             {
                 Id = workCase.Id.Value,
                 Name = workCase.Name,

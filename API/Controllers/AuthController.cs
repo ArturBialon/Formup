@@ -10,14 +10,14 @@ namespace API.Controllers
     {
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<UserResponseDTO>> Login(LoginCommand command)
+        public async Task<ActionResult<UserResponse>> Login(LoginCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
 
         [Authorize]
         [HttpPost("register")]
-        public async Task<ActionResult<UserResponseDTO>> Register(RegisterForwarderCommand command)
+        public async Task<ActionResult<UserResponse>> Register(RegisterForwarderCommand command)
         {
             return Ok(await Mediator.Send(command));
         }

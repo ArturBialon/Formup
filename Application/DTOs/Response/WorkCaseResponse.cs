@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.Response
 {
-    public class WorkCaseResponseDTO
+    public class WorkCaseResponse
     {
         public required Guid Id { get; set; }
         public required string Name { get; set; }

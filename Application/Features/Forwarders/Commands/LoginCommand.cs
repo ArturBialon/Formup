@@ -9,14 +9,14 @@ using System.Text;
 
 namespace Application.Features.Forwarders.Commands
 {
-    public record LoginCommand(string Name, string Password) : IRequest<UserResponseDTO>;
+    public record LoginCommand(string Name, string Password) : IRequest<UserResponse>;
 
-    public class LoginHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<LoginCommand, UserResponseDTO>
+    public class LoginHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<LoginCommand, UserResponse>
     {
         private readonly FormupContext _context = context;
         private readonly ITokenService _tokenService = tokenService;
 
-        public async Task<UserResponseDTO> Handle(LoginCommand request, CancellationToken ct)
+        public async Task<UserResponse> Handle(LoginCommand request, CancellationToken ct)
         {
             var userFromDb = await _context.Forwarders
             .SingleOrDefaultAsync(x => x.Name == request.Name, ct);
@@ -36,10 +36,10 @@ namespace Application.Features.Forwarders.Commands
                         throw new LoginException();
                 }
 
-                return new UserResponseDTO
+                return new UserResponse
                 {
                     UserName = userFromDb.Name,
-                    Token = new ResponseTokenDTO { AccessToken = _tokenService.CreateToken(userFromDb), TokenType = "Bearer" }
+                    Token = new ResponseToken { AccessToken = _tokenService.CreateToken(userFromDb), TokenType = "Bearer" }
                 };
             }
         }

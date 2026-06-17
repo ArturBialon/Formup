@@ -13,15 +13,15 @@ namespace Application.Features.WorkCases.Queries
         Guid? ForwarderId = null,
         Guid? ClientId = null,
         string? SearchPhrase = null
-    ) : IRequest<PagedResult<WorkCaseListDTO>>;
+    ) : IRequest<PagedResult<WorkCaseList>>;
 
-    public class GetWorkCasesHandler : IRequestHandler<GetWorkCasesQuery, PagedResult<WorkCaseListDTO>>
+    public class GetWorkCasesHandler : IRequestHandler<GetWorkCasesQuery, PagedResult<WorkCaseList>>
     {
         private readonly FormupContext _context;
 
         public GetWorkCasesHandler(FormupContext context) => _context = context;
 
-        public async Task<PagedResult<WorkCaseListDTO>> Handle(GetWorkCasesQuery request, CancellationToken ct)
+        public async Task<PagedResult<WorkCaseList>> Handle(GetWorkCasesQuery request, CancellationToken ct)
         {
             var query = _context.WorkCases.AsNoTracking();
 
@@ -43,7 +43,7 @@ namespace Application.Features.WorkCases.Queries
                 .OrderByDescending(x => x.Id)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
-                .Select(x => new WorkCaseListDTO
+                .Select(x => new WorkCaseList
                 {
                     Id = x.Id.Value,
                     Name = x.Name,
@@ -54,7 +54,7 @@ namespace Application.Features.WorkCases.Queries
                 })
                 .ToListAsync(ct);
 
-            return new PagedResult<WorkCaseListDTO>(items, totalCount, request.PageNumber, request.PageSize);
+            return new PagedResult<WorkCaseList>(items, totalCount, request.PageNumber, request.PageSize);
         }
     }
 }

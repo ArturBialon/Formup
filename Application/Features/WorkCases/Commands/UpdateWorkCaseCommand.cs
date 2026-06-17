@@ -4,12 +4,12 @@ using MediatR;
 
 namespace Application.Features.WorkCases.Commands
 {
-    public record UpdateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId, Guid WorkCaseId) : IRequest<WorkCaseResponseDTO>;
-    public class EditWorkCaseHandler(FormupContext context) : IRequestHandler<UpdateWorkCaseCommand, WorkCaseResponseDTO?>
+    public record UpdateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId, Guid WorkCaseId) : IRequest<WorkCaseResponse>;
+    public class EditWorkCaseHandler(FormupContext context) : IRequestHandler<UpdateWorkCaseCommand, WorkCaseResponse?>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<WorkCaseResponseDTO?> Handle(UpdateWorkCaseCommand request, CancellationToken ct)
+        public async Task<WorkCaseResponse?> Handle(UpdateWorkCaseCommand request, CancellationToken ct)
         {
             var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId], ct);
             var client = await _context.Clients.FindAsync([request.ClientId], ct);
@@ -31,7 +31,7 @@ namespace Application.Features.WorkCases.Commands
 
             await _context.SaveChangesAsync(ct);
 
-            return new WorkCaseResponseDTO
+            return new WorkCaseResponse
             {
                 Id = workCase.Id.Value,
                 Name = workCase.Name,

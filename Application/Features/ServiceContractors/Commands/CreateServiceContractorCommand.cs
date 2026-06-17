@@ -17,14 +17,14 @@ namespace Application.Features.ServiceContractors.Commands
         string? ApartmentNumber,
         string? Email,
         string? PhoneNumber
-    ) : IRequest<ServiceContractorResponseDTO>;
+    ) : IRequest<ServiceContractorResponse>;
 
     public class CreateServiceContractorHandler(FormupContext context)
-        : IRequestHandler<CreateServiceContractorCommand, ServiceContractorResponseDTO>
+        : IRequestHandler<CreateServiceContractorCommand, ServiceContractorResponse>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<ServiceContractorResponseDTO> Handle(CreateServiceContractorCommand request, CancellationToken ct)
+        public async Task<ServiceContractorResponse> Handle(CreateServiceContractorCommand request, CancellationToken ct)
         {
             var contractor = new ServiceContractor
             {
@@ -43,7 +43,7 @@ namespace Application.Features.ServiceContractors.Commands
             var created = _context.ServiceContractors.Add(contractor);
             await _context.SaveChangesAsync(ct);
 
-            return new ServiceContractorResponseDTO
+            return new ServiceContractorResponse
             {
                 Id = created.Entity.Id.Value,
                 Name = created.Entity.Name,

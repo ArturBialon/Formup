@@ -11,14 +11,14 @@ using System.Text;
 namespace Application.Features.Forwarders.Commands
 {
     public record RegisterForwarderCommand(string Name, string Surname, string Prefix, string Password)
-    : IRequest<UserResponseDTO>;
+    : IRequest<UserResponse>;
 
-    public class RegisterForwarderHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<RegisterForwarderCommand, UserResponseDTO>
+    public class RegisterForwarderHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<RegisterForwarderCommand, UserResponse>
     {
         private readonly FormupContext _context = context;
         private readonly ITokenService _tokenService = tokenService;
 
-        public async Task<UserResponseDTO> Handle(RegisterForwarderCommand request, CancellationToken ct)
+        public async Task<UserResponse> Handle(RegisterForwarderCommand request, CancellationToken ct)
         {
             if (request.Password.Length < 6)
                 throw new RegistrationException("Password is too short (min 6 characters)");
@@ -46,10 +46,10 @@ namespace Application.Features.Forwarders.Commands
 
             if (await _context.SaveChangesAsync(ct) > 0)
             {
-                return new UserResponseDTO
+                return new UserResponse
                 {
                     UserName = newForwarder.Name,
-                    Token = new ResponseTokenDTO { AccessToken = _tokenService.CreateToken(newForwarder) }
+                    Token = new ResponseToken { AccessToken = _tokenService.CreateToken(newForwarder) }
                 };
             }
 

@@ -11,7 +11,7 @@ namespace API.Controllers
     public class WorkCaseController : ApiControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(typeof(PagedResult<WorkCaseListDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<WorkCaseList>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetWorkCases([FromQuery] GetWorkCasesQuery query, CancellationToken ct)
         {
             var result = await Mediator.Send(query, ct);
@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetWorkCaseById(Guid id, CancellationToken ct)
         {
@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status201Created)]
         public async Task<IActionResult> AddWorkCase([FromBody] CreateWorkCaseCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -38,7 +38,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditWorkCase([FromBody] UpdateWorkCaseCommand command, CancellationToken ct)
         {
@@ -49,7 +49,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("abandon/{id}")]
-        [ProducesResponseType(typeof(WorkCaseResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AbandonWorkCase(Guid id, CancellationToken ct)
         {

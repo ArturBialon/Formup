@@ -1,7 +1,7 @@
 ﻿
 namespace Application.DTOs.Response
 {
-    public class ServiceContractorResponseDTO
+    public class ServiceContractorResponse
     {
         public required Guid Id { get; set; }
         public required string Name { get; set; }

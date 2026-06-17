@@ -1,9 +1,9 @@
 ﻿namespace Application.DTOs.Response
 {
-    public class UserResponseDTO
+    public class UserResponse
     {
         public Guid Id { get; set; }
         public required string UserName { get; set; }
-        public required ResponseTokenDTO Token { get; set; }
+        public required ResponseToken Token { get; set; }
     }
 }

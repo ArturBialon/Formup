@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkCases.Commands
 {
-    public record CreateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId) : IRequest<WorkCaseResponseDTO>;
-    public class CreateWorkCaseHandler(FormupContext context) : IRequestHandler<CreateWorkCaseCommand, WorkCaseResponseDTO>
+    public record CreateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId) : IRequest<WorkCaseResponse>;
+    public class CreateWorkCaseHandler(FormupContext context) : IRequestHandler<CreateWorkCaseCommand, WorkCaseResponse>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<WorkCaseResponseDTO> Handle(CreateWorkCaseCommand request, CancellationToken ct)
+        public async Task<WorkCaseResponse> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
             var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId], ct) ?? throw new InstanceException(nameof(Forwarder), request.ForwarderId);
             var client = await _context.Clients.FindAsync([request.ClientId], ct) ?? throw new InstanceException(nameof(Client), request.ClientId);
@@ -29,7 +29,7 @@ namespace Application.Features.WorkCases.Commands
             });
 
             await _context.SaveChangesAsync(ct);
-            return new WorkCaseResponseDTO
+            return new WorkCaseResponse
             {
                 Id = created.Entity.Id.Value,
                 Name = name,
