@@ -14,6 +14,5 @@ namespace Application.DTOs.Response
         public string? ApartmentNumber { get; set; }
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
-        public string Message { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Response;
+﻿using Application.Common.Results;
+using Application.DTOs.Response;
 using Domain.CustomExceptions;
 using Domain.Interfaces.UserService;
 using Infrastructure.Context;
@@ -9,14 +10,14 @@ using System.Text;
 
 namespace Application.Features.Forwarders.Commands
 {
-    public record LoginCommand(string Name, string Password) : IRequest<UserResponse>;
+    public record LoginCommand(string Name, string Password) : IRequest<AppResult<UserResponse>>;
 
-    public class LoginHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<LoginCommand, UserResponse>
+    public class LoginHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<LoginCommand, AppResult<UserResponse>>
     {
         private readonly FormupContext _context = context;
         private readonly ITokenService _tokenService = tokenService;
 
-        public async Task<UserResponse> Handle(LoginCommand request, CancellationToken ct)
+        public async Task<AppResult<UserResponse>> Handle(LoginCommand request, CancellationToken ct)
         {
             var userFromDb = await _context.Forwarders
             .SingleOrDefaultAsync(x => x.Name == request.Name, ct);
@@ -36,11 +37,13 @@ namespace Application.Features.Forwarders.Commands
                         throw new LoginException();
                 }
 
-                return new UserResponse
+                var response = new UserResponse
                 {
                     UserName = userFromDb.Name,
                     Token = new ResponseToken { AccessToken = _tokenService.CreateToken(userFromDb), TokenType = "Bearer" }
                 };
+
+                return AppResult<UserResponse>.Success(response);
             }
         }
     }

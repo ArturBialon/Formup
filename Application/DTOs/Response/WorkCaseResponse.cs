@@ -11,6 +11,5 @@
         public string ForwarderName { get; set; } = string.Empty;
         public Guid ClientId { get; set; }
         public string ClientName { get; set; } = string.Empty;
-        public string Message { get; set; } = string.Empty;
     }
 }

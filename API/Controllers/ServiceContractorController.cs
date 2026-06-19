@@ -1,6 +1,8 @@
 ﻿using API.Controllers.Base;
+using Application.Common.Models;
 using Application.DTOs.Response;
 using Application.Features.ServiceContractors.Commands;
+using Application.Features.ServiceContractors.Queries;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,36 +11,49 @@ namespace API.Controllers
     //[Authorize]
     public class ServiceContractorController : ApiControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetProviders()
-        {
-            throw new NotImplementedException();
-        }
+        //[HttpGet]
+        //[ProducesResponseType(typeof(PagedResult<ServiceContractorResponse>), StatusCodes.Status200OK)]
+        //public async Task<IActionResult> GetServiceContractors([FromQuery] GetServiceContractorsQuery query, CancellationToken ct)
+        //{
+        //    var result = await Mediator.Send(query, ct);
+        //    return HandleResult(result);
+        //}
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProviderById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        //[HttpGet("{id}")]
+        //[ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
+        //public async Task<IActionResult> GetServiceContractorById(Guid id, CancellationToken ct)
+        //{
+        //    var result = await Mediator.Send(new GetServiceContractorByIdQuery(id), ct);
+        //    return HandleResult(result);
+        //}
 
-        [HttpPost]
-        [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status201Created)]
-        public async Task<IActionResult> AddServiceContractor([FromBody] CreateServiceContractorCommand command, CancellationToken ct)
-        {
-            var result = await Mediator.Send(command, ct);
-            return Ok(result);
-        }
+        //[HttpPost]
+        //[ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status201Created)]
+        //public async Task<IActionResult> AddServiceContractor([FromBody] CreateServiceContractorCommand command, CancellationToken ct)
+        //{
+        //    var result = await Mediator.Send(command, ct);
 
-        [HttpPut]
-        public async Task<IActionResult> EditProvider()
-        {
-            throw new NotImplementedException();
-        }
+        //    // Jeśli walidacja lub logika biznesowa zgłosi błąd, HandleResult przejmuje stery
+        //    if (result.IsFailure) return HandleResult(result);
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProvider(ServiceContractor.EntityId id)
-        {
-            throw new NotImplementedException();
-        }
+        //    // Zakładam, że ServiceContractorResponse ma pole Tax lub Id, używamy uniwersalnego ID kontrahenta
+        //    return CreatedAtAction(nameof(GetServiceContractorById), new { id = result.Value!.Id }, result.Value);
+        //}
+
+        //[HttpPut]
+        //[ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
+        //public async Task<IActionResult> EditServiceContractor([FromBody] UpdateServiceContractorCommand command, CancellationToken ct)
+        //{
+        //    var result = await Mediator.Send(command, ct);
+        //    return HandleResult(result);
+        //}
+
+        //[HttpDelete("{id}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //public async Task<IActionResult> DeleteServiceContractor(Guid id, CancellationToken ct)
+        //{
+        //    var result = await Mediator.Send(new DeleteServiceContractorCommand(id), ct);
+        //    return HandleResult(result);
+        //}
     }
 }

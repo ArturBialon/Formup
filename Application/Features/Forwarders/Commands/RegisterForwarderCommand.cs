@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Response;
+﻿using Application.Common.Results;
+using Application.DTOs.Response;
 using Domain.CustomExceptions;
 using Domain.Interfaces.UserService;
 using Domain.Models;
@@ -11,14 +12,14 @@ using System.Text;
 namespace Application.Features.Forwarders.Commands
 {
     public record RegisterForwarderCommand(string Name, string Surname, string Prefix, string Password)
-    : IRequest<UserResponse>;
+    : IRequest<AppResult<UserResponse>>;
 
-    public class RegisterForwarderHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<RegisterForwarderCommand, UserResponse>
+    public class RegisterForwarderHandler(FormupContext context, ITokenService tokenService) : IRequestHandler<RegisterForwarderCommand, AppResult<UserResponse>>
     {
         private readonly FormupContext _context = context;
         private readonly ITokenService _tokenService = tokenService;
 
-        public async Task<UserResponse> Handle(RegisterForwarderCommand request, CancellationToken ct)
+        public async Task<AppResult<UserResponse>> Handle(RegisterForwarderCommand request, CancellationToken ct)
         {
             if (request.Password.Length < 6)
                 throw new RegistrationException("Password is too short (min 6 characters)");
@@ -46,14 +47,15 @@ namespace Application.Features.Forwarders.Commands
 
             if (await _context.SaveChangesAsync(ct) > 0)
             {
-                return new UserResponse
+                var result = new UserResponse
                 {
                     UserName = newForwarder.Name,
                     Token = new ResponseToken { AccessToken = _tokenService.CreateToken(newForwarder) }
                 };
+                return AppResult<UserResponse>.Success(result);
             }
 
-            throw new RegistrationException();
+            return AppResult<UserResponse>.Failure("Failed to register forwarder");
         }
     }
 }

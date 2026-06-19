@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Common.Results;
 using Application.DTOs.Response;
 using Infrastructure.Context;
 using MediatR;
@@ -12,16 +13,15 @@ namespace Application.Features.WorkCases.Queries
         string? Relation = null,
         Guid? ForwarderId = null,
         Guid? ClientId = null,
-        string? SearchPhrase = null
-    ) : IRequest<PagedResult<WorkCaseList>>;
+        string? Name = null
+    ) : IRequest<IAppResult<PagedResult<WorkCaseList>>>;
 
-    public class GetWorkCasesHandler : IRequestHandler<GetWorkCasesQuery, PagedResult<WorkCaseList>>
+    public class GetWorkCasesQueryHandler(FormupContext context)
+        : IRequestHandler<GetWorkCasesQuery, IAppResult<PagedResult<WorkCaseList>>>
     {
-        private readonly FormupContext _context;
+        private readonly FormupContext _context = context;
 
-        public GetWorkCasesHandler(FormupContext context) => _context = context;
-
-        public async Task<PagedResult<WorkCaseList>> Handle(GetWorkCasesQuery request, CancellationToken ct)
+        public async Task<IAppResult<PagedResult<WorkCaseList>>> Handle(GetWorkCasesQuery request, CancellationToken ct)
         {
             var query = _context.WorkCases.AsNoTracking();
 
@@ -34,8 +34,8 @@ namespace Application.Features.WorkCases.Queries
             if (request.ClientId.HasValue)
                 query = query.Where(x => x.Client.Id.Value == request.ClientId.Value);
 
-            if (!string.IsNullOrWhiteSpace(request.SearchPhrase))
-                query = query.Where(x => x.Name.Contains(request.SearchPhrase));
+            if (!string.IsNullOrWhiteSpace(request.Name))
+                query = query.Where(x => x.Name.Contains(request.Name));
 
             var totalCount = await query.CountAsync(ct);
 
@@ -54,7 +54,9 @@ namespace Application.Features.WorkCases.Queries
                 })
                 .ToListAsync(ct);
 
-            return new PagedResult<WorkCaseList>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<WorkCaseList>(items, totalCount, request.PageNumber, request.PageSize);
+
+            return AppResult<PagedResult<WorkCaseList>>.Success(pagedResult);
         }
     }
 }
