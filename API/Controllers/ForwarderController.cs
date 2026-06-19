@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteForwarder(Guid id)
+        public async Task<IActionResult> SoftDeleteForwarder(Guid id)
         {
             throw new NotImplementedException();
         }

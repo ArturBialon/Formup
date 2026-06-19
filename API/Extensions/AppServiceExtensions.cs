@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Common;
+using Application.Common.Behaviors;
 using Application.Services;
 using Domain.Interfaces.UserService;
 using FluentValidation;

@@ -1,25 +1,19 @@
-﻿using FluentValidation;
-using Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.Features.ServiceContractors.Commands;
+using FluentValidation;
 
-namespace Application.Features.ServiceContractors.Commands
+namespace Application.Features.ServiceContractors.Validators
 {
     public class CreateServiceContractorCommandValidator : AbstractValidator<CreateServiceContractorCommand>
     {
-        private readonly FormupContext _context;
-
-        public CreateServiceContractorCommandValidator(FormupContext context)
+        public CreateServiceContractorCommandValidator()
         {
-            _context = context;
-
             RuleFor(x => x.Name)
                 .NotEmpty().WithErrorCode("CONTRACTOR.VALIDATION.NAME.REQUIRED")
                 .MaximumLength(150).WithErrorCode("CONTRACTOR.VALIDATION.NAME.TOO_LONG");
 
             RuleFor(x => x.Tax)
                 .NotEmpty().WithErrorCode("CONTRACTOR.VALIDATION.TAX.REQUIRED")
-                .MaximumLength(20).WithErrorCode("CONTRACTOR.VALIDATION.TAX.TOO_LONG")
-                .MustAsync(BeUniqueTax).WithErrorCode("CONTRACTOR.VALIDATION.TAX.NOT_UNIQUE");
+                .MaximumLength(20).WithErrorCode("CONTRACTOR.VALIDATION.TAX.TOO_LONG");
 
             RuleFor(x => x.Country)
                 .NotEmpty().WithErrorCode("CONTRACTOR.VALIDATION.COUNTRY.REQUIRED")
@@ -53,12 +47,6 @@ namespace Application.Features.ServiceContractors.Commands
             RuleFor(x => x.PhoneNumber)
                 .MaximumLength(20).WithErrorCode("CONTRACTOR.VALIDATION.PHONE_NUMBER.TOO_LONG")
                 .When(x => x.PhoneNumber != null);
-        }
-
-        private async Task<bool> BeUniqueTax(string tax, CancellationToken ct)
-        {
-            var exists = await _context.ServiceContractors.AnyAsync(x => x.Tax == tax, ct);
-            return !exists;
         }
     }
 }

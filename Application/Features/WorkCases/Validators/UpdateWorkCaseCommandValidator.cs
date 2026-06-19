@@ -1,13 +1,14 @@
-﻿using Domain.Constants;
+﻿using Application.Features.WorkCases.Commands;
+using Domain.Constants;
 using FluentValidation;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.WorkCases.Commands
+namespace Application.Features.WorkCases.Validators
 {
-    public class CreateWorkCaseCommandValidator : AbstractValidator<CreateWorkCaseCommand>
+    public class UpdateWorkCaseCommandValidator : AbstractValidator<UpdateWorkCaseCommand>
     {
-        public CreateWorkCaseCommandValidator()
+        public UpdateWorkCaseCommandValidator()
         {
             RuleFor(x => x.Relation)
                 .NotEmpty().WithErrorCode("WORK_CASE.VALIDATION.RELATION.REQUIRED")
@@ -23,6 +24,9 @@ namespace Application.Features.WorkCases.Commands
 
             RuleFor(x => x.ClientId)
                 .NotEmpty().WithErrorCode("WORK_CASE.VALIDATION.CLIENT_ID_REQUIRED");
+
+            RuleFor(x => x.WorkCaseId)
+                .NotEmpty().WithErrorCode("WORK_CASE.VALIDATION.WORK_CASE_ID_REQUIRED");
         }
     }
 }

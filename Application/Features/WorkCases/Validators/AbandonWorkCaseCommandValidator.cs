@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using Application.Features.WorkCases.Commands;
+using FluentValidation;
 
-namespace Application.Features.WorkCases.Commands
+namespace Application.Features.WorkCases.Validators
 {
     public class AbandonWorkCaseCommandValidator : AbstractValidator<AbandonWorkCaseCommand>
     {

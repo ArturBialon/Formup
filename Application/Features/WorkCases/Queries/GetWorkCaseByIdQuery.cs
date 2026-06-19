@@ -28,6 +28,8 @@ namespace Application.Features.WorkCases.Queries
                 })
                 .FirstOrDefaultAsync(ct);
 
+            if (result == null) return AppResult<WorkCaseResponse>.Failure("WORK_CASE.NOT_FOUND");
+
             return AppResult<WorkCaseResponse>.Success(result);
         }
     }

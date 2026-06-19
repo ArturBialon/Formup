@@ -1,5 +1,4 @@
-﻿
-namespace Application.DTOs.Response
+﻿namespace Application.DTOs.Response
 {
     public class ServiceContractorResponse
     {

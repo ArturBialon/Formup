@@ -3,6 +3,7 @@ using Application.DTOs.Response;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.ServiceContractors.Commands
 {
@@ -26,6 +27,12 @@ namespace Application.Features.ServiceContractors.Commands
 
         public async Task<AppResult<ServiceContractorResponse>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
         {
+            var taxExists = await _context.ServiceContractors.AnyAsync(x => x.Tax == request.Tax, ct);
+            if (taxExists)
+            {
+                return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.VALIDATION.TAX.NOT_UNIQUE");
+            }
+
             var contractor = new ServiceContractor
             {
                 Name = request.Name,
@@ -57,6 +64,7 @@ namespace Application.Features.ServiceContractors.Commands
                 Email = created.Entity.Email,
                 PhoneNumber = created.Entity.PhoneNumber
             };
+
             return AppResult<ServiceContractorResponse>.Success(response);
         }
     }
