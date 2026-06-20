@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -20,7 +21,8 @@ namespace Infrastructure.Migrations
                     Street = table.Column<string>(type: "varchar(80)", unicode: false, maxLength: 80, nullable: false),
                     Zip = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     Coutry = table.Column<string>(type: "varchar(54)", unicode: false, maxLength: 54, nullable: false),
-                    Credit = table.Column<decimal>(type: "decimal(15,2)", nullable: false)
+                    Credit = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,7 +72,8 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
                     Relation = table.Column<string>(type: "varchar(2)", unicode: false, maxLength: 2, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsAbandoned = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
@@ -97,7 +100,8 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(15,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
                     Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -126,7 +130,8 @@ namespace Infrastructure.Migrations
                     Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
                     Issue_Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     Service_Date = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(15,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
                     WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -146,23 +151,33 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "WorkCaseItems",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
-                    Amonut = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
-                    InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
+                    Tax = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    IsInvoiced = table.Column<bool>(type: "bit", nullable: false),
+                    InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_WorkCaseItems", x => x.Id);
                     table.ForeignKey(
-                        name: "Service_Invoices",
+                        name: "FK_WorkCaseItems_Invoices",
                         column: x => x.InvoiceId,
                         principalTable: "Invoices",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_WorkCaseItems_WorkCases",
+                        column: x => x.WorkCaseId,
+                        principalTable: "WorkCases",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -186,9 +201,14 @@ namespace Infrastructure.Migrations
                 column: "WorkCaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_InvoiceId",
-                table: "Services",
+                name: "IX_WorkCaseItems_InvoiceId",
+                table: "WorkCaseItems",
                 column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkCaseItems_WorkCaseId",
+                table: "WorkCaseItems",
+                column: "WorkCaseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkCases_ClientId",
@@ -208,7 +228,7 @@ namespace Infrastructure.Migrations
                 name: "Costs");
 
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "WorkCaseItems");
 
             migrationBuilder.DropTable(
                 name: "ServiceContractors");

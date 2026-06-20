@@ -7,6 +7,7 @@ namespace Domain.Models
     public partial class Cost : Entity<Cost>
     {
         public decimal Amount { get; set; }
+        public string Currency { get; set; } = "PLN";
         public int Tax { get; set; }
         public required string Name { get; set; }
 

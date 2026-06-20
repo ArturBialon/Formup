@@ -35,7 +35,13 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(54)");
 
                     b.Property<decimal>("Credit")
-                        .HasColumnType("decimal(15, 2)");
+                        .HasColumnType("decimal(12, 2)");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -72,7 +78,13 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(15, 2)");
+                        .HasColumnType("decimal(12, 2)");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -144,10 +156,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(15, 2)");
+                        .HasColumnType("decimal(12, 2)");
 
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("datetime")
@@ -172,35 +190,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("WorkCaseId");
 
                     b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("Domain.Models.Service", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amonut")
-                        .HasColumnType("decimal(12, 2)");
-
-                    b.Property<Guid?>("InvoiceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
-
-                    b.Property<int>("Tax")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("Domain.Models.ServiceContractor", b =>
@@ -275,14 +264,20 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(12, 2)");
 
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<Guid?>("ForwarderId")
                         .HasColumnType("uniqueidentifier");
@@ -311,6 +306,50 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ForwarderId");
 
                     b.ToTable("WorkCases");
+                });
+
+            modelBuilder.Entity("Domain.Models.WorkCaseItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(12, 2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<Guid?>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsInvoiced")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("Tax")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WorkCaseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("WorkCaseId");
+
+                    b.ToTable("WorkCaseItems");
                 });
 
             modelBuilder.Entity("Domain.Models.Cost", b =>
@@ -347,16 +386,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("WorkCase");
                 });
 
-            modelBuilder.Entity("Domain.Models.Service", b =>
-                {
-                    b.HasOne("Domain.Models.Invoice", "Invoice")
-                        .WithMany("Services")
-                        .HasForeignKey("InvoiceId")
-                        .HasConstraintName("Service_Invoices");
-
-                    b.Navigation("Invoice");
-                });
-
             modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
                     b.HasOne("Domain.Models.Client", "Client")
@@ -374,6 +403,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Forwarder");
                 });
 
+            modelBuilder.Entity("Domain.Models.WorkCaseItem", b =>
+                {
+                    b.HasOne("Domain.Models.Invoice", "Invoice")
+                        .WithMany("WorkCaseItems")
+                        .HasForeignKey("InvoiceId")
+                        .HasConstraintName("FK_WorkCaseItems_Invoices");
+
+                    b.HasOne("Domain.Models.WorkCase", "WorkCase")
+                        .WithMany("WorkCaseItems")
+                        .HasForeignKey("WorkCaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_WorkCaseItems_WorkCases");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("WorkCase");
+                });
+
             modelBuilder.Entity("Domain.Models.Client", b =>
                 {
                     b.Navigation("Invoices");
@@ -388,7 +436,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Invoice", b =>
                 {
-                    b.Navigation("Services");
+                    b.Navigation("WorkCaseItems");
                 });
 
             modelBuilder.Entity("Domain.Models.ServiceContractor", b =>
@@ -401,6 +449,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("Costs");
 
                     b.Navigation("Invoices");
+
+                    b.Navigation("WorkCaseItems");
                 });
 #pragma warning restore 612, 618
         }

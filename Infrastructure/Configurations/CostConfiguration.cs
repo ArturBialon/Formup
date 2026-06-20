@@ -8,7 +8,14 @@ namespace Infrastructure.Configurations
     {
         protected override void ConfigureEntity(EntityTypeBuilder<Cost> entity)
         {
-            entity.Property(e => e.Amount).HasColumnType("decimal(15, 2)");
+            entity.Property(e => e.Amount)
+                .HasColumnType("decimal(12, 2)")
+                .IsRequired();
+
+            entity.Property(e => e.Currency)
+                .IsRequired()
+                .HasMaxLength(3)
+                .IsUnicode(false);
 
             entity.Property(e => e.Name)
                 .IsRequired()
