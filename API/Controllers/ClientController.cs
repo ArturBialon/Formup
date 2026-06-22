@@ -12,7 +12,7 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetClientById(Guid id)
         {
             throw new NotImplementedException();
@@ -30,7 +30,7 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteClient(Guid id)
         {
             throw new NotImplementedException();

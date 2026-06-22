@@ -18,7 +18,7 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetServiceContractorById(Guid id, CancellationToken ct)
         {
@@ -44,7 +44,7 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteServiceContractor(Guid id, CancellationToken ct)
         {

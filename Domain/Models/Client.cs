@@ -21,5 +21,18 @@ namespace Domain.Models
 
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<WorkCase> WorkCases { get; set; }
+
+        public bool CanAssignAmount(decimal requestedAmount, decimal currentActiveUsage, out decimal exceededBy)
+        {
+            var availableCredit = Credit - currentActiveUsage;
+            if (requestedAmount > availableCredit)
+            {
+                exceededBy = requestedAmount - availableCredit;
+                return false;
+            }
+
+            exceededBy = 0;
+            return true;
+        }
     }
 }

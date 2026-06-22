@@ -23,6 +23,7 @@ namespace Infrastructure.Configurations
                 .IsUnicode(true);
 
             entity.Property(e => e.Tax)
+                .HasColumnType("decimal(7, 3)")
                 .IsRequired();
 
             entity.Property(e => e.CreatedAt)

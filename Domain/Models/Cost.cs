@@ -8,7 +8,7 @@ namespace Domain.Models
     {
         public decimal Amount { get; set; }
         public string Currency { get; set; } = "PLN";
-        public int Tax { get; set; }
+        public decimal Tax { get; set; }
         public required string Name { get; set; }
 
         public virtual WorkCase WorkCase { get; set; }

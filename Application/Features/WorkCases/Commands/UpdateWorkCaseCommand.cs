@@ -26,13 +26,11 @@ namespace Application.Features.WorkCases.Commands
                 .Where(x => x.Client.Id == client.Id && x.Id.Value != request.WorkCaseId && !x.IsAbandoned)
                 .SumAsync(x => x.Amount, ct);
 
-            var availableCredit = client.Credit - totalAmountTaken;
-
-            if (request.Amount > availableCredit)
+            if (!client.CanAssignAmount(request.Amount, totalAmountTaken, out var exceededBy))
             {
                 return AppResult<WorkCaseResponse>.Failure(
                     "CLIENT.VALIDATION.CREDIT_EXCEEDED",
-                    new { ExceededBy = request.Amount - availableCredit }
+                    new { ExceededBy = exceededBy }
                 );
             }
 

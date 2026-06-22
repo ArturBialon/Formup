@@ -12,7 +12,7 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetForwarderById(Guid id)
         {
             throw new NotImplementedException();
@@ -24,7 +24,7 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> SoftDeleteForwarder(Guid id)
         {
             throw new NotImplementedException();

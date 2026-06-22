@@ -9,9 +9,9 @@ namespace Domain.Models
         public required string Name { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; } = "PLN";
-        public int Tax { get; set; }
+        public decimal Tax { get; set; }
         public DateTime CreatedAt { get; init; } = DateTime.Now;
-        public bool IsInvoiced { get; set; } = false;
+        public bool IsInvoiced => Invoice != null;
 
         public virtual Invoice? Invoice { get; set; }
         public required virtual WorkCase WorkCase { get; set; }

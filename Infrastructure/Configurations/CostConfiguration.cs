@@ -23,9 +23,8 @@ namespace Infrastructure.Configurations
                 .IsUnicode(false);
 
             entity.Property(e => e.Tax)
-                .IsRequired()
-                .HasMaxLength(20)
-                .IsUnicode(false);
+                .HasColumnType("decimal(7, 3)")
+                .IsRequired();
 
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Costs)
