@@ -1,4 +1,6 @@
 ﻿using API.Controllers.Base;
+using Application.DTOs.Response;
+using Application.Features.Invoices.Commands;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,19 +21,26 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddInvoiceCase()
+        [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status201Created)]
+        public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditInvoiceCase()
+        [HttpPut("{invoiceId:guid}")]
+        [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateInvoice([FromRoute] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            if (invoiceId != command.InvoiceId)
+                return BadRequest("Mismatched Invoice identifier between URL and body.");
+
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInvoiceCase(Guid id)
+        public async Task<IActionResult> DeleteInvoice(Guid id)
         {
             throw new NotImplementedException();
         }

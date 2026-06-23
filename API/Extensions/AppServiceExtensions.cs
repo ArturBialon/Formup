@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Common.Behaviors;
+using Application.Common.CurrencyServices;
 using Application.Services;
 using Domain.Interfaces.UserService;
 using FluentValidation;
@@ -26,6 +27,7 @@ namespace API.Extensions
             });
             services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);
             services.AddScoped<ITokenService, TokenService>();
+            services.AddHttpClient<ICurrencyConverterService, NbpCurrencyConverterService>();
 
             return services;
         }

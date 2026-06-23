@@ -1,6 +1,4 @@
 ﻿using API.Controllers.Base;
-using Application.Common.Results;
-using Application.DTOs.Response;
 using Application.Features.Forwarders.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

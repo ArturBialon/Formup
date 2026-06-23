@@ -26,7 +26,7 @@
         public static AppResult<TValue> Success(TValue value)
             => new(value, true, null, null, null);
 
-        public static AppResult<TValue> Failure(string errorCode, object? errorData = null)
+        public static AppResult<TValue> Failure(string? errorCode, object? errorData = null)
             => new(default, false, errorCode, errorData, null);
 
         public static AppResult<TValue> ValidationFailure(Dictionary<string, List<string>> errors)
