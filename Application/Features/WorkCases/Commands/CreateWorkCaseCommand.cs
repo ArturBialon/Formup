@@ -59,7 +59,6 @@ namespace Application.Features.WorkCases.Commands
                 ForwarderName = forwarder.Surname,
                 ClientId = client.Id.Value,
                 ClientName = client.Name,
-                IsAbandoned = false
             };
 
             return AppResult<WorkCaseResponse>.Success(result);

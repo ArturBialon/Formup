@@ -27,6 +27,7 @@ namespace Application.Features.Invoices.Queries
                     IssueDate = i.IssueDate,
                     ServiceDate = i.ServiceDate,
                     Tax = i.Tax,
+                    IsAbandoned = i.IsAbandoned,
 
                     WorkCaseId = i.WorkCase.Id.Value,
                     WorkCaseRelation = i.WorkCase.Relation,

@@ -17,6 +17,7 @@ namespace Domain.Models
         public DateTime ServiceDate { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; } = "PLN";
+        public bool IsAbandoned { get; set; } = false;
 
         public virtual WorkCase WorkCase { get; set; }
         public virtual Client Client { get; set; }

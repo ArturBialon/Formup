@@ -75,6 +75,7 @@ namespace Application.Features.Invoices.Queries
                     IssueDate = invoice.IssueDate,
                     ServiceDate = invoice.ServiceDate,
                     Tax = invoice.Tax,
+                    IsAbandoned = invoice.IsAbandoned,
                     WorkCaseId = invoice.WorkCase.Id.Value,
                     ClientId = invoice.Client.Id.Value,
                     InvoicedItemIds = invoice.WorkCaseItems.Select(item => item.Id.Value).ToList()

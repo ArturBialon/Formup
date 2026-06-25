@@ -9,6 +9,7 @@
         public DateTime IssueDate { get; set; }
         public DateTime ServiceDate { get; set; }
         public decimal Tax { get; set; }
+        public bool IsAbandoned { get; set; }
 
         public Guid WorkCaseId { get; set; }
         public string WorkCaseRelation { get; set; } = null!;

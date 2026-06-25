@@ -23,7 +23,7 @@ namespace Application.Features.Invoices.Commands
                 item.Invoice = null;
             }
 
-            _context.Invoices.Remove(invoice);
+            invoice.IsAbandoned = true;
             await _context.SaveChangesAsync(ct);
 
             return AppResult<Unit>.Success(Unit.Value);

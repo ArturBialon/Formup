@@ -34,6 +34,10 @@ namespace Infrastructure.Configurations
                 .HasColumnType("decimal(7, 3)")
                 .IsRequired();
 
+            entity.Property(e => e.IsAbandoned)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Invoices)
                 .OnDelete(DeleteBehavior.ClientSetNull)

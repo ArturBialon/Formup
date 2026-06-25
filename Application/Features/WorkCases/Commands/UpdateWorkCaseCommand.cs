@@ -54,8 +54,7 @@ namespace Application.Features.WorkCases.Commands
                 Id = workCase.Id.Value,
                 Name = workCase.Name,
                 Amount = workCase.Amount,
-                Relation = workCase.Relation,
-                IsAbandoned = workCase.IsAbandoned
+                Relation = workCase.Relation
             };
 
             return AppResult<WorkCaseResponse>.Success(result);

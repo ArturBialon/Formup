@@ -52,7 +52,7 @@ namespace Application.Features.Invoices.Commands
             }
 
             var conversionData = conversionResult.Value!;
-            var invoiceNumber = await CreateInvoiceNumberAsync(request, workCase.Forwarder, ct);
+            var invoiceNumber = await CreateInvoiceNumberAsync(workCase.Forwarder, ct);
 
             var invoice = new Invoice
             {
@@ -87,7 +87,8 @@ namespace Application.Features.Invoices.Commands
                 InvoicedItemIds = [.. itemsToInvoice.Select(x => x.Id.Value)]
             });
         }
-        private async Task<string> CreateInvoiceNumberAsync(CreateInvoiceCommand request, Forwarder forwarder, CancellationToken ct)
+
+        private async Task<string> CreateInvoiceNumberAsync(Forwarder forwarder, CancellationToken ct)
         {
             var now = DateTime.UtcNow;
 
