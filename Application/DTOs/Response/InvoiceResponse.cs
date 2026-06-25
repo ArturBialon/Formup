@@ -3,6 +3,7 @@
     public class InvoiceResponse
     {
         public Guid Id { get; set; }
+        public string InvoiceNumber { get; set; } = null!;
         public decimal Amount { get; set; }
         public string Currency { get; set; } = null!;
         public DateTime IssueDate { get; set; }

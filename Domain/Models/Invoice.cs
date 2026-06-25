@@ -11,6 +11,7 @@ namespace Domain.Models
             WorkCaseItems = new HashSet<WorkCaseItem>();
         }
 
+        public string InvoiceNumber { get; set; } = null!;
         public decimal Tax { get; set; }
         public DateTime IssueDate { get; set; }
         public DateTime ServiceDate { get; set; }

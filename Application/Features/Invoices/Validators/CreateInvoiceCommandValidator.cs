@@ -10,9 +10,6 @@ namespace Application.Features.Invoices.Validators
             RuleFor(x => x.WorkCaseId)
                 .NotEmpty().WithErrorCode("INVOICE.VALIDATION.WORK_CASE_ID.REQUIRED");
 
-            RuleFor(x => x.IssueDate)
-                .NotEmpty().WithErrorCode("INVOICE.VALIDATION.ISSUE_DATE.REQUIRED");
-
             RuleFor(x => x.ServiceDate)
                 .NotEmpty().WithErrorCode("INVOICE.VALIDATION.SERVICE_DATE.REQUIRED");
 

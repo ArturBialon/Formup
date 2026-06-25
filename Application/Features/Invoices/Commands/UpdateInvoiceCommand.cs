@@ -85,6 +85,7 @@ namespace Application.Features.Invoices.Commands
             return AppResult<InvoiceResponse>.Success(new InvoiceResponse
             {
                 Id = invoice.Id.Value,
+                InvoiceNumber = invoice.InvoiceNumber,
                 Amount = invoice.Amount,
                 Currency = invoice.Currency,
                 IssueDate = invoice.IssueDate,
@@ -92,7 +93,7 @@ namespace Application.Features.Invoices.Commands
                 Tax = invoice.Tax,
                 WorkCaseId = invoice.WorkCase.Id.Value,
                 ClientId = invoice.Client.Id.Value,
-                InvoicedItemIds = requestedItems.Select(x => x.Id.Value).ToList()
+                InvoicedItemIds = [.. requestedItems.Select(x => x.Id.Value)]
             });
         }
     }

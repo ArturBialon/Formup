@@ -1,5 +1,5 @@
 ﻿using API.Controllers.Base;
-using Application.Common.Models;
+using Application.Common.Results;
 using Application.DTOs.Response;
 using Application.Features.WorkCaseItems.Commands;
 using Application.Features.WorkCaseItems.Queries;
@@ -16,7 +16,7 @@ namespace API.Controllers
         #region WorkCase Operations
 
         [HttpGet]
-        [ProducesResponseType(typeof(PagedResult<WorkCaseList>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<WorkCaseResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetWorkCases([FromQuery] GetWorkCasesQuery query, CancellationToken ct)
         {
             var result = await Mediator.Send(query, ct);

@@ -1,5 +1,4 @@
-﻿using Application.Common.Models;
-using Application.Common.Results;
+﻿using Application.Common.Results;
 using Application.DTOs.Response;
 using Infrastructure.Context;
 using MediatR;

@@ -3,6 +3,9 @@ using System.Net.Http.Json;
 
 namespace Application.Common.CurrencyServices
 {
+    public class NbpTableA { public List<NbpRateA>? Rates { get; set; } }
+    public class NbpRateA { public string Code { get; set; } = null!; public decimal Mid { get; set; } }
+
     public class NbpCurrencyConverterService(HttpClient httpClient) : ICurrencyConverterService
     {
         private readonly HttpClient _httpClient = httpClient;
@@ -95,7 +98,4 @@ namespace Application.Common.CurrencyServices
             return AppResult<CurrencyConversionResult>.Success(result);
         }
     }
-
-    public class NbpTableA { public List<NbpRateA>? Rates { get; set; } }
-    public class NbpRateA { public string Code { get; set; } = null!; public decimal Mid { get; set; } }
 }

@@ -1,5 +1,5 @@
 ﻿using API.Controllers.Base;
-using Application.Common.Models;
+using Application.Common.Results;
 using Application.DTOs.Response;
 using Application.Features.ServiceContractors.Commands;
 using Application.Features.ServiceContractors.Queries;

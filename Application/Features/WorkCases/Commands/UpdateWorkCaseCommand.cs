@@ -34,10 +34,11 @@ namespace Application.Features.WorkCases.Commands
                 );
             }
 
-            if (workCase.Relation != request.Relation)
+            if (workCase.Relation != request.Relation || workCase.Forwarder.Id.Value != request.ForwarderId)
             {
                 var nameParts = workCase.Name.Split('/');
                 nameParts[0] = request.Relation;
+                nameParts[2] = forwarder.Prefix;
                 workCase.Name = string.Join("/", nameParts);
                 workCase.Relation = request.Relation;
             }

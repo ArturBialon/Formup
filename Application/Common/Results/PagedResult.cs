@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Models
+﻿namespace Application.Common.Results
 {
     public record PagedResult<T>
     {

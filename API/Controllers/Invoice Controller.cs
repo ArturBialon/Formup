@@ -1,6 +1,8 @@
 ﻿using API.Controllers.Base;
+using Application.Common.Results;
 using Application.DTOs.Response;
 using Application.Features.Invoices.Commands;
+using Application.Features.Invoices.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -8,16 +10,21 @@ namespace API.Controllers
     //[Authorize]
     public class InvoiceController : ApiControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetInvoice()
+        [HttpGet("GetInvoices")]
+        [ProducesResponseType(typeof(PagedResult<InvoiceResponse>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetInvoices([FromQuery] GetInvoicesQuery query, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(query, ct);
+            return HandleResult(result);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetInvoiceById(Guid id)
+        [HttpGet("{invoiceId:guid}")]
+        [ProducesResponseType(typeof(InvoiceDetailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetInvoiceById([FromRoute] Guid invoiceId, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetInvoiceByIdQuery(invoiceId), ct);
+            return HandleResult(result);
         }
 
         [HttpPost]
@@ -39,10 +46,12 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInvoice(Guid id)
+        [HttpDelete("{invoiceId:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteInvoice([FromRoute] Guid invoiceId)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new DeleteInvoiceCommand(invoiceId));
+            return HandleResult(result);
         }
     }
 }

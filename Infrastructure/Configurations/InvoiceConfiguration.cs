@@ -8,6 +8,11 @@ namespace Infrastructure.Configurations
     {
         protected override void ConfigureEntity(EntityTypeBuilder<Invoice> entity)
         {
+            entity.Property(e => e.InvoiceNumber)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
             entity.Property(e => e.Amount)
                 .HasColumnType("decimal(12, 2)")
                 .IsRequired();

@@ -10,7 +10,6 @@ namespace Application.Features.Invoices.Commands
 {
     public record CreateInvoiceCommand(
         Guid WorkCaseId,
-        DateTime IssueDate,
         DateTime ServiceDate,
         decimal TaxRate,
         string TargetCurrency,
@@ -53,12 +52,14 @@ namespace Application.Features.Invoices.Commands
             }
 
             var conversionData = conversionResult.Value!;
+            var invoiceNumber = await CreateInvoiceNumberAsync(request, workCase.Forwarder, ct);
 
             var invoice = new Invoice
             {
+                InvoiceNumber = invoiceNumber,
                 Amount = conversionData.TotalTargetAmount,
                 Currency = conversionData.TargetCurrency,
-                IssueDate = request.IssueDate,
+                IssueDate = DateTime.Now,
                 ServiceDate = request.ServiceDate,
                 Tax = request.TaxRate,
                 WorkCase = workCase,
@@ -85,6 +86,15 @@ namespace Application.Features.Invoices.Commands
                 ClientId = workCase.Client.Id.Value,
                 InvoicedItemIds = [.. itemsToInvoice.Select(x => x.Id.Value)]
             });
+        }
+        private async Task<string> CreateInvoiceNumberAsync(CreateInvoiceCommand request, Forwarder forwarder, CancellationToken ct)
+        {
+            var now = DateTime.UtcNow;
+
+            var monthlyInvoiceAmount = await _context.Invoices
+                .CountAsync(x => x.WorkCase.Forwarder.Id == forwarder.Id && x.IssueDate.Month == now.Month, ct);
+
+            return $"FK/{monthlyInvoiceAmount + 1}/{forwarder.Prefix}/{now.Month}/{now.Year}";
         }
     }
 }
