@@ -17,9 +17,8 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetServiceContractorById(Guid id, CancellationToken ct)
+        [HttpGet]
+        public async Task<IActionResult> GetServiceContractorById([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetServiceContractorByIdQuery(id), ct);
             return HandleResult(result);
@@ -32,20 +31,20 @@ namespace API.Controllers
             var result = await Mediator.Send(command, ct);
             if (result.IsFailure) return HandleResult(result);
 
-            return CreatedAtAction(nameof(GetServiceContractorById), new { id = result.Value!.Id }, result.Value);
+            return Created($"api/ServiceContractor/GetServiceContractorById?id={result.Value!.Id}", result.Value);
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> EditServiceContractor([FromBody] UpdateServiceContractorCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }
 
-        [HttpDelete("{id:guid}")]
+        [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> DeleteServiceContractor(Guid id, CancellationToken ct)
+        public async Task<IActionResult> DeleteServiceContractor([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteServiceContractorCommand(id), ct);
             return HandleResult(result);

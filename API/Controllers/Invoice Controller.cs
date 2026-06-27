@@ -9,7 +9,7 @@ namespace API.Controllers
 {
     public class InvoiceController : ApiControllerBase
     {
-        [HttpGet("GetInvoices")]
+        [HttpGet]
         [ProducesResponseType(typeof(PagedResult<InvoiceResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetInvoices([FromQuery] GetInvoicesQuery query, CancellationToken ct)
         {
@@ -17,10 +17,10 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("{invoiceId:guid}")]
+        [HttpGet]
         [ProducesResponseType(typeof(InvoiceDetailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetInvoiceById([FromRoute] Guid invoiceId, CancellationToken ct)
+        public async Task<IActionResult> GetInvoiceById([FromQuery] Guid invoiceId, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetInvoiceByIdQuery(invoiceId), ct);
             return HandleResult(result);
@@ -34,9 +34,9 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpPut("{invoiceId:guid}")]
+        [HttpPut]
         [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateInvoice([FromRoute] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateInvoice([FromQuery] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
         {
             if (invoiceId != command.InvoiceId)
                 return BadRequest("Mismatched Invoice identifier between URL and body.");
@@ -45,9 +45,9 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpPatch("{invoiceId:guid}")]
+        [HttpPatch]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> DeleteInvoice([FromRoute] Guid invoiceId)
+        public async Task<IActionResult> DeleteInvoice([FromQuery] Guid invoiceId)
         {
             var result = await Mediator.Send(new DeleteInvoiceCommand(invoiceId));
             return HandleResult(result);

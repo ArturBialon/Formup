@@ -11,7 +11,7 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet]
         public async Task<IActionResult> GetClientById(Guid id)
         {
             throw new NotImplementedException();
