@@ -4,6 +4,6 @@ namespace Domain.Interfaces.UserService
 {
     public interface ITokenService
     {
-        string CreateToken(Forwarder user);
+        string CreateToken(User user);
     }
 }

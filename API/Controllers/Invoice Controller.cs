@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     public class InvoiceController : ApiControllerBase
     {
         [HttpGet("GetInvoices")]
@@ -46,7 +45,7 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpDelete("{invoiceId:guid}")]
+        [HttpPatch("{invoiceId:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteInvoice([FromRoute] Guid invoiceId)
         {

@@ -20,9 +20,9 @@ namespace API.Controllers
         }
 
         [HttpGet("not-found")]
-        public ActionResult<Forwarder> GetNotFound()
+        public ActionResult<User> GetNotFound()
         {
-            var thing = _context.Forwarders.Find(1);
+            var thing = _context.Users.Find(1);
             if (thing == null) return NotFound();
             return Ok();
         }
@@ -31,7 +31,7 @@ namespace API.Controllers
         public ActionResult<string> GetServerError()
         {
 
-            var thing = _context.Forwarders.Find(-1);
+            var thing = _context.Users.Find(-1);
             var thingToReturn = thing.ToString();
 
             return thingToReturn;

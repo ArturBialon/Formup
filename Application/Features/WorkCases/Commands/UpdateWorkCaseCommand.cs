@@ -19,7 +19,7 @@ namespace Application.Features.WorkCases.Commands
             var client = await _context.Clients.FindAsync([request.ClientId], ct);
             if (client == null) return AppResult<WorkCaseResponse>.Failure("CLIENT.NOT_FOUND");
 
-            var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId], ct);
+            var forwarder = await _context.Users.FindAsync([request.ForwarderId], ct);
             if (forwarder == null) return AppResult<WorkCaseResponse>.Failure("FORWARDER.NOT_FOUND");
 
             var totalAmountTaken = await _context.WorkCases
@@ -34,11 +34,10 @@ namespace Application.Features.WorkCases.Commands
                 );
             }
 
-            if (workCase.Relation != request.Relation || workCase.Forwarder.Id.Value != request.ForwarderId)
+            if (workCase.Relation != request.Relation)
             {
                 var nameParts = workCase.Name.Split('/');
                 nameParts[0] = request.Relation;
-                nameParts[2] = forwarder.Prefix;
                 workCase.Name = string.Join("/", nameParts);
                 workCase.Relation = request.Relation;
             }

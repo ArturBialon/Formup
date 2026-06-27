@@ -17,7 +17,7 @@ namespace Application.Features.WorkCases.Commands
 
         public async Task<AppResult<WorkCaseResponse>> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
-            var forwarder = await _context.Forwarders.FindAsync([request.ForwarderId], ct);
+            var forwarder = await _context.Users.FindAsync([request.ForwarderId], ct);
             if (forwarder == null) return AppResult<WorkCaseResponse>.Failure("FORWARDER.NOT_FOUND");
 
             var client = await _context.Clients.FindAsync([request.ClientId], ct);
@@ -64,7 +64,7 @@ namespace Application.Features.WorkCases.Commands
             return AppResult<WorkCaseResponse>.Success(result);
         }
 
-        private async Task<string> CreateWorkCaseNameAsync(CreateWorkCaseCommand request, Forwarder forwarder, CancellationToken ct)
+        private async Task<string> CreateWorkCaseNameAsync(CreateWorkCaseCommand request, User forwarder, CancellationToken ct)
         {
             var now = DateTime.UtcNow;
 

@@ -1,7 +1,7 @@
 ﻿using Application;
+using Application.Common.Access;
 using Application.Common.Behaviors;
 using Application.Common.CurrencyServices;
-using Application.Services;
 using Domain.Interfaces.UserService;
 using FluentValidation;
 using Infrastructure.Context;

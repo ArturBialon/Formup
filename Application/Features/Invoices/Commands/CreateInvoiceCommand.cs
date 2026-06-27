@@ -88,7 +88,7 @@ namespace Application.Features.Invoices.Commands
             });
         }
 
-        private async Task<string> CreateInvoiceNumberAsync(Forwarder forwarder, CancellationToken ct)
+        private async Task<string> CreateInvoiceNumberAsync(User forwarder, CancellationToken ct)
         {
             var now = DateTime.UtcNow;
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     public class ServiceContractorController : ApiControllerBase
     {
         [HttpGet]
@@ -45,7 +44,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteServiceContractor(Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteServiceContractorCommand(id), ct);

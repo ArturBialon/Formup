@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     public class WorkCaseController : ApiControllerBase
     {
         #region WorkCase Operations

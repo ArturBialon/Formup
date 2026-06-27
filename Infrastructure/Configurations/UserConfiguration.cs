@@ -4,10 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
 {
-    public class ForwarderConfiguration : EntityConfiguration<Forwarder>
+    public class UserConfiguration : EntityConfiguration<User>
     {
-        protected override void ConfigureEntity(EntityTypeBuilder<Forwarder> entity)
+        protected override void ConfigureEntity(EntityTypeBuilder<User> entity)
         {
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(256)
+                .IsUnicode(false);
+
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(30)
@@ -32,6 +37,9 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasColumnType("varbinary")
                 .IsUnicode(false);
+
+            entity.Property(e => e.IsActive)
+                .IsRequired();
         }
     }
 }

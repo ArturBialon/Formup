@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     public class CostController : ApiControllerBase
     {
         [HttpGet]

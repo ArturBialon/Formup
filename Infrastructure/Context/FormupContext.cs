@@ -20,7 +20,7 @@ namespace Infrastructure.Context
         public virtual DbSet<WorkCase> WorkCases { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Cost> Costs { get; set; }
-        public virtual DbSet<Forwarder> Forwarders { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<WorkCaseItem> WorkCaseItems { get; set; }
         public virtual DbSet<ServiceContractor> ServiceContractors { get; set; }
