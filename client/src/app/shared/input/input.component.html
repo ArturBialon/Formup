@@ -1,14 +1,15 @@
 <div
   class="form-group"
   [class.required]="required"
->
-  <label
-    *ngIf="label"
-    class="dark-text"
-    [for]="controlName"
   >
-    {{ label }}
-  </label>
+  @if (label) {
+    <label
+      class="dark-text"
+      [for]="controlName"
+      >
+      {{ label }}
+    </label>
+  }
 
   <input
     [autocomplete]="false"
@@ -22,13 +23,13 @@
     [autocomplete]="autocomplete"
     [class.invalid]="getControl.invalid && (getControl.dirty || getControl.touched)"
     [value]="formatAsCurrency(getControl.value)"
-  />
-  <div
-    class="invalid-feedback"
+    />
+    <div
+      class="invalid-feedback"
     [class.show-invalid]="
       getControl.invalid && (getControl.dirty || getControl.touched)
     "
-  >
-    {{ errorMessage }}
+      >
+      {{ errorMessage }}
+    </div>
   </div>
-</div>

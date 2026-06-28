@@ -1,23 +1,26 @@
 <div class="main-container">
-    <div class="login-tile" *ngIf="!isTokenValid">
-        <form [formGroup]="loginForm">
-            <div class="row">
-                <app-input controlName="login" label="Login" [required]="true" type="text"
+  @if (!isTokenValid) {
+    <div class="login-tile">
+      <form [formGroup]="loginForm">
+        <div class="row">
+          <app-input controlName="login" label="Login" [required]="true" type="text"
                     [lzErrorMessage]="{
                     required:'This field is required'
                     }"/>
-                <app-input controlName="password" label="Password" [required]="true" type="password"
+            <app-input controlName="password" label="Password" [required]="true" type="password"
                     [lzErrorMessage]="{
                     required: 'This field is required'
                     }">
-                </app-input>
-            </div>
-            
-            <div class="row d-flex mt-4">
-                <div class="col"><button class="btn btn-yellow dark-text">Reset password</button></div>
-                <div class="col"><button class="btn btn-blue dark-text" type="submit" (click)="onSubmit()">Login</button></div>
-            </div>
+            </app-input>
+          </div>
+          <div class="row d-flex mt-4">
+            <div class="col"><button class="btn btn-yellow dark-text">Reset password</button></div>
+            <div class="col"><button class="btn btn-blue dark-text" type="submit" (click)="onSubmit()">Login</button></div>
+          </div>
         </form>
-    </div>
-    <app-dashboard *ngIf="isTokenValid"></app-dashboard>
-</div>
+      </div>
+    }
+    @if (isTokenValid) {
+      <app-dashboard></app-dashboard>
+    }
+  </div>
