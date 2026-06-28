@@ -27,7 +27,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
     .AddCertificate();
-//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy

@@ -42,7 +42,6 @@ namespace Application.Features.Costs.Commands
                 catch (Exception ex)
                 {
                     _logger.Error(ex, ex.Message);
-                    // ponieważ rekord z bazy zniknął pomyślnie.
                 }
             }
 
