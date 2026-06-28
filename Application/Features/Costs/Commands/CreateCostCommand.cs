@@ -3,11 +3,13 @@ using Application.Common.Results;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Costs.Commands
 {
     public record CreateCostCommand(
+        IFormFile? File,
         decimal Amount,
         string Currency,
         decimal Tax,
@@ -15,8 +17,7 @@ namespace Application.Features.Costs.Commands
         DateTime IssueDate,
         DateTime ServiceDate,
         Guid WorkCaseItemId,
-        Guid ServiceContractorId,
-        Stream? FileStream = null
+        Guid ServiceContractorId
     ) : IRequest<IAppResult<Guid>>;
 
     public class CreateCostCommandHandler(FormupContext context, IFileStorageService fileStorageService) : IRequestHandler<CreateCostCommand, IAppResult<Guid>>
@@ -41,9 +42,11 @@ namespace Application.Features.Costs.Commands
                 return AppResult<Guid>.Failure("COST.VALIDATION.COST_ALREADY_EXISTS");
 
             string uploadedUrl = string.Empty;
-            if (request.FileStream != null)
+
+            if (request.File != null)
             {
-                uploadedUrl = await _fileStorageService.UploadFileAsync(request.FileStream, request.Name, ct);
+                using var stream = request.File.OpenReadStream();
+                uploadedUrl = await _fileStorageService.UploadFileAsync(stream, request.Name, ct);
             }
 
             var cost = new Cost
