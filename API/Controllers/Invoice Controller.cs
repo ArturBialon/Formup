@@ -28,6 +28,7 @@ namespace API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -36,6 +37,7 @@ namespace API.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateInvoice([FromQuery] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
         {
             if (invoiceId != command.InvoiceId)
@@ -47,6 +49,7 @@ namespace API.Controllers
 
         [HttpPatch]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteInvoice([FromQuery] Guid invoiceId)
         {
             var result = await Mediator.Send(new DeleteInvoiceCommand(invoiceId));

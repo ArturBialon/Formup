@@ -26,8 +26,14 @@ namespace API.Controllers.Base
             {
                 errorCodes.Add(result.ErrorCode);
             }
+            if (errorCodes.Any(x => x.Contains("NOT_FOUND")))
+                return NotFound(new
+                {
+                    errors = errorCodes
+                });
 
             if (errorCodes.Count == 0) errorCodes.Add("SERVER.UNKNOWN_ERROR");
+
 
             return BadRequest(new
             {

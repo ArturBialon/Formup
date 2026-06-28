@@ -18,6 +18,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetServiceContractorById([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetServiceContractorByIdQuery(id), ct);
@@ -26,6 +28,7 @@ namespace API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddServiceContractor([FromBody] CreateServiceContractorCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -34,6 +37,7 @@ namespace API.Controllers
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditServiceContractor([FromBody] UpdateServiceContractorCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -42,6 +46,7 @@ namespace API.Controllers
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteServiceContractor([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteServiceContractorCommand(id), ct);
