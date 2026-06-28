@@ -1,9 +1,8 @@
 ﻿using Application;
-using Application.Common.Access;
 using Application.Common.Behaviors;
 using Application.Common.CurrencyServices;
-using Domain.Interfaces.UserService;
 using FluentValidation;
+using Infrastructure.Access;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 

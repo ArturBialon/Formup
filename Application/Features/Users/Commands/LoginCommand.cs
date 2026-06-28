@@ -1,6 +1,6 @@
 ﻿using Application.Common.Results;
 using Application.DTOs.Response;
-using Domain.Interfaces.UserService;
+using Infrastructure.Access;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

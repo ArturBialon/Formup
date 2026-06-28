@@ -1,12 +1,11 @@
-﻿using Domain.Interfaces.UserService;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Application.Common.Access
+namespace Infrastructure.Access
 {
     public class TokenService(IConfiguration config) : ITokenService
     {
@@ -27,7 +26,7 @@ namespace Application.Common.Access
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(1), // 💡 Używaj UtcNow zamiast DateTime.Now (standard w tokenach)
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = creds
             };
 

@@ -9,6 +9,7 @@ namespace Domain.Models
         public Client()
         {
             Invoices = new HashSet<Invoice>();
+            WorkCases = new HashSet<WorkCase>();
         }
 
         public required string Tax { get; set; }
