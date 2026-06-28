@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,42 +21,36 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    DashboardComponent,
-    TestErrorsComponent,
-    NotFoundComponent,
-    ServerErrorComponent,
-    InputComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    SharedModule,
-    FontAwesomeModule,
-    InputMaskModule,
-    ReactiveFormsModule,
-    InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true })
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor, multi: true
-    },
-    {
-      provide: API_BASE_URL,
-      useValue: environment.baseApiUrl
-    },
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HomeComponent,
+        DashboardComponent,
+        TestErrorsComponent,
+        NotFoundComponent,
+        ServerErrorComponent,
+        InputComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        SharedModule,
+        FontAwesomeModule,
+        InputMaskModule,
+        ReactiveFormsModule,
+        InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true })], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor, multi: true
+        },
+        {
+            provide: API_BASE_URL,
+            useValue: environment.baseApiUrl
+        },
+        {
+            provide: LocationStrategy,
+            useClass: HashLocationStrategy,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

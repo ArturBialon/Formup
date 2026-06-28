@@ -8,16 +8,19 @@ namespace Domain.Models
     {
         public Invoice()
         {
-            Services = new HashSet<Service>();
+            WorkCaseItems = new HashSet<WorkCaseItem>();
         }
 
-        public int Tax { get; set; }
+        public string InvoiceNumber { get; set; } = null!;
+        public decimal Tax { get; set; }
         public DateTime IssueDate { get; set; }
         public DateTime ServiceDate { get; set; }
         public decimal Amount { get; set; }
+        public string Currency { get; set; } = "PLN";
+        public bool IsAbandoned { get; set; } = false;
 
         public virtual WorkCase WorkCase { get; set; }
         public virtual Client Client { get; set; }
-        public virtual ICollection<Service> Services { get; set; }
+        public virtual ICollection<WorkCaseItem> WorkCaseItems { get; set; }
     }
 }

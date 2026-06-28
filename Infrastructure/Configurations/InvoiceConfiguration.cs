@@ -8,7 +8,19 @@ namespace Infrastructure.Configurations
     {
         protected override void ConfigureEntity(EntityTypeBuilder<Invoice> entity)
         {
-            entity.Property(e => e.Amount).HasColumnType("decimal(15, 2)");
+            entity.Property(e => e.InvoiceNumber)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.Property(e => e.Amount)
+                .HasColumnType("decimal(12, 2)")
+                .IsRequired();
+
+            entity.Property(e => e.Currency)
+                .IsRequired()
+                .HasMaxLength(3)
+                .IsUnicode(false);
 
             entity.Property(e => e.IssueDate)
                 .HasColumnType("datetime")
@@ -19,9 +31,12 @@ namespace Infrastructure.Configurations
                 .HasColumnName("Service_Date");
 
             entity.Property(e => e.Tax)
+                .HasColumnType("decimal(7, 3)")
+                .IsRequired();
+
+            entity.Property(e => e.IsAbandoned)
                 .IsRequired()
-                .HasMaxLength(20)
-                .IsUnicode(false);
+                .HasDefaultValue(false);
 
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Invoices)

@@ -13,7 +13,13 @@ namespace Infrastructure.Configurations
                     .HasMaxLength(54)
                     .IsUnicode(false);
 
-            entity.Property(e => e.Credit).HasColumnType("decimal(15, 2)");
+            entity.Property(e => e.Credit)
+                .HasColumnType("decimal(12, 2)");
+
+            entity.Property(e => e.Currency)
+                .IsRequired()
+                .HasMaxLength(3)
+                .IsUnicode(false);
 
             entity.Property(e => e.Name)
                 .IsRequired()

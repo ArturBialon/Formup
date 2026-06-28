@@ -1,25 +1,20 @@
 ﻿using API.Controllers.Base;
 using Application.DTOs.Response;
-using Application.Features.Forwarders.Commands;
+using Application.Features.Users.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class AuthController() : ApiControllerBase
+    public class AuthController : ApiControllerBase
     {
         [AllowAnonymous]
-        [HttpPost("login")]
-        public async Task<ActionResult<UserResponse>> Login(LoginCommand command)
+        [HttpPost]
+        [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken ct)
         {
-            return Ok(await Mediator.Send(command));
-        }
-
-        [Authorize]
-        [HttpPost("register")]
-        public async Task<ActionResult<UserResponse>> Register(RegisterForwarderCommand command)
-        {
-            return Ok(await Mediator.Send(command));
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
     }
 }

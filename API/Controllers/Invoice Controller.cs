@@ -1,39 +1,59 @@
 ﻿using API.Controllers.Base;
+using Application.Common.Results;
+using Application.DTOs.Response;
+using Application.Features.Invoices.Commands;
+using Application.Features.Invoices.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     public class InvoiceController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetInvoice()
+        [ProducesResponseType(typeof(PagedResult<InvoiceResponse>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetInvoices([FromQuery] GetInvoicesQuery query, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(query, ct);
+            return HandleResult(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetInvoiceById(Guid id)
+        [HttpGet]
+        [ProducesResponseType(typeof(InvoiceDetailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetInvoiceById([FromQuery] Guid invoiceId, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetInvoiceByIdQuery(invoiceId), ct);
+            return HandleResult(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddInvoiceCase()
+        [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateInvoice([FromBody] CreateInvoiceCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditInvoiceCase()
+        [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateInvoice([FromQuery] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            if (invoiceId != command.InvoiceId)
+                return BadRequest("Mismatched Invoice identifier between URL and body.");
+
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInvoiceCase(Guid id)
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteInvoice([FromQuery] Guid invoiceId)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new DeleteInvoiceCommand(invoiceId));
+            return HandleResult(result);
         }
     }
 }

@@ -14,7 +14,13 @@ namespace Infrastructure.Configurations
                 .IsUnicode(false);
 
             entity.Property(e => e.Amount)
+                .HasColumnType("decimal(12, 2)")
                 .IsRequired();
+
+            entity.Property(e => e.Currency)
+                .IsRequired()
+                .HasMaxLength(3)
+                .IsUnicode(false);
 
             entity.Property(e => e.Relation)
                 .IsRequired()

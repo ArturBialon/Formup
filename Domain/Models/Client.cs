@@ -9,6 +9,7 @@ namespace Domain.Models
         public Client()
         {
             Invoices = new HashSet<Invoice>();
+            WorkCases = new HashSet<WorkCase>();
         }
 
         public required string Tax { get; set; }
@@ -17,6 +18,7 @@ namespace Domain.Models
         public required string Zip { get; set; }
         public required string Coutry { get; set; }
         public decimal Credit { get; set; }
+        public string Currency { get; set; } = "PLN";
 
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<WorkCase> WorkCases { get; set; }

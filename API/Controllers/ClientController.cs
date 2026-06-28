@@ -1,39 +1,52 @@
 ﻿using API.Controllers.Base;
+using Application.Common.Results;
+using Application.DTOs.Response;
+using Application.Features.Clients.Commands;
+using Application.Features.Clients.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //[Authorize]
     public class ClientController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetClients()
+        [ProducesResponseType(typeof(PagedResult<ClientListItemResponse>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetClients([FromQuery] GetClientsQuery query, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(query, ct);
+            return HandleResult(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetClientById(Guid id)
+        [HttpGet]
+        [ProducesResponseType(typeof(ClientDetailResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetClientById([FromQuery] Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetClientByIdQuery(id), ct);
+            return HandleResult(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddClient()
+        [ProducesResponseType(typeof(ClientResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateClient([FromBody] CreateClientCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditClient()
+        [ProducesResponseType(typeof(ClientResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateClient([FromBody] UpdateClientCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClient(Guid id)
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteClient([FromQuery] Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new DeleteClientCommand(id), ct);
+            return HandleResult(result);
         }
     }
 }

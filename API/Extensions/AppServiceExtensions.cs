@@ -1,8 +1,8 @@
 ﻿using Application;
-using Application.Common;
-using Application.Services;
-using Domain.Interfaces.UserService;
+using Application.Common.Behaviors;
+using Application.Common.CurrencyServices;
 using FluentValidation;
+using Infrastructure.Access;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +26,7 @@ namespace API.Extensions
             });
             services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);
             services.AddScoped<ITokenService, TokenService>();
+            services.AddHttpClient<ICurrencyConverterService, NbpCurrencyConverterService>();
 
             return services;
         }

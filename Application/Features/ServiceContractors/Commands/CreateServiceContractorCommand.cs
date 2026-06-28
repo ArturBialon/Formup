@@ -1,8 +1,9 @@
-﻿
+﻿using Application.Common.Results;
 using Application.DTOs.Response;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.ServiceContractors.Commands
 {
@@ -17,15 +18,21 @@ namespace Application.Features.ServiceContractors.Commands
         string? ApartmentNumber,
         string? Email,
         string? PhoneNumber
-    ) : IRequest<ServiceContractorResponse>;
+    ) : IRequest<AppResult<ServiceContractorResponse>>;
 
     public class CreateServiceContractorHandler(FormupContext context)
-        : IRequestHandler<CreateServiceContractorCommand, ServiceContractorResponse>
+        : IRequestHandler<CreateServiceContractorCommand, AppResult<ServiceContractorResponse>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<ServiceContractorResponse> Handle(CreateServiceContractorCommand request, CancellationToken ct)
+        public async Task<AppResult<ServiceContractorResponse>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
         {
+            var taxExists = await _context.ServiceContractors.AnyAsync(x => x.Tax == request.Tax, ct);
+            if (taxExists)
+            {
+                return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.VALIDATION.TAX.NOT_UNIQUE");
+            }
+
             var contractor = new ServiceContractor
             {
                 Name = request.Name,
@@ -43,7 +50,7 @@ namespace Application.Features.ServiceContractors.Commands
             var created = _context.ServiceContractors.Add(contractor);
             await _context.SaveChangesAsync(ct);
 
-            return new ServiceContractorResponse
+            var response = new ServiceContractorResponse
             {
                 Id = created.Entity.Id.Value,
                 Name = created.Entity.Name,
@@ -55,9 +62,10 @@ namespace Application.Features.ServiceContractors.Commands
                 HouseNumber = created.Entity.HouseNumber,
                 ApartmentNumber = created.Entity.ApartmentNumber,
                 Email = created.Entity.Email,
-                PhoneNumber = created.Entity.PhoneNumber,
-                Message = "Service contractor created successfully."
+                PhoneNumber = created.Entity.PhoneNumber
             };
+
+            return AppResult<ServiceContractorResponse>.Success(response);
         }
     }
 }
