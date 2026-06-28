@@ -26,14 +26,26 @@ namespace Infrastructure.Configurations
                 .HasColumnType("decimal(7, 3)")
                 .IsRequired();
 
-            entity.HasOne(d => d.WorkCase)
+            entity.Property(e => e.IssueDate)
+                .HasColumnType("date")
+                .IsRequired();
+
+            entity.Property(e => e.ServiceDate)
+                .HasColumnType("date")
+                .IsRequired();
+
+            entity.Property(e => e.DocumentUrl)
+                .HasMaxLength(2048)
+                .IsRequired(false);
+
+            entity.HasOne(d => d.WorkCaseItem)
                 .WithMany(p => p.Costs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Costs_WorkCases");
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_Costs_WorkCaseItems");
 
             entity.HasOne(d => d.ServiceContractor)
                 .WithMany(p => p.Costs)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("Costs_Service_Contractors");
         }
     }

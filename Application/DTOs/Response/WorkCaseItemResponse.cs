@@ -10,5 +10,6 @@
         public DateTime CreatedAt { get; set; }
         public bool IsInvoiced { get; set; }
         public Guid? InvoiceId { get; set; }
+        public ICollection<CostResponse> Costs { get; set; } = [];
     }
 }

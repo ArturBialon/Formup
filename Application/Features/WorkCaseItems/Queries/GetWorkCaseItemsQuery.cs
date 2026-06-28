@@ -34,7 +34,17 @@ namespace Application.Features.WorkCaseItems.Queries
                     Currency = x.Currency,
                     Tax = x.Tax,
                     CreatedAt = x.CreatedAt,
-                    InvoiceId = x.Invoice != null ? x.Invoice.Id : null
+                    InvoiceId = x.Invoice != null ? x.Invoice.Id : null,
+                    Costs = x.Costs.Select(c => new CostResponse
+                    {
+                        Id = c.Id.Value,
+                        Name = c.Name,
+                        Amount = c.Amount,
+                        Currency = c.Currency,
+                        Tax = c.Tax,
+                        IssueDate = c.IssueDate,
+                        ServiceDate = c.ServiceDate
+                    }).ToList()
                 })
                 .ToListAsync(ct);
 

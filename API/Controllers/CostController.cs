@@ -1,4 +1,8 @@
 ﻿using API.Controllers.Base;
+using Application.Common.Results;
+using Application.DTOs.Response;
+using Application.Features.Costs.Commands;
+using Application.Features.Costs.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -6,33 +10,63 @@ namespace API.Controllers
     public class CostController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetCosts()
+        [ProducesResponseType(typeof(PagedResult<CostDetailResponse>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCosts([FromQuery] GetCostsQuery query, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(query, ct);
+            return HandleResult(result);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetCostById(Guid id)
+        [HttpGet]
+        [ProducesResponseType(typeof(CostDetailResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCostById([FromQuery] Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetCostByIdQuery(id), ct);
+            return HandleResult(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCost()
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateCost([FromForm] IFormFile? file, [FromForm] CreateCostCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            if (file != null)
+            {
+                using var stream = file.OpenReadStream();
+                var fullCommand = command with { FileStream = stream };
+                var result = await Mediator.Send(fullCommand, ct);
+                return HandleResult(result);
+            }
+            else
+            {
+                var result = await Mediator.Send(command, ct);
+                return HandleResult(result);
+            }
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditCost()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateCost([FromForm] IFormFile? file, [FromForm] UpdateCostCommand command, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            if (file != null)
+            {
+                using var stream = file.OpenReadStream();
+                var fullCommand = command with { FileStream = stream };
+                var result = await Mediator.Send(fullCommand, ct);
+                return HandleResult(result);
+            }
+            else
+            {
+                var result = await Mediator.Send(command, ct);
+                return HandleResult(result);
+            }
         }
 
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteCost(Guid id)
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteCost([FromQuery] Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new DeleteCostCommand(id), ct);
+            return HandleResult(result);
         }
     }
 }
