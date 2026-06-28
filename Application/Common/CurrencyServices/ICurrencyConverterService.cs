@@ -8,6 +8,7 @@ namespace Application.Common.CurrencyServices
             List<CurrencyConversionInput> items,
             string targetCurrency,
             decimal? manualExchangeRate,
+            DateTime serviceDate,
             CancellationToken ct);
     }
 }

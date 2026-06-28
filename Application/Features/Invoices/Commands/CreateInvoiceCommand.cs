@@ -44,7 +44,7 @@ namespace Application.Features.Invoices.Commands
                 .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.Currency))
                 .ToList();
 
-            var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(conversionItems, request.TargetCurrency, request.ManualExchangeRate, ct);
+            var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(conversionItems, request.TargetCurrency, request.ManualExchangeRate, request.ServiceDate, ct);
 
             if (conversionResult.IsFailure)
             {

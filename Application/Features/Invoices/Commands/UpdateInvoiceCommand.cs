@@ -65,7 +65,7 @@ namespace Application.Features.Invoices.Commands
                 .ToList();
 
             var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(
-                conversionInputs, request.TargetCurrency, request.ManualExchangeRate, ct);
+                conversionInputs, request.TargetCurrency, request.ManualExchangeRate, request.ServiceDate, ct);
 
             if (conversionResult.IsFailure)
             {

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace Application.Common.CurrencyServices
@@ -14,19 +15,44 @@ namespace Application.Common.CurrencyServices
             List<CurrencyConversionInput> items,
             string targetCurrency,
             decimal? manualExchangeRate,
+            DateTime serviceDate,
             CancellationToken ct)
         {
             targetCurrency = targetCurrency.ToUpper();
+            DateTime targetDate = serviceDate.Date.AddDays(-1);
+            List<NbpTableA>? nbpTables = [];
 
-            List<NbpTableA>? nbpTables;
-            try
+            for (int i = 0; i < 7; i++)
             {
-                nbpTables = await _httpClient.GetFromJsonAsync<List<NbpTableA>>(
-                    "http://api.nbp.pl/api/exchangerates/tables/a/?format=json", ct);
-            }
-            catch
-            {
-                return AppResult<CurrencyConversionResult>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
+                try
+                {
+                    await Task.Delay(100, ct);
+                    string formattedDate = targetDate.ToString("yyyy-MM-dd");
+                    string url = $"https://api.nbp.pl/api/exchangerates/tables/a/{formattedDate}/?format=json";
+
+                    var response = await _httpClient.GetAsync(url, ct);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        nbpTables = await response.Content.ReadFromJsonAsync<List<NbpTableA>>(cancellationToken: ct);
+                        if (nbpTables != null && nbpTables.Count != 0)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (response.StatusCode != HttpStatusCode.NotFound)
+                    {
+                        return AppResult<CurrencyConversionResult>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
+                    }
+                }
+                catch
+                {
+                    if (i == 6)
+                        return AppResult<CurrencyConversionResult>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
+                }
+
+                targetDate = targetDate.AddDays(-1);
             }
 
             var tableA = nbpTables?.FirstOrDefault();
