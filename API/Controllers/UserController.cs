@@ -3,12 +3,13 @@ using Application.Common.Results;
 using Application.DTOs.Response;
 using Application.Features.Users.Commands;
 using Application.Features.Users.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : ApiControllerBase
     {
         [AllowAnonymous]
@@ -54,7 +55,7 @@ namespace API.Controllers
         {
             if (userId != command.UserId)
             {
-                return BadRequest("Mismatched User identifier between URL and body.");
+                return HandleResult(AppResult<Unit>.Failure("REQUEST.ID_MISSMATCH"));
             }
 
             var result = await Mediator.Send(command, ct);

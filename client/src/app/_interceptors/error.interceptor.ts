@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr'; // Assuming you're using ngx-toastr for notifications
+import { ToastrService } from 'ngx-toastr';
 import { Router, NavigationExtras } from '@angular/router';
 
 @Injectable()
@@ -45,37 +45,49 @@ export class ErrorInterceptor implements HttpInterceptor {
     );
   }
 
-  private handleErrorResponse(error: any, status: any) {
+  private handleErrorResponse(error: any, status: number) {
     switch (status) {
       case 400:
-        if (error.errors) {
-          const modalStateErrors = [];
-          for (const key in error.errors) {
-            if (error.errors[key]) {
-              modalStateErrors.push(error.errors[key]);
-            }
-          }
-          this.toastr.error(modalStateErrors.flat().toString());
+        
+        if (error && error.errors && Array.isArray(error.errors)) {
+          error.errors.forEach((errorCode: string) => {
+            this.toastr.error(errorCode, 'Validation Error');
+          });
+        } else if (error && error.error) {
+          this.toastr.error(error.error, 'Error');
         } else {
-          this.toastr.error(error.message, status);
+          this.toastr.error('An unknown error occurred (400)', 'Error');
         }
         break;
+
       case 401:
-        this.toastr.error(error.error, status);
+        const authError = error?.error || 'AUTH.UNAUTHORIZED';
+        const authDetails = error?.details || 'Session  ended or invalid credentials. Please log in again.';
+        
+        this.toastr.error(authDetails, authError);
+        this.router.navigateByUrl('/login');
         break;
+
       case 403:
-        this.toastr.error("Unauthorized", status);
+        const forbiddenError = error?.error || 'AUTH.FORBIDDEN';
+        const forbiddenDetails = error?.details || 'Insufficient permissions for this action.';
+        
+        this.toastr.error(forbiddenDetails, forbiddenError);
         break;
+
       case 404:
-        this.toastr.error(error.message, status);
+        const notFoundMessage = error?.message || 'Resource not found (404)';
+        this.toastr.error(notFoundMessage, 'Resource Not Found');
         break;
+
       case 500:
-        const navigationExtras: NavigationExtras = { state: { error: error.error } };
+        const navigationExtras: NavigationExtras = { state: { error: error?.error || error } };
         this.router.navigateByUrl('/server-error', navigationExtras);
         break;
+
       default:
-        this.toastr.error('Invalid API URL');
-        console.log(error);
+        this.toastr.error('An unexpected error occurred during communication.', `Status: ${status}`);
+        console.error('Unhandled API Error:', error);
         break;
     }
   }

@@ -22,9 +22,9 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet]
         [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetWorkCaseById([FromRoute] Guid id, CancellationToken ct)
+        public async Task<IActionResult> GetWorkCaseById([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetWorkCaseByIdQuery(id), ct);
             return HandleResult(result);
@@ -49,9 +49,9 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [HttpPatch("{id:guid}")]
+        [HttpPatch]
         [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> AbandonWorkCase([FromRoute] Guid id, CancellationToken ct)
+        public async Task<IActionResult> AbandonWorkCase([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new AbandonWorkCaseCommand(id), ct);
             return HandleResult(result);
@@ -61,39 +61,39 @@ namespace API.Controllers
 
         #region WorkCase Items Operations
 
-        [HttpGet("items/{workCaseId:guid}")]
+        [HttpGet]
         [ProducesResponseType(typeof(IReadOnlyCollection<WorkCaseItemResponse>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetItemsForWorkCase([FromRoute] Guid workCaseId, CancellationToken ct)
+        public async Task<IActionResult> GetItemsForWorkCase([FromQuery] Guid workCaseId, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetWorkCaseItemsQuery(workCaseId), ct);
             return HandleResult(result);
         }
 
-        [HttpPost("items/{workCaseId:guid}")]
+        [HttpPost]
         [ProducesResponseType(typeof(WorkCaseItemResponse), StatusCodes.Status201Created)]
-        public async Task<IActionResult> AddItemToWorkCase([FromRoute] Guid workCaseId, [FromBody] AddWorkCaseItemCommand command, CancellationToken ct)
+        public async Task<IActionResult> AddItemToWorkCase([FromQuery] Guid workCaseId, [FromBody] AddWorkCaseItemCommand command, CancellationToken ct)
         {
             if (workCaseId != command.WorkCaseId)
-                return BadRequest("Mismatched WorkCase identifier between URL and body.");
+                return HandleResult(AppResult<Unit>.Failure("REQUEST.ID_MISSMATCH"));
 
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }
 
-        [HttpPut("items/{workCaseItemId:guid}")]
+        [HttpPut]
         [ProducesResponseType(typeof(WorkCaseItemResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateItemForWorkCase([FromRoute] Guid workCaseItemId, [FromBody] UpdateWorkCaseItemCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateItemForWorkCase([FromQuery] Guid workCaseItemId, [FromBody] UpdateWorkCaseItemCommand command, CancellationToken ct)
         {
             if (workCaseItemId != command.WorkCaseItemId)
-                return BadRequest("Mismatched WorkCaseItem identifier between URL and body.");
+                return HandleResult(AppResult<Unit>.Failure("REQUEST.ID_MISSMATCH"));
 
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }
 
-        [HttpDelete("{workCaseItemId:guid}")]
+        [HttpDelete]
         [ProducesResponseType(typeof(Unit), StatusCodes.Status200OK)]
-        public async Task<IActionResult> DeleteItemForWorkCase([FromRoute] Guid workCaseItemId, CancellationToken ct)
+        public async Task<IActionResult> DeleteItemForWorkCase([FromQuery] Guid workCaseItemId, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteWorkCaseItemCommand(workCaseItemId), ct);
             return HandleResult(result);

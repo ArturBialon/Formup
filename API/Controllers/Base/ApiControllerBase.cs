@@ -15,19 +15,23 @@ namespace API.Controllers.Base
         {
             if (result.IsSuccess) return Ok(result.Value);
 
+            var errorCodes = new List<string>();
+
             if (result.Errors != null && result.Errors.Count > 0)
             {
-                return BadRequest(new
-                {
-                    error = result.ErrorCode,
-                    errors = result.Errors
-                });
+                var validationCodes = result.Errors.Values.SelectMany(x => x);
+                errorCodes.AddRange(validationCodes);
             }
+            else if (!string.IsNullOrEmpty(result.ErrorCode))
+            {
+                errorCodes.Add(result.ErrorCode);
+            }
+
+            if (errorCodes.Count == 0) errorCodes.Add("SERVER.UNKNOWN_ERROR");
 
             return BadRequest(new
             {
-                error = result.ErrorCode,
-                details = result.ErrorData
+                errors = errorCodes
             });
         }
     }

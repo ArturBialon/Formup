@@ -33,6 +33,7 @@ namespace Application.Common.Behaviors
                     );
 
                 var responseType = typeof(TResponse);
+                var innerType = typeof(TResponse).GetGenericArguments().FirstOrDefault();
                 if (responseType.IsGenericType && responseType.GetGenericTypeDefinition() == typeof(AppResult<>))
                 {
                     var validationFailureMethod = responseType.GetMethod("ValidationFailure", BindingFlags.Public | BindingFlags.Static);

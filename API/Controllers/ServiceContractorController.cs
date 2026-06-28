@@ -25,13 +25,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ServiceContractorResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> AddServiceContractor([FromBody] CreateServiceContractorCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
-            if (result.IsFailure) return HandleResult(result);
-
-            return Created($"api/ServiceContractor/GetServiceContractorById?id={result.Value!.Id}", result.Value);
+            return HandleResult(result);
         }
 
         [HttpPut]
