@@ -5,15 +5,16 @@ import { DEFAULT_ERROR_MESSAGES } from '../validators/default-error-message';
 import { createMask } from '@ngneat/input-mask';
 
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrl: './input.component.css',
-  viewProviders: [
-    {
-      provide: ControlContainer,
-      useExisting: FormGroupDirective
-    }
-  ],
+    selector: 'app-input',
+    templateUrl: './input.component.html',
+    styleUrl: './input.component.css',
+    viewProviders: [
+        {
+            provide: ControlContainer,
+            useExisting: FormGroupDirective
+        }
+    ],
+    standalone: false
 })
 export class InputComponent {
   @Input() controlName: string;
