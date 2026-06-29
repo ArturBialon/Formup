@@ -27,7 +27,7 @@ namespace Application.Features.WorkCaseItems.Commands
                 .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseItemId, ct);
 
             if (workCaseItem == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.NOT_FOUND");
-            if (workCaseItem.IsInvoiced) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.VALIDATION.ALREADY_INVOICED");
+            if (workCaseItem.IsInvoiced) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
 
             var workCase = workCaseItem.WorkCase;
 

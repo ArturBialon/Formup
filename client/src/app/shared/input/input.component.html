@@ -1,35 +1,27 @@
-<div
-  class="form-group"
-  [class.required]="required"
-  >
+<div class="form-group" [class.required]="required">
   @if (label) {
-    <label
-      class="dark-text"
-      [for]="controlName"
-      >
-      {{ label }}
+    <label class="dark-text" [for]="controlName">
+      {{ translatedLabelSignal() }}
     </label>
   }
 
   <input
-    [autocomplete]="false"
     [id]="controlName"
     class="input form-control shadow-none"
     [type]="type"
     [inputMask]="isMask && telephone"
     [formControlName]="controlName"
-    [placeholder]="placeholder"
+    [placeholder]="translatedPlaceholderSignal()"
     [attr.disabled]="disabled"
-    [autocomplete]="autocomplete"
+    [autocomplete]="autocomplete || 'off'"
     [class.invalid]="getControl.invalid && (getControl.dirty || getControl.touched)"
     [value]="formatAsCurrency(getControl.value)"
-    />
-    <div
-      class="invalid-feedback"
-    [class.show-invalid]="
-      getControl.invalid && (getControl.dirty || getControl.touched)
-    "
-      >
-      {{ errorMessage }}
-    </div>
+  />
+
+  <div
+    class="invalid-feedback"
+    [class.show-invalid]="getControl.invalid && (getControl.dirty || getControl.touched)"
+  >
+    {{ errorMessageSignal() }}
   </div>
+</div>

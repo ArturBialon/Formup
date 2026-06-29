@@ -39,10 +39,10 @@ namespace Application.Features.Invoices.Commands
                 .ToListAsync(ct);
 
             if (requestedItems.Count != request.WorkCaseItemIds.Count)
-                return AppResult<InvoiceResponse>.Failure("INVOICE.VALIDATION.SOME_ITEMS_NOT_FOUND_IN_WORK_CASE");
+                return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_NOT_FOUND");
 
             if (requestedItems.Any(x => x.Invoice != null && x.Invoice.Id.Value != invoice.Id.Value))
-                return AppResult<InvoiceResponse>.Failure("INVOICE.VALIDATION.SOME_ITEMS_ALREADY_INVOICED_ELSEWHERE");
+                return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_ALREADY_INVOICED");
 
 
             var itemsToDetach = await _context.WorkCaseItems

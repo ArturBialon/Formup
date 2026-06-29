@@ -24,7 +24,7 @@ namespace Application.Features.ServiceContractors.Commands
 
             if (contractor.Costs.Count != 0)
             {
-                return AppResult<Unit>.Failure("CONTRACTOR.VALIDATION.CANNOT_DELETE_WITH_INVOICES");
+                return AppResult<Unit>.Failure("CONTRACTOR.CANNOT_DELETE_WITH_INVOICES");
             }
 
             _context.ServiceContractors.Remove(contractor);

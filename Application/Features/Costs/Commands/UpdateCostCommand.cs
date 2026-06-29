@@ -35,19 +35,19 @@ namespace Application.Features.Costs.Commands
             if (cost == null) return AppResult<Unit>.Failure("COST.NOT_FOUND");
 
             var nameTaken = await _context.Costs.AnyAsync(x => x.Id.Value != request.Id && x.ServiceContractor.Id.Value == request.ServiceContractorId && x.Name == request.Name, ct);
-            if (nameTaken) return AppResult<Unit>.Failure("COST.VALIDATION.COST_ALREADY_EXISTS");
+            if (nameTaken) return AppResult<Unit>.Failure("COST.COST_ALREADY_EXISTS");
 
             if (cost.WorkCaseItem.Id.Value != request.WorkCaseItemId)
             {
                 var newWorkCaseItem = await _context.WorkCaseItems.FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseItemId, ct);
-                if (newWorkCaseItem == null) return AppResult<Unit>.Failure("COST.VALIDATION.WORK_CASE_ITEM_NOT_FOUND");
+                if (newWorkCaseItem == null) return AppResult<Unit>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
                 cost.WorkCaseItem = newWorkCaseItem;
             }
 
             if (cost.ServiceContractor.Id.Value != request.ServiceContractorId)
             {
                 var newContractor = await _context.ServiceContractors.FirstOrDefaultAsync(x => x.Id.Value == request.ServiceContractorId, ct);
-                if (newContractor == null) return AppResult<Unit>.Failure("COST.VALIDATION.CONTRACTOR_NOT_FOUND");
+                if (newContractor == null) return AppResult<Unit>.Failure("COST.CONTRACTOR_NOT_FOUND");
                 cost.ServiceContractor = newContractor;
             }
 

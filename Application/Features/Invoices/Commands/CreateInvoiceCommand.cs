@@ -35,10 +35,10 @@ namespace Application.Features.Invoices.Commands
                 .ToListAsync(ct);
 
             if (itemsToInvoice.Count != request.WorkCaseItemIds.Count)
-                return AppResult<InvoiceResponse>.Failure("INVOICE.VALIDATION.SOME_ITEMS_NOT_FOUND");
+                return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_NOT_FOUND");
 
             if (itemsToInvoice.Any(x => x.IsInvoiced))
-                return AppResult<InvoiceResponse>.Failure("INVOICE.VALIDATION.SOME_ITEMS_ALREADY_INVOICED");
+                return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_ALREADY_INVOICED");
 
             var conversionItems = itemsToInvoice
                 .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.Currency))

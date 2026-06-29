@@ -41,7 +41,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateInvoice([FromQuery] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
         {
             if (invoiceId != command.InvoiceId)
-                return BadRequest("Mismatched Invoice identifier between URL and body.");
+                return BadRequest("REQUEST.ID_MISSMATCH");
 
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);

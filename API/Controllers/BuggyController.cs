@@ -1,5 +1,4 @@
 ﻿using API.Controllers.Base;
-using API.Extensions.ServiceCreator;
 using Domain.Models;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
@@ -43,13 +42,6 @@ namespace API.Controllers
         public ActionResult<string> GetBadRequest()
         {
             return BadRequest("something wrong");
-        }
-
-        [HttpGet("angular")]
-        public ActionResult<string> GenerateAngular()
-        {
-            AngularServiceCreator.ConfigureSwaggerAsync().Wait();
-            return Ok("Angular service generated successfully.");
         }
     }
 }

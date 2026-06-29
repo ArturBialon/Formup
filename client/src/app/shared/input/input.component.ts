@@ -1,32 +1,44 @@
-import { Component, Input } from '@angular/core';
-import { ControlContainer, FormControl, FormGroupDirective } from '@angular/forms';
-import { ErrorMessage } from 'src/app/_interfaces/error-message.interface';
+import { Component, Input, inject, computed } from '@angular/core';
+import {
+  ControlContainer,
+  FormControl,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ErrorMessage } from '../../_interfaces/error-message.interface';
 import { DEFAULT_ERROR_MESSAGES } from '../validators/default-error-message';
-import { createMask } from '@ngneat/input-mask';
+import { createMask, InputMaskModule } from '@ngneat/input-mask';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-input',
-    templateUrl: './input.component.html',
-    styleUrl: './input.component.css',
-    viewProviders: [
-        {
-            provide: ControlContainer,
-            useExisting: FormGroupDirective
-        }
-    ],
-    standalone: false
+  selector: 'app-input',
+  templateUrl: './input.component.html',
+  styleUrl: './input.component.css',
+  standalone: true,
+  imports: [ReactiveFormsModule, InputMaskModule], 
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useExisting: FormGroupDirective,
+    },
+  ],
 })
 export class InputComponent {
-  @Input() controlName: string;
-  @Input() label: string;
+  private formGroupDirective = inject(FormGroupDirective);
+  private translate = inject(TranslateService);
+
+  @Input() controlName: string = '';
+  @Input() label: string = '';
   @Input() placeholder = '';
   @Input() disabled: string | undefined;
   @Input() required = false;
   @Input() type = 'text';
   @Input() isMask = false;
-  @Input() autocomplete: string;
-  @Input() lzErrorMessage: Partial<ErrorMessage>;
+  @Input() autocomplete: string = '';
   @Input() value: any;
+
+  private _customErrorMessages: ErrorMessage = DEFAULT_ERROR_MESSAGES;
+
   @Input()
   set customErrorMessages(value: Partial<ErrorMessage>) {
     this._customErrorMessages = { ...DEFAULT_ERROR_MESSAGES, ...value };
@@ -36,38 +48,48 @@ export class InputComponent {
     mask: '999 999 999',
   });
 
-  private _customErrorMessages: ErrorMessage = DEFAULT_ERROR_MESSAGES;
-
-  constructor(
-    private formGroupDirective: FormGroupDirective
-  ) { }
-
   get getControl(): FormControl {
-    return this.formGroupDirective.form.controls[this.controlName] as FormControl;
+    return this.formGroupDirective.form.controls[
+      this.controlName
+    ] as FormControl;
   }
 
-  get errorMessage(): string | void {
-    const controlName = this.formGroupDirective.form.controls[this.controlName];
+  errorMessageSignal = computed(() => {
+    this.translate.currentLang(); 
+    
+    const control = this.formGroupDirective.form.controls[this.controlName];
+    if (!control || !control.errors) return '';
 
-    if (!controlName.errors) {
-      return null;
+    const [firstErrorKey] = Object.entries(control.errors)[0];
+    
+    let translationKey = '';
+    if (firstErrorKey.includes('.') || firstErrorKey === firstErrorKey.toUpperCase()) {
+      translationKey = firstErrorKey;
+    } else {
+      translationKey = this._customErrorMessages[firstErrorKey as keyof ErrorMessage] || '';
     }
 
-    for (const [key] of Object.entries(controlName.errors)) {
-      if (Object.prototype.hasOwnProperty.call(controlName.errors, key)) {
-        return this.lzErrorMessage[key as keyof ErrorMessage];
-      }
-    }
-  }
+    return translationKey ? this.translate.instant(translationKey) : '';
+  });
+
+  translatedLabelSignal = computed(() => {
+    this.translate.currentLang();
+    return this.label ? this.translate.instant(this.label) : '';
+  });
+
+  translatedPlaceholderSignal = computed(() => {
+    this.translate.currentLang();
+    return this.placeholder ? this.translate.instant(this.placeholder) : '';
+  });
 
   formatAsCurrency(value: number): string {
     if (!value || isNaN(value)) {
       return value?.toString();
     }
-    return value.toLocaleString('pl-PL', {
+    const currentLang = this.translate.currentLang() || 'pl-PL';
+    return value.toLocaleString(currentLang, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
   }
 }
-

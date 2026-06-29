@@ -38,7 +38,7 @@ namespace Application.Features.ServiceContractors.Commands
 
                 if (taxExists)
                 {
-                    return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.VALIDATION.TAX.NOT_UNIQUE");
+                    return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
                 }
             }
 

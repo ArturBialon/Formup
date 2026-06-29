@@ -1,91 +1,227 @@
 {
-  "CLIENT": {
+  "COMMON": {
     "VALIDATION": {
-      "NAME": {
-        "REQUIRED": "Client name is required.",
-        "TOO_LONG": "Client name cannot exceed 150 characters."
+      "REQUIRED": "This field is required.",
+      "EMAIL_INVALID": "The provided email address is not in a valid format.",
+      "TOO_SHORT": "The entered value is too short.",
+      "TOO_LONG": "The entered value is too long.",
+      "TOO_HIGH": "The entered value exceeds the maximum allowed limit."
+    }
+  },
+  "SERVER": {
+    "UNKNOWN_ERROR": "An unexpected server error occurred. Please try again later."
+  },
+  "REQUEST": {
+    "ID_MISSMATCH": "The provided identifier does not match the request payload."
+  },
+  "VALIDATION_ERROR": "One or more validation errors occurred. Please check the entered data.",
+  "DATABASE_ERROR": "A critical database error occurred. Please contact system administrator.",
+  "NULL_TRACE": "The requested transaction or trace data was missing or evaluate to null.",
+  "AUTH": {
+    "INVALID_CREDENTIALS": "Invalid email address or password provided.",
+    "SECURITY_CONFIGURATION_ERROR": "An error occurred while setting up the security context."
+  },
+  "REGISTRATION": {
+    "EMAIL_OR_INITIALS_TAKEN": "A user with this email address or initials is already registered.",
+    "SECURITY_CONFIGURATION_ERROR": "Failed to safely process registration data due to system security state.",
+    "VALIDATION": {
+      "EMAIL_REQUIRED": "Email address is required for registration.",
+      "EMAIL_INVALID": "Provided email address has an incorrect format.",
+      "NAME_REQUIRED": "First name is required.",
+      "SURNAME_REQUIRED": "Last name is required.",
+      "INITIALS_REQUIRED": "User initials/prefix are required.",
+      "INITIALS_LENGTH_INVALID": "User initials must be between 2 and 5 characters long.",
+      "PASSWORD_REQUIRED": "Password is required.",
+      "PASSWORD_TOO_SHORT": "Password must be at least 6 characters long.",
+      "PASSWORD_TOO_LONG": "Password cannot exceed 30 characters.",
+      "ROLE_INVALID": "Selected system role is invalid or not recognized."
+    }
+  },
+  "USER": {
+    "NOT_FOUND": "The specified user account could not be found.",
+    "EMAIL_OR_PREFIX_ALREADY_TAKEN": "The requested email address or initials/prefix are already assigned to another user.",
+    "VALIDATION": {
+      "ID_REQUIRED": "User identifier is required.",
+      "EMAIL_REQUIRED": "Email address is required.",
+      "EMAIL_INVALID": "Provided email address is not in a valid format.",
+      "NAME_REQUIRED": "First name is required.",
+      "SURNAME_REQUIRED": "Last name is required.",
+      "PREFIX_REQUIRED": "User prefix/initials are required.",
+      "PREFIX_LENGTH_INVALID": "User prefix must be between 2 and 5 characters long.",
+      "ROLE_INVALID": "The selected user role is out of acceptable bounds.",
+      "PASSWORD_TOO_SHORT": "The new password must be at least 6 characters long.",
+      "PASSWORD_TOO_LONG": "The new password cannot exceed 30 characters."
+    }
+  },
+  "FORWARDER": {
+    "NOT_FOUND": "The assigned forwarder/agent could not be found."
+  },
+  "CURRENCY": {
+    "API_NBP_UNAVAILABLE": "The National Bank of Poland (NBP) API is currently unavailable. Please try again later.",
+    "TABLE_A_EMPTY": "No exchange rates were returned from the exchange rates table.",
+    "VALIDATION": {
+      "TARGET_CURRENCY_NOT_SUPPORTED": "The selected target currency is not supported by the system.",
+      "ITEM_CURRENCY_NOT_SUPPORTED": "One or more item currencies are not supported."
+    }
+  },
+  "CLIENT": {
+    "TAX_ALREADY_EXISTS": "A client with this tax identification number (TIN/NIP) is already registered.",
+    "NOT_FOUND": "The specified client could not be found.",
+    "HAS_INVOICES": "Cannot delete this client because they have invoices assigned to them.",
+    "HAS_WORK_CASES": "Cannot delete this client because they have active or past work cases assigned.",
+    "VALIDATION": {
+      "ID_REQUIRED": "Client identifier is required.",
+      "TAX_REQUIRED": "Tax identification number (TIN/NIP) is required.",
+      "TAX_TOO_LONG": "Tax identification number cannot exceed 20 characters.",
+      "NAME_REQUIRED": "Client name is required.",
+      "NAME_TOO_LONG": "Client name cannot exceed 50 characters.",
+      "STREET_REQUIRED": "Street address is required.",
+      "STREET_TOO_LONG": "Street address cannot exceed 80 characters.",
+      "ZIP_REQUIRED": "Postal/ZIP code is required.",
+      "ZIP_TOO_LONG": "Postal/ZIP code cannot exceed 10 characters.",
+      "COUNTRY_REQUIRED": "Country name is required.",
+      "COUNTRY_TOO_LONG": "Country name cannot exceed 54 characters.",
+      "CREDIT_MIN_VALUE": "Credit limit cannot be a negative value.",
+      "CREDIT_EXCEEDED": "This operation exceeds the client's current credit limit threshold.",
+      "CURRENCY_REQUIRED": "Default currency code is required.",
+      "CURRENCY_TOO_LONG": "Currency code must be exactly 3 characters long."
+    }
+  },
+  "COST": {
+    "WORK_CASE_ITEM_NOT_FOUND": "The selected work case item was not found.",
+    "CONTRACTOR_NOT_FOUND": "The selected service contractor was not found.",
+    "COST_ALREADY_EXISTS": "This cost document has already been registered in the system.",
+    "NOT_FOUND": "The specified cost record could not be found.",
+    "VALIDATION": {
+      "ID_REQUIRED": "Cost identifier is required.",
+      "NAME_REQUIRED": "Cost name/description is required.",
+      "NAME_TOO_LONG": "Cost name cannot exceed 50 characters.",
+      "AMOUNT_MUST_BE_POSITIVE": "The cost amount must be greater than zero.",
+      "AMOUNT_TOO_LARGE": "The entered amount exceeds the maximum allowable system limit.",
+      "CURRENCY_REQUIRED": "Cost currency is required.",
+      "CURRENCY_TOO_LONG": "Currency code must be exactly 3 characters long.",
+      "TAX_MIN_VALUE": "Tax value cannot be negative.",
+      "TAX_TOO_LARGE": "The entered tax value exceeds the allowable system limit.",
+      "ISSUE_DATE_REQUIRED": "Document issue date is required.",
+      "ISSUE_DATE_FUTURE": "The document issue date cannot be in the future.",
+      "SERVICE_DATE_REQUIRED": "Service delivery date is required.",
+      "SERVICE_DATE_FUTURE": "The service delivery date cannot be in the future.",
+      "WORK_CASE_ITEM_ID_REQUIRED": "Work case item reference is required.",
+      "CONTRACTOR_ID_REQUIRED": "Service contractor reference is required."
+    }
+  },
+  "WORK_CASE": {
+    "NOT_FOUND": "The specified work case could not be found.",
+    "VALIDATION": {
+      "WORK_CASE_ID_REQUIRED": "Work case identifier is required.",
+      "FORWARDER_ID_REQUIRED": "Forwarder assignment identifier is required.",
+      "CLIENT_ID_REQUIRED": "Client assignment identifier is required.",
+      "BUDGET_EXCEEDED": "The total value of positions exceeds the defined budget for this work case.",
+      "RELATION": {
+        "REQUIRED": "Transportation relation path is required.",
+        "INVALID": "The specified transportation relation is invalid or not allowed."
       },
-      "TAX": {
-        "REQUIRED": "Tax number is required.",
-        "TOO_LONG": "Tax number cannot exceed 20 characters.",
-        "NOT_UNIQUE": "A client with this tax number already exists."
-      },
-      "COUNTRY": {
-        "REQUIRED": "Country is required.",
-        "TOO_LONG": "Country name is too long."
-      },
-      "CITY": {
-        "REQUIRED": "City is required.",
-        "TOO_LONG": "City name is too long."
-      },
-      "ZIP": {
-        "REQUIRED": "Postal code is required.",
-        "TOO_LONG": "Postal code is too long."
-      },
-      "STREET": {
-        "REQUIRED": "Street is required.",
-        "TOO_LONG": "Street name is too long."
-      },
-      "HOUSE_NUMBER": {
-        "REQUIRED": "House number is required.",
-        "TOO_LONG": "House number is too long."
-      },
-      "APARTMENT_NUMBER": {
-        "TOO_LONG": "Apartment number is too long."
-      },
-      "EMAIL": {
-        "INVALID_FORMAT": "The provided email address format is invalid.",
-        "TOO_LONG": "Email address is too long."
-      },
-      "PHONE_NUMBER": {
-        "TOO_LONG": "Phone number is too long."
+      "AMOUNT": {
+        "REQUIRED": "Total base value/amount is required.",
+        "MUST_BE_POSITIVE": "The case amount must be a positive value greater than zero."
       }
     }
   },
-  "CONTRACTOR": {
+  "WORK_CASE_ITEM": {
+    "NOT_FOUND": "The specified operational item could not be found.",
+    "CANNOT_DELETE_IS_INVOICED": "Cannot delete this item because it has already been linked to a sales invoice.",
+    "CANNOT_DELETE_WITH_INCORES": "Cannot delete this item because it has purchase costs linked to it.",
     "VALIDATION": {
+      "WORK_CASE_ID": {
+        "REQUIRED": "The parent work case identifier is missing or required."
+      },
+      "NAME": {
+        "REQUIRED": "Item description/name is required.",
+        "TOO_LONG": "Item name cannot exceed 150 characters."
+      },
+      "AMOUNT": {
+        "REQUIRED": "Item amount value is required.",
+        "MUST_BE_POSITIVE": "Item amount must be greater than zero."
+      },
+      "CURRENCY": {
+        "REQUIRED": "Item currency is required.",
+        "TOO_LONG": "Currency code must not exceed 3 characters."
+      },
+      "TAX": {
+        "REQUIRED": "Tax value declaration is required.",
+        "INVALID": "Provided tax value configuration is invalid or negative."
+      }
+    }
+  },
+  "INVOICE": {
+    "SOME_ITEMS_NOT_FOUND": "One or more selected work case items could not be found.",
+    "SOME_ITEMS_ALREADY_INVOICED": "One or more selected items have already been linked to another invoice.",
+    "NOT_FOUND": "The requested invoice could not be found.",
+    "VALIDATION": {
+      "ID_REQUIRED": "Invoice identifier is required.",
+      "WORK_CASE_ID_REQUIRED": "Work case reference identifier is required.",
+      "ISSUE_DATE_REQUIRED": "Invoice issue date is required.",
+      "ISSUE_DATE_FUTURE": "The invoice issue date cannot be in the future.",
+      "SERVICE_DATE_REQUIRED": "Service/Supply date is required.",
+      "SERVICE_DATE_FUTURE": "The service date cannot be in the future.",
+      "TAX_RATE_MIN_VALUE": "Tax rate cannot be less than 0%.",
+      "TAX_RATE_TOO_LARGE": "The entered tax rate exceeds the allowable system limit.",
+      "CURRENCY_REQUIRED": "Target currency is required.",
+      "CURRENCY_TOO_LONG": "Target currency code must be exactly 3 characters long.",
+      "MANUAL_EXCHANGE_RATE_MUST_BE_POSITIVE": "The manually entered exchange rate must be greater than zero.",
+      "ITEMS_REQUIRED": "At least one work case item must be selected to generate an invoice.",
+      "ITEMS_EMPTY": "The list of selected invoice items cannot be empty.",
+      "INVALID_ITEM_ID": "One or more of the selected work case item identifiers are invalid.",
+      "INVALID_DETACH_ITEM_ID": "One or more of the selected item identifiers to detach are invalid."
+    }
+  },
+  "CONTRACTOR": {
+    "TAX": {
+      "NOT_UNIQUE": "A service contractor with this tax identification number (TIN/NIP) already exists."
+    },
+    "NOT_FOUND": "The specified service contractor could not be found.",
+    "CANNOT_DELETE_WITH_INVOICES": "Cannot delete this contractor because there are cost invoices linked to them.",
+    "VALIDATION": {
+      "ID": {
+        "REQUIRED": "Contractor identifier is required."
+      },
       "NAME": {
         "REQUIRED": "Contractor name is required.",
         "TOO_LONG": "Contractor name cannot exceed 150 characters."
       },
       "TAX": {
-        "REQUIRED": "Tax number is required.",
-        "TOO_LONG": "Tax number cannot exceed 20 characters.",
-        "NOT_UNIQUE": "A contractor with this tax number already exists."
+        "REQUIRED": "Tax identification number (TIN/NIP) is required.",
+        "TOO_LONG": "Tax identification number cannot exceed 20 characters."
       },
       "COUNTRY": {
-        "REQUIRED": "Country is required.",
-        "TOO_LONG": "Country name is too long."
+        "REQUIRED": "Country name is required.",
+        "TOO_LONG": "Country name cannot exceed 54 characters."
       },
       "CITY": {
-        "REQUIRED": "City is required.",
-        "TOO_LONG": "City name is too long."
+        "REQUIRED": "City name is required.",
+        "TOO_LONG": "City name cannot exceed 100 characters."
       },
       "ZIP": {
-        "REQUIRED": "Postal code is required.",
-        "TOO_LONG": "Postal code is too long."
+        "REQUIRED": "Postal/ZIP code is required.",
+        "TOO_LONG": "Postal/ZIP code cannot exceed 10 characters."
       },
       "STREET": {
-        "REQUIRED": "Street is required.",
-        "TOO_LONG": "Street name is too long."
+        "REQUIRED": "Street address is required.",
+        "TOO_LONG": "Street address cannot exceed 100 characters."
       },
       "HOUSE_NUMBER": {
-        "REQUIRED": "House number is required.",
-        "TOO_LONG": "House number is too long."
+        "REQUIRED": "House/Building number is required.",
+        "TOO_LONG": "House/Building number cannot exceed 10 characters."
       },
       "APARTMENT_NUMBER": {
-        "TOO_LONG": "Apartment number is too long."
+        "TOO_LONG": "Apartment/Suite number cannot exceed 10 characters."
       },
       "EMAIL": {
-        "INVALID_FORMAT": "The provided email address format is invalid.",
-        "TOO_LONG": "Email address is too long."
+        "INVALID_FORMAT": "The provided email address is not in a valid format.",
+        "TOO_LONG": "The email address cannot exceed 254 characters."
       },
       "PHONE_NUMBER": {
-        "TOO_LONG": "Phone number is too long."
-      },
-      "RELATION": {
-        "REQUIRED": "Relation type required.",
-        "INVALID": "Invalid relation type, please select a valid option from the list."
+        "TOO_LONG": "The phone number cannot exceed 20 characters."
       }
     }
   }

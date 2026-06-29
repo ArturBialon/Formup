@@ -35,11 +35,11 @@ namespace Application.Features.Costs.Commands
                 .FirstOrDefaultAsync(x => x.Name == request.Name && x.ServiceContractor.Id.Value == request.ServiceContractorId, ct);
 
             if (workCaseItem == null)
-                return AppResult<Guid>.Failure("COST.VALIDATION.WORK_CASE_ITEM_NOT_FOUND");
+                return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
             if (contractor == null)
-                return AppResult<Guid>.Failure("COST.VALIDATION.CONTRACTOR_NOT_FOUND");
+                return AppResult<Guid>.Failure("COST.CONTRACTOR_NOT_FOUND");
             if (existingCost != null)
-                return AppResult<Guid>.Failure("COST.VALIDATION.COST_ALREADY_EXISTS");
+                return AppResult<Guid>.Failure("COST.COST_ALREADY_EXISTS");
 
             string uploadedUrl = string.Empty;
 

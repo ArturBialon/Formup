@@ -39,7 +39,7 @@ namespace Application.Features.ServiceContractors.Queries
 
             if (result == null)
             {
-                return AppResult<ServiceContractorResponse>.Failure("SERVICE_CONTRACTOR.NOT_FOUND");
+                return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.NOT_FOUND");
             }
 
             return AppResult<ServiceContractorResponse>.Success(result);

@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+.form-group {
+    position: relative;
+    padding-bottom: 20px; 
+}
+
 .input {
     padding-top: 8px;
     padding-bottom: 8px;
@@ -22,20 +27,32 @@
     }
 }
 
-.form-group.required .control-label:after {
-    content: "*";
+.form-group.required label:after {
+    content: " *";
     color: #d9001b;
 }
 
-.show-invalid {
+.invalid-feedback {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     display: block;
+    visibility: hidden;
+    opacity: 0;
+    font-size: 0.8rem;
+    color: #d9001b;
+    transition: opacity 0.15s linear, visibility 0.15s linear;
+}
+
+.show-invalid {
+    visibility: visible;
+    opacity: 1;
 }
 
 @keyframes fadeIn {
     99% {
         visibility: hidden;
     }
-
     100% {
         visibility: visible;
     }

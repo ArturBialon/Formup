@@ -1,0 +1,228 @@
+{
+    "COMMON": {
+        "VALIDATION": {
+            "REQUIRED": "Dieses Feld ist erforderlich.",
+            "EMAIL_INVALID": "Die angegebene E-Mail-Adresse hat ein ungültiges Format.",
+            "TOO_SHORT": "Der eingegebene Wert ist zu kurz.",
+            "TOO_LONG": "Der eingegebene Wert ist zu lang.",
+            "TOO_HIGH": "Der eingegebene Wert überschreitet das maximal zulässige Limit."
+        }
+    },
+    "SERVER": {
+        "UNKNOWN_ERROR": "Ein unerwarteter Serverfehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."
+    },
+    "REQUEST": {
+        "ID_MISSMATCH": "Die angegebene Kennung stimmt nicht mit den Anforderungsdaten überein."
+    },
+    "VALIDATION_ERROR": "Es sind Validierungsfehler aufgetreten. Bitte überprüfen Sie die eingegebenen Daten.",
+    "DATABASE_ERROR": "Ein kritischer Datenbankfehler ist aufgetreten. Bitte kontaktieren Sie den Systemadministrator.",
+    "NULL_TRACE": "Die erforderlichen Transaktionsdaten oder Trace-Informationen fehlen (Wert ist null).",
+    "AUTH": {
+        "INVALID_CREDENTIALS": "Ungültige E-Mail-Adresse oder Passwort angegeben.",
+        "SECURITY_CONFIGURATION_ERROR": "Ein Fehler ist beim Konfigurieren des Sicherheitskontexts aufgetreten."
+    },
+    "REGISTRATION": {
+        "EMAIL_OR_INITIALS_TAKEN": "Ein Benutzer mit dieser E-Mail-Adresse oder diesen Initialen ist bereits registriert.",
+        "SECURITY_CONFIGURATION_ERROR": "Registrierungsdaten konnten aufgrund des Systemsicherheitsstatus nicht sicher verarbeitet werden.",
+        "VALIDATION": {
+            "EMAIL_REQUIRED": "E-Mail-Adresse ist für die Registrierung erforderlich.",
+            "EMAIL_INVALID": "Die angegebene E-Mail-Adresse hat ein ungültiges Format.",
+            "NAME_REQUIRED": "Vorname ist erforderlich.",
+            "SURNAME_REQUIRED": "Nachname ist erforderlich.",
+            "INITIALS_REQUIRED": "Benutzerinitialen/Präfix sind erforderlich.",
+            "INITIALS_LENGTH_INVALID": "Benutzerinitialen müssen zwischen 2 und 5 Zeichen lang sein.",
+            "PASSWORD_REQUIRED": "Passwort ist erforderlich.",
+            "PASSWORD_TOO_SHORT": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+            "PASSWORD_TOO_LONG": "Das Passwort darf 30 Zeichen nicht überschreiten.",
+            "ROLE_INVALID": "Die ausgewählte Systemrolle ist ungültig oder nicht erkannt."
+        }
+    },
+    "USER": {
+        "NOT_FOUND": "Das angegebene Benutzerkonto wurde nicht gefunden.",
+        "EMAIL_OR_PREFIX_ALREADY_TAKEN": "Die angeforderte E-Mail-Adresse oder die Initialen/Präfix sind bereits einem anderen Benutzer zugewiesen.",
+        "VALIDATION": {
+            "ID_REQUIRED": "Benutzerkennung ist erforderlich.",
+            "EMAIL_REQUIRED": "E-Mail-Adresse ist erforderlich.",
+            "EMAIL_INVALID": "Die angegebene E-Mail-Adresse hat ein ungültiges Format.",
+            "NAME_REQUIRED": "Vorname ist erforderlich.",
+            "SURNAME_REQUIRED": "Nachname ist erforderlich.",
+            "PREFIX_REQUIRED": "Benutzerpräfix/Initialen sind erforderlich.",
+            "PREFIX_LENGTH_INVALID": "Das Benutzerpräfix muss zwischen 2 und 5 Zeichen lang sein.",
+            "ROLE_INVALID": "Die ausgewählte Benutzerrolle liegt außerhalb des zulässigen Bereichs.",
+            "PASSWORD_TOO_SHORT": "Das neue Passwort muss mindestens 6 Zeichen lang sein.",
+            "PASSWORD_TOO_LONG": "Das neue Passwort darf 30 Zeichen nicht überschreiten."
+        }
+    },
+    "FORWARDER": {
+        "NOT_FOUND": "Der zugewiesene Spediteur wurde nicht gefunden."
+    },
+    "CURRENCY": {
+        "API_NBP_UNAVAILABLE": "Die API der Polnischen Nationalbank (NBP) ist derzeit nicht verfügbar. Bitte versuchen Sie es später noch einmal.",
+        "TABLE_A_EMPTY": "Die Wechselkurstabelle hat keine Ergebnisse zurückgegeben.",
+        "VALIDATION": {
+            "TARGET_CURRENCY_NOT_SUPPORTED": "Die ausgewählte Zielwährung wird vom System nicht unterstützt.",
+            "ITEM_CURRENCY_NOT_SUPPORTED": "Die Währung einer oder mehrerer Positionen wird nicht unterstützt."
+        }
+    },
+    "CLIENT": {
+        "TAX_ALREADY_EXISTS": "Ein Kunde mit dieser Steuernummer (USt-IdNr.) ist bereits registriert.",
+        "NOT_FOUND": "Der angegebene Kunde wurde nicht gefunden.",
+        "HAS_INVOICES": "Dieser Kunde kann nicht gelöscht werden, da ihm Rechnungen zugewiesen sind.",
+        "HAS_WORK_CASES": "Dieser Kunde kann nicht gelöscht werden, da er aktive oder historische Akten (WorkCases) besitzt.",
+        "VALIDATION": {
+            "ID_REQUIRED": "Kundenkennung ist erforderlich.",
+            "TAX_REQUIRED": "Steuernummer (USt-IdNr.) ist erforderlich.",
+            "TAX_TOO_LONG": "Die Steuernummer darf 20 Zeichen nicht überschreiten.",
+            "NAME_REQUIRED": "Kundenname ist erforderlich.",
+            "NAME_TOO_LONG": "Der Kundenname darf 50 Zeichen nicht überschreiten.",
+            "STREET_REQUIRED": "Straße ist erforderlich.",
+            "STREET_TOO_LONG": "Der Straßenname darf 80 Zeichen nicht überschreiten.",
+            "ZIP_REQUIRED": "Postleitzahl ist erforderlich.",
+            "ZIP_TOO_LONG": "Die Postleitzahl darf 10 Zeichen nicht überschreiten.",
+            "COUNTRY_REQUIRED": "Ländername ist erforderlich.",
+            "COUNTRY_TOO_LONG": "Der Ländername darf 54 Zeichen nicht überschreiten.",
+            "CREDIT_MIN_VALUE": "Das Kreditlimit darf kein negativer Wert sein.",
+            "CREDIT_EXCEEDED": "Dieser Vorgang überschreitet das aktuelle Kreditlimit des Kunden.",
+            "CURRENCY_REQUIRED": "Standard-Währungscode ist erforderlich.",
+            "CURRENCY_TOO_LONG": "Der Währungscode muss genau 3 Zeichen lang sein."
+        }
+    },
+    "COST": {
+        "WORK_CASE_ITEM_NOT_FOUND": "Die ausgewählte Aktenposition wurde nicht gefunden.",
+        "CONTRACTOR_NOT_FOUND": "Der ausgewählte Subunternehmer wurde nicht gefunden.",
+        "COST_ALREADY_EXISTS": "Dieses Kostendokument wurde bereits im System registriert.",
+        "NOT_FOUND": "Der angegebene Kostenbeleg wurde nicht gefunden.",
+        "VALIDATION": {
+            "ID_REQUIRED": "Kostenkennung ist erforderlich.",
+            "NAME_REQUIRED": "Kostenbezeichnung/Beschreibung ist erforderlich.",
+            "NAME_TOO_LONG": "Die Kostenbezeichnung darf 50 Zeichen nicht überschreiten.",
+            "AMOUNT_MUST_BE_POSITIVE": "Der Kostenbetrag muss größer als Null sein.",
+            "AMOUNT_TOO_LARGE": "Der eingegebene Betrag überschreitet das maximal zulässige Systemlimit.",
+            "CURRENCY_REQUIRED": "Kostenwährung ist erforderlich.",
+            "CURRENCY_TOO_LONG": "Der Währungscode muss genau 3 Zeichen lang sein.",
+            "TAX_MIN_VALUE": "Der Steuerwert darf nicht negativ sein.",
+            "TAX_TOO_LARGE": "Der eingegebene Steuerwert überschreitet das zulässige Systemlimit.",
+            "ISSUE_DATE_REQUIRED": "Ausstellungsdatum des Dokuments ist erforderlich.",
+            "ISSUE_DATE_FUTURE": "Das Ausstellungsdatum des Dokuments darf nicht in der Zukunft liegen.",
+            "SERVICE_DATE_REQUIRED": "Leistungsdatum ist erforderlich.",
+            "SERVICE_DATE_FUTURE": "Das Leistungsdatum darf nicht in der Zukunft liegen.",
+            "WORK_CASE_ITEM_ID_REQUIRED": "Die Verknüpfung mit der Aktenposition ist erforderlich.",
+            "CONTRACTOR_ID_REQUIRED": "Die Verknüpfung mit dem Subunternehmer ist erforderlich."
+        }
+    },
+    "WORK_CASE": {
+        "NOT_FOUND": "Die angegebene Akte wurde nicht gefunden.",
+        "VALIDATION": {
+            "WORK_CASE_ID_REQUIRED": "Aktenkennung ist erforderlich.",
+            "FORWARDER_ID_REQUIRED": "Die Kennung des zugewiesenen Spediteurs ist erforderlich.",
+            "CLIENT_ID_REQUIRED": "Die Kennung des zugewiesenen Kunden ist erforderlich.",
+            "BUDGET_EXCEEDED": "Der Gesamtwert der Positionen überschreitet das definierte Budget für diese Akte.",
+            "RELATION": {
+                "REQUIRED": "Transportrelation/Route ist erforderlich.",
+                "INVALID": "Die angegebene Transportrelation ist ungültig oder nicht zulässig."
+            },
+            "AMOUNT": {
+                "REQUIRED": "Gesamtbasiswert/Betrag ist erforderlich.",
+                "MUST_BE_POSITIVE": "Der Aktenbetrag muss ein positiver Wert größer als Null sein."
+            }
+        }
+    },
+    "WORK_CASE_ITEM": {
+        "NOT_FOUND": "Die angegebene operative Position wurde nicht gefunden.",
+        "CANNOT_DELETE_IS_INVOICED": "Diese Position kann nicht gelöscht werden, da sie bereits mit einer Ausgangsrechnung verknüpft ist.",
+        "CANNOT_DELETE_WITH_COSTS": "Diese Position kann nicht gelöscht werden, da ihr Einkaufskosten zugewiesen sind.",
+        "VALIDATION": {
+            "WORK_CASE_ID": {
+                "REQUIRED": "Die Kennung der übergeordneten Akte ist erforderlich."
+            },
+            "NAME": {
+                "REQUIRED": "Positionsbeschreibung/Name ist erforderlich.",
+                "TOO_LONG": "Der Positionsname darf 150 Zeichen nicht überschreiten."
+            },
+            "AMOUNT": {
+                "REQUIRED": "Positionsbetrag ist erforderlich.",
+                "MUST_BE_POSITIVE": "Der Positionsbetrag muss größer als Null sein."
+            },
+            "CURRENCY": {
+                "REQUIRED": "Positionswährung ist erforderlich.",
+                "TOO_LONG": "Der Währungscode darf 3 Zeichen nicht überschreiten."
+            },
+            "TAX": {
+                "REQUIRED": "Die Angabe des Steuersatzes ist erforderlich.",
+                "INVALID": "Die angegebene Steuerkonfiguration ist ungültig oder negativ."
+            }
+        }
+    },
+    "INVOICE": {
+        "SOME_ITEMS_NOT_FOUND": "Eine oder mehrere ausgewählte Aktenpositionen wurden nicht gefunden.",
+        "SOME_ITEMS_ALREADY_INVOICED": "Eine oder mehrere ausgewählte Positionen wurden bereits einer anderen Rechnung zugewiesen.",
+        "NOT_FOUND": "Die angeforderte Rechnung wurde nicht gefunden.",
+        "VALIDATION": {
+            "ID_REQUIRED": "Rechnungskennung ist erforderlich.",
+            "WORK_CASE_ID_REQUIRED": "Die Kennung der zugehörigen Akte ist erforderlich.",
+            "ISSUE_DATE_REQUIRED": "Rechnungsdatum ist erforderlich.",
+            "ISSUE_DATE_FUTURE": "Das Rechnungsdatum darf nicht in der Zukunft liegen.",
+            "SERVICE_DATE_REQUIRED": "Leistungs-/Lieferdatum ist erforderlich.",
+            "SERVICE_DATE_FUTURE": "Das Lieferdatum darf nicht in der Zukunft liegen.",
+            "TAX_RATE_MIN_VALUE": "Der Steuersatz darf nicht niedriger als 0% sein.",
+            "TAX_RATE_TOO_LARGE": "Der eingegebene Steuersatz überschreitet das zulässige Systemlimit.",
+            "CURRENCY_REQUIRED": "Zielwährung ist erforderlich.",
+            "CURRENCY_TOO_LONG": "Der Code der Zielwährung muss genau 3 Zeichen lang sein.",
+            "MANUAL_EXCHANGE_RATE_MUST_BE_POSITIVE": "Der manuell eingegebene Wechselkurs muss größer als Null sein.",
+            "ITEMS_REQUIRED": "Es muss mindestens eine Aktenposition ausgewählt werden, um eine Rechnung zu erstellen.",
+            "ITEMS_EMPTY": "Die Liste der ausgewählten Rechnungspositionen darf nicht leer sein.",
+            "INVALID_ITEM_ID": "Eine oder mehrere Kennungen der ausgewählten Aktenpositionen sind ungültig.",
+            "INVALID_DETACH_ITEM_ID": "Eine oder mehrere Kennungen der zum Trennen ausgewählten Positionen sind ungültig."
+        }
+    },
+    "CONTRACTOR": {
+        "TAX": {
+            "NOT_UNIQUE": "Ein Subunternehmer mit dieser Steuernummer (USt-IdNr.) existiert bereits."
+        },
+        "NOT_FOUND": "Der angegebene Subunternehmer wurde nicht gefunden.",
+        "CANNOT_DELETE_WITH_INVOICES": "Dieser Subunternehmer kann nicht gelöscht werden, da mit ihm Eingangsrechnungen verknüpft sind.",
+        "VALIDATION": {
+            "ID": {
+                "REQUIRED": "Subunternehmerkennung ist erforderlich."
+            },
+            "NAME": {
+                "REQUIRED": "Subunternehmername ist erforderlich.",
+                "TOO_LONG": "Der Subunternehmername darf 150 Zeichen nicht überschreiten."
+            },
+            "TAX": {
+                "REQUIRED": "Steuernummer (USt-IdNr.) ist erforderlich.",
+                "TOO_LONG": "Die Steuernummer darf 20 Zeichen nicht überschreiten."
+            },
+            "COUNTRY": {
+                "REQUIRED": "Ländername ist erforderlich.",
+                "TOO_LONG": "Der Ländername darf 54 Zeichen nicht überschreiten."
+            },
+            "CITY": {
+                "REQUIRED": "Stadtname ist erforderlich.",
+                "TOO_LONG": "Der Stadtname darf 100 Zeichen nicht überschreiten."
+            },
+            "ZIP": {
+                "REQUIRED": "Postleitzahl ist erforderlich.",
+                "TOO_LONG": "Die Postleitzahl darf 10 Zeichen nicht überschreiten."
+            },
+            "STREET": {
+                "REQUIRED": "Straßenname ist erforderlich.",
+                "TOO_LONG": "Der Straßenname darf 100 Zeichen nicht überschreiten."
+            },
+            "HOUSE_NUMBER": {
+                "REQUIRED": "Hausnummer ist erforderlich.",
+                "TOO_LONG": "Die Hausnummer darf 10 Zeichen nicht überschreiten."
+            },
+            "APARTMENT_NUMBER": {
+                "TOO_LONG": "Wohnungs-/Appartementnummer darf 10 Zeichen nicht überschreiten."
+            },
+            "EMAIL": {
+                "INVALID_FORMAT": "Die angegebene E-Mail-Adresse hat ein ungültiges Format.",
+                "TOO_LONG": "Die E-Mail-Adresse darf 254 Zeichen nicht überschreiten."
+            },
+            "PHONE_NUMBER": {
+                "TOO_LONG": "Die Telefonnummer darf 20 Zeichen nicht überschreiten."
+            }
+        }
+    }
+}
