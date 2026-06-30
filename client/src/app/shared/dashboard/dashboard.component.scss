@@ -1,0 +1,25 @@
+$color-sidebar-bg: #333;
+$color-sidebar-text: #ffffff;
+
+.dashboard {
+  display: flex;
+}
+
+.side-menu {
+  width: 200px;
+  background-color: $color-sidebar-bg;
+  color: $color-sidebar-text;
+  height: 100vh;
+  padding: 20px;
+
+  a {
+    display: block;
+    color: $color-sidebar-text;
+    text-decoration: none;
+    margin-bottom: 10px;
+
+    &.active {
+      font-weight: bold;
+    }
+  }
+}

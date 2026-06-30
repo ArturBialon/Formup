@@ -1,23 +1,23 @@
-<div class="main-container">
+<div class="popup-container">
   <div class="login-tile">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="row">
         <app-input 
-          controlName="login" 
-          label="LOGIN.EMAIL_LABEL" 
+          controlName="email" 
+          label="LOGIN.EMAIL_LABEL" | translate
           [required]="true" 
           type="text" />
           
         <app-input 
           controlName="password" 
-          label="LOGIN.PASSWORD_LABEL" 
+          label="LOGIN.PASSWORD_LABEL" | translate
           [required]="true" 
           type="password" />
       </div>
       
       <div class="row d-flex mt-4">
         <div class="col text-end">
-          <button class="btn btn-blue dark-text" type="submit">Login</button>
+          <button class="btn btn-blue dark-text" type="submit">{{ 'LOGIN.SUBMIT_BUTTON' | translate }}</button>
         </div>
       </div>
     </form>

@@ -1,0 +1,103 @@
+$color-blue: #0487FF;
+$color-blue-hover: #005db4;
+$color-yellow: #FFD977;
+$color-yellow-hover: #caac5e;
+$color-dark: #1a1a1a;
+$border-radius-main: 12px;
+$border-radius-btn: 5px;
+
+html {
+  background-image: url('./assets/images/background.png');
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.app-root {
+  background-color: transparent;
+  display: flex;
+  height: 100%;
+}
+
+.main-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  
+  background-color: $color-blue;
+  padding: 4px;
+  border-radius: $border-radius-main;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: $color-blue;
+  border-color: black;
+  border-radius: $border-radius-btn;
+  cursor: pointer;
+}
+
+.btn-blue {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-color: black;
+  color: black;
+  background-color: $color-blue;
+
+  &:hover {
+    background-color: $color-blue-hover;
+    color: black;
+  }
+}
+
+.btn-yellow {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-color: black;
+  color: black;
+  background-color: $color-yellow;
+
+  &:hover {
+    background-color: $color-yellow-hover;
+    color: black;
+  }
+}
+
+.dashboard-layout {
+  display: flex;
+
+  .sidebar {
+    width: 250px;
+    background-color: rgba(70, 70, 70, 0.8);
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+}
+
+.dark-text {
+  color: $color-dark;
+}

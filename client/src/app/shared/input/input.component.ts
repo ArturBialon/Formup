@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
-  styleUrl: './input.component.css',
+  styleUrl: './input.component.scss',
   standalone: true,
   imports: [ReactiveFormsModule, InputMaskModule], 
   viewProviders: [

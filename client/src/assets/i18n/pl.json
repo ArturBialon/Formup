@@ -1,4 +1,9 @@
 {
+  "LOGIN": {
+    "EMAIL_LABEL": "Adres e-mail",
+    "PASSWORD_LABEL": "Hasło",
+    "SUBMIT_BUTTON": "Zaloguj się"
+  },
   "COMMON": {
     "VALIDATION": {
       "REQUIRED": "To pole jest wymagane.",
