@@ -11,7 +11,9 @@
             "TOO_SHORT": "Der eingegebene Wert ist zu kurz.",
             "TOO_LONG": "Der eingegebene Wert ist zu lang.",
             "TOO_HIGH": "Der eingegebene Wert überschreitet das maximal zulässige Limit."
-        }
+        },
+        "GENERAL_ERROR": "Fehler",
+        "NOT_FOUND": "Die Ressource konnte nicht gefunden werden."
     },
     "SERVER": {
         "UNKNOWN_ERROR": "Ein unerwarteter Serverfehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."

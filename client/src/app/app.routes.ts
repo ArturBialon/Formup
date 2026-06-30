@@ -12,9 +12,9 @@ export const routes: Routes = [
     component: DashboardComponent,
     canActivate: [authGuard]
   },
-  
-  { path: 'errors', loadComponent: () => import('./errors/test-errors/test-errors.component').then(m => m.TestErrorsComponent) },
-  { path: 'not-found', loadComponent: () => import('./errors/not-found/not-found.component').then(m => m.NotFoundComponent) },
-  { path: 'server-error', loadComponent: () => import('./errors/server-error/server-error.component').then(m => m.ServerErrorComponent) },
+
+  { path: 'errors', loadComponent: () => import('../app/errors/test-errors/test-errors.component').then(m => m.TestErrorsComponent) },
+  { path: 'not-found', loadComponent: () => import('../app/errors/not-found/not-found.component').then(m => m.NotFoundComponent) },
+  { path: 'server-error', loadComponent: () => import('../app/errors/server-error/server-error.component').then(m => m.ServerErrorComponent) },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];

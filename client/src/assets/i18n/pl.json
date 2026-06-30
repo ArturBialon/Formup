@@ -11,7 +11,8 @@
       "TOO_SHORT": "Wprowadzona wartość jest za krótka.",
       "TOO_LONG": "Wprowadzona wartość jest za długa.",
       "TOO_HIGH": "Wprowadzona wartość przekracza maksymalny dozwolony limit."
-    }
+    },
+    "NOT_FOUND": "Nie można znaleźć zasobu."
   },
   "SERVER": {
     "UNKNOWN_ERROR": "Wystąpił nieoczekiwany błąd serwera. Spróbuj ponownie później."
@@ -19,6 +20,7 @@
   "REQUEST": {
     "ID_MISSMATCH": "Przesłany identyfikator jest niezgodny z danymi żądania."
   },
+  "GENERAL_ERROR": "Błąd",
   "VALIDATION_ERROR": "Wystąpiły błędy walidacji. Sprawdź wprowadzone dane.",
   "DATABASE_ERROR": "Wystąpił krytyczny błąd bazy danych. Skontaktuj się z administratorem systemu.",
   "NULL_TRACE": "Brak wymaganych danych transakcji lub śladu (obiekt ma wartość null).",

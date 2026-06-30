@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   selector: 'app-server-error',
   templateUrl: './server-error.component.html',
   styleUrls: ['./server-error.component.scss'],
-  standalone: false,
+  standalone: true
 })
 export class ServerErrorComponent implements OnInit {
   error: any;

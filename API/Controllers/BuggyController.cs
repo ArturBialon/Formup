@@ -1,47 +1,56 @@
 ﻿using API.Controllers.Base;
-using Domain.Models;
-using Infrastructure.Context;
+using Application.Common.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[ApiController]
+[Route("api/bug")]
+public class BuggyController() : ApiControllerBase
 {
-    [ApiController]
-    [Route("api/bug")]
-    public class BuggyController(FormupContext compContext) : ApiControllerBase
+
+    [Authorize]
+    [HttpGet("secret")]
+    [ActionName("GetSecretIfLogged")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public ActionResult<string> GetSecretIfLogged()
     {
-        private readonly FormupContext _context = compContext;
+        return Ok("secret text");
+    }
 
-        [Authorize]
-        [HttpGet("auth")]
-        public ActionResult<string> GetSecretIfLogged()
-        {
-            return Ok("secret text");
-        }
+    [HttpGet("unauthorized-custom")]
+    [ActionName("Get401Unauthorized")]
+    public IActionResult Get401Unauthorized()
+    {
+        var result = AppResult<string>.Failure("LOGIN.ERROR.UNAUTHORIZED");
+        return HandleResult(result);
+    }
 
-        [HttpGet("not-found")]
-        public ActionResult<User> GetNotFound()
-        {
-            var thing = _context.Users.Find(1);
-            if (thing == null) return NotFound();
-            return Ok();
-        }
+    [HttpGet("not-found")]
+    [ActionName("GetNotFound")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult GetNotFound()
+    {
+        var result = AppResult<string>.Failure("COMMON.NOT_FOUND");
+        return HandleResult(result);
+    }
 
-        [HttpGet("server-error")]
-        public ActionResult<string> GetServerError()
-        {
+    [HttpGet("bad-request")]
+    [ActionName("GetBadRequest")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult GetBadRequest()
+    {
+        var result = AppResult<string>.Failure("AUTH.INVALID_CREDENTIALS");
+        return HandleResult(result);
+    }
 
-            var thing = _context.Users.Find(-1);
-            var thingToReturn = thing.ToString();
-
-            return thingToReturn;
-
-        }
-
-        [HttpGet("bad-request")]
-        public ActionResult<string> GetBadRequest()
-        {
-            return BadRequest("something wrong");
-        }
+    [HttpGet("server-error")]
+    [ActionName("GetServerError")]
+    public async Task<IActionResult> GetServerError()
+    {
+        var result = AppResult<string>.Failure("SERVER.UNKNOWN_ERROR");
+        return HandleResult(result);
     }
 }

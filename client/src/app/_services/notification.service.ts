@@ -1,42 +1,46 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { toast } from 'ngx-sonner';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
+  private translate = inject(TranslateService);
 
   success(message: string): void {
-    toast.success(message);
-  }
-
-  info(message: string): void {
-    toast.info(message);
+    toast.success(this.translate.instant(message));
   }
 
   warning(message: string): void {
-    toast.warning(message);
+    toast.warning(this.translate.instant(message));
   }
 
-  apiError(error: any, fallbackTitle: string = 'Error'): void {
-    if (!error) {
-      toast.error(fallbackTitle);
-      return;
-    }
-
-    if (error.errors && Array.isArray(error.errors)) {
+  apiError(error: any): void {
+    if (error?.errors && Array.isArray(error.errors)) {
       error.errors.forEach((errorCode: string) => {
-        toast.error(fallbackTitle, { description: errorCode });
+        this.showDynamicToast(errorCode);
       });
       return;
     }
 
-    const errorDetails = error.error || error.message || null;
-    if (errorDetails) {
-      toast.error(fallbackTitle, { description: errorDetails });
-      return;
+    const fallbackError = error?.error || error?.message || 'SERVER.UNKNOWN_ERROR';
+    this.showDynamicToast(fallbackError);
+  }
+
+  private showDynamicToast(errorCode: string): void {
+    const translatedDescription = this.translate.instant(errorCode);
+    
+    const firstPart = errorCode.split('.')[0];
+    const titleKey = `${firstPart}.TITLE`;
+    
+    let translatedTitle = this.translate.instant(titleKey);
+    if (translatedTitle === titleKey) {
+      translatedTitle = this.translate.instant('GENERAL_ERROR');
     }
 
-    toast.error(fallbackTitle);
+    toast.error(translatedTitle, {
+      description: translatedDescription
+    });
   }
 }

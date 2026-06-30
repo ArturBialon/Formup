@@ -84,10 +84,11 @@ export class AuthService implements IAuthService {
 }
 
 export interface IBuggyService {
-    getSecretIfLogged(): Observable<string | null>;
-    getNotFound(): Observable<User | null>;
-    getServerError(): Observable<string | null>;
-    getBadRequest(): Observable<string | null>;
+    getSecretIfLogged(): Observable<string>;
+    get401Unauthorized(): Observable<FileResponse>;
+    getNotFound(): Observable<void>;
+    getBadRequest(): Observable<void>;
+    getServerError(): Observable<FileResponse>;
 }
 
 @Injectable({
@@ -103,8 +104,8 @@ export class BuggyService implements IBuggyService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getSecretIfLogged(): Observable<string | null> {
-        let url_ = this.baseUrl + "/api/bug/auth";
+    getSecretIfLogged(): Observable<string> {
+        let url_ = this.baseUrl + "/api/bug/secret";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -122,14 +123,14 @@ export class BuggyService implements IBuggyService {
                 try {
                     return this.processGetSecretIfLogged(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<string | null>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<string | null>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processGetSecretIfLogged(response: HttpResponseBase): Observable<string | null> {
+    protected processGetSecretIfLogged(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -142,6 +143,10 @@ export class BuggyService implements IBuggyService {
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
             return _observableOf(result200);
             }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -150,7 +155,59 @@ export class BuggyService implements IBuggyService {
         return _observableOf(null as any);
     }
 
-    getNotFound(): Observable<User | null> {
+    get401Unauthorized(): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/bug/unauthorized-custom";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet401Unauthorized(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet401Unauthorized(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processGet401Unauthorized(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getNotFound(): Observable<void> {
         let url_ = this.baseUrl + "/api/bug/not-found";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -158,7 +215,6 @@ export class BuggyService implements IBuggyService {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
             })
         };
 
@@ -169,25 +225,23 @@ export class BuggyService implements IBuggyService {
                 try {
                     return this.processGetNotFound(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<User | null>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<User | null>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processGetNotFound(response: HttpResponseBase): Observable<User | null> {
+    protected processGetNotFound(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
+        if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as User;
-            return _observableOf(result200);
+            return throwException("A server side error occurred.", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -197,54 +251,7 @@ export class BuggyService implements IBuggyService {
         return _observableOf(null as any);
     }
 
-    getServerError(): Observable<string | null> {
-        let url_ = this.baseUrl + "/api/bug/server-error";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetServerError(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetServerError(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<string | null>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<string | null>;
-        }));
-    }
-
-    protected processGetServerError(response: HttpResponseBase): Observable<string | null> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    getBadRequest(): Observable<string | null> {
+    getBadRequest(): Observable<void> {
         let url_ = this.baseUrl + "/api/bug/bad-request";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -252,7 +259,6 @@ export class BuggyService implements IBuggyService {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
             })
         };
 
@@ -263,26 +269,76 @@ export class BuggyService implements IBuggyService {
                 try {
                     return this.processGetBadRequest(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<string | null>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<string | null>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processGetBadRequest(response: HttpResponseBase): Observable<string | null> {
+    protected processGetBadRequest(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
+        if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
-            return _observableOf(result200);
+            return throwException("A server side error occurred.", status, _responseText, _headers);
             }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getServerError(): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/bug/server-error";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetServerError(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetServerError(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileResponse>;
+        }));
+    }
+
+    protected processGetServerError(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -2332,161 +2388,6 @@ export interface LoginCommand {
     Password?: string;
 }
 
-export interface EntityOfUser {
-    Id?: EntityIdOfUser;
-}
-
-export interface User extends EntityOfUser {
-    Email: string | null;
-    Name: string | null;
-    Surname: string | null;
-    Prefix: string | null;
-    Role: UserRole;
-    PassHash?: string | null;
-    PassSalt?: string | null;
-    IsActive?: boolean;
-    WorkCases?: WorkCase[] | null;
-    FullName?: string | null;
-}
-
-export enum UserRole {
-    Admin = 0,
-    Forwarder = 1,
-    Verifier = 2,
-    Accountant = 3,
-    Management = 4,
-}
-
-export interface EntityOfWorkCase {
-    Id?: EntityIdOfWorkCase;
-}
-
-export interface WorkCase extends EntityOfWorkCase {
-    Name: string | null;
-    Amount?: number;
-    Currency?: string | null;
-    Relation: string | null;
-    CreatedAt?: Date;
-    IsAbandoned?: boolean;
-    Forwarder?: User | null;
-    Client?: Client | null;
-    Costs?: Cost[] | null;
-    Invoices?: Invoice[] | null;
-    WorkCaseItems?: WorkCaseItem[] | null;
-}
-
-export interface EntityOfClient {
-    Id?: EntityIdOfClient;
-}
-
-export interface Client extends EntityOfClient {
-    Tax: string | null;
-    Name: string | null;
-    Street: string | null;
-    Zip: string | null;
-    Coutry: string | null;
-    Credit?: number;
-    Currency?: string | null;
-    Invoices?: Invoice[] | null;
-    WorkCases?: WorkCase[] | null;
-}
-
-export interface EntityOfInvoice {
-    Id?: EntityIdOfInvoice;
-}
-
-export interface Invoice extends EntityOfInvoice {
-    InvoiceNumber?: string | null;
-    Tax?: number;
-    IssueDate?: Date;
-    ServiceDate?: Date;
-    Amount?: number;
-    Currency?: string | null;
-    IsAbandoned?: boolean;
-    WorkCase?: WorkCase | null;
-    Client?: Client | null;
-    WorkCaseItems?: WorkCaseItem[] | null;
-}
-
-export interface EntityOfWorkCaseItem {
-    Id?: EntityIdOfWorkCaseItem;
-}
-
-export interface WorkCaseItem extends EntityOfWorkCaseItem {
-    Name: string;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    CreatedAt?: Date;
-    IsInvoiced?: boolean;
-    HasCosts?: boolean;
-    Invoice?: Invoice | null;
-    Costs?: Cost[];
-    WorkCase: WorkCase;
-}
-
-export interface EntityOfCost {
-    Id?: EntityIdOfCost;
-}
-
-export interface Cost extends EntityOfCost {
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    Name: string;
-    IssueDate: Date;
-    ServiceDate: Date;
-    DocumentUrl?: string | null;
-    WorkCaseItem: WorkCaseItem;
-    ServiceContractor: ServiceContractor;
-}
-
-export interface EntityOfServiceContractor {
-    Id?: EntityIdOfServiceContractor;
-}
-
-export interface ServiceContractor extends EntityOfServiceContractor {
-    Tax: string | null;
-    Name: string | null;
-    Country: string | null;
-    City: string | null;
-    Zip: string | null;
-    Street: string | null;
-    HouseNumber: string | null;
-    ApartmentNumber?: string | null;
-    Email?: string | null;
-    PhoneNumber?: string | null;
-    Costs?: Cost[] | null;
-}
-
-export interface EntityIdOfServiceContractor {
-    Value?: string;
-}
-
-export interface EntityIdOfCost {
-    Value?: string;
-}
-
-export interface EntityIdOfWorkCaseItem {
-    Value?: string;
-}
-
-export interface EntityIdOfInvoice {
-    Value?: string;
-}
-
-export interface EntityIdOfClient {
-    Value?: string;
-}
-
-export interface EntityIdOfWorkCase {
-    Value?: string;
-}
-
-export interface EntityIdOfUser {
-    Value?: string;
-}
-
 export interface PagedResultOfClientListItemResponse {
     Items?: ClientListItemResponse[];
     TotalCount?: number;
@@ -2720,6 +2621,14 @@ export interface RegisterUserCommand {
     Role?: UserRole;
 }
 
+export enum UserRole {
+    Admin = 0,
+    Forwarder = 1,
+    Verifier = 2,
+    Accountant = 3,
+    Management = 4,
+}
+
 export interface PagedResultOfUserListItemResponse {
     Items?: UserListItemResponse[];
     TotalCount?: number;
@@ -2832,6 +2741,13 @@ export interface UpdateWorkCaseItemCommand {
 
 /** Represents a void type, since Void is not a valid return type in C#. */
 export interface Unit {
+}
+
+export interface FileResponse {
+    data: Blob;
+    status: number;
+    fileName?: string;
+    headers?: { [name: string]: any };
 }
 
 export class ApiException extends Error {
