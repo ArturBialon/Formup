@@ -12,7 +12,6 @@
             "TOO_LONG": "Der eingegebene Wert ist zu lang.",
             "TOO_HIGH": "Der eingegebene Wert überschreitet das maximal zulässige Limit."
         },
-        "GENERAL_ERROR": "Fehler",
         "NOT_FOUND": "Die Ressource konnte nicht gefunden werden."
     },
     "SERVER": {
@@ -21,6 +20,7 @@
     "REQUEST": {
         "ID_MISSMATCH": "Die angegebene Kennung stimmt nicht mit den Anforderungsdaten überein."
     },
+    "GENERAL_ERROR": "Fehler",
     "VALIDATION_ERROR": "Es sind Validierungsfehler aufgetreten. Bitte überprüfen Sie die eingegebenen Daten.",
     "DATABASE_ERROR": "Ein kritischer Datenbankfehler ist aufgetreten. Bitte kontaktieren Sie den Systemadministrator.",
     "NULL_TRACE": "Die erforderlichen Transaktionsdaten oder Trace-Informationen fehlen (Wert ist null).",

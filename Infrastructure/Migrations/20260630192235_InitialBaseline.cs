@@ -30,22 +30,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Forwarders",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
-                    Surname = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: false),
-                    Prefix = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false),
-                    PassHash = table.Column<byte[]>(type: "varbinary", unicode: false, nullable: false),
-                    PassSalt = table.Column<byte[]>(type: "varbinary", unicode: false, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Forwarders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ServiceContractors",
                 columns: table => new
                 {
@@ -64,6 +48,25 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ServiceContractors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                    Surname = table.Column<string>(type: "varchar(40)", unicode: false, maxLength: 40, nullable: false),
+                    Prefix = table.Column<string>(type: "varchar(5)", unicode: false, maxLength: 5, nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    PassHash = table.Column<byte[]>(type: "varbinary", unicode: false, nullable: false),
+                    PassSalt = table.Column<byte[]>(type: "varbinary", unicode: false, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,34 +94,7 @@ namespace Infrastructure.Migrations
                     table.ForeignKey(
                         name: "WorkCases_Forwarders",
                         column: x => x.ForwarderId,
-                        principalTable: "Forwarders",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Costs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
-                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
-                    Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ServiceContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Costs", x => x.Id);
-                    table.ForeignKey(
-                        name: "Costs_Service_Contractors",
-                        column: x => x.ServiceContractorId,
-                        principalTable: "ServiceContractors",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "Costs_WorkCases",
-                        column: x => x.WorkCaseId,
-                        principalTable: "WorkCases",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -127,11 +103,13 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Tax = table.Column<int>(type: "int", unicode: false, maxLength: 20, nullable: false),
+                    InvoiceNumber = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    Tax = table.Column<decimal>(type: "decimal(7,3)", nullable: false),
                     Issue_Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     Service_Date = table.Column<DateTime>(type: "datetime", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
+                    IsAbandoned = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -158,9 +136,8 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
-                    Tax = table.Column<int>(type: "int", nullable: false),
+                    Tax = table.Column<decimal>(type: "decimal(7,3)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    IsInvoiced = table.Column<bool>(type: "bit", nullable: false),
                     InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -180,6 +157,44 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Costs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
+                    Currency = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: false),
+                    Tax = table.Column<decimal>(type: "decimal(7,3)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    IssueDate = table.Column<DateTime>(type: "date", nullable: false),
+                    ServiceDate = table.Column<DateTime>(type: "date", nullable: false),
+                    DocumentUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+                    WorkCaseItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ServiceContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WorkCaseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Costs", x => x.Id);
+                    table.ForeignKey(
+                        name: "Costs_Service_Contractors",
+                        column: x => x.ServiceContractorId,
+                        principalTable: "ServiceContractors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Costs_WorkCaseItems",
+                        column: x => x.WorkCaseItemId,
+                        principalTable: "WorkCaseItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Costs_WorkCases_WorkCaseId",
+                        column: x => x.WorkCaseId,
+                        principalTable: "WorkCases",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Costs_ServiceContractorId",
                 table: "Costs",
@@ -189,6 +204,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Costs_WorkCaseId",
                 table: "Costs",
                 column: "WorkCaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Costs_WorkCaseItemId",
+                table: "Costs",
+                column: "WorkCaseItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_ClientId",
@@ -228,10 +248,10 @@ namespace Infrastructure.Migrations
                 name: "Costs");
 
             migrationBuilder.DropTable(
-                name: "WorkCaseItems");
+                name: "ServiceContractors");
 
             migrationBuilder.DropTable(
-                name: "ServiceContractors");
+                name: "WorkCaseItems");
 
             migrationBuilder.DropTable(
                 name: "Invoices");
@@ -243,7 +263,7 @@ namespace Infrastructure.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "Forwarders");
+                name: "Users");
         }
     }
 }

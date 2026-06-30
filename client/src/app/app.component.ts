@@ -17,6 +17,6 @@ export class AppComponent {
   constructor() {
     const translate = inject(TranslateService);
     translate.currentLang(); // Ustawia fallback
-    translate.use('pl');            // Włącza plik pl.json
+    translate.use('de');            // Włącza plik pl.json
   }
 }

@@ -12,7 +12,6 @@
       "TOO_LONG": "The entered value is too long.",
       "TOO_HIGH": "The entered value exceeds the maximum allowed limit."
     },
-    "GENERAL_ERROR": "Error",
     "NOT_FOUND": "Could not found the resource."
   },
   "SERVER": {
@@ -21,6 +20,7 @@
   "REQUEST": {
     "ID_MISSMATCH": "The provided identifier does not match the request payload."
   },
+  "GENERAL_ERROR": "Error",
   "VALIDATION_ERROR": "One or more validation errors occurred. Please check the entered data.",
   "DATABASE_ERROR": "A critical database error occurred. Please contact system administrator.",
   "NULL_TRACE": "The requested transaction or trace data was missing or evaluate to null.",
