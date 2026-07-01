@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FormupContext))]
-    partial class FormupContextModelSnapshot : ModelSnapshot
+    [Migration("20260630195002_InitialBaseline")]
+    partial class InitialBaseline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,9 +225,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(85)
+                        .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(85)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Tax")
                         .IsRequired()
@@ -265,13 +268,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<byte[]>("PassHash")
                         .IsRequired()
-                        .HasMaxLength(64)
                         .IsUnicode(false)
                         .HasColumnType("varbinary");
 
                     b.Property<byte[]>("PassSalt")
                         .IsRequired()
-                        .HasMaxLength(128)
                         .IsUnicode(false)
                         .HasColumnType("varbinary");
 

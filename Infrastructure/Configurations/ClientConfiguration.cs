@@ -23,12 +23,12 @@ namespace Infrastructure.Configurations
 
             entity.Property(e => e.Name)
                 .IsRequired()
-                .HasMaxLength(50)
+                .HasMaxLength(150)
                 .IsUnicode(false);
 
             entity.Property(e => e.Street)
                 .IsRequired()
-                .HasMaxLength(80)
+                .HasMaxLength(85)
                 .IsUnicode(false);
 
             entity.Property(e => e.Tax)

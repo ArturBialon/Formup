@@ -30,11 +30,13 @@ namespace Infrastructure.Configurations
 
             entity.Property(e => e.PassHash)
                 .IsRequired()
+                .HasMaxLength(64)
                 .HasColumnType("varbinary")
                 .IsUnicode(false);
 
             entity.Property(e => e.PassSalt)
                 .IsRequired()
+                .HasMaxLength(128)
                 .HasColumnType("varbinary")
                 .IsUnicode(false);
 

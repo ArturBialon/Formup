@@ -21,6 +21,8 @@
     "ID_MISSMATCH": "The provided identifier does not match the request payload."
   },
   "GENERAL_ERROR": "Error",
+  "UNAUTHORIZED_ERROR": "You are not authorized to access this resource. Please check your credentials or contact the system administrator.",
+  "FORBIDDEN_ERROR": "You do not have permission to access this resource. Please contact the system administrator if you believe this is an error.",
   "VALIDATION_ERROR": "One or more validation errors occurred. Please check the entered data.",
   "DATABASE_ERROR": "A critical database error occurred. Please contact system administrator.",
   "NULL_TRACE": "The requested transaction or trace data was missing or evaluate to null.",

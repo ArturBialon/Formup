@@ -34,7 +34,7 @@ namespace Infrastructure.Configurations
 
             entity.Property(e => e.Street)
                 .IsRequired()
-                .HasMaxLength(100)
+                .HasMaxLength(85)
                 .IsUnicode(true);
 
             entity.Property(e => e.HouseNumber)
@@ -49,7 +49,7 @@ namespace Infrastructure.Configurations
 
             entity.Property(e => e.Email)
                 .IsRequired(false)
-                .HasMaxLength(254)
+                .HasMaxLength(256)
                 .IsUnicode(false);
 
             entity.Property(e => e.PhoneNumber)

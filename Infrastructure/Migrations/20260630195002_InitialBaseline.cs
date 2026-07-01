@@ -17,8 +17,8 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Tax = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Street = table.Column<string>(type: "varchar(80)", unicode: false, maxLength: 80, nullable: false),
+                    Name = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
+                    Street = table.Column<string>(type: "varchar(85)", unicode: false, maxLength: 85, nullable: false),
                     Zip = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     Coutry = table.Column<string>(type: "varchar(54)", unicode: false, maxLength: 54, nullable: false),
                     Credit = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
@@ -42,7 +42,7 @@ namespace Infrastructure.Migrations
                     Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HouseNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     ApartmentNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
-                    Email = table.Column<string>(type: "varchar(254)", unicode: false, maxLength: 254, nullable: true),
+                    Email = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: true),
                     PhoneNumber = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true)
                 },
                 constraints: table =>

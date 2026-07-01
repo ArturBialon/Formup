@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FormupContext))]
-    [Migration("20260630192235_InitialBaseline")]
-    partial class InitialBaseline
+    [Migration("20260701173114_PasswordHashFix")]
+    partial class PasswordHashFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,15 +48,15 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(150)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(80)
+                        .HasMaxLength(85)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(80)");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("Tax")
                         .IsRequired()
@@ -202,9 +202,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(54)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(254)
+                        .HasMaxLength(256)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(254)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("HouseNumber")
                         .IsRequired()
@@ -225,9 +225,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(85)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("Tax")
                         .IsRequired()
@@ -268,11 +268,13 @@ namespace Infrastructure.Migrations
 
                     b.Property<byte[]>("PassHash")
                         .IsRequired()
+                        .HasMaxLength(64)
                         .IsUnicode(false)
                         .HasColumnType("varbinary");
 
                     b.Property<byte[]>("PassSalt")
                         .IsRequired()
+                        .HasMaxLength(128)
                         .IsUnicode(false)
                         .HasColumnType("varbinary");
 

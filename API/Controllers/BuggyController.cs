@@ -24,7 +24,7 @@ public class BuggyController() : ApiControllerBase
     [ActionName("Get401Unauthorized")]
     public IActionResult Get401Unauthorized()
     {
-        var result = AppResult<string>.Failure("LOGIN.ERROR.UNAUTHORIZED");
+        var result = AppResult<string>.Failure("UNAUTHORIZED_ERROR");
         return HandleResult(result);
     }
 

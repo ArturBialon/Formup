@@ -21,6 +21,8 @@
         "ID_MISSMATCH": "Die angegebene Kennung stimmt nicht mit den Anforderungsdaten überein."
     },
     "GENERAL_ERROR": "Fehler",
+    "UNAUTHORIZED_ERROR": "Sie sind nicht berechtigt, auf diese Ressource zuzugreifen. Bitte überprüfen Sie Ihre Zugangsdaten oder kontaktieren Sie den Systemadministrator.",
+    "FORBIDDEN_ERROR": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen. Bitte kontaktieren Sie den Systemadministrator, wenn Sie glauben, dass dies ein Fehler ist.",
     "VALIDATION_ERROR": "Es sind Validierungsfehler aufgetreten. Bitte überprüfen Sie die eingegebenen Daten.",
     "DATABASE_ERROR": "Ein kritischer Datenbankfehler ist aufgetreten. Bitte kontaktieren Sie den Systemadministrator.",
     "NULL_TRACE": "Die erforderlichen Transaktionsdaten oder Trace-Informationen fehlen (Wert ist null).",

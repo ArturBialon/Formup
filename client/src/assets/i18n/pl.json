@@ -21,6 +21,8 @@
     "ID_MISSMATCH": "Przesłany identyfikator jest niezgodny z danymi żądania."
   },
   "GENERAL_ERROR": "Błąd",
+  "UNAUTHORIZED_ERROR": "Nie jesteś uprawniony do dostępu do tego zasobu. Sprawdź swoje dane logowania lub skontaktuj się z administratorem systemu.",
+  "FORBIDDEN_ERROR": "Nie masz uprawnień do dostępu do tego zasobu. Skontaktuj się z administratorem systemu, jeśli uważasz, że to błąd.",
   "VALIDATION_ERROR": "Wystąpiły błędy walidacji. Sprawdź wprowadzone dane.",
   "DATABASE_ERROR": "Wystąpił krytyczny błąd bazy danych. Skontaktuj się z administratorem systemu.",
   "NULL_TRACE": "Brak wymaganych danych transakcji lub śladu (obiekt ma wartość null).",
