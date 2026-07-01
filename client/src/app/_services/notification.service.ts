@@ -30,14 +30,8 @@ export class NotificationService {
 
   private showDynamicToast(errorCode: string): void {
     const translatedDescription = this.translate.instant(errorCode);
+    const translatedTitle = this.translate.instant('GENERAL_ERROR');
     
-    const firstPart = errorCode.split('.')[0];
-    const titleKey = `${firstPart}.TITLE`;
-    
-    let translatedTitle = this.translate.instant(titleKey);
-    if (translatedTitle === titleKey) {
-      translatedTitle = this.translate.instant('GENERAL_ERROR');
-    }
 
     toast.error(translatedTitle, {
       description: translatedDescription

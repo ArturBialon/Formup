@@ -27,6 +27,7 @@ namespace API.Extensions.ServiceCreator
             {
                 DefaultUrlTemplate = "api/{controller}/{action}/{id?}"
             };
+
             var generator = new WebApiOpenApiDocumentGenerator(settings);
             var controllers = GetAllControllersInfoAssembly();
             var document = await generator.GenerateForControllersAsync(controllers);
@@ -69,8 +70,6 @@ namespace API.Extensions.ServiceCreator
             settings.GenerateClientInterfaces = true;
 
             return settings;
-
         }
-
     }
 }

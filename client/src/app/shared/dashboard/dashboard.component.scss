@@ -1,5 +1,5 @@
-$color-sidebar-bg: #333;
-$color-sidebar-text: #ffffff;
+$color-sidebar-bg: #154792;
+$color-sidebar-text: #000000;
 
 .dashboard {
   display: flex;
@@ -10,7 +10,6 @@ $color-sidebar-text: #ffffff;
   background-color: $color-sidebar-bg;
   color: $color-sidebar-text;
   height: 100vh;
-  padding: 20px;
 
   a {
     display: block;

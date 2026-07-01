@@ -16,6 +16,7 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IAuthService {
     login(command: LoginCommand | undefined): Observable<UserResponse>;
+    getCurrentUser(): Observable<UserResponse>;
 }
 
 @Injectable({
@@ -73,6 +74,57 @@ export class AuthService implements IAuthService {
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponse;
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    getCurrentUser(): Observable<UserResponse> {
+        let url_ = this.baseUrl + "/api/Auth/GetCurrentUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCurrentUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCurrentUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserResponse>;
+        }));
+    }
+
+    protected processGetCurrentUser(response: HttpResponseBase): Observable<UserResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponse;
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2372,196 +2424,196 @@ export class WorkCaseService implements IWorkCaseService {
 }
 
 export interface UserResponse {
-    Id?: string;
-    Role: string;
-    Email: string;
-    UserName: string;
-    Token: ResponseToken;
+    id?: string;
+    role?: string;
+    email?: string;
+    userName?: string;
+    token?: ResponseToken;
 }
 
 export interface ResponseToken {
-    AccessToken: string;
+    accessToken?: string;
 }
 
 export interface LoginCommand {
-    Email?: string;
-    Password?: string;
+    email?: string;
+    password?: string;
 }
 
 export interface PagedResultOfClientListItemResponse {
-    Items?: ClientListItemResponse[];
-    TotalCount?: number;
-    PageNumber?: number;
-    PageSize?: number;
+    items?: ClientListItemResponse[];
+    totalCount?: number | null;
+    pageNumber?: number | null;
+    pageSize?: number | null;
 }
 
 export interface ClientListItemResponse {
-    Id?: string;
-    Tax?: string;
-    Name?: string;
-    Street?: string;
-    Zip?: string;
-    Coutry?: string;
-    Credit?: number;
-    Currency?: string;
-    InvoicesCount?: number;
-    WorkCasesCount?: number;
+    id?: string;
+    tax?: string;
+    name?: string;
+    street?: string;
+    zip?: string;
+    coutry?: string;
+    credit?: number | null;
+    currency?: string;
+    invoicesCount?: number | null;
+    workCasesCount?: number | null;
 }
 
 export interface ClientDetailResponse {
-    Id?: string;
-    Tax?: string;
-    Name?: string;
-    Street?: string;
-    Zip?: string;
-    Coutry?: string;
-    Credit?: number;
-    Currency?: string;
+    id?: string;
+    tax?: string;
+    name?: string;
+    street?: string;
+    zip?: string;
+    coutry?: string;
+    credit?: number | null;
+    currency?: string;
     WorkCases?: { [key: string]: string; };
     Invoices?: { [key: string]: string; };
 }
 
 export interface ClientResponse {
-    Id?: string;
-    Tax?: string;
-    Name?: string;
-    Street?: string;
-    Zip?: string;
-    Coutry?: string;
-    Credit?: number;
-    Currency?: string;
+    id?: string;
+    tax?: string;
+    name?: string;
+    street?: string;
+    zip?: string;
+    coutry?: string;
+    credit?: number | null;
+    currency?: string;
 }
 
 export interface CreateClientCommand {
-    Tax?: string;
-    Name?: string;
-    Street?: string;
-    Zip?: string;
-    Coutry?: string;
-    Credit?: number;
-    Currency?: string;
+    tax?: string;
+    name?: string;
+    street?: string;
+    zip?: string;
+    coutry?: string;
+    credit?: number | null;
+    currency?: string;
 }
 
 export interface UpdateClientCommand {
-    Id?: string;
-    Tax?: string;
-    Name?: string;
-    Street?: string;
-    Zip?: string;
-    Coutry?: string;
-    Credit?: number;
-    Currency?: string;
+    id?: string;
+    tax?: string;
+    name?: string;
+    street?: string;
+    zip?: string;
+    coutry?: string;
+    credit?: number | null;
+    currency?: string;
 }
 
 export interface PagedResultOfCostDetailResponse {
-    Items?: CostDetailResponse[];
-    TotalCount?: number;
-    PageNumber?: number;
-    PageSize?: number;
+    items?: CostDetailResponse[];
+    totalCount?: number | null;
+    pageNumber?: number | null;
+    pageSize?: number | null;
 }
 
 export interface CostDetailResponse {
-    Id?: string;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    Name: string;
-    IssueDate: Date;
-    ServiceDate: Date;
-    DocumentUrl?: string | null;
-    WorkCaseItemId?: string;
-    ServiceContractorId?: string;
+    id?: string;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
+    name?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
+    documentUrl?: string | null;
+    workCaseItemId?: string;
+    serviceContractorId?: string;
 }
 
 export interface CreateCostCommand {
-    File?: string | null;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    Name?: string;
-    IssueDate?: Date;
-    ServiceDate?: Date;
-    WorkCaseItemId?: string;
-    ServiceContractorId?: string;
+    file?: string | null;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
+    name?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
+    workCaseItemId?: string;
+    serviceContractorId?: string;
 }
 
 export interface UpdateCostCommand {
-    Id?: string;
-    File?: string | null;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    Name?: string;
-    IssueDate?: Date;
-    ServiceDate?: Date;
-    WorkCaseItemId?: string;
-    ServiceContractorId?: string;
+    id?: string;
+    file?: string | null;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
+    name?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
+    workCaseItemId?: string;
+    serviceContractorId?: string;
 }
 
 export interface PagedResultOfInvoiceResponse {
-    Items?: InvoiceResponse[];
-    TotalCount?: number;
-    PageNumber?: number;
-    PageSize?: number;
+    items?: InvoiceResponse[];
+    totalCount?: number | null;
+    pageNumber?: number | null;
+    pageSize?: number | null;
 }
 
 export interface InvoiceResponse {
-    Id?: string;
-    InvoiceNumber?: string;
-    Amount?: number;
-    Currency?: string;
-    IssueDate?: Date;
-    ServiceDate?: Date;
-    Tax?: number;
-    IsAbandoned?: boolean;
-    WorkCaseId?: string;
-    ClientId?: string;
-    InvoicedItemIds?: string[];
+    id?: string;
+    invoiceNumber?: string;
+    amount?: number | null;
+    currency?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
+    tax?: number | null;
+    isAbandoned?:boolean | null;
+    workCaseId?: string;
+    clientId?: string;
+    invoicedItemIds?: string[];
 }
 
 export interface InvoiceDetailResponse {
-    Id?: string;
-    InvoiceNumber?: string;
-    Amount?: number;
-    Currency?: string;
-    IssueDate?: Date;
-    ServiceDate?: Date;
-    Tax?: number;
-    IsAbandoned?: boolean;
-    WorkCaseId?: string;
-    WorkCaseRelation?: string;
-    ClientId?: string;
-    ClientName?: string;
-    ForwarderName?: string;
-    Items?: InvoiceItemDetail[];
+    id?: string;
+    invoiceNumber?: string;
+    amount?: number | null;
+    currency?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
+    tax?: number | null;
+    isAbandoned?:boolean | null;
+    workCaseId?: string;
+    workCaseRelation?: string;
+    clientId?: string;
+    clientName?: string;
+    forwarderName?: string;
+    items?: InvoiceItemDetail[];
 }
 
 export interface InvoiceItemDetail {
-    ItemId?: string;
-    Name?: string;
-    Amount?: number;
-    Currency?: string;
-    CreatedAt?: Date;
+    itemId?: string;
+    name?: string;
+    amount?: number | null;
+    currency?: string;
+    createdAt?: Date | string;
 }
 
 export interface CreateInvoiceCommand {
-    WorkCaseId?: string;
-    ServiceDate?: Date;
-    TaxRate?: number;
-    TargetCurrency?: string;
-    ManualExchangeRate?: number | null;
-    WorkCaseItemIds?: string[];
+    workCaseId?: string;
+    serviceDate?: Date | string;
+    taxRate?: number | null;
+    targetCurrency?: string;
+    manualExchangeRate?: number | null;
+    workCaseItemIds?: string[];
 }
 
 export interface UpdateInvoiceCommand {
-    InvoiceId?: string;
-    IssueDate?: Date;
-    ServiceDate?: Date;
-    TaxRate?: number;
-    TargetCurrency?: string;
-    ManualExchangeRate?: number | null;
-    WorkCaseItemIds?: string[];
-    WorkCaseItemsToDetachIds?: string[];
+    invoiceId?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
+    taxRate?: number | null;
+    targetCurrency?: string;
+    manualExchangeRate?: number | null;
+    workCaseItemIds?: string[];
+    workCaseItemsToDetachIds?: string[];
 }
 
 export interface PagedResultOfServiceContractorResponse {
@@ -2613,12 +2665,12 @@ export interface UpdateServiceContractorCommand {
 }
 
 export interface RegisterUserCommand {
-    Email?: string;
-    Name?: string;
-    Surname?: string;
-    Prefix?: string;
-    Password?: string;
-    Role?: UserRole;
+    email?: string;
+    name?: string;
+    surname?: string;
+    prefix?: string;
+    password?: string;
+    role?: UserRole;
 }
 
 export enum UserRole {
@@ -2630,113 +2682,113 @@ export enum UserRole {
 }
 
 export interface PagedResultOfUserListItemResponse {
-    Items?: UserListItemResponse[];
-    TotalCount?: number;
-    PageNumber?: number;
-    PageSize?: number;
+    items?: UserListItemResponse[];
+    totalCount?: number | null;
+    pageNumber?: number | null;
+    pageSize?: number | null;
 }
 
 export interface UserListItemResponse {
-    Id?: string;
-    Email?: string;
-    Name?: string;
-    Surname?: string;
-    FullName?: string;
-    Prefix?: string;
-    Role?: string;
-    IsActive?: boolean;
+    id?: string;
+    email?: string;
+    name?: string;
+    surname?: string;
+    fullName?: string;
+    prefix?: string;
+    role?: string;
+    isActive?:boolean | null;
 }
 
 export interface UserDetailResponse {
-    Id?: string;
-    Email?: string;
-    Name?: string;
-    Surname?: string;
-    Prefix?: string;
-    Role?: string;
-    IsActive?: boolean;
+    id?: string;
+    email?: string;
+    name?: string;
+    surname?: string;
+    prefix?: string;
+    role?: string;
+    isActive?:boolean | null;
 }
 
 export interface UpdateUserCommand {
-    UserId?: string;
-    Email?: string;
-    Name?: string;
-    Surname?: string;
-    Prefix?: string;
-    Role?: UserRole;
-    IsActive?: boolean;
-    Password?: string | null;
+    userId?: string;
+    email?: string;
+    name?: string;
+    surname?: string;
+    prefix?: string;
+    role?: UserRole;
+    isActive?:boolean | null;
+    password?: string | null;
 }
 
 export interface PagedResultOfWorkCaseResponse {
-    Items?: WorkCaseResponse[];
-    TotalCount?: number;
-    PageNumber?: number;
-    PageSize?: number;
+    items?: WorkCaseResponse[];
+    totalCount?: number | null;
+    pageNumber?: number | null;
+    pageSize?: number | null;
 }
 
 export interface WorkCaseResponse {
-    Id: string;
-    Name: string;
-    Amount?: number;
-    Relation: string;
-    ForwarderId?: string;
-    ForwarderName?: string;
-    ClientId?: string;
-    ClientName?: string;
+    id?: string;
+    name?: string;
+    amount?: number | null;
+    relation?: string;
+    forwarderId?: string;
+    forwarderName?: string;
+    clientId?: string;
+    clientName?: string;
 }
 
 export interface CreateWorkCaseCommand {
-    Amount?: number;
-    Relation?: string;
-    ForwarderId?: string;
-    ClientId?: string;
+    amount?: number | null;
+    relation?: string;
+    forwarderId?: string;
+    clientId?: string;
 }
 
 export interface UpdateWorkCaseCommand {
-    Amount?: number;
-    Relation?: string;
-    ForwarderId?: string;
-    ClientId?: string;
-    WorkCaseId?: string;
+    amount?: number | null;
+    relation?: string;
+    forwarderId?: string;
+    clientId?: string;
+    workCaseId?: string;
 }
 
 export interface WorkCaseItemResponse {
-    Id?: string;
-    Name?: string;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    CreatedAt?: Date;
-    IsInvoiced?: boolean;
-    InvoiceId?: string | null;
-    Costs?: CostResponse[];
+    id?: string;
+    name?: string;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
+    createdAt?: Date | string;
+    isInvoiced?:boolean | null;
+    invoiceId?: string | null;
+    costs?: CostResponse[];
 }
 
 export interface CostResponse {
-    Id?: string;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
-    Name: string;
-    IssueDate: Date;
-    ServiceDate: Date;
+    id?: string;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
+    name?: string;
+    issueDate?: Date | string;
+    serviceDate?: Date | string;
 }
 
 export interface AddWorkCaseItemCommand {
-    WorkCaseId?: string;
-    Name?: string;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
+    workCaseId?: string;
+    name?: string;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
 }
 
 export interface UpdateWorkCaseItemCommand {
-    WorkCaseItemId?: string;
-    Name?: string;
-    Amount?: number;
-    Currency?: string;
-    Tax?: number;
+    workCaseItemId?: string;
+    name?: string;
+    amount?: number | null;
+    currency?: string;
+    tax?: number | null;
 }
 
 /** Represents a void type, since Void is not a valid return type in C#. */
@@ -2744,8 +2796,8 @@ export interface Unit {
 }
 
 export interface FileResponse {
-    data: Blob;
-    status: number;
+    data?: Blob;
+    status?: number | null;
     fileName?: string;
     headers?: { [name: string]: any };
 }

@@ -7,7 +7,7 @@
             List<string> lines;
             using (var reader = new StreamReader(path))
             {
-                lines = new List<string>();
+                lines = [];
                 while (!reader.EndOfStream)
                 {
                     lines.Add(reader.ReadLine());
@@ -31,20 +31,20 @@
             return newLines;
         }
 
-        private static void CreateNewLines(List<string> newLines, string line, ref bool metInterface)
+        private static void CreateNewLines(List<string> newLines, string line, ref bool isDataTransferObject)
         {
             string newLine;
 
-            if (line.Contains("export interface") && line.Contains("DTO"))
+            if (line.Contains("export interface") && !line.Contains("Service"))
             {
-                metInterface = true;
+                isDataTransferObject = true;
                 newLine = line;
                 newLines.Add(newLine);
 
                 return;
             }
 
-            if (!metInterface)
+            if (!isDataTransferObject)
             {
                 newLine = line;
                 newLines.Add(newLine);
@@ -54,7 +54,7 @@
 
             if (line.Contains('}'))
             {
-                metInterface = false;
+                isDataTransferObject = false;
                 newLine = line;
                 newLines.Add(newLine);
 

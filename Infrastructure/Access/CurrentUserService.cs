@@ -18,6 +18,15 @@ namespace Infrastructure.Access
 
         public string? Role => _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
 
+        public string? Token
+        {
+            get
+            {
+                var authHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
+                return !string.IsNullOrEmpty(authHeader) ? authHeader.Replace("Bearer ", "") : null;
+            }
+        }
+
         public bool IsInRole(string roleName)
         {
             return _httpContextAccessor.HttpContext?.User?.IsInRole(roleName) ?? false;
