@@ -20,7 +20,7 @@ namespace Application.Features.ServiceContractors.Queries
         {
             var result = await _context.ServiceContractors
                 .AsNoTracking()
-                .Where(x => x.Id.Value == request.Id)
+                .Where(x => x.Id.Equals(request.Id))
                 .Select(x => new ServiceContractorResponse
                 {
                     Id = x.Id,

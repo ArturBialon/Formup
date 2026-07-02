@@ -24,7 +24,7 @@ namespace Application.Features.WorkCaseItems.Commands
             var workCaseItem = await _context.WorkCaseItems
                 .Include(x => x.WorkCase)
                 .Include(x => x.Invoice)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseItemId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
 
             if (workCaseItem == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.NOT_FOUND");
             if (workCaseItem.IsInvoiced) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
@@ -34,7 +34,7 @@ namespace Application.Features.WorkCaseItems.Commands
             if (workCase == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE.NOT_FOUND");
 
             var otherItemsTotalUsage = await _context.WorkCaseItems
-                .Where(x => x.WorkCase.Id.Value == workCase.Id.Value && x.Id.Value != request.WorkCaseItemId)
+                .Where(x => x.WorkCase.Id.Equals(workCase.Id) && !x.Id.Equals(request.WorkCaseItemId))
                 .SumAsync(x => x.Amount, ct);
 
             var availableBudget = workCase.Amount - otherItemsTotalUsage;

@@ -1,4 +1,4 @@
-import { Component, Input, inject, computed } from '@angular/core';
+import { Component, Input, inject, computed, OnInit, OnDestroy, signal } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -9,6 +9,7 @@ import { ErrorMessage } from '../../_interfaces/error-message.interface';
 import { DEFAULT_ERROR_MESSAGES } from '../validators/default-error-message';
 import { createMask, InputMaskModule } from '@ngneat/input-mask';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription, merge } from 'rxjs';
 
 @Component({
   selector: 'app-input',
@@ -23,9 +24,10 @@ import { TranslateService } from '@ngx-translate/core';
     },
   ],
 })
-export class InputComponent {
+export class InputComponent implements OnInit, OnDestroy {
   private formGroupDirective = inject(FormGroupDirective);
   private translate = inject(TranslateService);
+  private sub?: Subscription;
 
   @Input() controlName: string = '';
   @Input() label: string = '';
@@ -54,23 +56,44 @@ export class InputComponent {
     ] as FormControl;
   }
 
-  errorMessageSignal = computed(() => {
-    this.translate.currentLang(); 
-    
-    const control = this.formGroupDirective.form.controls[this.controlName];
-    if (!control || !control.errors) return '';
+  errorMessageSignal = signal<string>('');
 
-    const [firstErrorKey] = Object.entries(control.errors)[0];
-    
-    let translationKey = '';
-    if (firstErrorKey.includes('.') || firstErrorKey === firstErrorKey.toUpperCase()) {
-      translationKey = firstErrorKey;
-    } else {
-      translationKey = this._customErrorMessages[firstErrorKey as keyof ErrorMessage] || '';
-    }
+  ngOnInit() {
+    const control = this.formGroupDirective.form.get(this.controlName);
+    if (!control) return;
 
-    return translationKey ? this.translate.instant(translationKey) : '';
-  });
+    const updateError = () => {
+      if (!control.errors) {
+        this.errorMessageSignal.set('');
+        return;
+      }
+
+      const [firstErrorKey] = Object.entries(control.errors)[0];
+      
+      let translationKey = '';
+      if (firstErrorKey.includes('.') || firstErrorKey === firstErrorKey.toUpperCase()) {
+        translationKey = firstErrorKey;
+      } else {
+        translationKey = this._customErrorMessages[firstErrorKey as keyof ErrorMessage] || '';
+      }
+
+      const translatedText = translationKey ? this.translate.instant(translationKey) : '';
+      this.errorMessageSignal.set(translatedText);
+    };
+
+    updateError();
+
+    this.sub = merge(
+      control.statusChanges,
+      this.translate.onLangChange
+    ).subscribe(() => {
+      updateError();
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+  }
 
   translatedLabelSignal = computed(() => {
     this.translate.currentLang();

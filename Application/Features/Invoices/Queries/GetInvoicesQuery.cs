@@ -31,10 +31,10 @@ namespace Application.Features.Invoices.Queries
             var query = _context.Invoices.AsNoTracking().AsQueryable();
 
             if (request.ClientId.HasValue)
-                query = query.Where(x => x.Client.Id.Value == request.ClientId.Value);
+                query = query.Where(x => x.Client.Id.Equals(request.ClientId));
 
             if (request.ForwarderId.HasValue)
-                query = query.Where(x => x.WorkCase.Forwarder.Id.Value == request.ForwarderId.Value);
+                query = query.Where(x => x.WorkCase.Forwarder.Id.Equals(request.ForwarderId));
 
             if (request.MinAmount.HasValue)
                 query = query.Where(x => x.Amount >= request.MinAmount.Value);

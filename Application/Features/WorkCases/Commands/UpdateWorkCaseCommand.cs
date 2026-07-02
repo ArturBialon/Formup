@@ -6,24 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkCases.Commands
 {
-    public record UpdateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId, Guid WorkCaseId) : IRequest<AppResult<WorkCaseResponse>>;
+    public record UpdateWorkCaseCommand(decimal Amount, string Relation, Guid ForwarderId, Guid ClientId, Guid WorkCaseId) : IRequest<AppResult<WorkCaseResponse>>;
     public class EditWorkCaseHandler(FormupContext context) : IRequestHandler<UpdateWorkCaseCommand, AppResult<WorkCaseResponse>>
     {
         private readonly FormupContext _context = context;
 
         public async Task<AppResult<WorkCaseResponse>> Handle(UpdateWorkCaseCommand request, CancellationToken ct)
         {
-            var workCase = await _context.WorkCases.FindAsync([request.WorkCaseId], ct);
+            var workCase = await _context.WorkCases.FirstOrDefaultAsync(wc => wc.Id.Equals(request.WorkCaseId), ct);
             if (workCase == null) return AppResult<WorkCaseResponse>.Failure("WORK_CASE.NOT_FOUND");
 
-            var client = await _context.Clients.FindAsync([request.ClientId], ct);
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id.Equals(request.ClientId), ct);
             if (client == null) return AppResult<WorkCaseResponse>.Failure("CLIENT.NOT_FOUND");
 
-            var forwarder = await _context.Users.FindAsync([request.ForwarderId], ct);
+            var forwarder = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(request.ForwarderId), ct);
             if (forwarder == null) return AppResult<WorkCaseResponse>.Failure("FORWARDER.NOT_FOUND");
 
             var totalAmountTaken = await _context.WorkCases
-                .Where(x => x.Client.Id == client.Id && x.Id.Value != request.WorkCaseId && !x.IsAbandoned)
+                .Where(x => x.Client.Id == client.Id && !x.Id.Equals(request.WorkCaseId) && !x.IsAbandoned)
                 .SumAsync(x => x.Amount, ct);
 
             if (!client.CanAssignAmount(request.Amount, totalAmountTaken, out var exceededBy))

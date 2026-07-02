@@ -38,7 +38,7 @@ namespace Application.Features.Costs.Queries
 
             if (request.ServiceContractorId.HasValue)
             {
-                query = query.Where(x => x.ServiceContractor.Id.Value == request.ServiceContractorId.Value);
+                query = query.Where(x => x.ServiceContractor.Id.Equals(request.ServiceContractorId));
             }
 
             if (request.DateFrom.HasValue)

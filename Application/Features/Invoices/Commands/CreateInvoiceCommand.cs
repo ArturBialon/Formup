@@ -26,12 +26,12 @@ namespace Application.Features.Invoices.Commands
         public async Task<AppResult<InvoiceResponse>> Handle(CreateInvoiceCommand request, CancellationToken ct)
         {
             var workCase = await _context.WorkCases.Include(x => x.Client)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
             if (workCase == null) return AppResult<InvoiceResponse>.Failure("WORK_CASE.NOT_FOUND");
 
             var itemsToInvoice = await _context.WorkCaseItems.Include(x => x.Invoice)
-                .Where(x => x.WorkCase.Id.Value == request.WorkCaseId && request.WorkCaseItemIds.Contains(x.Id.Value))
+                .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId) && request.WorkCaseItemIds.Contains(x.Id.Value))
                 .ToListAsync(ct);
 
             if (itemsToInvoice.Count != request.WorkCaseItemIds.Count)

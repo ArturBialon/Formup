@@ -18,10 +18,10 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetCurrentUser()
         {
             var result = await Mediator.Send(new GetCurrentUserQuery());

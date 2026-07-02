@@ -15,7 +15,7 @@ namespace Application.Features.ServiceContractors.Commands
         {
             var contractor = await _context.ServiceContractors
                 .Include(x => x.Costs)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.Id, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);
 
             if (contractor == null)
             {

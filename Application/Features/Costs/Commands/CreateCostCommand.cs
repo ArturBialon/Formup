@@ -28,9 +28,9 @@ namespace Application.Features.Costs.Commands
         public async Task<IAppResult<Guid>> Handle(CreateCostCommand request, CancellationToken ct)
         {
             var workCaseItem = await _context.WorkCaseItems
-                .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseItemId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
             var contractor = await _context.ServiceContractors
-                .FirstOrDefaultAsync(x => x.Id.Value == request.ServiceContractorId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.ServiceContractorId), ct);
             var existingCost = await _context.Costs
                 .FirstOrDefaultAsync(x => x.Name == request.Name && x.ServiceContractor.Id.Value == request.ServiceContractorId, ct);
 

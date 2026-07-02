@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { authGuard } from './_guards/auth.guard'; // Funkcyjny guard
+import { authGuard } from './_guards/auth.guard';
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   
   {
     path: 'dashboard',
@@ -16,5 +16,5 @@ export const routes: Routes = [
   { path: 'errors', loadComponent: () => import('../app/errors/test-errors/test-errors.component').then(m => m.TestErrorsComponent) },
   { path: 'not-found', loadComponent: () => import('../app/errors/not-found/not-found.component').then(m => m.NotFoundComponent) },
   { path: 'server-error', loadComponent: () => import('../app/errors/server-error/server-error.component').then(m => m.ServerErrorComponent) },
-  { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
+  { path: '**', redirectTo: '/not-found', pathMatch: 'full' } 
 ];

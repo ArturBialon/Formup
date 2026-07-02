@@ -15,7 +15,7 @@ namespace Application.Features.Invoices.Commands
         {
             var invoice = await _context.Invoices
                 .Include(x => x.WorkCaseItems)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.InvoiceId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.InvoiceId), ct);
             if (invoice == null) return AppResult<Unit>.Failure("INVOICE.NOT_FOUND");
 
             foreach (var item in invoice.WorkCaseItems)

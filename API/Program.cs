@@ -1,7 +1,6 @@
 using API.Extensions;
 using Application.Middleware;
 using Infrastructure.Context;
-using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Serilog;
@@ -25,9 +24,6 @@ builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddLoggingServices();
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
-    .AddCertificate();
-builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy

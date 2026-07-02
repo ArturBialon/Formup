@@ -1,5 +1,7 @@
 ﻿using Application.Common.Results;
 using Application.DTOs.Response;
+using Domain.Entity;
+using Domain.Models;
 using Infrastructure.Access;
 using Infrastructure.Context;
 using MediatR;
@@ -19,7 +21,7 @@ namespace Application.Features.Users.Queries
             var userId = _currentUserService.UserId;
             if (userId == null) return AppResult<UserResponse>.Failure("COMMON.NOT_FOUND");
 
-            var user = await _context.Users.FindAsync([userId], cancellationToken: ct);
+            var user = await _context.Users.FindAsync([(Entity<User>.EntityId)(userId.Value)], cancellationToken: ct);
             if (user == null) return AppResult<UserResponse>.Failure("UNAUTHORIZED_ERROR");
 
             var response = new UserResponse

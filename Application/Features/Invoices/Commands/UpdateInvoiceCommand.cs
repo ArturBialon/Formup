@@ -29,7 +29,7 @@ namespace Application.Features.Invoices.Commands
             var invoice = await _context.Invoices
                 .Include(x => x.WorkCase)
                 .Include(x => x.Client)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.InvoiceId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.InvoiceId), ct);
 
             if (invoice == null) return AppResult<InvoiceResponse>.Failure("INVOICE.NOT_FOUND");
 

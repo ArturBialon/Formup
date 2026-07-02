@@ -27,14 +27,14 @@ namespace Application.Features.ServiceContractors.Commands
 
         public async Task<AppResult<ServiceContractorResponse>> Handle(UpdateServiceContractorCommand request, CancellationToken ct)
         {
-            var contractor = await _context.ServiceContractors.FindAsync([request.Id], ct);
+            var contractor = await _context.ServiceContractors.FirstOrDefaultAsync(sc => sc.Id.Equals(request.Id), cancellationToken: ct);
             if (contractor == null)
                 return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.NOT_FOUND");
 
             if (contractor.Tax != request.Tax)
             {
                 var taxExists = await _context.ServiceContractors
-                    .AnyAsync(x => x.Tax == request.Tax && x.Id.Value != request.Id, ct);
+                    .AnyAsync(x => x.Tax == request.Tax && !x.Id.Equals(request.Id), ct);
 
                 if (taxExists)
                 {
