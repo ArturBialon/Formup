@@ -1,15 +1,17 @@
 ﻿using Application.Common.Results;
 using FluentValidation;
 using MediatR;
+using Serilog;
 using System.Reflection;
 
 namespace Application.Common.Behaviors
 {
-    public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+    public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators, ILogger logger)
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
+        private readonly ILogger _logger = logger;
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct)
         {
@@ -31,6 +33,8 @@ namespace Application.Common.Behaviors
                         g => g.Key,
                         g => g.Select(x => x.ErrorCode).ToList()
                     );
+
+                _logger.Warning("Validation errors for request {RequestType}: {@Errors}", typeof(TRequest).Name, errorsDictionary);
 
                 var responseType = typeof(TResponse);
                 var innerType = typeof(TResponse).GetGenericArguments().FirstOrDefault();

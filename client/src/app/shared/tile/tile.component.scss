@@ -1,0 +1,46 @@
+.sidebar-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 110px;
+  width: 100%;
+  color: var(--color-text-dark);
+  background-color: var(--color-primary);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  &.active {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    
+    .tile-icon {
+      filter: invert(1) brightness(2); 
+    }
+  }
+
+  .icon-container {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tile-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+  }
+
+  .tile-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}

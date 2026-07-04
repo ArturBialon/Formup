@@ -9,7 +9,6 @@ namespace API.Controllers;
 [Route("api/bug")]
 public class BuggyController() : ApiControllerBase
 {
-
     [Authorize]
     [HttpGet("secret")]
     [ActionName("GetSecretIfLogged")]

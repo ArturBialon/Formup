@@ -1,24 +1,25 @@
-$color-sidebar-bg: #154792;
-$color-sidebar-text: #000000;
-
-.dashboard {
+.dashboard-layout {
   display: flex;
+  height: 90vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.side-menu {
-  width: 200px;
-  background-color: $color-sidebar-bg;
-  color: $color-sidebar-text;
-  height: 100vh;
+.sidebar {
+  width: 150px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-sidebar-bg);
+  overflow-y: auto;
+}
 
-  a {
-    display: block;
-    color: $color-sidebar-text;
-    text-decoration: none;
-    margin-bottom: 10px;
-
-    &.active {
-      font-weight: bold;
-    }
-  }
+.content-panel {
+  flex-grow: 1;
+  height: 100%;
+  padding: 2rem;
+  background-color: var(--color-dark-panel);
+  overflow-y: auto;
+  overflow-x: auto;
 }

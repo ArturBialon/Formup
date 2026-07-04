@@ -1,14 +1,18 @@
 ﻿using Application.Common.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers.Base
 {
     [Route("api/[controller]/[action]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public abstract class ApiControllerBase() : ControllerBase
     {
+        private Serilog.ILogger? _logger;
+        private Serilog.ILogger Logger => _logger ??= HttpContext.RequestServices.GetRequiredService<Serilog.ILogger>();
+
         private ISender? _mediator;
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
@@ -28,16 +32,21 @@ namespace API.Controllers.Base
                 errorCodes.Add(result.ErrorCode);
             }
 
+            var requestPath = HttpContext.Request.Path.Value;
+            Logger.Warning("Request to {RequestPath} failed with errors: {@ErrorCodes}", requestPath, errorCodes);
+
             if (errorCodes.Any(x => x.Contains("UNAUTHORIZED")))
                 return Unauthorized(new { errors = errorCodes });
 
             if (errorCodes.Any(x => x.Contains("FORBIDDEN")))
-                return Forbid();
+                return StatusCode(StatusCodes.Status403Forbidden, new { errors = errorCodes });
 
             if (errorCodes.Any(x => x.Contains("NOT_FOUND")))
                 return NotFound(new { errors = errorCodes });
 
-            if (errorCodes.Count == 0) errorCodes.Add("SERVER.UNKNOWN_ERROR");
+            if (errorCodes.Count == 0)
+                errorCodes.Add("SERVER.UNKNOWN_ERROR");
+
             return BadRequest(new { errors = errorCodes });
         }
     }

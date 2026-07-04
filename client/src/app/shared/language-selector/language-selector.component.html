@@ -1,0 +1,25 @@
+<div class="dropdown">
+  <button 
+    class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2 btn-lang-selector" 
+    type="button" 
+    (click)="toggleDropdown()">
+    <img [src]="iconWithLocation" class="tile-icon" />
+    <span class="fw-bold">{{ currentLang | uppercase }}</span>
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-end" [class.show]="isOpen">
+    @for (lang of availableLangs; track lang) {
+      <li>
+        <button 
+          class="dropdown-item d-flex justify-content-between align-items-center" 
+          type="button" 
+          (click)="changeLanguage(lang)">
+          <span>{{ lang === 'pl' ? 'Polski' : lang === 'en' ? 'English' : 'Deutsch' }}</span>
+          @if (currentLang === lang) {
+            <small class="text-success">●</small>
+          }
+        </button>
+      </li>
+    }
+  </ul>
+</div>

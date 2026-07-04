@@ -1,4 +1,20 @@
 {
+  "GUI": {
+      "CHANGE_PASSWORD": "Change Password",
+      "LANGUAGE": "Language",
+      "LOGOUT": "Logout",
+      "PROFILE": "Profile",
+      "DASHBOARD": "Dashboard",
+      "ORDERS": "Orders",
+      "SETTINGS": "Settings",
+      "WORK_CASES": "Work Cases",
+      "COSTS": "Costs",
+      "INVOICES": "Invoices",
+      "CONTRACTORS": "Contractors",
+      "CLIENTS": "Clients",
+      "MANAGE_USERS": "Manage Users",
+      "MY_ACCOUNT": "My Account"
+  },
   "LOGIN": {
     "EMAIL_LABEL": "Email Address",
     "PASSWORD_LABEL": "Password",

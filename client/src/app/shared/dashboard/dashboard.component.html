@@ -1,10 +1,21 @@
-<div class="dashboard">
-    <nav class="side-menu">
-        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/orders" routerLinkActive="active">Orders</a>
-        <a routerLink="/settings" routerLinkActive="active">Settings</a>
-    </nav>
-    <main class="content">
-        <router-outlet></router-outlet>
-    </main>
+<div class="dashboard-layout">
+  
+  <aside class="sidebar">
+    
+    <app-tile labelKey="GUI.WORK_CASES" iconName="workCaseIcon.svg" routePath="/workcases"></app-tile>
+    <app-tile labelKey="GUI.CONTRACTORS" iconName="contractorIcon.svg" routePath="/contractors"></app-tile>
+    <app-tile labelKey="GUI.INVOICES" iconName="invoiceIcon.svg" routePath="/invoices"></app-tile>
+    <app-tile labelKey="GUI.CLIENTS" iconName="clientIcon.svg" routePath="/clients"></app-tile>
+    @if (accountService.isAdmin()) {
+        <app-tile labelKey="GUI.MANAGE_USERS" iconName="peopleIcon.svg" routePath="/manage-users"></app-tile>
+    }
+    <div class="flex-grow-1"></div>
+
+    <app-tile labelKey="GUI.MY_ACCOUNT" iconName="userIcon.svg" routePath="/account"></app-tile>
+  </aside>
+
+  <main class="content-panel">
+    <router-outlet></router-outlet>
+  </main>
+  
 </div>

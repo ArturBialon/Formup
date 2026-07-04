@@ -1,4 +1,20 @@
 {
+  "GUI": {
+      "CHANGE_PASSWORD": "Zmień hasło",
+      "LANGUAGE": "Język",
+      "LOGOUT": "Wyloguj się",
+      "PROFILE": "Profil",
+      "DASHBOARD": "Panel główny",
+      "ORDERS": "Zamówienia",
+      "SETTINGS": "Ustawienia",
+      "WORK_CASES": "Teczki",
+      "COSTS": "Koszty",
+      "INVOICES": "Faktury",
+      "CONTRACTORS": "Podwykonawcy",
+      "CLIENTS": "Klienci",
+      "MANAGE_USERS": "Zarządzanie użytkownikami",
+      "MY_ACCOUNT": "Moje konto"
+  },
   "LOGIN": {
     "EMAIL_LABEL": "Adres e-mail",
     "PASSWORD_LABEL": "Hasło",

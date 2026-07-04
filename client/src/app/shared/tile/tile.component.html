@@ -1,0 +1,15 @@
+@if (routePath) {
+  <a [routerLink]="routePath" routerLinkActive="active" class="sidebar-tile text-decoration-none">
+    <div class="icon-container">
+      <img [src]="iconWithLocation" [alt]="labelKey" class="tile-icon" />
+    </div>
+    <span class="tile-label">{{ labelKey | translate }}</span>
+  </a>
+} @else {
+  <a class="sidebar-tile text-decoration-none">
+    <div class="icon-container">
+      <img [src]="iconWithLocation" [alt]="labelKey" class="tile-icon" />
+    </div>
+    <span class="tile-label">{{ labelKey | translate }}</span>
+  </a>
+}

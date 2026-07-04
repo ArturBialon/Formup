@@ -1,0 +1,35 @@
+.btn-profile-selector, .btn-lang-selector {
+  background-color: var(--glass-bg); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  color: var(--color-text-light) !important;
+  border-color: var(--glass-border) !important;
+
+  &:hover, &:focus, &:active {
+    background-color: var(--glass-bg-hover) !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    color: var(--color-text-light) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+.dropdown-menu {
+  background-color: var(--color-dropdown-bg); 
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  left: auto !important;
+  right: 0 !important;
+
+  .dropdown-item {
+    color: var(--color-text-muted);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--color-text-light);
+    }
+  }
+
+  .dropdown-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
