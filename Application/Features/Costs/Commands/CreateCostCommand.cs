@@ -3,11 +3,13 @@ using Application.Common.Results;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Costs.Commands
 {
     public record CreateCostCommand(
+        IFormFile? File,
         decimal Amount,
         string Currency,
         decimal Tax,
@@ -15,8 +17,7 @@ namespace Application.Features.Costs.Commands
         DateTime IssueDate,
         DateTime ServiceDate,
         Guid WorkCaseItemId,
-        Guid ServiceContractorId,
-        Stream? FileStream = null
+        Guid ServiceContractorId
     ) : IRequest<IAppResult<Guid>>;
 
     public class CreateCostCommandHandler(FormupContext context, IFileStorageService fileStorageService) : IRequestHandler<CreateCostCommand, IAppResult<Guid>>
@@ -27,23 +28,25 @@ namespace Application.Features.Costs.Commands
         public async Task<IAppResult<Guid>> Handle(CreateCostCommand request, CancellationToken ct)
         {
             var workCaseItem = await _context.WorkCaseItems
-                .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseItemId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
             var contractor = await _context.ServiceContractors
-                .FirstOrDefaultAsync(x => x.Id.Value == request.ServiceContractorId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.ServiceContractorId), ct);
             var existingCost = await _context.Costs
                 .FirstOrDefaultAsync(x => x.Name == request.Name && x.ServiceContractor.Id.Value == request.ServiceContractorId, ct);
 
             if (workCaseItem == null)
-                return AppResult<Guid>.Failure("COST.VALIDATION.WORK_CASE_ITEM_NOT_FOUND");
+                return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
             if (contractor == null)
-                return AppResult<Guid>.Failure("COST.VALIDATION.CONTRACTOR_NOT_FOUND");
+                return AppResult<Guid>.Failure("COST.CONTRACTOR_NOT_FOUND");
             if (existingCost != null)
-                return AppResult<Guid>.Failure("COST.VALIDATION.COST_ALREADY_EXISTS");
+                return AppResult<Guid>.Failure("COST.COST_ALREADY_EXISTS");
 
             string uploadedUrl = string.Empty;
-            if (request.FileStream != null)
+
+            if (request.File != null)
             {
-                uploadedUrl = await _fileStorageService.UploadFileAsync(request.FileStream, request.Name, ct);
+                using var stream = request.File.OpenReadStream();
+                uploadedUrl = await _fileStorageService.UploadFileAsync(stream, request.Name, ct);
             }
 
             var cost = new Cost

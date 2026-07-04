@@ -1,3 +1,12 @@
-<div style="margin-top: 100px">
+<div class="selector-container">
+  <app-user-profile />
+  <app-language-selector />
+</div>
+
+<div style = "margin-top: 10vh;">
+    <ngx-sonner-toaster 
+        position="bottom-right" 
+        [expand]="false" 
+        [richColors]="true" />
     <router-outlet></router-outlet>
 </div>

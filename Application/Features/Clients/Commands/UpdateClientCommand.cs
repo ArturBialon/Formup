@@ -26,7 +26,7 @@ namespace Application.Features.Clients.Commands
         public async Task<IAppResult<ClientResponse>> Handle(UpdateClientCommand request, CancellationToken ct)
         {
             var client = await _context.Clients
-                .FirstOrDefaultAsync(x => x.Id.Value == request.Id, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);
 
             var taxExists = await _context.Clients
                 .AnyAsync(x => x.Tax == request.Tax.Trim() && x.Id.Value != request.Id, ct);

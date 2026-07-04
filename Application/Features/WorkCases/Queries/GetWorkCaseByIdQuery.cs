@@ -14,7 +14,7 @@ namespace Application.Features.WorkCases.Queries
         {
             var result = await context.WorkCases
                 .AsNoTracking()
-                .Where(x => x.Id.Value == request.Id)
+                .Where(x => x.Id.Equals(request.Id))
                 .Select(x => new WorkCaseResponse
                 {
                     Id = x.Id.Value,

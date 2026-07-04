@@ -26,43 +26,23 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateCost([FromForm] IFormFile? file, [FromForm] CreateCostCommand command, CancellationToken ct)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateCost([FromForm] CreateCostCommand command, CancellationToken ct)
         {
-            if (file != null)
-            {
-                using var stream = file.OpenReadStream();
-                var fullCommand = command with { FileStream = stream };
-                var result = await Mediator.Send(fullCommand, ct);
-                return HandleResult(result);
-            }
-            else
-            {
-                var result = await Mediator.Send(command, ct);
-                return HandleResult(result);
-            }
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateCost([FromForm] IFormFile? file, [FromForm] UpdateCostCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateCost([FromForm] UpdateCostCommand command, CancellationToken ct)
         {
-            if (file != null)
-            {
-                using var stream = file.OpenReadStream();
-                var fullCommand = command with { FileStream = stream };
-                var result = await Mediator.Send(fullCommand, ct);
-                return HandleResult(result);
-            }
-            else
-            {
-                var result = await Mediator.Send(command, ct);
-                return HandleResult(result);
-            }
+            var result = await Mediator.Send(command, ct);
+            return HandleResult(result);
         }
 
         [HttpDelete]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteCost([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteCostCommand(id), ct);

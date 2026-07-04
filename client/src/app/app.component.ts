@@ -1,20 +1,25 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
-import { AccountService } from './_services/account.service';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { NgxSonnerToaster } from 'ngx-sonner';
+import { LanguageSelectorComponent } from './shared/language-selector/language-selector.component';
+import { UserProfileComponent } from './shared/user-profile/user-profile.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [RouterOutlet, NgxSonnerToaster, LanguageSelectorComponent, UserProfileComponent],
 })
-export class AppComponent implements OnInit{
-  title = 'Formup'; 
-  users: any;
 
-  constructor(private accountService: AccountService){}
+export class AppComponent {
+  title = 'Formup';
+  lastSelectedLanguage = localStorage.getItem('lang') || 'pl';
 
-  ngOnInit(): void {
+  constructor() {
+    const translate = inject(TranslateService);
+    translate.currentLang();
+    translate.use(this.lastSelectedLanguage);
   }
-
 }

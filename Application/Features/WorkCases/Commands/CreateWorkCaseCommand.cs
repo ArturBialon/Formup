@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkCases.Commands
 {
-    public record CreateWorkCaseCommand(int Amount, string Relation, Guid ForwarderId, Guid ClientId)
+    public record CreateWorkCaseCommand(decimal Amount, string Relation, Guid ForwarderId, Guid ClientId)
         : IRequest<AppResult<WorkCaseResponse>>;
 
     public class CreateWorkCaseHandler(FormupContext context)
@@ -17,10 +17,10 @@ namespace Application.Features.WorkCases.Commands
 
         public async Task<AppResult<WorkCaseResponse>> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
-            var forwarder = await _context.Users.FindAsync([request.ForwarderId], ct);
+            var forwarder = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(request.ForwarderId), ct);
             if (forwarder == null) return AppResult<WorkCaseResponse>.Failure("FORWARDER.NOT_FOUND");
 
-            var client = await _context.Clients.FindAsync([request.ClientId], ct);
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id.Equals(request.ClientId), ct);
             if (client == null) return AppResult<WorkCaseResponse>.Failure("CLIENT.NOT_FOUND");
 
             var totalAmountTaken = await _context.WorkCases

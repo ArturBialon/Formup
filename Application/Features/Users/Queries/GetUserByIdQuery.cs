@@ -17,7 +17,7 @@ namespace Application.Features.Users.Queries
         {
             var userDto = await _context.Users
                 .AsNoTracking()
-                .Where(x => x.Id.Value == request.Id)
+                .Where(x => x.Id.Equals(request.Id))
                 .Select(user => new UserDetailResponse
                 {
                     Id = user.Id.Value,

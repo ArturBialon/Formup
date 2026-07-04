@@ -28,7 +28,7 @@ namespace Application.Features.Users.Commands
         public async Task<AppResult<Unit>> Handle(UpdateUserCommand request, CancellationToken ct)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.Id.Value == request.UserId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.UserId), ct);
 
             if (user == null)
             {

@@ -28,10 +28,10 @@ namespace Application.Features.WorkCases.Queries
                 query = query.Where(x => x.Relation == request.Relation);
 
             if (request.ForwarderId.HasValue)
-                query = query.Where(x => x.Forwarder.Id.Value == request.ForwarderId.Value);
+                query = query.Where(x => x.Forwarder.Id.Equals(request.ForwarderId));
 
             if (request.ClientId.HasValue)
-                query = query.Where(x => x.Client.Id.Value == request.ClientId.Value);
+                query = query.Where(x => x.Client.Id.Equals(request.ClientId));
 
             if (!string.IsNullOrWhiteSpace(request.Name))
                 query = query.Where(x => x.Name.Contains(request.Name));

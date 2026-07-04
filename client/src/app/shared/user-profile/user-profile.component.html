@@ -1,0 +1,27 @@
+@if (currentUser()) {
+  <div class="dropdown">
+    <button 
+      class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2 btn-profile-selector" 
+      type="button" 
+      (click)="toggleDropdown()">
+      <i class="bi bi-person-circle fs-5"></i>
+      <span class="fw-bold">{{ currentUser() }}</span>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end" [class.show]="isOpen">
+      <li>
+        <a class="dropdown-item d-flex align-items-center gap-2" routerLink="/change-password" (click)="isOpen = false">
+          <i class="bi bi-key"></i>
+          <span>{{ 'GUI.CHANGE_PASSWORD' | translate }}</span>
+        </a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <button class="dropdown-item d-flex align-items-center gap-2 text-danger" type="button" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>{{ 'GUI.LOGOUT' | translate }}</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+}

@@ -16,7 +16,7 @@ namespace Application.Features.Clients.Commands
             var client = await _context.Clients
                 .Include(x => x.Invoices)
                 .Include(x => x.WorkCases)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.Id, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);
 
             if (client == null)
             {

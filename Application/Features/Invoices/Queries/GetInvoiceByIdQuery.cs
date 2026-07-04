@@ -17,7 +17,7 @@ namespace Application.Features.Invoices.Queries
         {
             var invoiceDetail = await _context.Invoices
                 .AsNoTracking()
-                .Where(i => i.Id.Value == request.InvoiceId)
+                .Where(i => i.Id.Equals(request.InvoiceId))
                 .Select(i => new InvoiceDetailResponse
                 {
                     Id = i.Id.Value,

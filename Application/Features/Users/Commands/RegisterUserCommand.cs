@@ -67,7 +67,7 @@ namespace Application.Features.Users.Commands
                 return AppResult<Unit>.Success(Unit.Value);
             }
 
-            return AppResult<Unit>.Failure("REGISTRATION.DATABASE_ERROR");
+            return AppResult<Unit>.Failure("DATABASE_ERROR");
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Application.Features.Costs.Commands
         public async Task<IAppResult<Unit>> Handle(DeleteCostCommand request, CancellationToken ct)
         {
             var cost = await _context.Costs
-                .FirstOrDefaultAsync(x => x.Id.Value == request.Id, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);
 
             if (cost == null)
             {
@@ -42,7 +42,6 @@ namespace Application.Features.Costs.Commands
                 catch (Exception ex)
                 {
                     _logger.Error(ex, ex.Message);
-                    // ponieważ rekord z bazy zniknął pomyślnie.
                 }
             }
 

@@ -17,7 +17,7 @@ namespace Application.Features.Clients.Queries
         {
             var client = await _context.Clients
                 .AsNoTracking()
-                .Where(x => x.Id.Value == request.Id)
+                .Where(x => x.Id.Equals(request.Id))
                 .Select(c => new
                 {
                     c.Id,

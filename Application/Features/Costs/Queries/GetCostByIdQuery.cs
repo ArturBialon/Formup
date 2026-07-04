@@ -16,7 +16,7 @@ namespace Application.Features.Costs.Queries
         {
             var costDto = await _context.Costs
                 .AsNoTracking()
-                .Where(x => x.Id.Value == request.Id)
+                .Where(x => x.Id.Equals(request.Id))
                 .Select(c => new CostDetailResponse
                 {
                     Id = c.Id.Value,

@@ -1,37 +1,41 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="10.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="11.6.1" />
-    <PackageReference Include="NSwag.AspNetCore" Version="14.7.1" />
-    <PackageReference Include="NSwag.CodeGeneration.TypeScript" Version="14.7.1" />
-    <PackageReference Include="NSwag.Core" Version="14.7.1" />
-    <PackageReference Include="NSwag.Generation.AspNetCore" Version="14.7.1" />
-    <PackageReference Include="NSwag.Generation.WebApi" Version="14.7.1" />
-    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="10.0.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.3.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.3.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NJsonSchema.CodeGeneration.TypeScript" Version="11.6.1" />
+		<PackageReference Include="NSwag.AspNetCore" Version="14.7.1" />
+		<PackageReference Include="NSwag.CodeGeneration.TypeScript" Version="14.7.1" />
+		<PackageReference Include="NSwag.Core" Version="14.7.1" />
+		<PackageReference Include="NSwag.Generation.AspNetCore" Version="14.7.1" />
+		<PackageReference Include="NSwag.Generation.WebApi" Version="14.7.1" />
+		<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.2.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Application\Application.csproj" />
+		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+	</ItemGroup>
+	<Target Name="GenerateAngularService" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+		<Message Importance="high" Text="Rozpoczynanie automatycznego generowania serwisu Angular..." />
+		<Exec Command="dotnet &quot;$(TargetPath)&quot; --generate-angular" LogStandardErrorAsError="true" />
+	</Target>
 
 </Project>

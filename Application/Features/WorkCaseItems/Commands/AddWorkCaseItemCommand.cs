@@ -23,12 +23,12 @@ namespace Application.Features.WorkCaseItems.Commands
         public async Task<AppResult<WorkCaseItemResponse>> Handle(AddWorkCaseItemCommand request, CancellationToken ct)
         {
             var workCase = await _context.WorkCases
-                .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
             if (workCase == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE.NOT_FOUND");
 
             var currentWorkCaseUsage = await _context.WorkCaseItems
-                .Where(x => x.WorkCase.Id.Value == request.WorkCaseId)
+                .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId))
                 .SumAsync(x => x.Amount, ct);
 
             var availableBudget = workCase.Amount - currentWorkCaseUsage;

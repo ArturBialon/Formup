@@ -16,7 +16,7 @@ namespace Application.Features.WorkCaseItems.Queries
         public async Task<IAppResult<IReadOnlyCollection<WorkCaseItemResponse>>> Handle(GetWorkCaseItemsQuery request, CancellationToken ct)
         {
             var workCaseExists = await _context.WorkCases
-                .AnyAsync(x => x.Id.Value == request.WorkCaseId, ct);
+                .AnyAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
             if (!workCaseExists)
             {
@@ -25,7 +25,7 @@ namespace Application.Features.WorkCaseItems.Queries
 
             var items = await _context.WorkCaseItems
                 .AsNoTracking()
-                .Where(x => x.WorkCase.Id.Value == request.WorkCaseId)
+                .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId))
                 .Select(x => new WorkCaseItemResponse
                 {
                     Id = x.Id.Value,

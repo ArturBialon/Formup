@@ -1,0 +1,253 @@
+{
+  "GUI": {
+      "CHANGE_PASSWORD": "Zmień hasło",
+      "LANGUAGE": "Język",
+      "LOGOUT": "Wyloguj się",
+      "PROFILE": "Profil",
+      "DASHBOARD": "Panel główny",
+      "ORDERS": "Zamówienia",
+      "SETTINGS": "Ustawienia",
+      "WORK_CASES": "Teczki",
+      "COSTS": "Koszty",
+      "INVOICES": "Faktury",
+      "CONTRACTORS": "Podwykonawcy",
+      "CLIENTS": "Klienci",
+      "MANAGE_USERS": "Zarządzanie użytkownikami",
+      "MY_ACCOUNT": "Moje konto"
+  },
+  "LOGIN": {
+    "EMAIL_LABEL": "Adres e-mail",
+    "PASSWORD_LABEL": "Hasło",
+    "SUBMIT_BUTTON": "Zaloguj się"
+  },
+  "COMMON": {
+    "VALIDATION": {
+      "REQUIRED": "To pole jest wymagane.",
+      "EMAIL_INVALID": "Podany adres email ma niepoprawny format.",
+      "TOO_SHORT": "Wprowadzona wartość jest za krótka.",
+      "TOO_LONG": "Wprowadzona wartość jest za długa.",
+      "TOO_HIGH": "Wprowadzona wartość przekracza maksymalny dozwolony limit."
+    },
+    "NOT_FOUND": "Nie można znaleźć zasobu."
+  },
+  "SERVER": {
+    "UNKNOWN_ERROR": "Wystąpił nieoczekiwany błąd serwera. Spróbuj ponownie później."
+  },
+  "REQUEST": {
+    "ID_MISSMATCH": "Przesłany identyfikator jest niezgodny z danymi żądania."
+  },
+  "GENERAL_ERROR": "Błąd",
+  "UNAUTHORIZED_ERROR": "Nie jesteś uprawniony do dostępu do tego zasobu. Sprawdź swoje dane logowania lub skontaktuj się z administratorem systemu.",
+  "FORBIDDEN_ERROR": "Nie masz uprawnień do dostępu do tego zasobu. Skontaktuj się z administratorem systemu, jeśli uważasz, że to błąd.",
+  "VALIDATION_ERROR": "Wystąpiły błędy walidacji. Sprawdź wprowadzone dane.",
+  "DATABASE_ERROR": "Wystąpił krytyczny błąd bazy danych. Skontaktuj się z administratorem systemu.",
+  "NULL_TRACE": "Brak wymaganych danych transakcji lub śladu (obiekt ma wartość null).",
+  "AUTH": {
+    "INVALID_CREDENTIALS": "Podano niepoprawny adres email lub hasło.",
+    "SECURITY_CONFIGURATION_ERROR": "Wystąpił błąd podczas konfigurowania kontekstu bezpieczeństwa."
+  },
+  "REGISTRATION": {
+    "EMAIL_OR_INITIALS_TAKEN": "Użytkownik o podanym adresie email lub inicjałach jest już zarejestrowany.",
+    "SECURITY_CONFIGURATION_ERROR": "Nie udało się bezpiecznie przetworzyć danych rejestracyjnych ze względu na stan bezpieczeństwa systemu.",
+    "VALIDATION": {
+      "EMAIL_REQUIRED": "Adres email jest wymagany do rejestracji.",
+      "EMAIL_INVALID": "Podany adres email ma niepoprawny format.",
+      "NAME_REQUIRED": "Imię jest wymagane.",
+      "SURNAME_REQUIRED": "Nazwisko jest wymagane.",
+      "INITIALS_REQUIRED": "Inicjały/prefiks użytkownika są wymagane.",
+      "INITIALS_LENGTH_INVALID": "Inicjały użytkownika muszą mieć długość od 2 do 5 znaków.",
+      "PASSWORD_REQUIRED": "Hasło jest wymagane.",
+      "PASSWORD_TOO_SHORT": "Hasło musi mieć co najmniej 6 znaków.",
+      "PASSWORD_TOO_LONG": "Hasło nie może przekraczać 30 znaków.",
+      "ROLE_INVALID": "Wybrana rola systemowa jest nieprawidłowa lub nierozpoznana."
+    }
+  },
+  "USER": {
+    "NOT_FOUND": "Nie znaleziono określonego konta użytkownika.",
+    "EMAIL_OR_PREFIX_ALREADY_TAKEN": "Żądany adres email lub inicjały/prefiks są już przypisane do innego użytkownika.",
+    "VALIDATION": {
+      "ID_REQUIRED": "Identyfikator użytkownika jest wymagany.",
+      "EMAIL_REQUIRED": "Adres email jest wymagany.",
+      "EMAIL_INVALID": "Podany adres email ma nieprawidłowy format.",
+      "NAME_REQUIRED": "Imię jest wymagane.",
+      "SURNAME_REQUIRED": "Nazwisko jest wymagane.",
+      "PREFIX_REQUIRED": "Prefiks/inicjały użytkownika są wymagane.",
+      "PREFIX_LENGTH_INVALID": "Prefiks użytkownika musi mieć długość od 2 do 5 znaków.",
+      "ROLE_INVALID": "Wybrana rola użytkownika wykracza poza dopuszczalny zakres.",
+      "PASSWORD_TOO_SHORT": "Nowe hasło must mieć co najmniej 6 znaków.",
+      "PASSWORD_TOO_LONG": "Nowe hasło nie może przekraczać 30 znaków."
+    }
+  },
+  "FORWARDER": {
+    "NOT_FOUND": "Nie znaleziono przypisanego spedytora."
+  },
+  "CURRENCY": {
+    "API_NBP_UNAVAILABLE": "API Narodowego Banku Polskiego (NBP) jest obecnie niedostępne. Spróbuj ponownie później.",
+    "TABLE_A_EMPTY": "Tabela kursów walut nie zwróciła żadnych wyników.",
+    "VALIDATION": {
+      "TARGET_CURRENCY_NOT_SUPPORTED": "Wybrana waluta docelowa nie jest obsługiwana przez system.",
+      "ITEM_CURRENCY_NOT_SUPPORTED": "Waluta jednej lub więcej pozycji nie jest obsługiwana."
+    }
+  },
+  "CLIENT": {
+    "TAX_ALREADY_EXISTS": "Klient o podanym numerze identyfikacji podatkowej (NIP) jest już zarejestrowany.",
+    "NOT_FOUND": "Nie znaleziono określonego klienta.",
+    "HAS_INVOICES": "Nie można usunąć tego klienta, ponieważ są do niego przypisane faktury.",
+    "HAS_WORK_CASES": "Nie można usunąć tego klienta, ponieważ posiada aktywne lub historyczne teczki (WorkCases).",
+    "VALIDATION": {
+      "ID_REQUIRED": "Identyfikator klienta jest wymagany.",
+      "TAX_REQUIRED": "Numer identyfikacji podatkowej (NIP) jest wymagany.",
+      "TAX_TOO_LONG": "Numer NIP nie może przekraczać 20 znaków.",
+      "NAME_REQUIRED": "Nazwa klienta jest wymagana.",
+      "NAME_TOO_LONG": "Nazwa klienta nie może przekraczać 50 znaków.",
+      "STREET_REQUIRED": "Ulica jest wymagana.",
+      "STREET_TOO_LONG": "Nazwa ulicy nie może przekraczać 80 znaków.",
+      "ZIP_REQUIRED": "Kod pocztowy jest wymagany.",
+      "ZIP_TOO_LONG": "Kod pocztowy nie może przekraczać 10 znaków.",
+      "COUNTRY_REQUIRED": "Nazwa kraju jest wymagana.",
+      "COUNTRY_TOO_LONG": "Nazwa kraju nie może przekraczać 54 znaków.",
+      "CREDIT_MIN_VALUE": "Limit kredytowy nie może mieć wartości ujemnej.",
+      "CREDIT_EXCEEDED": "Ta operacja powoduje przekroczenie bieżącego limitu kredytowego klienta.",
+      "CURRENCY_REQUIRED": "Domyślny kod waluty jest wymagany.",
+      "CURRENCY_TOO_LONG": "Kod waluty musi mieć dokładnie 3 znaki."
+    }
+  },
+  "COST": {
+    "WORK_CASE_ITEM_NOT_FOUND": "Nie znaleziono wybranej pozycji teczki.",
+    "CONTRACTOR_NOT_FOUND": "Nie znaleziono wybranego podwykonawcy.",
+    "COST_ALREADY_EXISTS": "Ten dokument kosztowy został już zarejestrowany w systemie.",
+    "NOT_FOUND": "Nie znaleziono określonego rekordu kosztu.",
+    "VALIDATION": {
+      "ID_REQUIRED": "Identyfikator kosztu jest wymagany.",
+      "NAME_REQUIRED": "Nazwa/opis kosztu jest wymagany.",
+      "NAME_TOO_LONG": "Nazwa kosztu nie może przekraczać 50 znaków.",
+      "AMOUNT_MUST_BE_POSITIVE": "Kwota kosztu musi być większa od zera.",
+      "AMOUNT_TOO_LARGE": "Wprowadzona kwota przekracza maksymalny limit dopuszczalny w systemie.",
+      "CURRENCY_REQUIRED": "Waluta kosztu jest wymagana.",
+      "CURRENCY_TOO_LONG": "Kod waluty musi mieć dokładnie 3 znaki.",
+      "TAX_MIN_VALUE": "Wartość podatku nie może być ujemna.",
+      "TAX_TOO_LARGE": "Wprowadzona wartość podatku przekracza limit dopuszczalny w systemie.",
+      "ISSUE_DATE_REQUIRED": "Data wystawienia dokumentu jest wymagana.",
+      "ISSUE_DATE_FUTURE": "Data wystawienia dokumentu nie może dotyczyć przyszłości.",
+      "SERVICE_DATE_REQUIRED": "Data wykonania usługi jest wymagana.",
+      "SERVICE_DATE_FUTURE": "Data wykonania usługi nie może dotyczyć przyszłości.",
+      "WORK_CASE_ITEM_ID_REQUIRED": "Powiązanie z pozycją teczki jest wymagane.",
+      "CONTRACTOR_ID_REQUIRED": "Powiązanie z podwykonawcą jest wymagane."
+    }
+  },
+  "WORK_CASE": {
+    "NOT_FOUND": "Nie znaleziono określonej teczki.",
+    "VALIDATION": {
+      "WORK_CASE_ID_REQUIRED": "Identyfikator teczki jest wymagany.",
+      "FORWARDER_ID_REQUIRED": "Identyfikator przypisanego spedytora jest wymagany.",
+      "CLIENT_ID_REQUIRED": "Identyfikator przypisanego klienta jest wymagany.",
+      "BUDGET_EXCEEDED": "Łączna wartość pozycji przekracza zdefiniowany budżet dla tej teczki.",
+      "RELATION": {
+        "REQUIRED": "Trasa/relacja transportowa jest wymagana.",
+        "INVALID": "Określona relacja transportowa jest nieprawidłowa lub niedozwolona."
+      },
+      "AMOUNT": {
+        "REQUIRED": "Całkowita wartość bazowa/kwota jest wymagana.",
+        "MUST_BE_POSITIVE": "Kwota teczki musi być wartością dodatnią, większą od zera."
+      }
+    }
+  },
+  "WORK_CASE_ITEM": {
+    "NOT_FOUND": "Nie znaleziono określonej pozycji operacyjnej.",
+    "CANNOT_DELETE_IS_INVOICED": "Nie można usunąć tej pozycji, ponieważ została już powiązana z fakturą sprzedaży.",
+    "CANNOT_DELETE_WITH_COSTS": "Nie można usunąć tej pozycji, ponieważ są do niej przypisane koszty zakupu.",
+    "VALIDATION": {
+      "WORK_CASE_ID": {
+        "REQUIRED": "Identyfikator teczki nadrzędnej jest wymagany."
+      },
+      "NAME": {
+        "REQUIRED": "Opis/nazwa pozycji jest wymagana.",
+        "TOO_LONG": "Nazwa pozycji nie może przekraczać 150 znaków."
+      },
+      "AMOUNT": {
+        "REQUIRED": "Kwota pozycji jest wymagana.",
+        "MUST_BE_POSITIVE": "Kwota pozycji musi być większa od zera."
+      },
+      "CURRENCY": {
+        "REQUIRED": "Waluta pozycji jest wymagana.",
+        "TOO_LONG": "Kod waluty nie może przekraczać 3 znaków."
+      },
+      "TAX": {
+        "REQUIRED": "Deklaracja stawki podatku jest wymagana.",
+        "INVALID": "Podana konfiguracja podatku jest nieprawidłowa lub ujemna."
+      }
+    }
+  },
+  "INVOICE": {
+    "SOME_ITEMS_NOT_FOUND": "Nie znaleziono jednej lub więcej wybranych pozycji teczki.",
+    "SOME_ITEMS_ALREADY_INVOICED": "Jedna lub więcej wybranych pozycji została już przypisana do innej faktury.",
+    "NOT_FOUND": "Nie znaleziono żądanej faktury.",
+    "VALIDATION": {
+      "ID_REQUIRED": "Identyfikator faktury jest wymagany.",
+      "WORK_CASE_ID_REQUIRED": "Identyfikator powiązanej teczki jest wymagany.",
+      "ISSUE_DATE_REQUIRED": "Data wystawienia faktury jest wymagana.",
+      "ISSUE_DATE_FUTURE": "Data wystawienia faktury nie może dotyczyć przyszłości.",
+      "SERVICE_DATE_REQUIRED": "Data sprzedaży/usługi jest wymagana.",
+      "SERVICE_DATE_FUTURE": "Data sprzedaży nie może dotyczyć przyszłości.",
+      "TAX_RATE_MIN_VALUE": "Stawka podatku nie może być niższa niż 0%.",
+      "TAX_RATE_TOO_LARGE": "Wprowadzona stawka podatku przekracza dopuszczalny limit systemowy.",
+      "CURRENCY_REQUIRED": "Waluta docelowa jest wymagana.",
+      "CURRENCY_TOO_LONG": "Kod waluty docelowej musi mieć dokładnie 3 znaki.",
+      "MANUAL_EXCHANGE_RATE_MUST_BE_POSITIVE": "Ręcznie wprowadzony kurs waluty musi być większy od zera.",
+      "ITEMS_REQUIRED": "Należy wybrać co najmniej jedną pozycję teczki, aby wygenerować fakturę.",
+      "ITEMS_EMPTY": "Lista wybranych pozycji do fakturowania nie może być pusta.",
+      "INVALID_ITEM_ID": "Jeden lub więcej identyfikatorów wybranych pozycji teczki jest nieprawidłowy.",
+      "INVALID_DETACH_ITEM_ID": "Jeden lub więcej identyfikatorów pozycji wybranych do odpięcia jest nieprawidłowy."
+    }
+  },
+  "CONTRACTOR": {
+    "TAX": {
+      "NOT_UNIQUE": "Podwykonawca o podanym numerze identyfikacji podatkowej (NIP) już istnieje."
+    },
+    "NOT_FOUND": "Nie znaleziono określonego podwykonawcy.",
+    "CANNOT_DELETE_WITH_INVOICES": "Nie można usunąć tego podwykonawcy, ponieważ są z nim powiązane faktury kosztowe.",
+    "VALIDATION": {
+      "ID": {
+        "REQUIRED": "Identyfikator podwykonawcy jest wymagany."
+      },
+      "NAME": {
+        "REQUIRED": "Nazwa podwykonawcy jest wymagana.",
+        "TOO_LONG": "Nazwa podwykonawcy nie może przekraczać 150 znaków."
+      },
+      "TAX": {
+        "REQUIRED": "Numer identyfikacji podatkowej (NIP) jest wymagany.",
+        "TOO_LONG": "Numer NIP nie może przekraczać 20 znaków."
+      },
+      "COUNTRY": {
+        "REQUIRED": "Nazwa kraju jest wymagana.",
+        "TOO_LONG": "Nazwa kraju nie może przekraczać 54 znaków."
+      },
+      "CITY": {
+        "REQUIRED": "Nazwa miasta jest wymagana.",
+        "TOO_LONG": "Nazwa miasta nie może przekraczać 100 znaków."
+      },
+      "ZIP": {
+        "REQUIRED": "Kod pocztowy jest wymagany.",
+        "TOO_LONG": "Kod pocztowy nie może przekraczać 10 znaków."
+      },
+      "STREET": {
+        "REQUIRED": "Nazwa ulicy jest wymagana.",
+        "TOO_LONG": "Nazwa ulicy nie może przekraczać 100 znaków."
+      },
+      "HOUSE_NUMBER": {
+        "REQUIRED": "Numer budynku/domu jest wymagany.",
+        "TOO_LONG": "Numer budynku nie może przekraczać 10 znaków."
+      },
+      "APARTMENT_NUMBER": {
+        "TOO_LONG": "Numer lokalu nie może przekraczać 10 znaków."
+      },
+      "EMAIL": {
+        "INVALID_FORMAT": "Podany adres email ma nieprawidłowy format.",
+        "TOO_LONG": "Adres email nie może przekraczać 254 znaków."
+      },
+      "PHONE_NUMBER": {
+        "TOO_LONG": "Numer telefonu nie może przekraczać 20 znaków."
+      }
+    }
+  }
+}

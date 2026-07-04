@@ -1,0 +1,25 @@
+.dashboard-layout {
+  display: flex;
+  height: 90vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 150px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-sidebar-bg);
+  overflow-y: auto;
+}
+
+.content-panel {
+  flex-grow: 1;
+  height: 100%;
+  padding: 2rem;
+  background-color: var(--color-dark-panel);
+  overflow-y: auto;
+  overflow-x: auto;
+}

@@ -26,19 +26,19 @@ namespace Application.Features.Invoices.Commands
         public async Task<AppResult<InvoiceResponse>> Handle(CreateInvoiceCommand request, CancellationToken ct)
         {
             var workCase = await _context.WorkCases.Include(x => x.Client)
-                .FirstOrDefaultAsync(x => x.Id.Value == request.WorkCaseId, ct);
+                .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
             if (workCase == null) return AppResult<InvoiceResponse>.Failure("WORK_CASE.NOT_FOUND");
 
             var itemsToInvoice = await _context.WorkCaseItems.Include(x => x.Invoice)
-                .Where(x => x.WorkCase.Id.Value == request.WorkCaseId && request.WorkCaseItemIds.Contains(x.Id.Value))
+                .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId) && request.WorkCaseItemIds.Contains(x.Id.Value))
                 .ToListAsync(ct);
 
             if (itemsToInvoice.Count != request.WorkCaseItemIds.Count)
-                return AppResult<InvoiceResponse>.Failure("INVOICE.VALIDATION.SOME_ITEMS_NOT_FOUND");
+                return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_NOT_FOUND");
 
             if (itemsToInvoice.Any(x => x.IsInvoiced))
-                return AppResult<InvoiceResponse>.Failure("INVOICE.VALIDATION.SOME_ITEMS_ALREADY_INVOICED");
+                return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_ALREADY_INVOICED");
 
             var conversionItems = itemsToInvoice
                 .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.Currency))
