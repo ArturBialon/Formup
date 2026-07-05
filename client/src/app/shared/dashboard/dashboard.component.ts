@@ -12,8 +12,4 @@ import { AccountService } from '../../_services/account.service';
 })
 export class DashboardComponent {
   public accountService = inject(AccountService);
-
-  logout() {
-    this.accountService.logout();
-  }
 }

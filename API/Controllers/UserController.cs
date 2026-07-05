@@ -12,15 +12,6 @@ namespace API.Controllers
     [Authorize(Roles = "Admin")]
     public class UserController : ApiControllerBase
     {
-        [AllowAnonymous]
-        [HttpPost]
-        [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken ct)
-        {
-            var result = await Mediator.Send(command, ct);
-            return HandleResult(result);
-        }
-
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

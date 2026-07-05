@@ -26,23 +26,23 @@ namespace Application.Features.Clients.Queries
             var query = _context.Clients.AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(request.Tax))
-                query = query.Where(x => x.Tax.Contains(request.Tax.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Tax.Contains(request.Tax.Trim()));
 
 
             if (!string.IsNullOrWhiteSpace(request.Name))
-                query = query.Where(x => x.Name.Contains(request.Name.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Name.Contains(request.Name.Trim()));
 
 
             if (!string.IsNullOrWhiteSpace(request.Street))
-                query = query.Where(x => x.Street.Contains(request.Street.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Street.Contains(request.Street.Trim()));
 
 
             if (!string.IsNullOrWhiteSpace(request.Zip))
-                query = query.Where(x => x.Zip.Contains(request.Zip.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Zip.Contains(request.Zip.Trim()));
 
 
             if (!string.IsNullOrWhiteSpace(request.Coutry))
-                query = query.Where(x => x.Coutry.Contains(request.Coutry.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Coutry.Contains(request.Coutry.Trim()));
 
 
             var totalCount = await query.CountAsync(ct);

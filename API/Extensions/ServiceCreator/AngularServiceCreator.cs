@@ -28,6 +28,8 @@ namespace API.Extensions.ServiceCreator
                 DefaultUrlTemplate = "api/{controller}/{action}/{id?}"
             };
 
+            settings.OperationProcessors.Add(new RemoveEqualityContractProcessor());
+
             var generator = new WebApiOpenApiDocumentGenerator(settings);
             var controllers = GetAllControllersInfoAssembly();
             var document = await generator.GenerateForControllersAsync(controllers);

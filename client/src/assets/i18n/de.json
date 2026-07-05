@@ -13,7 +13,46 @@
         "CONTRACTORS": "Subunternehmer",
         "CLIENTS": "Kunden",
         "MANAGE_USERS": "Benutzer",
-        "MY_ACCOUNT": "Mein Konto"
+        "MY_ACCOUNT": "Mein Konto",
+        "PAGE": "Seite",
+        "SEARCH_PLACEHOLDER": "Suchphrase...",
+        "USERS": {
+            "LIST_TITLE": "Benutzerliste",
+            "EMPTY_LIST": "Keine Benutzer gefunden",
+            "STATUS_ACTIVE": "Aktiv",
+            "STATUS_INACTIVE": "Inaktiv",
+            "EDIT_TITLE": "Benutzer bearbeiten",
+            "FIRST_NAME": "Vorname",
+            "LAST_NAME": "Nachname",
+            "EMAIL": "E-Mail-Adresse",
+            "PREFIX": "Präfix",
+            "SYSTEM_ROLE": "Systemrolle",
+            "NEW_PASSWORD": "Neues Passwort",
+            "PASSWORD_PLACEHOLDER": "Geben Sie ein neues Passwort ein, um es zu ändern",
+            "ALLOW_LOGIN_LABEL": "Anmeldung erlauben",
+            "NO_USER_SELECTED": "Kein Benutzer ausgewählt",
+            "SELECT_USER_PROMPT": "Wählen Sie einen Benutzer aus der linken Liste aus, um die Details zu bearbeiten",
+            "UPDATE_SUCCESS": "Benutzerdaten erfolgreich aktualisiert",
+            "ROLE": "Rolle",
+            "ROLES": {
+                "Admin": "Administrator",
+                "Forwarder": "Spediteur",
+                "Accountant": "Buchhalter",
+                "Verifier": "Prüfer",
+                "Management": "Management"
+            }
+        },
+        "BUTTONS": {
+            "SAVE_CHANGES": "Änderungen speichern",
+            "CANCEL": "Abbrechen",
+            "SEARCH": "Suchen",
+            "RESET": "Zurücksetzen",
+            "EDIT": "Bearbeiten",
+            "DELETE": "Löschen",
+            "CREATE": "Erstellen",
+            "NEXT": ">>",
+            "PREVIOUS": "<<"
+        }
     },
     "LOGIN": {
         "EMAIL_LABEL": "E-Mail-Adresse",
@@ -26,7 +65,12 @@
             "EMAIL_INVALID": "Die angegebene E-Mail-Adresse hat ein ungültiges Format.",
             "TOO_SHORT": "Der eingegebene Wert ist zu kurz.",
             "TOO_LONG": "Der eingegebene Wert ist zu lang.",
-            "TOO_HIGH": "Der eingegebene Wert überschreitet das maximal zulässige Limit."
+            "TOO_HIGH": "Der eingegebene Wert überschreitet das maximal zulässige Limit.",
+            "PATTERN_INVALID": "Der eingegebene Wert entspricht nicht dem erforderlichen Muster.",
+            "CUSTOM_INVALID": "Der eingegebene Wert ist ungültig.",
+            "MUST_MATCH": "Die Werte in diesem Feld müssen übereinstimmen.",
+            "INPUT_MASK_INVALID": "Der eingegebene Wert entspricht nicht dem erforderlichen Format.",
+            "IS_LINK": "Der eingegebene Wert muss ein gültiger Link sein."
         },
         "NOT_FOUND": "Die Ressource konnte nicht gefunden werden."
     },

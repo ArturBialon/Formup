@@ -8,6 +8,5 @@ export interface ErrorMessage {
     custom?: string;
     mustMatch?: string,
     inputMask?: string,
-    isLink?: string,
-    isTrim?: string
+    isLink?: string
   }

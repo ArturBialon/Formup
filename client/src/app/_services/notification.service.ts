@@ -17,6 +17,12 @@ export class NotificationService {
   }
 
   apiError(error: any): void {
+    const errorMessage = error?.message || error?.error || error;
+
+    if (typeof errorMessage === 'string' && errorMessage.includes('An unexpected server error occurred.')) {
+      return; 
+    }
+
     if (error?.errors && Array.isArray(error.errors)) {
       error.errors.forEach((errorCode: string) => {
         this.showDynamicToast(errorCode);
@@ -31,7 +37,6 @@ export class NotificationService {
   private showDynamicToast(errorCode: string): void {
     const translatedDescription = this.translate.instant(errorCode);
     const translatedTitle = this.translate.instant('GENERAL_ERROR');
-    
 
     toast.error(translatedTitle, {
       description: translatedDescription

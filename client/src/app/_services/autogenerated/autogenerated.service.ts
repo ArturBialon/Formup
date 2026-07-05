@@ -401,7 +401,7 @@ export class BuggyService implements IBuggyService {
 }
 
 export interface IClientService {
-    getClients(equalityContract: string | undefined, tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PagedResultOfClientListItemResponse>;
+    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PagedResultOfClientListItemResponse>;
     getClientById(id: string): Observable<ClientDetailResponse>;
     createClient(command: CreateClientCommand | undefined): Observable<ClientResponse>;
     updateClient(command: UpdateClientCommand | undefined): Observable<ClientResponse>;
@@ -421,12 +421,8 @@ export class ClientService implements IClientService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getClients(equalityContract: string | undefined, tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PagedResultOfClientListItemResponse> {
+    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PagedResultOfClientListItemResponse> {
         let url_ = this.baseUrl + "/api/Client/GetClients?";
-        if (equalityContract === null)
-            throw new globalThis.Error("The parameter 'equalityContract' cannot be null.");
-        else if (equalityContract !== undefined)
-            url_ += "EqualityContract=" + encodeURIComponent("" + equalityContract) + "&";
         if (tax !== undefined && tax !== null)
             url_ += "Tax=" + encodeURIComponent("" + tax) + "&";
         if (name !== undefined && name !== null)
@@ -693,7 +689,7 @@ export class ClientService implements IClientService {
 }
 
 export interface ICostService {
-    getCosts(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined): Observable<PagedResultOfCostDetailResponse>;
+    getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined): Observable<PagedResultOfCostDetailResponse>;
     getCostById(id: string): Observable<CostDetailResponse>;
     createCost(command: CreateCostCommand | undefined): Observable<void>;
     updateCost(command: UpdateCostCommand | undefined): Observable<void>;
@@ -713,12 +709,8 @@ export class CostService implements ICostService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getCosts(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined): Observable<PagedResultOfCostDetailResponse> {
+    getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined): Observable<PagedResultOfCostDetailResponse> {
         let url_ = this.baseUrl + "/api/Cost/GetCosts?";
-        if (equalityContract === null)
-            throw new globalThis.Error("The parameter 'equalityContract' cannot be null.");
-        else if (equalityContract !== undefined)
-            url_ += "EqualityContract=" + encodeURIComponent("" + equalityContract) + "&";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -985,7 +977,7 @@ export class CostService implements ICostService {
 }
 
 export interface IInvoiceService {
-    getInvoices(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse>;
+    getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse>;
     getInvoiceById(invoiceId: string): Observable<InvoiceDetailResponse>;
     createInvoice(command: CreateInvoiceCommand | undefined): Observable<InvoiceResponse>;
     updateInvoice(invoiceId: string, command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse>;
@@ -1005,12 +997,8 @@ export class InvoiceService implements IInvoiceService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getInvoices(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse> {
+    getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse> {
         let url_ = this.baseUrl + "/api/Invoice/GetInvoices?";
-        if (equalityContract === null)
-            throw new globalThis.Error("The parameter 'equalityContract' cannot be null.");
-        else if (equalityContract !== undefined)
-            url_ += "EqualityContract=" + encodeURIComponent("" + equalityContract) + "&";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -1307,7 +1295,7 @@ export class InvoiceService implements IInvoiceService {
 }
 
 export interface IServiceContractorService {
-    getServiceContractors(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined): Observable<PagedResultOfServiceContractorResponse>;
+    getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined): Observable<PagedResultOfServiceContractorResponse>;
     getServiceContractorById(id: string): Observable<ServiceContractorResponse>;
     addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<ServiceContractorResponse>;
     editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<void>;
@@ -1327,12 +1315,8 @@ export class ServiceContractorService implements IServiceContractorService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getServiceContractors(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined): Observable<PagedResultOfServiceContractorResponse> {
+    getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined): Observable<PagedResultOfServiceContractorResponse> {
         let url_ = this.baseUrl + "/api/ServiceContractor/GetServiceContractors?";
-        if (equalityContract === null)
-            throw new globalThis.Error("The parameter 'equalityContract' cannot be null.");
-        else if (equalityContract !== undefined)
-            url_ += "EqualityContract=" + encodeURIComponent("" + equalityContract) + "&";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -1610,9 +1594,8 @@ export class ServiceContractorService implements IServiceContractorService {
 }
 
 export interface IUserService {
-    login(command: LoginCommand | undefined): Observable<UserResponse>;
     registerUser(command: RegisterUserCommand | undefined): Observable<void>;
-    getUsers(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, role: UserRole | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfUserListItemResponse>;
+    getUsers(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, role: UserRole | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfUserListItemResponse>;
     getUserById(id: string): Observable<UserDetailResponse>;
     updateUser(userId: string, command: UpdateUserCommand | undefined): Observable<void>;
 }
@@ -1628,57 +1611,6 @@ export class UserService implements IUserService {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
-    }
-
-    login(command: LoginCommand | undefined): Observable<UserResponse> {
-        let url_ = this.baseUrl + "/api/User/Login";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(command);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLogin(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processLogin(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<UserResponse>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<UserResponse>;
-        }));
-    }
-
-    protected processLogin(response: HttpResponseBase): Observable<UserResponse> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UserResponse;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
     }
 
     registerUser(command: RegisterUserCommand | undefined): Observable<void> {
@@ -1733,12 +1665,8 @@ export class UserService implements IUserService {
         return _observableOf(null as any);
     }
 
-    getUsers(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, role: UserRole | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfUserListItemResponse> {
+    getUsers(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, role: UserRole | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfUserListItemResponse> {
         let url_ = this.baseUrl + "/api/User/GetUsers?";
-        if (equalityContract === null)
-            throw new globalThis.Error("The parameter 'equalityContract' cannot be null.");
-        else if (equalityContract !== undefined)
-            url_ += "EqualityContract=" + encodeURIComponent("" + equalityContract) + "&";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -1915,7 +1843,7 @@ export class UserService implements IUserService {
 }
 
 export interface IWorkCaseService {
-    getWorkCases(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
+    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
     getWorkCaseById(id: string): Observable<WorkCaseResponse>;
     addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
     editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
@@ -1939,12 +1867,8 @@ export class WorkCaseService implements IWorkCaseService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getWorkCases(equalityContract: string | undefined, pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined): Observable<PagedResultOfWorkCaseResponse> {
+    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined): Observable<PagedResultOfWorkCaseResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/GetWorkCases?";
-        if (equalityContract === null)
-            throw new globalThis.Error("The parameter 'equalityContract' cannot be null.");
-        else if (equalityContract !== undefined)
-            url_ += "EqualityContract=" + encodeURIComponent("" + equalityContract) + "&";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)

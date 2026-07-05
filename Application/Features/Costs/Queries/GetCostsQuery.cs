@@ -27,7 +27,7 @@ namespace Application.Features.Costs.Queries
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
             {
                 var term = request.SearchTerm.Trim().ToLower();
-                query = query.Where(x => x.Name.Contains(term, StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Name.Contains(term));
             }
 
             if (!string.IsNullOrWhiteSpace(request.Currency))

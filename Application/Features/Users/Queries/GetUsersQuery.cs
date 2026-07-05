@@ -39,10 +39,10 @@ namespace Application.Features.Users.Queries
                 var term = request.SearchTerm.Trim().ToLower();
 
                 query = query.Where(x =>
-                    x.Name.Contains(term, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Surname.Contains(term, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Email.Contains(term, StringComparison.CurrentCultureIgnoreCase) ||
-                    x.Prefix.Contains(term, StringComparison.CurrentCultureIgnoreCase));
+                    x.Name.Contains(term) ||
+                    x.Surname.Contains(term) ||
+                    x.Email.Contains(term) ||
+                    x.Prefix.Contains(term));
             }
 
             var totalCount = await query.CountAsync(ct);
