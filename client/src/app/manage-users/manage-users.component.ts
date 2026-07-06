@@ -134,15 +134,15 @@ export class ManageUsersComponent {
       name: formValues.name,
       surname: formValues.surname,
       prefix: formValues.prefix,
-      role: formValues.role,
+      role: Number(formValues.role),
       isActive: formValues.isActive,
-      password: formValues.password || undefined
+      password: formValues.password || null
     };
 
-    this.apiClient.updateUser(command.userId!, command)
+    this.apiClient.updateUser(command)
       .subscribe({
         next: () => {
-          this.notation.success('USERS.UPDATE_SUCCESS');
+          this.notation.success('GUI.USERS.UPDATE_SUCCESS');
           this.isSaving.set(false);
           this.loadUsers();
         },

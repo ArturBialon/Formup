@@ -980,7 +980,7 @@ export interface IInvoiceService {
     getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse>;
     getInvoiceById(invoiceId: string): Observable<InvoiceDetailResponse>;
     createInvoice(command: CreateInvoiceCommand | undefined): Observable<InvoiceResponse>;
-    updateInvoice(invoiceId: string, command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse>;
+    updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse>;
     deleteInvoice(invoiceId: string): Observable<void>;
 }
 
@@ -1182,12 +1182,8 @@ export class InvoiceService implements IInvoiceService {
         return _observableOf(null as any);
     }
 
-    updateInvoice(invoiceId: string, command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse> {
-        let url_ = this.baseUrl + "/api/Invoice/UpdateInvoice?";
-        if (invoiceId === undefined || invoiceId === null)
-            throw new globalThis.Error("The parameter 'invoiceId' must be defined and cannot be null.");
-        else
-            url_ += "invoiceId=" + encodeURIComponent("" + invoiceId) + "&";
+    updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse> {
+        let url_ = this.baseUrl + "/api/Invoice/UpdateInvoice";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -1597,7 +1593,7 @@ export interface IUserService {
     registerUser(command: RegisterUserCommand | undefined): Observable<void>;
     getUsers(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, role: UserRole | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfUserListItemResponse>;
     getUserById(id: string): Observable<UserDetailResponse>;
-    updateUser(userId: string, command: UpdateUserCommand | undefined): Observable<void>;
+    updateUser(command: UpdateUserCommand | undefined): Observable<void>;
 }
 
 @Injectable({
@@ -1781,12 +1777,8 @@ export class UserService implements IUserService {
         return _observableOf(null as any);
     }
 
-    updateUser(userId: string, command: UpdateUserCommand | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/User/UpdateUser?";
-        if (userId === undefined || userId === null)
-            throw new globalThis.Error("The parameter 'userId' must be defined and cannot be null.");
-        else
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+    updateUser(command: UpdateUserCommand | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/User/UpdateUser";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -1849,8 +1841,8 @@ export interface IWorkCaseService {
     editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
     abandonWorkCase(id: string): Observable<WorkCaseResponse>;
     getItemsForWorkCase(workCaseId: string): Observable<WorkCaseItemResponse[]>;
-    addItemToWorkCase(workCaseId: string, command: AddWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse>;
-    updateItemForWorkCase(workCaseItemId: string, command: UpdateWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse>;
+    addItemToWorkCase(command: AddWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse>;
+    updateItemForWorkCase(command: UpdateWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse>;
     deleteItemForWorkCase(workCaseItemId: string): Observable<Unit>;
 }
 
@@ -2185,12 +2177,8 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    addItemToWorkCase(workCaseId: string, command: AddWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse> {
-        let url_ = this.baseUrl + "/api/WorkCase/AddItemToWorkCase?";
-        if (workCaseId === undefined || workCaseId === null)
-            throw new globalThis.Error("The parameter 'workCaseId' must be defined and cannot be null.");
-        else
-            url_ += "workCaseId=" + encodeURIComponent("" + workCaseId) + "&";
+    addItemToWorkCase(command: AddWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse> {
+        let url_ = this.baseUrl + "/api/WorkCase/AddItemToWorkCase";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -2240,12 +2228,8 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    updateItemForWorkCase(workCaseItemId: string, command: UpdateWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse> {
-        let url_ = this.baseUrl + "/api/WorkCase/UpdateItemForWorkCase?";
-        if (workCaseItemId === undefined || workCaseItemId === null)
-            throw new globalThis.Error("The parameter 'workCaseItemId' must be defined and cannot be null.");
-        else
-            url_ += "workCaseItemId=" + encodeURIComponent("" + workCaseItemId) + "&";
+    updateItemForWorkCase(command: UpdateWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse> {
+        let url_ = this.baseUrl + "/api/WorkCase/UpdateItemForWorkCase";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);

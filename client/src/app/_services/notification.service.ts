@@ -23,6 +23,10 @@ export class NotificationService {
       return; 
     }
 
+    if (typeof errorMessage === 'string' && errorMessage.includes('A server side error occurred.')) {
+      return; 
+    }
+
     if (error?.errors && Array.isArray(error.errors)) {
       error.errors.forEach((errorCode: string) => {
         this.showDynamicToast(errorCode);

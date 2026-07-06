@@ -38,11 +38,8 @@ namespace API.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(InvoiceResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateInvoice([FromQuery] Guid invoiceId, [FromBody] UpdateInvoiceCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateInvoice([FromBody] UpdateInvoiceCommand command, CancellationToken ct)
         {
-            if (invoiceId != command.InvoiceId)
-                return BadRequest("REQUEST.ID_MISSMATCH");
-
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }

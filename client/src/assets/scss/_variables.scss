@@ -1,0 +1,24 @@
+:root {
+  // main colors
+  --color-primary: #0077ff;
+  --color-primary-hover: #bce0ff;
+  --color-secondary: #FFD977;
+  --color-secondary-hover: #d3c8ae;
+  
+  // neutral tones
+  --color-dark: #1a1a1a;
+  --color-dark-panel: rgba(0, 0, 0, 0.90);
+  --color-sidebar-bg: rgba(0, 0, 0, 0.1);
+  --color-dropdown-bg: #2b3035;
+  --color-text-light: #ffffff;
+  --color-text-dark: #212529;
+  --color-text-muted: #dee2e6;
+  
+  // radius and glass effect
+  --radius-main: 12px;
+  --radius-btn: 5px;
+  --radius-login: 10px;
+  --glass-bg: rgba(0, 0, 0, 0.4);
+  --glass-bg-hover: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.3);
+}

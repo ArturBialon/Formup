@@ -71,22 +71,16 @@ namespace API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(WorkCaseItemResponse), StatusCodes.Status201Created)]
-        public async Task<IActionResult> AddItemToWorkCase([FromQuery] Guid workCaseId, [FromBody] AddWorkCaseItemCommand command, CancellationToken ct)
+        public async Task<IActionResult> AddItemToWorkCase([FromBody] AddWorkCaseItemCommand command, CancellationToken ct)
         {
-            if (workCaseId != command.WorkCaseId)
-                return HandleResult(AppResult<Unit>.Failure("REQUEST.ID_MISSMATCH"));
-
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }
 
         [HttpPut]
         [ProducesResponseType(typeof(WorkCaseItemResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateItemForWorkCase([FromQuery] Guid workCaseItemId, [FromBody] UpdateWorkCaseItemCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateItemForWorkCase([FromBody] UpdateWorkCaseItemCommand command, CancellationToken ct)
         {
-            if (workCaseItemId != command.WorkCaseItemId)
-                return HandleResult(AppResult<Unit>.Failure("REQUEST.ID_MISSMATCH"));
-
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }
