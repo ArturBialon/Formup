@@ -1,11 +1,13 @@
 <div class="split-wrapper">
+  
   <div class="panel-side side-left">
     <div class="panel-card">
+      
       <div class="panel-header d-flex justify-content-between align-items-center">
         <div>
           <span>{{ 'GUI.CONTRACTORS.LIST_TITLE' | translate }} ({{ contractors().length }}) / </span>
           @if (isLoading()) {
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
           }
           <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);" type="number"
             min="1" [value]="pageSize()" (change)="onPageSizeChange($event)"
@@ -24,21 +26,24 @@
             <input type="text" [(ngModel)]="filters.name" [placeholder]="'GUI.CONTRACTORS.NAME' | translate"
               class="form-control form-control-sm shadow-none">
           </div>
+
           <div class="filter-field">
             <input type="text" [(ngModel)]="filters.tax" [placeholder]="'GUI.CONTRACTORS.TAX_NIP' | translate"
               class="form-control form-control-sm shadow-none">
           </div>
+
           <div class="filter-field">
             <input type="text" [(ngModel)]="filters.city" [placeholder]="'GUI.CONTRACTORS.CITY' | translate"
               class="form-control form-control-sm shadow-none">
           </div>
+          
           <div class="filter-field">
             <input type="text" [(ngModel)]="filters.country" [placeholder]="'GUI.CONTRACTORS.COUNTRY' | translate"
               class="form-control form-control-sm shadow-none">
           </div>
 
           <div class="field full-width checkbox-field">
-            <label class="switch switch-sm me-2">
+            <label class="switch switch-sm">
               <input type="checkbox" [(ngModel)]="filters.isActive">
               <span class="slider"></span>
             </label>
@@ -55,26 +60,24 @@
 
       <div class="scrollable-content">
         @for (item of contractors(); track item.id) {
-        <button type="button" class="user-item-btn"
-          [class.active]="selectedContractor()?.id === item.id" (click)="selectContractor(item)">
+          <button type="button" class="user-item-btn" [class.active]="selectedContractor()?.id === item.id" (click)="selectContractor(item)">
+            
+            <div class="user-info">
+              <span class="user-name">{{ item.name }}</span>
+              <span class="user-email">NIP: {{ item.tax }} | {{ item.city }}{{ item.country ? ', ' + item.country : '' }}</span>
+            </div>
+            
+            <div class="user-badges">
+              <span class="custom-badge" [class.active-status]="item.isActive" [class.badge-inactive]="!item.isActive">
+                {{ (item.isActive ? 'GUI.USERS.STATUS_ACTIVE' : 'GUI.USERS.STATUS_INACTIVE') | translate }}
+              </span>
+            </div>
 
-          <div class="user-info">
-            <span class="user-name">{{ item.name }}</span>
-            <span class="custom-badge" [class.active-status]="item.isActive" [class.badge-inactive]="!item.isActive">
-              {{ (item.isActive ? 'GUI.USERS.STATUS_ACTIVE' : 'GUI.USERS.STATUS_INACTIVE') | translate }}
-            </span>
-          </div>
-
-          <div class="user-info" style="font-size: 0.85rem;">
-            <span>NIP: {{ item.tax }}</span>
-            <span>{{ item.city }}{{ item.country ? ', ' + item.country : '' }}</span>
-          </div>
-
-        </button>
+          </button>
         } @empty {
-        @if (!isLoading()) {
-        <div class="empty-state">{{ 'GUI.CONTRACTORS.EMPTY_LIST' | translate }}</div>
-        }
+          @if (!isLoading()) {
+            <div class="empty-state">{{ 'GUI.CONTRACTORS.EMPTY_LIST' | translate }}</div>
+          }
         }
       </div>
 
@@ -83,8 +86,7 @@
           (click)="changePage(pageNumber() - 1)">
           {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
         </button>
-        <span class="text-sm fw-medium">{{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}
-        </span>
+        <span class="text-sm fw-medium">{{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}</span>
         <button type="button" class="btn btn-outline-secondary btn-sm"
           [disabled]="contractors().length < pageSize() || isLoading()" (click)="changePage(pageNumber() + 1)">
           {{ 'GUI.BUTTONS.NEXT' | translate }}
@@ -95,7 +97,7 @@
   </div>
 
 
-  <div class="panel-side side-right" style="flex: 1;">
+  <div class="panel-side side-right">
     <div class="panel-card">
       <div class="panel-header">
         <span>
@@ -105,70 +107,52 @@
 
       <div class="scrollable-content p-4">
         @if (selectedContractor() || isCreateMode()) {
-        <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()" class="admin-form">
+          <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()" class="admin-form">
+            
+            <div class="form-grid">
+              
+              <app-input class="field full-width" controlName="name" label="GUI.CONTRACTORS.NAME" [required]="true"></app-input>
+              <app-input class="field full-width" controlName="tax" label="GUI.CONTRACTORS.TAX_NIP" [required]="true"></app-input>
 
-          <div class="form-grid row g-3">
-            <div class="col-md-12">
-              <app-input controlName="name" label="GUI.CONTRACTORS.NAME" [required]="true"></app-input>
-            </div>
-            <div class="col-md-12">
-              <app-input controlName="tax" label="GUI.CONTRACTORS.TAX_NIP" [required]="true"></app-input>
-            </div>
+              <app-input class="field" controlName="country" label="GUI.CONTRACTORS.COUNTRY"></app-input>
+              <app-input class="field" controlName="city" label="GUI.CONTRACTORS.CITY"></app-input>
+              
+              <app-input class="field" controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE"></app-input>
+              <app-input class="field" controlName="street" label="GUI.CONTRACTORS.STREET"></app-input>
+              
+              <app-input class="field" controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER"></app-input>
+              <app-input class="field" controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
 
-            <div class="col-md-6">
-              <app-input controlName="country" label="GUI.CONTRACTORS.COUNTRY"></app-input>
-            </div>
-            <div class="col-md-6">
-              <app-input controlName="city" label="GUI.CONTRACTORS.CITY"></app-input>
-            </div>
-            <div class="col-md-4">
-              <app-input controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE"></app-input>
-            </div>
-            <div class="col-md-8">
-              <app-input controlName="street" label="GUI.CONTRACTORS.STREET"></app-input>
-            </div>
-            <div class="col-md-6">
-              <app-input controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER"></app-input>
-            </div>
-            <div class="col-md-6">
-              <app-input controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
-            </div>
+              <app-input class="field" controlName="email" label="GUI.CONTRACTORS.EMAIL" type="email"></app-input>
+              <app-input class="field" controlName="phoneNumber" label="GUI.CONTRACTORS.PHONE"></app-input>
 
-            <div class="col-md-6">
-              <app-input controlName="email" label="GUI.CONTRACTORS.EMAIL" type="email"></app-input>
-            </div>
-            <div class="col-md-6">
-              <app-input controlName="phoneNumber" label="GUI.CONTRACTORS.PHONE"></app-input>
+              <div class="field full-width checkbox-field">
+                <label class="switch switch-sm">
+                  <input type="checkbox" id="isActiveContractor" formControlName="isActive">
+                  <span class="slider"></span>
+                </label>
+                <label for="isActiveContractor" class="checkbox-label">{{ 'GUI.CONTRACTORS.IS_ACTIVE_LABEL' | translate }}</label>
+              </div>
+
             </div>
 
-            <div class="col-12 checkbox-field mt-3">
-              <label class="switch switch-sm me-2">
-                <input type="checkbox" id="isActiveContractor" formControlName="isActive">
-                <span class="slider"></span>
-              </label>
-              <label for="isActiveContractor" class="checkbox-label">{{ 'GUI.CONTRACTORS.IS_ACTIVE_LABEL' | translate
-                }}</label>
+            <div class="form-actions">
+              <button class="button" type="submit" [disabled]="contractorForm.invalid || isSaving()">
+                @if (isSaving()) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                }
+                {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+              </button>
             </div>
 
-          </div>
-
-          <div class="form-actions mt-4 border-top pt-3">
-            <button class="button btn btn-primary" type="submit" [disabled]="contractorForm.invalid || isSaving()">
-              @if (isSaving()) {
-              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-              }
-              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
-            </button>
-          </div>
-
-        </form>
+          </form>
         } @else {
-        <div class="empty-state h-100 d-flex flex-column align-items-center justify-content-center text-center">
-          <div>
-            <p class="fs-5 mb-1">{{ 'GUI.CONTRACTORS.NO_SELECTED' | translate }}</p>
-            <p class="text-sm opacity-50">{{ 'GUI.CONTRACTORS.SELECT_PROMPT' | translate }}</p>
+          <div class="empty-state">
+            <div>
+              <p class="fs-5 mb-1">{{ 'GUI.CONTRACTORS.NO_SELECTED' | translate }}</p>
+              <p class="text-sm opacity-50">{{ 'GUI.CONTRACTORS.SELECT_PROMPT' | translate }}</p>
+            </div>
           </div>
-        </div>
         }
       </div>
     </div>

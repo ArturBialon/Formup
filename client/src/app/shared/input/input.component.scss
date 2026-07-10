@@ -17,6 +17,13 @@ $transition-speed: 0.15s;
   }
 }
 
+label {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
 .input {
   padding-top: 8px;
   padding-bottom: 8px;
