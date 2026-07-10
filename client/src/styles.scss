@@ -12,14 +12,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: var(--color-primary);
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(8px);
   padding: 4px;
   border-radius: var(--radius-main);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
 }
 
 .dark-text {
   color: var(--color-dark);
+}
+
+.light-text {
+  color: var(--color-text-muted);
 }
 
 .size-input {

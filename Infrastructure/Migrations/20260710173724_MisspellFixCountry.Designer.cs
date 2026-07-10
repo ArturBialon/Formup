@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FormupContext))]
-    [Migration("20260708194851_IsActiveAttribute")]
-    partial class IsActiveAttribute
+    [Migration("20260710173724_MisspellFixCountry")]
+    partial class MisspellFixCountry
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

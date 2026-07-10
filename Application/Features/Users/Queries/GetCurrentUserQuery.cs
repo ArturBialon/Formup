@@ -28,7 +28,7 @@ namespace Application.Features.Users.Queries
             {
                 Id = user.Id,
                 Email = user.Email,
-                UserName = user.Name,
+                UserName = user.FullName,
                 Role = user.Role.ToString(),
                 Token = new ResponseToken { AccessToken = _currentUserService.Token ?? string.Empty }
             };

@@ -43,7 +43,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      ::vdeep {
+
+      // POPRAWIONA SKŁADNIA DEEP:
+      ::ng-deep {
         span, p, label, .tile-label { 
           display: none !important; 
         }

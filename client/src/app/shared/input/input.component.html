@@ -15,7 +15,6 @@
     [attr.disabled]="disabled"
     [autocomplete]="autocomplete || 'off'"
     [class.invalid]="getControl.invalid && (getControl.dirty || getControl.touched)"
-    [value]="formatAsCurrency(getControl.value)"
   />
 
   <div
@@ -23,6 +22,5 @@
     [class.show-invalid]="getControl.invalid && (getControl.dirty || getControl.touched)"
   >
     {{ errorMessageSignal() }}
-
   </div>
 </div>

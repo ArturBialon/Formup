@@ -9,7 +9,7 @@ namespace Application.Features.Clients.Queries
     public record GetClientByIdQuery(Guid Id) : IRequest<IAppResult<ClientDetailResponse>>;
 
     public class GetClientByIdQueryHandler(FormupContext context)
-        : IRequestHandler<GetClientByIdQuery, IAppResult<ClientDetailResponse>>
+    : IRequestHandler<GetClientByIdQuery, IAppResult<ClientDetailResponse>>
     {
         private readonly FormupContext _context = context;
 
@@ -21,13 +21,19 @@ namespace Application.Features.Clients.Queries
                 .Select(c => new
                 {
                     c.Id,
-                    c.Name,
                     c.Tax,
-                    c.Street,
+                    c.Name,
+                    c.Country,
+                    c.City,
                     c.Zip,
-                    c.Coutry,
-                    c.Currency,
+                    c.Street,
+                    c.HouseNumber,
+                    c.ApartmentNumber,
+                    c.Email,
+                    c.PhoneNumber,
                     c.Credit,
+                    c.Currency,
+                    c.IsActive,
                     WorkCases = c.WorkCases
                         .Select(w => new
                         {
@@ -55,11 +61,17 @@ namespace Application.Features.Clients.Queries
                 Id = client.Id.Value,
                 Tax = client.Tax,
                 Name = client.Name,
-                Street = client.Street,
+                Country = client.Country,
+                City = client.City,
                 Zip = client.Zip,
-                Coutry = client.Coutry,
+                Street = client.Street,
+                HouseNumber = client.HouseNumber,
+                ApartmentNumber = client.ApartmentNumber,
+                Email = client.Email,
+                PhoneNumber = client.PhoneNumber,
                 Credit = client.Credit,
                 Currency = client.Currency,
+                IsActive = client.IsActive,
                 WorkCases = client.WorkCases.ToDictionary(wc => wc.Id, wc => wc.Name),
                 Invoices = client.Invoices.ToDictionary(inv => inv.Id, inv => inv.InvoiceNumber)
             };

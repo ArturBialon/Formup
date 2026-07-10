@@ -401,7 +401,7 @@ export class BuggyService implements IBuggyService {
 }
 
 export interface IClientService {
-    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse>;
+    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, country: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse>;
     getClientById(id: string): Observable<ClientDetailResponse>;
     createClient(command: CreateClientCommand | undefined): Observable<ClientResponse>;
     updateClient(command: UpdateClientCommand | undefined): Observable<ClientResponse>;
@@ -421,7 +421,7 @@ export class ClientService implements IClientService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse> {
+    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, country: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse> {
         let url_ = this.baseUrl + "/api/Client/GetClients?";
         if (tax !== undefined && tax !== null)
             url_ += "Tax=" + encodeURIComponent("" + tax) + "&";
@@ -431,8 +431,8 @@ export class ClientService implements IClientService {
             url_ += "Street=" + encodeURIComponent("" + street) + "&";
         if (zip !== undefined && zip !== null)
             url_ += "Zip=" + encodeURIComponent("" + zip) + "&";
-        if (coutry !== undefined && coutry !== null)
-            url_ += "Coutry=" + encodeURIComponent("" + coutry) + "&";
+        if (country !== undefined && country !== null)
+            url_ += "Country=" + encodeURIComponent("" + country) + "&";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -2365,9 +2365,14 @@ export interface ClientListItemResponse {
     id?: string;
     tax?: string;
     name?: string;
-    street?: string;
+    country?: string;
+    city?: string;
     zip?: string;
-    coutry?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
     credit?: number | null;
     currency?: string;
     invoicesCount?: number | null;
@@ -2379,9 +2384,14 @@ export interface ClientDetailResponse {
     id?: string;
     tax?: string;
     name?: string;
-    street?: string;
+    country?: string;
+    city?: string;
     zip?: string;
-    coutry?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
     credit?: number | null;
     currency?: string;
     isActive?:boolean | null;
@@ -2393,9 +2403,14 @@ export interface ClientResponse {
     id?: string;
     tax?: string;
     name?: string;
-    street?: string;
+    country?: string;
+    city?: string;
     zip?: string;
-    coutry?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
     credit?: number | null;
     currency?: string;
     isActive?:boolean | null;
@@ -2405,10 +2420,15 @@ export interface CreateClientCommand {
     tax?: string;
     name?: string;
     street?: string;
+    city?: string;
+    houseNumber?: string;
     zip?: string;
-    coutry?: string;
+    country?: string;
     credit?: number | null;
     isActive?:boolean | null;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
     currency?: string;
 }
 
@@ -2417,11 +2437,16 @@ export interface UpdateClientCommand {
     tax?: string;
     name?: string;
     street?: string;
+    city?: string;
+    houseNumber?: string;
     zip?: string;
-    coutry?: string;
+    country?: string;
     credit?: number | null;
-    currency?: string;
     isActive?:boolean | null;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    currency?: string;
 }
 
 export interface PagedResultOfCostDetailResponse {

@@ -22,6 +22,7 @@
             "EMPTY_LIST": "Keine Benutzer gefunden",
             "STATUS_ACTIVE": "Aktiv",
             "STATUS_INACTIVE": "Inaktiv",
+            "STATUS_ALL": "Alles",
             "EDIT_TITLE": "Benutzer bearbeiten",
             "FIRST_NAME": "Vorname",
             "LAST_NAME": "Nachname",
@@ -65,7 +66,9 @@
             "NO_SELECTED": "Kein Vertragspartner ausgewählt",
             "SELECT_PROMPT": "Wählen Sie einen Vertragspartner aus der Liste links, um ihn zu bearbeiten, oder fügen Sie einen neuen hinzu.",
             "CREATE_SUCCESS": "Vertragspartner wurde erfolgreich hinzugefügt!",
-            "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!"
+            "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
+            "TRADE_LIMIT": "Kreditlimit",
+            "CURRENCY": "Währung"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",

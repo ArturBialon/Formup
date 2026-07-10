@@ -131,6 +131,7 @@
 }
 
 .checkbox-field {
+    display: flex;
     flex-direction: row !important;
     align-items: center;
     gap: 0.75rem !important;

@@ -13,7 +13,7 @@ namespace Application.Features.ServiceContractors.Queries
         string? Tax = null,
         string? City = null,
         string? Country = null,
-        bool? IsActive = true
+        bool? IsActive = null
     ) : IRequest<IAppResult<PagedResult<ServiceContractorResponse>>>;
 
     public class GetServiceContractorsQueryHandler(FormupContext context)

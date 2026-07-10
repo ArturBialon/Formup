@@ -35,11 +35,24 @@
           </div>
 
           <div class="field full-width checkbox-field">
-            <label class="switch switch-sm">
-              <input type="checkbox" [(ngModel)]="filters.isActive">
+            <div class="triple-switch switch-sm" 
+                [class.status-all]="filters.isActive === undefined"
+                [class.status-active]="filters.isActive === true"
+                [class.status-inactive]="filters.isActive === false"
+                (click)="toggleTripleState()">
+              
               <span class="slider"></span>
+            </div>
+            
+            <label class="checkbox-label">
+              @if (filters.isActive === undefined) {
+                {{ 'GUI.USERS.STATUS_ALL' | translate }}
+              } @else if (filters.isActive === true) {
+                {{ 'GUI.USERS.STATUS_ACTIVE' | translate }}
+              } @else {
+                {{ 'GUI.USERS.STATUS_INACTIVE' | translate }}
+              }
             </label>
-            <label class="checkbox-label">{{ 'GUI.USERS.STATUS_ACTIVE' | translate }}</label>
           </div>
 
           <div class="filter-actions">
@@ -73,14 +86,14 @@
         }
       </div>
 
-      <div class="panel-footer border-top p-2 d-flex justify-content-between align-items-center">
-        <button type="button" class="btn btn-outline-secondary btn-sm" [disabled]="pageNumber() <= 1 || isLoading()"
+      <div class="panel-footer">
+        <button type="button" class="btn btn-sm" [disabled]="pageNumber() <= 1 || isLoading()"
           (click)="changePage(pageNumber() - 1)">
           {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
         </button>
         <span class="text-sm fw-medium">{{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}
         </span>
-        <button type="button" class="btn btn-outline-secondary btn-sm"
+        <button type="button" class="btn btn-sm"
           [disabled]="users().length < pageSize() || isLoading()" (click)="changePage(pageNumber() + 1)">
           {{ 'GUI.BUTTONS.NEXT' | translate }}
         </button>
@@ -108,12 +121,12 @@
             <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX"></app-input>
 
             <div class="field">
-              <label class="dark-text">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</label>
-              <select formControlName="role" class="input form-control shadow-none mt-1" [ariaSelected]="roles">
+              <label class="light-text">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</label>
+              <select formControlName="role" class="input form-control shadow-none mt-1">
                 @for (role of roles; track role.value) {
-                <option [value]="role.value">
-                  {{ 'GUI.USERS.ROLES.' + role.name | translate }}
-                </option>
+                  <option [ngValue]="role.value">
+                    {{ 'GUI.USERS.ROLES.' + role.name | translate }}
+                  </option>
                 }
               </select>
             </div>

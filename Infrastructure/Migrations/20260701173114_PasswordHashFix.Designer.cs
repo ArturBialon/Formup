@@ -31,7 +31,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Coutry")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(54)
                         .IsUnicode(false)

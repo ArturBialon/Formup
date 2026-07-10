@@ -14,9 +14,14 @@ namespace Domain.Models
 
         public required string Tax { get; set; }
         public required string Name { get; set; }
-        public required string Street { get; set; }
+        public required string Country { get; set; }
+        public required string City { get; set; }
         public required string Zip { get; set; }
-        public required string Coutry { get; set; }
+        public required string Street { get; set; }
+        public required string HouseNumber { get; set; }
+        public string ApartmentNumber { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public decimal Credit { get; set; }
         public string Currency { get; set; } = "PLN";
         public bool IsActive { get; set; } = false;

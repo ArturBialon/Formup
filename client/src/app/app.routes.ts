@@ -5,6 +5,7 @@ import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { adminGuard } from './_guards/admin.guard';
 import { ServiceContractorsComponent } from './service-contractors/service-contractors.component';
+import { ClientsComponent } from './clients/clients.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,7 +23,12 @@ export const routes: Routes = [
       { 
         path: 'contractors', 
         component: ServiceContractorsComponent,
-        canActivate: [adminGuard]
+        canActivate: [authGuard]
+      },
+      { 
+        path: 'clients', 
+        component: ClientsComponent,
+        canActivate: [authGuard]
       },
     ],
     canActivate: [authGuard]

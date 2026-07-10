@@ -57,7 +57,7 @@ export class ManageUsersComponent {
   public filters = {
     searchTerm: '',
     role: undefined as UserRole | undefined,
-    isActive: false,
+    isActive: undefined as boolean | undefined,
   };
 
   public userForm: FormGroup;
@@ -81,18 +81,12 @@ export class ManageUsersComponent {
     this.isLoading.set(true);
 
     const search = this.searchTerm.trim() || undefined;
-    const role =
-      this.filters.role !== undefined ? this.filters.role : undefined;
-    const isActive = this.filters.isActive ? true : undefined;
+    const role = this.filters.role !== undefined ? this.filters.role : undefined;
+    const isActive = (this.filters.isActive === true || this.filters.isActive === false) 
+      ? this.filters.isActive 
+      : undefined;
 
-    this.apiClient
-      .getUsers(
-        this.pageNumber(),
-        this.pageSize(),
-        search,
-        role as any,
-        isActive
-      )
+    this.apiClient.getUsers(this.pageNumber() ,this.pageSize() ,search, role as any, isActive)
       .pipe(
         tap((res) => {
           this.users.set(res.items || []);
@@ -130,6 +124,9 @@ export class ManageUsersComponent {
     this.selectedUser.set(user);
     this.userForm.get('password')?.setValidators([]);
     this.userForm.get('password')?.updateValueAndValidity();
+    
+    const matchedRole = this.roles.find(r => r.name.toLowerCase() === user.role?.toLowerCase());
+    const roleValue = matchedRole ? matchedRole.value : user.role;
 
     this.userForm.patchValue({
       id: user.id,
@@ -137,7 +134,7 @@ export class ManageUsersComponent {
       name: user.name,
       surname: user.surname,
       prefix: user.prefix,
-      role: user.role,
+      role: roleValue,
       isActive: user.isActive,
       password: '',
     });
@@ -168,6 +165,16 @@ export class ManageUsersComponent {
 
     this.userForm.get('password')?.setValidators([Validators.required]);
     this.userForm.get('password')?.updateValueAndValidity();
+  }
+
+  public toggleTripleState() {
+    if (this.filters.isActive === undefined) {
+      this.filters.isActive = true;
+    } else if (this.filters.isActive === true) {
+      this.filters.isActive = false;
+    } else {
+      this.filters.isActive = undefined;
+    }
   }
 
   public onSubmit() {

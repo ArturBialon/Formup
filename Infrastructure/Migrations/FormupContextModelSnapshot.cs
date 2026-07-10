@@ -28,11 +28,22 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Coutry")
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(54)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(54)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(54)");
 
                     b.Property<decimal>("Credit")
                         .HasColumnType("decimal(12, 2)");
@@ -43,20 +54,36 @@ namespace Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(3)");
 
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(85)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(85)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("Tax")
                         .IsRequired()

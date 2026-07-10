@@ -23,7 +23,7 @@ namespace Application.Features.Clients.Validators
                 .NotEmpty().WithErrorCode("CLIENT.VALIDATION.ZIP_REQUIRED")
                 .MaximumLength(10).WithErrorCode("CLIENT.VALIDATION.ZIP_TOO_LONG");
 
-            RuleFor(x => x.Coutry)
+            RuleFor(x => x.Country)
                 .NotEmpty().WithErrorCode("CLIENT.VALIDATION.COUNTRY_REQUIRED")
                 .MaximumLength(54).WithErrorCode("CLIENT.VALIDATION.COUNTRY_TOO_LONG");
 
