@@ -17,7 +17,8 @@ namespace Application.Features.ServiceContractors.Commands
         string HouseNumber,
         string? ApartmentNumber,
         string? Email,
-        string? PhoneNumber
+        string? PhoneNumber,
+        bool IsActive
     ) : IRequest<AppResult<ServiceContractorResponse>>;
 
     public class UpdateServiceContractorHandler(FormupContext context)
@@ -52,6 +53,7 @@ namespace Application.Features.ServiceContractors.Commands
             contractor.ApartmentNumber = request.ApartmentNumber;
             contractor.Email = request.Email;
             contractor.PhoneNumber = request.PhoneNumber;
+            contractor.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(ct);
 

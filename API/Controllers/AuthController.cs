@@ -18,7 +18,6 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

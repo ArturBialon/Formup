@@ -17,7 +17,8 @@ namespace Application.Features.ServiceContractors.Commands
         string HouseNumber,
         string? ApartmentNumber,
         string? Email,
-        string? PhoneNumber
+        string? PhoneNumber,
+        bool IsActive
     ) : IRequest<AppResult<ServiceContractorResponse>>;
 
     public class CreateServiceContractorHandler(FormupContext context)
@@ -44,7 +45,8 @@ namespace Application.Features.ServiceContractors.Commands
                 HouseNumber = request.HouseNumber,
                 ApartmentNumber = request.ApartmentNumber,
                 Email = request.Email,
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                IsActive = request.IsActive
             };
 
             var created = _context.ServiceContractors.Add(contractor);
@@ -62,7 +64,8 @@ namespace Application.Features.ServiceContractors.Commands
                 HouseNumber = created.Entity.HouseNumber,
                 ApartmentNumber = created.Entity.ApartmentNumber,
                 Email = created.Entity.Email,
-                PhoneNumber = created.Entity.PhoneNumber
+                PhoneNumber = created.Entity.PhoneNumber,
+                IsActive = created.Entity.IsActive
             };
 
             return AppResult<ServiceContractorResponse>.Success(response);

@@ -104,15 +104,4 @@ export class InputComponent implements OnInit, OnDestroy {
     this.translate.currentLang();
     return this.placeholder ? this.translate.instant(this.placeholder) : '';
   });
-
-  formatAsCurrency(value: number): string {
-    if (!value || isNaN(value)) {
-      return value?.toString();
-    }
-    const currentLang = this.translate.currentLang() || 'pl-PL';
-    return value.toLocaleString(currentLang, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
 }

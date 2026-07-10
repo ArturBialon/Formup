@@ -56,6 +56,9 @@ namespace Infrastructure.Configurations
                 .IsRequired(false)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+
+            entity.Property(e => e.IsActive)
+                .IsRequired();
         }
     }
 }

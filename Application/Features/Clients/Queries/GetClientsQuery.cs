@@ -11,13 +11,14 @@ namespace Application.Features.Clients.Queries
         string? Name = null,
         string? Street = null,
         string? Zip = null,
-        string? Coutry = null,
+        string? Country = null,
         int PageNumber = 1,
-        int PageSize = 50
+        int PageSize = 50,
+        bool? IsActive = null
     ) : IRequest<IAppResult<PagedResult<ClientListItemResponse>>>;
 
     public class GetClientsQueryHandler(FormupContext context)
-        : IRequestHandler<GetClientsQuery, IAppResult<PagedResult<ClientListItemResponse>>>
+    : IRequestHandler<GetClientsQuery, IAppResult<PagedResult<ClientListItemResponse>>>
     {
         private readonly FormupContext _context = context;
 
@@ -25,24 +26,23 @@ namespace Application.Features.Clients.Queries
         {
             var query = _context.Clients.AsNoTracking().AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(request.Tax))
-                query = query.Where(x => x.Tax.Contains(request.Tax.Trim(), StringComparison.CurrentCultureIgnoreCase));
+            if (request.IsActive != null)
+                query = query.Where(x => x.IsActive == request.IsActive);
 
+            if (!string.IsNullOrWhiteSpace(request.Tax))
+                query = query.Where(x => x.Tax.Contains(request.Tax.Trim()));
 
             if (!string.IsNullOrWhiteSpace(request.Name))
-                query = query.Where(x => x.Name.Contains(request.Name.Trim(), StringComparison.CurrentCultureIgnoreCase));
-
+                query = query.Where(x => x.Name.Contains(request.Name.Trim()));
 
             if (!string.IsNullOrWhiteSpace(request.Street))
-                query = query.Where(x => x.Street.Contains(request.Street.Trim(), StringComparison.CurrentCultureIgnoreCase));
-
+                query = query.Where(x => x.Street.Contains(request.Street.Trim()));
 
             if (!string.IsNullOrWhiteSpace(request.Zip))
-                query = query.Where(x => x.Zip.Contains(request.Zip.Trim(), StringComparison.CurrentCultureIgnoreCase));
+                query = query.Where(x => x.Zip.Contains(request.Zip.Trim()));
 
-
-            if (!string.IsNullOrWhiteSpace(request.Coutry))
-                query = query.Where(x => x.Coutry.Contains(request.Coutry.Trim(), StringComparison.CurrentCultureIgnoreCase));
+            if (!string.IsNullOrWhiteSpace(request.Country))
+                query = query.Where(x => x.Country.Contains(request.Country.Trim()));
 
 
             var totalCount = await query.CountAsync(ct);
@@ -55,13 +55,19 @@ namespace Application.Features.Clients.Queries
                     Id = client.Id.Value,
                     Tax = client.Tax,
                     Name = client.Name,
-                    Street = client.Street,
+                    Country = client.Country,
+                    City = client.City,
                     Zip = client.Zip,
-                    Coutry = client.Coutry,
+                    Street = client.Street,
+                    HouseNumber = client.HouseNumber,
+                    ApartmentNumber = client.ApartmentNumber,
+                    Email = client.Email,
+                    PhoneNumber = client.PhoneNumber,
                     Credit = client.Credit,
                     Currency = client.Currency,
                     InvoicesCount = client.Invoices.Count(),
-                    WorkCasesCount = client.WorkCases.Count()
+                    WorkCasesCount = client.WorkCases.Count(),
+                    IsActive = client.IsActive
                 })
                 .ToListAsync(ct);
 

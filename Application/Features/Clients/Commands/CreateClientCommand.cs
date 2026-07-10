@@ -13,14 +13,20 @@ namespace Application.Features.Clients.Commands
         string Tax,
         string Name,
         string Street,
+        string City,
+        string HouseNumber,
         string Zip,
-        string Coutry,
+        string Country,
         decimal Credit,
+        bool IsActive,
+        string? ApartmentNumber = null,
+        string? Email = null,
+        string? PhoneNumber = null,
         string Currency = "PLN"
     ) : IRequest<IAppResult<ClientResponse>>;
 
     public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService)
-        : IRequestHandler<CreateClientCommand, IAppResult<ClientResponse>>
+    : IRequestHandler<CreateClientCommand, IAppResult<ClientResponse>>
     {
         private readonly FormupContext _context = context;
         private readonly ICurrentUserService _currentUserService = currentUserService;
@@ -44,11 +50,17 @@ namespace Application.Features.Clients.Commands
             {
                 Tax = request.Tax.Trim(),
                 Name = request.Name.Trim(),
-                Street = request.Street.Trim(),
+                Country = request.Country.Trim(),
+                City = request.City.Trim(),
                 Zip = request.Zip.Trim(),
-                Coutry = request.Coutry.Trim(),
+                Street = request.Street.Trim(),
+                HouseNumber = request.HouseNumber.Trim(),
+                ApartmentNumber = request.ApartmentNumber?.Trim(),
+                Email = request.Email?.Trim(),
+                PhoneNumber = request.PhoneNumber?.Trim(),
                 Credit = credit,
-                Currency = request.Currency.Trim()
+                Currency = request.Currency.Trim(),
+                IsActive = request.IsActive,
             };
 
             _context.Clients.Add(client);
@@ -59,11 +71,17 @@ namespace Application.Features.Clients.Commands
                 Id = client.Id.Value,
                 Tax = client.Tax,
                 Name = client.Name,
-                Street = client.Street,
+                Country = client.Country,
+                City = client.City,
                 Zip = client.Zip,
-                Coutry = client.Coutry,
+                Street = client.Street,
+                HouseNumber = client.HouseNumber,
+                ApartmentNumber = client.ApartmentNumber,
+                Email = client.Email,
+                PhoneNumber = client.PhoneNumber,
                 Credit = client.Credit,
-                Currency = client.Currency
+                Currency = client.Currency,
+                IsActive = client.IsActive
             };
 
             return AppResult<ClientResponse>.Success(responseDto);

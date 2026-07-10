@@ -12,7 +12,8 @@ namespace Application.Features.ServiceContractors.Queries
         string? Name = null,
         string? Tax = null,
         string? City = null,
-        string? Country = null
+        string? Country = null,
+        bool? IsActive = null
     ) : IRequest<IAppResult<PagedResult<ServiceContractorResponse>>>;
 
     public class GetServiceContractorsQueryHandler(FormupContext context)
@@ -23,6 +24,9 @@ namespace Application.Features.ServiceContractors.Queries
         public async Task<IAppResult<PagedResult<ServiceContractorResponse>>> Handle(GetServiceContractorsQuery request, CancellationToken ct)
         {
             var query = _context.ServiceContractors.AsNoTracking();
+
+            if (request.IsActive != null)
+                query = query.Where(x => x.IsActive == request.IsActive);
 
             if (!string.IsNullOrWhiteSpace(request.Name))
                 query = query.Where(x => x.Name.Contains(request.Name));
@@ -55,6 +59,7 @@ namespace Application.Features.ServiceContractors.Queries
                     ApartmentNumber = x.ApartmentNumber,
                     Email = x.Email,
                     PhoneNumber = x.PhoneNumber,
+                    IsActive = x.IsActive
                 })
                 .ToListAsync(ct);
 

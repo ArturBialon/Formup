@@ -4,8 +4,11 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Serilog;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 if (args.Contains("--generate-angular"))
 {
@@ -70,5 +73,5 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Migration error.");
     }
 }
-
+await API.Extensions.ServiceCreator.AngularServiceCreator.ConfigureSwaggerAsync();
 app.Run();

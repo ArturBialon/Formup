@@ -1,0 +1,190 @@
+<div class="split-wrapper">
+  
+  <div class="panel-side side-left">
+    <div class="panel-card">
+      
+      <div class="panel-header d-flex justify-content-between align-items-center">
+        <div>
+          <span>{{ 'GUI.CONTRACTORS.LIST_TITLE' | translate }} ({{ clients().length }}) / </span>
+          @if (isLoading()) {
+            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          }
+          <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);" type="number"
+            min="1" [value]="pageSize()" (change)="onPageSizeChange($event)"
+            class="form-control form-control-sm shadow-none page-size-input d-inline-block ms-1"
+            [placeholder]="'GUI.USERS.PAGE_SIZE_PLACEHOLDER' | translate">
+        </div>
+
+        <button type="button" class="btn btn-success btn-sm" (click)="initCreateClient()">
+          + {{ 'GUI.CONTRACTORS.ADD_NEW_BUTTON' | translate }}
+        </button>
+      </div>
+
+      <div class="filters-container p-3 border-bottom">
+        <div class="filters-grid">
+          <div class="filter-field">
+            <input type="text" [(ngModel)]="filters.name" [placeholder]="'GUI.CONTRACTORS.NAME' | translate"
+              class="form-control form-control-sm shadow-none">
+          </div>
+
+          <div class="filter-field">
+            <input type="text" [(ngModel)]="filters.tax" [placeholder]="'GUI.CONTRACTORS.TAX_NIP' | translate"
+              class="form-control form-control-sm shadow-none">
+          </div>
+
+          <div class="filter-field">
+            <input type="text" [(ngModel)]="filters.city" [placeholder]="'GUI.CONTRACTORS.CITY' | translate"
+              class="form-control form-control-sm shadow-none">
+          </div>
+          
+          <div class="filter-field">
+            <input type="text" [(ngModel)]="filters.country" [placeholder]="'GUI.CONTRACTORS.COUNTRY' | translate"
+              class="form-control form-control-sm shadow-none">
+          </div>
+
+          <div class="field full-width checkbox-field">
+            <div class="triple-switch switch-sm" 
+                [class.status-all]="filters.isActive === undefined"
+                [class.status-active]="filters.isActive === true"
+                [class.status-inactive]="filters.isActive === false"
+                (click)="toggleTripleState()">
+              <span class="slider"></span>
+            </div>
+            
+            <label class="checkbox-label">
+              @if (filters.isActive === undefined) {
+                {{ 'GUI.USERS.STATUS_ALL' | translate }}
+              } @else if (filters.isActive === true) {
+                {{ 'GUI.USERS.STATUS_ACTIVE' | translate }}
+              } @else {
+                {{ 'GUI.USERS.STATUS_INACTIVE' | translate }}
+              }
+            </label>
+          </div>
+
+          <div class="filter-actions">
+            <button type="button" class="btn btn-primary btn-sm w-100" (click)="onSearch()">
+              {{ 'GUI.BUTTONS.SEARCH' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrollable-content">
+        @for (item of clients(); track item.id) {
+          <button type="button" class="user-item-btn" [class.active]="selectedClient()?.id === item.id" (click)="selectClient(item)">
+            
+            <div class="user-info">
+              <span class="user-name">{{ item.name }}</span>
+              <span class="user-email">NIP: {{ item.tax }} | {{ item.street }} {{ item.zip }}{{ item.country ? ', ' + item.country : '' }}</span>
+            </div>
+            <div class="user-badges">
+              <span class="custom-badge" [class.active-status]="item.isActive" [class.badge-inactive]="!item.isActive">
+                {{ (item.isActive ? 'GUI.USERS.STATUS_ACTIVE' : 'GUI.USERS.STATUS_INACTIVE') | translate }}
+              </span>
+            </div>
+
+          </button>
+        } @empty {
+          @if (!isLoading()) {
+            <div class="empty-state">{{ 'GUI.CONTRACTORS.EMPTY_LIST' | translate }}</div>
+          }
+        }
+      </div>
+
+      <div class="panel-footer">
+        <button type="button" class="btn btn-sm" [disabled]="pageNumber() <= 1 || isLoading()"
+          (click)="changePage(pageNumber() - 1)">
+          {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
+        </button>
+        <span class="text-sm fw-medium">{{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}</span>
+        <button type="button" class="btn btn-sm"
+          [disabled]="clients().length < pageSize() || isLoading()" (click)="changePage(pageNumber() + 1)">
+          {{ 'GUI.BUTTONS.NEXT' | translate }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel-side side-right">
+    <div class="panel-card">
+      <div class="panel-header">
+        <span>
+          {{ (isCreateMode() ? 'GUI.CONTRACTORS.CREATE_TITLE' : 'GUI.CONTRACTORS.EDIT_TITLE') | translate }}
+        </span>
+      </div>
+
+      <div class="scrollable-content p-4">
+        @if (selectedClient() || isCreateMode()) {
+          <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="admin-form">
+            
+            <div class="form-grid">
+              
+              <app-input class="field full-width" controlName="name" label="GUI.CONTRACTORS.NAME" [required]="true"></app-input>
+              <app-input class="field full-width" controlName="tax" label="GUI.CONTRACTORS.TAX_NIP" [required]="true"></app-input>
+
+              <app-input class="field" controlName="country" label="GUI.CONTRACTORS.COUNTRY" [required]="true"></app-input>
+              <app-input class="field" controlName="city" label="GUI.CONTRACTORS.CITY" [required]="true"></app-input>
+              
+              <div class="form-grid">
+                <app-input class="field" controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE" [required]="true"></app-input>
+                <app-input class="field" controlName="street" label="GUI.CONTRACTORS.STREET" [required]="true"></app-input>
+              </div>
+              <div class="form-grid">
+                <app-input class="field" controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER" [required]="true"></app-input>
+                <app-input class="field" controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
+              </div>
+
+              <app-input class="field" controlName="email" label="GUI.CONTRACTORS.EMAIL" type="email"></app-input>
+              <app-input class="field" controlName="phoneNumber" label="GUI.CONTRACTORS.PHONE"></app-input>
+
+              <app-input class="field" 
+                         controlName="credit" 
+                         label="GUI.CONTRACTORS.TRADE_LIMIT" 
+                         type="number" 
+                         [required]="true">
+              </app-input>
+
+              <div class="field">
+                <label class="light-text">{{ 'GUI.CONTRACTORS.CURRENCY' | translate }}</label>
+                <select class="input form-control shadow-none" formControlName="currency">
+                  <option value="PLN">PLN</option>
+                  <option value="EUR">EUR</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+
+              <div class="field full-width checkbox-field mt-2">
+                <label class="switch switch-sm">
+                  <input type="checkbox" id="isActiveClient" formControlName="isActive">
+                  <span class="slider"></span>
+                </label>
+                <label for="isActiveClient" class="checkbox-label">{{ 'GUI.CONTRACTORS.IS_ACTIVE_LABEL' | translate }}</label>
+              </div>
+
+            </div>
+
+            <div class="form-actions mt-4">
+              <button class="button btn btn-primary" type="submit" [disabled]="clientForm.invalid || isSaving()">
+                @if (isSaving()) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                }
+                {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+              </button>
+            </div>
+
+          </form>
+        } @else {
+          <div class="empty-state">
+            <div>
+              <p class="fs-5 mb-1">{{ 'GUI.CONTRACTORS.NO_SELECTED' | translate }}</p>
+              <p class="text-sm opacity-50">{{ 'GUI.CONTRACTORS.SELECT_PROMPT' | translate }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+</div>

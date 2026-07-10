@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Access;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace API.Extensions
@@ -18,12 +19,10 @@ namespace API.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]!)),
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        RoleClaimType = "role"
+                        RoleClaimType = ClaimTypes.Role
                     };
                 });
 
-
-            services.AddAuthentication();
             services.AddAuthorization();
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();

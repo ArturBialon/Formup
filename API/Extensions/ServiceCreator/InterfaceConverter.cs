@@ -35,12 +35,19 @@
         {
             string newLine;
 
-            if (line.Contains("export interface") && !line.Contains("Service"))
+            if (line.Contains("export interface"))
             {
-                isDataTransferObject = true;
+                if (line.Contains("Service {") || line.Contains("ServiceClient") || line.Contains("IService"))
+                {
+                    isDataTransferObject = false;
+                }
+                else
+                {
+                    isDataTransferObject = true;
+                }
+
                 newLine = line;
                 newLines.Add(newLine);
-
                 return;
             }
 

@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { authGuard } from './_guards/auth.guard';
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
+import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { adminGuard } from './_guards/admin.guard';
+import { ServiceContractorsComponent } from './service-contractors/service-contractors.component';
+import { ClientsComponent } from './clients/clients.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -10,6 +14,23 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    children: [
+      { 
+        path: 'manage-users', 
+        component: ManageUsersComponent,
+        canActivate: [adminGuard]
+      },
+      { 
+        path: 'contractors', 
+        component: ServiceContractorsComponent,
+        canActivate: [authGuard]
+      },
+      { 
+        path: 'clients', 
+        component: ClientsComponent,
+        canActivate: [authGuard]
+      },
+    ],
     canActivate: [authGuard]
   },
 

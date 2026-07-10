@@ -13,11 +13,18 @@ namespace Application.Features.Clients.Commands
         string Tax,
         string Name,
         string Street,
+        string City,
+        string HouseNumber,
         string Zip,
-        string Coutry,
+        string Country,
         decimal Credit,
-        string Currency
+        bool IsActive,
+        string? ApartmentNumber = null,
+        string? Email = null,
+        string? PhoneNumber = null,
+        string Currency = "PLN"
     ) : IRequest<IAppResult<ClientResponse>>;
+
     public class UpdateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService) : IRequestHandler<UpdateClientCommand, IAppResult<ClientResponse>>
     {
         private readonly FormupContext _context = context;
@@ -29,7 +36,7 @@ namespace Application.Features.Clients.Commands
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);
 
             var taxExists = await _context.Clients
-                .AnyAsync(x => x.Tax == request.Tax.Trim() && x.Id.Value != request.Id, ct);
+                .AnyAsync(x => x.Tax == request.Tax.Trim() && !x.Id.Equals(request.Id), ct);
 
             if (client == null)
                 return AppResult<ClientResponse>.Failure("CLIENT.NOT_FOUND");
@@ -47,10 +54,16 @@ namespace Application.Features.Clients.Commands
             client.Tax = request.Tax.Trim();
             client.Name = request.Name.Trim();
             client.Street = request.Street.Trim();
+            client.City = request.City.Trim();
             client.Zip = request.Zip.Trim();
-            client.Coutry = request.Coutry.Trim();
+            client.Country = request.Country.Trim();
+            client.HouseNumber = request.HouseNumber.Trim();
+            client.ApartmentNumber = request.ApartmentNumber?.Trim();
+            client.Email = request.Email?.Trim();
+            client.PhoneNumber = request.PhoneNumber?.Trim();
             client.Credit = credit;
             client.Currency = request.Currency.Trim();
+            client.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(ct);
 
@@ -59,15 +72,20 @@ namespace Application.Features.Clients.Commands
                 Id = client.Id.Value,
                 Tax = client.Tax,
                 Name = client.Name,
-                Street = client.Street,
+                Country = client.Country,
+                City = client.City,
                 Zip = client.Zip,
-                Coutry = client.Coutry,
+                Street = client.Street,
+                HouseNumber = client.HouseNumber,
+                ApartmentNumber = client.ApartmentNumber,
+                Email = client.Email,
+                PhoneNumber = client.PhoneNumber,
                 Credit = client.Credit,
-                Currency = client.Currency
+                Currency = client.Currency,
+                IsActive = client.IsActive,
             };
 
             return AppResult<ClientResponse>.Success(responseDto);
         }
     }
-
 }

@@ -1,110 +1,10 @@
-// ==========================================
-// CENTRALIZED VARIABLES FOR COLORS, RADII, AND GLASS EFFECTS
-// ==========================================
-:root {
-  // main colors
-  --color-primary: #0077ff;
-  --color-primary-hover: #bce0ff;
-  --color-secondary: #FFD977;
-  --color-secondary-hover: #caac5e;
-  
-  // neutral tones
-  --color-dark: #1a1a1a;
-  --color-dark-panel: rgba(0, 0, 0, 0.90);
-  --color-sidebar-bg: rgba(0, 0, 0, 0.1);
-  --color-dropdown-bg: #2b3035;
-  --color-text-light: #ffffff;
-  --color-text-dark: #212529;
-  --color-text-muted: #dee2e6;
-  
-  // radius and glass effect
-  --radius-main: 12px;
-  --radius-btn: 5px;
-  --radius-login: 10px;
-  --glass-bg: rgba(0, 0, 0, 0.4);
-  --glass-bg-hover: rgba(255, 255, 255, 0.15);
-  --glass-border: rgba(255, 255, 255, 0.3);
-}
+@use 'assets/scss/variables';
+@use 'assets/scss/base';
+@use 'assets/scss/buttons';
+@use 'assets/scss/panels';
+@use 'assets/scss/switch';
+@use 'assets/scss/badges';
 
-// ==========================================
-// GLOBAL STYLING
-// ==========================================
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  scroll-behavior: smooth;
-  overflow: hidden;
-}
-
-html {
-  background-image: url('./assets/images/background.png');
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  background-color: transparent;
-}
-
-app-root {
-  display: block;
-  height: 100%;
-  width: 100%;
-}
-
-// Global container for child components to ensure they take full height and width
-.app-container {
-  height: calc(100vh - 10vh); // app.component.html (margin-top: 10vh)
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-// ==========================================
-// GLOBALNE REUSABLE COMPONENTS
-// ==========================================
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: var(--color-primary);
-  border: 1px solid black;
-  border-radius: var(--radius-btn);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.btn-blue {
-  width: 100%;
-  padding: 10px;
-  font-size: 18px;
-  font-weight: 500;
-  border: 1px solid black;
-  color: black;
-  background-color: var(--color-primary);
-
-  &:hover {
-    background-color: var(--color-primary-hover);
-  }
-}
-
-.btn-yellow {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid black;
-  color: black;
-  background-color: var(--color-secondary);
-
-  &:hover {
-    background-color: var(--color-secondary-hover);
-  }
-}
 
 .popup-container {
   position: fixed;
@@ -112,12 +12,23 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: var(--color-primary);
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(8px);
   padding: 4px;
   border-radius: var(--radius-main);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
 }
 
 .dark-text {
   color: var(--color-dark);
+}
+
+.light-text {
+  color: var(--color-text-muted);
+}
+
+.size-input {
+  width: 80px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

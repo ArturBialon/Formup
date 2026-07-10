@@ -1,0 +1,169 @@
+<div class="split-wrapper">
+  <div class="panel-side side-left">
+    <div class="panel-card">
+      <div class="panel-header d-flex justify-content-between align-items-center">
+        <div>
+          <span>{{ 'GUI.USERS.LIST_TITLE' | translate }} ({{ users().length }}) / </span>
+          @if (isLoading()) {
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          }
+          <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);" type="number"
+            min="1" [value]="pageSize()" (change)="onPageSizeChange($event)"
+            class="form-control form-control-sm shadow-none page-size-input d-inline-block ms-1"
+            [placeholder]="'GUI.USERS.PAGE_SIZE_PLACEHOLDER' | translate">
+        </div>
+
+        <button type="button" class="btn btn-success btn-sm" (click)="initCreateUser()">
+          + {{ 'GUI.USERS.ADD_NEW_BUTTON' | translate }}
+        </button>
+      </div>
+
+      <div class="filters-container p-3 border-bottom">
+        <div class="filters-grid">
+          <div class="filter-field">
+            <input type="text" [(ngModel)]="filters.searchTerm" [placeholder]="'GUI.SEARCH_PLACEHOLDER' | translate"
+              class="form-control form-control-sm shadow-none">
+          </div>
+
+          <div class="filter-field">
+            <select [(ngModel)]="filters.role" class="form-select form-select-sm shadow-none">
+              <option [ngValue]="undefined">{{ 'GUI.USERS.ROLE' | translate }}</option>
+              @for (role of roles; track role.value) {
+              <option [value]="role.value">{{ 'GUI.USERS.ROLES.' + role.name | translate }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="field full-width checkbox-field">
+            <div class="triple-switch switch-sm" 
+                [class.status-all]="filters.isActive === undefined"
+                [class.status-active]="filters.isActive === true"
+                [class.status-inactive]="filters.isActive === false"
+                (click)="toggleTripleState()">
+              
+              <span class="slider"></span>
+            </div>
+            
+            <label class="checkbox-label">
+              @if (filters.isActive === undefined) {
+                {{ 'GUI.USERS.STATUS_ALL' | translate }}
+              } @else if (filters.isActive === true) {
+                {{ 'GUI.USERS.STATUS_ACTIVE' | translate }}
+              } @else {
+                {{ 'GUI.USERS.STATUS_INACTIVE' | translate }}
+              }
+            </label>
+          </div>
+
+          <div class="filter-actions">
+            <button type="button" class="btn btn-primary btn-sm w-100" (click)="onSearch()">
+              {{ 'GUI.BUTTONS.SEARCH' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrollable-content">
+        @for (user of users(); track user.id) {
+        <button type="button" class="user-item-btn" 
+          [class.active]="selectedUser()?.id === user.id" (click)="selectUser(user)">
+
+          <div class="user-info">
+            <span class="user-name">{{ user.fullName }}</span>
+            <span class="user-email">{{ user.email }}</span>
+          </div>
+          <div class="user-badges">
+            <span class="custom-badge role">{{ user.role }}</span>
+            <span class="custom-badge" [class.active-status]="user.isActive" [class.badge-inactive]="!user.isActive">
+              {{ (user.isActive ? 'GUI.USERS.STATUS_ACTIVE' : 'GUI.USERS.STATUS_INACTIVE') | translate }}
+            </span>
+          </div>
+        </button>
+        } @empty {
+        @if (!isLoading()) {
+        <div class="empty-state">{{ 'GUI.USERS.EMPTY_LIST' | translate }}</div>
+        }
+        }
+      </div>
+
+      <div class="panel-footer">
+        <button type="button" class="btn btn-sm" [disabled]="pageNumber() <= 1 || isLoading()"
+          (click)="changePage(pageNumber() - 1)">
+          {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
+        </button>
+        <span class="text-sm fw-medium">{{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}
+        </span>
+        <button type="button" class="btn btn-sm"
+          [disabled]="users().length < pageSize() || isLoading()" (click)="changePage(pageNumber() + 1)">
+          {{ 'GUI.BUTTONS.NEXT' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-side side-right">
+    <div class="panel-card">
+      <div class="panel-header">
+        <span>
+          {{ (isCreateMode() ? 'GUI.USERS.CREATE_TITLE' : 'GUI.USERS.EDIT_TITLE') | translate }}
+        </span>
+      </div>
+
+      <div class="scrollable-content p-4">
+        @if (selectedUser() || isCreateMode()) {
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="admin-form">
+          <div class="form-grid">
+
+            <app-input class="field" controlName="name" label="GUI.USERS.FIRST_NAME" [required]="true"></app-input>
+            <app-input class="field" controlName="surname" label="GUI.USERS.LAST_NAME" [required]="true"></app-input>
+            <app-input class="field full-width" controlName="email" label="GUI.USERS.EMAIL" type="email"
+              [required]="true"></app-input>
+            <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX"></app-input>
+
+            <div class="field">
+              <label class="light-text">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</label>
+              <select formControlName="role" class="input form-control shadow-none mt-1">
+                @for (role of roles; track role.value) {
+                  <option [ngValue]="role.value">
+                    {{ 'GUI.USERS.ROLES.' + role.name | translate }}
+                  </option>
+                }
+              </select>
+            </div>
+
+            <app-input class="field full-width" controlName="password"
+              [label]="isCreateMode() ? 'GUI.USERS.PASSWORD' : 'GUI.USERS.NEW_PASSWORD'" type="password"
+              [placeholder]="'GUI.USERS.PASSWORD_PLACEHOLDER'"></app-input>
+
+            <div class="field full-width checkbox-field">
+              <label class="switch switch-sm">
+                <input type="checkbox" id="isActive" formControlName="isActive">
+                <span class="slider"></span>
+              </label>
+              <label for="isActive" class="checkbox-label">{{ 'GUI.USERS.ALLOW_LOGIN_LABEL' | translate }}</label>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button class="button" type="submit" [disabled]="userForm.invalid || isSaving()">
+              @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              }
+              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE_USER' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+            </button>
+          </div>
+        </form>
+        } @else {
+        <div class="empty-state">
+          <div>
+            <p class="fs-5 mb-1">{{ 'GUI.USERS.NO_USER_SELECTED' | translate }}</p>
+            <p class="text-sm opacity-50">{{ 'GUI.USERS.SELECT_USER_PROMPT' | translate }}</p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+</div>

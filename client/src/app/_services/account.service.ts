@@ -1,6 +1,6 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {
   AuthService,
@@ -20,7 +20,6 @@ export class AccountService {
   user$: Observable<UserResponse | null | undefined> = this.userSubject.asObservable();
 
   private userSignal = toSignal(this.user$, { initialValue: undefined });
-
   isAdmin = computed(() => this.userSignal()?.role === 'Admin');
   isForwarder = computed(() => this.userSignal()?.role === 'Forwarder');
   isAccountant = computed(() => this.userSignal()?.role === 'Accountant');

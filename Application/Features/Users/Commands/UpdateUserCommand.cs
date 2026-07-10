@@ -35,11 +35,11 @@ namespace Application.Features.Users.Commands
                 return AppResult<Unit>.Failure("USER.NOT_FOUND");
             }
 
-            var normalizedEmail = request.Email.ToLower().Trim();
-            var normalizedPrefix = request.Prefix.ToUpper().Trim();
+            var normalizedEmail = request.Email.Trim();
+            var normalizedPrefix = request.Prefix.Trim();
 
             bool conflictExists = await _context.Users.AnyAsync(x =>
-                x.Id.Value != request.UserId &&
+                !x.Id.Equals(request.UserId) &&
                 (x.Email == normalizedEmail || x.Prefix == normalizedPrefix), ct);
 
             if (conflictExists)
