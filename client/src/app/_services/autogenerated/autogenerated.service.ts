@@ -401,7 +401,7 @@ export class BuggyService implements IBuggyService {
 }
 
 export interface IClientService {
-    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PagedResultOfClientListItemResponse>;
+    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse>;
     getClientById(id: string): Observable<ClientDetailResponse>;
     createClient(command: CreateClientCommand | undefined): Observable<ClientResponse>;
     updateClient(command: UpdateClientCommand | undefined): Observable<ClientResponse>;
@@ -421,7 +421,7 @@ export class ClientService implements IClientService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Observable<PagedResultOfClientListItemResponse> {
+    getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, coutry: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse> {
         let url_ = this.baseUrl + "/api/Client/GetClients?";
         if (tax !== undefined && tax !== null)
             url_ += "Tax=" + encodeURIComponent("" + tax) + "&";
@@ -441,6 +441,8 @@ export class ClientService implements IClientService {
             throw new globalThis.Error("The parameter 'pageSize' cannot be null.");
         else if (pageSize !== undefined)
             url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (isActive !== undefined && isActive !== null)
+            url_ += "IsActive=" + encodeURIComponent("" + isActive) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1291,7 +1293,7 @@ export class InvoiceService implements IInvoiceService {
 }
 
 export interface IServiceContractorService {
-    getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined): Observable<PagedResultOfServiceContractorResponse>;
+    getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfServiceContractorResponse>;
     getServiceContractorById(id: string): Observable<ServiceContractorResponse>;
     addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<ServiceContractorResponse>;
     editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<void>;
@@ -1311,7 +1313,7 @@ export class ServiceContractorService implements IServiceContractorService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined): Observable<PagedResultOfServiceContractorResponse> {
+    getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfServiceContractorResponse> {
         let url_ = this.baseUrl + "/api/ServiceContractor/GetServiceContractors?";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
@@ -1329,6 +1331,8 @@ export class ServiceContractorService implements IServiceContractorService {
             url_ += "City=" + encodeURIComponent("" + city) + "&";
         if (country !== undefined && country !== null)
             url_ += "Country=" + encodeURIComponent("" + country) + "&";
+        if (isActive !== undefined && isActive !== null)
+            url_ += "IsActive=" + encodeURIComponent("" + isActive) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1835,7 +1839,7 @@ export class UserService implements IUserService {
 }
 
 export interface IWorkCaseService {
-    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
+    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
     getWorkCaseById(id: string): Observable<WorkCaseResponse>;
     addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
     editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
@@ -1859,7 +1863,7 @@ export class WorkCaseService implements IWorkCaseService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined): Observable<PagedResultOfWorkCaseResponse> {
+    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/GetWorkCases?";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
@@ -1877,6 +1881,8 @@ export class WorkCaseService implements IWorkCaseService {
             url_ += "ClientId=" + encodeURIComponent("" + clientId) + "&";
         if (name !== undefined && name !== null)
             url_ += "Name=" + encodeURIComponent("" + name) + "&";
+        if (isAbandoned !== undefined && isAbandoned !== null)
+            url_ += "IsAbandoned=" + encodeURIComponent("" + isAbandoned) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2366,6 +2372,7 @@ export interface ClientListItemResponse {
     currency?: string;
     invoicesCount?: number | null;
     workCasesCount?: number | null;
+    isActive?:boolean | null;
 }
 
 export interface ClientDetailResponse {
@@ -2377,6 +2384,7 @@ export interface ClientDetailResponse {
     coutry?: string;
     credit?: number | null;
     currency?: string;
+    isActive?:boolean | null;
     WorkCases?: { [key: string]: string; };
     Invoices?: { [key: string]: string; };
 }
@@ -2390,6 +2398,7 @@ export interface ClientResponse {
     coutry?: string;
     credit?: number | null;
     currency?: string;
+    isActive?:boolean | null;
 }
 
 export interface CreateClientCommand {
@@ -2399,6 +2408,7 @@ export interface CreateClientCommand {
     zip?: string;
     coutry?: string;
     credit?: number | null;
+    isActive?:boolean | null;
     currency?: string;
 }
 
@@ -2411,6 +2421,7 @@ export interface UpdateClientCommand {
     coutry?: string;
     credit?: number | null;
     currency?: string;
+    isActive?:boolean | null;
 }
 
 export interface PagedResultOfCostDetailResponse {
@@ -2525,51 +2536,54 @@ export interface UpdateInvoiceCommand {
 }
 
 export interface PagedResultOfServiceContractorResponse {
-    Items?: ServiceContractorResponse[];
-    TotalCount?: number;
-    PageNumber?: number;
-    PageSize?: number;
+    items?: ServiceContractorResponse[];
+    totalCount?: number | null;
+    pageNumber?: number | null;
+    pageSize?: number | null;
 }
 
 export interface ServiceContractorResponse {
-    Id: string;
-    Name: string;
-    Tax: string;
-    Country: string;
-    City: string;
-    Zip: string;
-    Street: string;
-    HouseNumber: string;
-    ApartmentNumber?: string | null;
-    Email?: string | null;
-    PhoneNumber?: string | null;
+    id?: string;
+    name?: string;
+    tax?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    isActive?:boolean | null;
 }
 
 export interface CreateServiceContractorCommand {
-    Name?: string;
-    Tax?: string;
-    Country?: string;
-    City?: string;
-    Zip?: string;
-    Street?: string;
-    HouseNumber?: string;
-    ApartmentNumber?: string | null;
-    Email?: string | null;
-    PhoneNumber?: string | null;
+    name?: string;
+    tax?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    isActive?:boolean | null;
 }
 
 export interface UpdateServiceContractorCommand {
-    Id?: string;
-    Name?: string;
-    Tax?: string;
-    Country?: string;
-    City?: string;
-    Zip?: string;
-    Street?: string;
-    HouseNumber?: string;
-    ApartmentNumber?: string | null;
-    Email?: string | null;
-    PhoneNumber?: string | null;
+    id?: string;
+    name?: string;
+    tax?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    isActive?:boolean | null;
 }
 
 export interface RegisterUserCommand {
@@ -2644,6 +2658,7 @@ export interface WorkCaseResponse {
     forwarderName?: string;
     clientId?: string;
     clientName?: string;
+    isAbandoned?:boolean | null;
 }
 
 export interface CreateWorkCaseCommand {

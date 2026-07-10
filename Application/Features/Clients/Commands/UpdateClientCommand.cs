@@ -16,7 +16,8 @@ namespace Application.Features.Clients.Commands
         string Zip,
         string Coutry,
         decimal Credit,
-        string Currency
+        string Currency,
+        bool IsActive
     ) : IRequest<IAppResult<ClientResponse>>;
     public class UpdateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService) : IRequestHandler<UpdateClientCommand, IAppResult<ClientResponse>>
     {
@@ -51,6 +52,7 @@ namespace Application.Features.Clients.Commands
             client.Coutry = request.Coutry.Trim();
             client.Credit = credit;
             client.Currency = request.Currency.Trim();
+            client.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(ct);
 
@@ -63,7 +65,8 @@ namespace Application.Features.Clients.Commands
                 Zip = client.Zip,
                 Coutry = client.Coutry,
                 Credit = client.Credit,
-                Currency = client.Currency
+                Currency = client.Currency,
+                IsActive = client.IsActive,
             };
 
             return AppResult<ClientResponse>.Success(responseDto);

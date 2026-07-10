@@ -41,7 +41,7 @@ namespace Application.Features.ServiceContractors.Validators
 
             RuleFor(x => x.Email)
                 .EmailAddress().WithErrorCode("CONTRACTOR.VALIDATION.EMAIL.INVALID_FORMAT")
-                .MaximumLength(254).WithErrorCode("CONTRACTOR.VALIDATION.EMAIL.TOO_LONG")
+                .MaximumLength(256).WithErrorCode("CONTRACTOR.VALIDATION.EMAIL.TOO_LONG")
                 .When(x => x.Email != null);
 
             RuleFor(x => x.PhoneNumber)

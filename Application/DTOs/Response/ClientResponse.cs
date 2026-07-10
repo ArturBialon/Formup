@@ -10,5 +10,6 @@
         public string Coutry { get; set; } = null!;
         public decimal Credit { get; set; }
         public string Currency { get; set; } = null!;
+        public bool IsActive { get; set; }
     }
 }

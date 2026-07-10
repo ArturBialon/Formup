@@ -12,5 +12,6 @@
         public string Currency { get; set; } = null!;
         public int InvoicesCount { get; set; }
         public int WorkCasesCount { get; set; }
+        public bool IsActive { get; set; }
     }
 }

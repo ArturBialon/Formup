@@ -10,12 +10,13 @@
     "WORK_CASES": "Teczki",
     "COSTS": "Koszty",
     "INVOICES": "Faktury",
-    "CONTRACTORS": "Podwykonawcy",
+    "CONTRACTORS_ELEMENT": "Podwykonawcy",
     "CLIENTS": "Klienci",
     "MANAGE_USERS": "Zarządzanie użytkownikami",
     "MY_ACCOUNT": "Moje konto",
     "PAGE": "Strona",
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
+    "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
     "USERS": {
       "LIST_TITLE": "Lista użytkowników",
       "EMPTY_LIST": "Brak użytkowników do wyświetlenia",
@@ -33,6 +34,8 @@
       "NO_USER_SELECTED": "Nie wybrano użytkownika",
       "SELECT_USER_PROMPT": "Wybierz użytkownika z listy po lewej stronie, aby edytować dane",
       "UPDATE_SUCCESS": "Dane użytkownika zostały pomyślnie zaktualizowane",
+      "CREATE_SUCCESS": "Pomyślnie zarejestrowano użytkownika" ,
+      "ADD_NEW_BUTTON": "Dodaj użytkownika",
       "ROLE": "Rola",
       "ROLES": {
         "Admin": "Administrator",
@@ -41,6 +44,28 @@
         "Verifier": "Weryfikator",
         "Management": "Zarząd"
       }
+    },
+    "CONTRACTORS": {
+      "LIST_TITLE": "Lista kontrahentów",
+      "ADD_NEW_BUTTON": "Dodaj kontrahenta",
+      "NAME": "Nazwa",
+      "TAX_NIP": "NIP",
+      "CITY": "Miasto",
+      "COUNTRY": "Kraj",
+      "EMPTY_LIST": "Brak kontrahentów do wyświetlenia",
+      "CREATE_TITLE": "Tworzenie nowego kontrahenta",
+      "EDIT_TITLE": "Edycja kontrahenta",
+      "ZIP_CODE": "Kod pocztowy",
+      "STREET": "Ulica",
+      "HOUSE_NUMBER": "Numer budynku",
+      "APARTMENT_NUMBER": "Numer lokalu",
+      "EMAIL": "E-mail",
+      "PHONE": "Telefon",
+      "IS_ACTIVE_LABEL": "Aktywny kontrahent",
+      "NO_SELECTED": "Nie wybrano kontrahenta",
+      "SELECT_PROMPT": "Wybierz kontrahenta z listy po lewej stronie, aby go edytować, lub dodaj nowego.",
+      "CREATE_SUCCESS": "Kontrahent został pomyślnie dodany!",
+      "UPDATE_SUCCESS": "Dane kontrahenta zostały pomyślnie zaktualizowane!"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Zapisz zmiany",

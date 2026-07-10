@@ -73,5 +73,5 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Migration error.");
     }
 }
-
+await API.Extensions.ServiceCreator.AngularServiceCreator.ConfigureSwaggerAsync();
 app.Run();

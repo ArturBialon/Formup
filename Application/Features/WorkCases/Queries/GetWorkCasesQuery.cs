@@ -12,7 +12,8 @@ namespace Application.Features.WorkCases.Queries
         string? Relation = null,
         Guid? ForwarderId = null,
         Guid? ClientId = null,
-        string? Name = null
+        string? Name = null,
+        bool? IsAbandoned = false
     ) : IRequest<IAppResult<PagedResult<WorkCaseResponse>>>;
 
     public class GetWorkCasesQueryHandler(FormupContext context)
@@ -23,6 +24,9 @@ namespace Application.Features.WorkCases.Queries
         public async Task<IAppResult<PagedResult<WorkCaseResponse>>> Handle(GetWorkCasesQuery request, CancellationToken ct)
         {
             var query = _context.WorkCases.AsNoTracking().AsQueryable();
+
+            if (request.IsAbandoned != null)
+                query = query.Where(x => x.IsAbandoned);
 
             if (!string.IsNullOrWhiteSpace(request.Relation))
                 query = query.Where(x => x.Relation == request.Relation);

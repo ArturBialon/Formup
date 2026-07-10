@@ -10,12 +10,13 @@
     "WORK_CASES": "Work Cases",
     "COSTS": "Costs",
     "INVOICES": "Invoices",
-    "CONTRACTORS": "Contractors",
+    "CONTRACTORS_ELEMENT": "Contractors",
     "CLIENTS": "Clients",
     "MANAGE_USERS": "Manage Users",
     "MY_ACCOUNT": "My Account",
     "PAGE": "Page",
     "SEARCH_PLACEHOLDER": "Search phrase...",
+    "PAGE_SIZE_PLACEHOLDER": "Page size",
     "USERS": {
       "LIST_TITLE": "User List",
       "EMPTY_LIST": "No users found",
@@ -33,6 +34,8 @@
       "NO_USER_SELECTED": "No user selected",
       "SELECT_USER_PROMPT": "Select a user from the list on the left to edit their details",
       "UPDATE_SUCCESS": "User details updated successfully",
+      "CREATE_SUCCESS": "User registered successfully",
+      "ADD_NEW_BUTTON": "Add user",
       "ROLE": "Role",
       "ROLES": {
         "Admin": "Administrator",
@@ -41,6 +44,28 @@
         "Verifier": "Verifier",
         "Management": "Management"
       }
+    },
+    "CONTRACTORS": {
+      "LIST_TITLE": "Contractors List",
+      "ADD_NEW_BUTTON": "Add Contractor",
+      "NAME": "Name",
+      "TAX_NIP": "Tax ID / VAT",
+      "CITY": "City",
+      "COUNTRY": "Country",
+      "EMPTY_LIST": "No contractors to display",
+      "CREATE_TITLE": "Create New Contractor",
+      "EDIT_TITLE": "Edit Contractor",
+      "ZIP_CODE": "Zip Code",
+      "STREET": "Street",
+      "HOUSE_NUMBER": "House Number",
+      "APARTMENT_NUMBER": "Apartment Number",
+      "EMAIL": "E-mail",
+      "PHONE": "Phone",
+      "IS_ACTIVE_LABEL": "Active Contractor",
+      "NO_SELECTED": "No contractor selected",
+      "SELECT_PROMPT": "Select a contractor from the list on the left to edit, or add a new one.",
+      "CREATE_SUCCESS": "Contractor has been successfully added!",
+      "UPDATE_SUCCESS": "Contractor details have been successfully updated!"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",

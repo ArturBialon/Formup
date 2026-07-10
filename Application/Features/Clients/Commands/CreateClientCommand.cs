@@ -16,6 +16,7 @@ namespace Application.Features.Clients.Commands
         string Zip,
         string Coutry,
         decimal Credit,
+        bool IsActive,
         string Currency = "PLN"
     ) : IRequest<IAppResult<ClientResponse>>;
 
@@ -48,7 +49,8 @@ namespace Application.Features.Clients.Commands
                 Zip = request.Zip.Trim(),
                 Coutry = request.Coutry.Trim(),
                 Credit = credit,
-                Currency = request.Currency.Trim()
+                Currency = request.Currency.Trim(),
+                IsActive = request.IsActive,
             };
 
             _context.Clients.Add(client);

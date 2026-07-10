@@ -19,6 +19,7 @@ namespace Domain.Models
         public required string Coutry { get; set; }
         public decimal Credit { get; set; }
         public string Currency { get; set; } = "PLN";
+        public bool IsActive { get; set; } = false;
 
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<WorkCase> WorkCases { get; set; }
