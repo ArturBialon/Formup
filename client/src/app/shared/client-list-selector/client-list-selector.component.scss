@@ -2,7 +2,14 @@
   --left-panel-width: 35%;
 
   height: 100%;
-  display: block;
+  flex-direction: column;
+  display: flex;
+  overflow: hidden;
+}
+
+.panel-header, 
+.filters-container {
+  flex-shrink: 0; 
 }
 
 .user-info {

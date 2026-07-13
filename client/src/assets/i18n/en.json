@@ -7,11 +7,12 @@
     "DASHBOARD": "Dashboard",
     "ORDERS": "Orders",
     "SETTINGS": "Settings",
-    "WORK_CASES": "Work Cases",
+    "WORK_CASES_ELEMENT": "Work Cases",
     "COSTS": "Costs",
     "INVOICES": "Invoices",
     "CONTRACTORS_ELEMENT": "Contractors",
     "CLIENTS": "Clients",
+    "SELECT_CLIENT": "Select client.",
     "MANAGE_USERS": "Manage Users",
     "MY_ACCOUNT": "My Account",
     "PAGE": "Page",
@@ -69,6 +70,20 @@
       "UPDATE_SUCCESS": "Contractor details have been successfully updated!",
       "TRADE_LIMIT": "Credit limit",
       "CURRENCY": "Currency"
+    },
+    "WORK_CASES": {
+      "TITLE": "Work Cases",
+      "ADD_NEW_BUTTON": "Create New Work Case",
+      "NAME": "Case Name",
+      "RELATION": "Relation",
+      "FORWARDER": "Forwarder",
+      "CLIENT": "Client",
+      "AMOUNT": "Amount",
+      "STATUS": "Status",
+      "STATUS_ALL": "All Statuses",
+      "STATUS_ACTIVE": "Active",
+      "STATUS_ABANDONED": "Abandoned",
+      "EMPTY_LIST": "No work cases found on the list"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",
@@ -166,6 +181,7 @@
     "NOT_FOUND": "The specified client could not be found.",
     "HAS_INVOICES": "Cannot delete this client because they have invoices assigned to them.",
     "HAS_WORK_CASES": "Cannot delete this client because they have active or past work cases assigned.",
+    "IS_INACTIVE": "Client is inactive.",
     "VALIDATION": {
       "ID_REQUIRED": "Client identifier is required.",
       "TAX_REQUIRED": "Tax identification number (TIN/NIP) is required.",

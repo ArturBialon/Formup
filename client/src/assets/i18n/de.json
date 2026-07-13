@@ -7,11 +7,12 @@
         "DASHBOARD": "Armaturenbrett",
         "ORDERS": "Bestellungen",
         "SETTINGS": "Einstellungen",
-        "WORK_CASES": "Akten",
+        "WORK_CASES_ELEMENT": "Akten",
         "COSTS": "Kosten",
         "INVOICES": "Rechnungen",
         "CONTRACTORS_ELEMENT": "Subunternehmer",
         "CLIENTS": "Kunden",
+        "SELECT_CLIENT": "Einen Kunden auswählen.",
         "MANAGE_USERS": "Benutzer",
         "MY_ACCOUNT": "Mein Konto",
         "PAGE": "Seite",
@@ -69,6 +70,20 @@
             "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
             "TRADE_LIMIT": "Kreditlimit",
             "CURRENCY": "Währung"
+        },
+        "WORK_CASES": {
+            "TITLE": "Transportakten",
+            "ADD_NEW_BUTTON": "Neue Akte erstellen",
+            "NAME": "Aktenname",
+            "RELATION": "Relation",
+            "FORWARDER": "Spediteur",
+            "CLIENT": "Kunde",
+            "AMOUNT": "Betrag",
+            "STATUS": "Status",
+            "STATUS_ALL": "Alle Status",
+            "STATUS_ACTIVE": "Aktiv",
+            "STATUS_ABANDONED": "Abgebrochen",
+            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",
@@ -166,6 +181,7 @@
         "NOT_FOUND": "Der angegebene Kunde wurde nicht gefunden.",
         "HAS_INVOICES": "Dieser Kunde kann nicht gelöscht werden, da ihm Rechnungen zugewiesen sind.",
         "HAS_WORK_CASES": "Dieser Kunde kann nicht gelöscht werden, da er aktive oder historische Akten (WorkCases) besitzt.",
+        "IS_INACTIVE": "Der Kunde ist inaktiv.",
         "VALIDATION": {
             "ID_REQUIRED": "Kundenkennung ist erforderlich.",
             "TAX_REQUIRED": "Steuernummer (USt-IdNr.) ist erforderlich.",

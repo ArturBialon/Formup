@@ -30,7 +30,7 @@ namespace Application.Features.Clients.Validators
             RuleFor(x => x.Credit)
                 .GreaterThanOrEqualTo(0).WithErrorCode("CLIENT.VALIDATION.CREDIT_MIN_VALUE");
 
-            RuleFor(x => x.Currency)
+            RuleFor(x => x.CurrencyCode)
                 .NotEmpty().WithErrorCode("CLIENT.VALIDATION.CURRENCY_REQUIRED")
                 .MaximumLength(3).WithErrorCode("CLIENT.VALIDATION.CURRENCY_TOO_LONG");
         }

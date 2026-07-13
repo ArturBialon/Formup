@@ -1,0 +1,12 @@
+:host {
+  --left-panel-width: 45%;
+
+  height: 100%;
+  display: block;
+}
+
+.alert-info{
+    background: var(--color-alert-info);
+    border-color: var(--color-alert-info-border);
+    color: var(--color-alert-text);
+}

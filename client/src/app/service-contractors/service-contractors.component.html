@@ -127,13 +127,16 @@
 
               <app-input class="field" controlName="country" label="GUI.CONTRACTORS.COUNTRY" [required]="true"></app-input>
               <app-input class="field" controlName="city" label="GUI.CONTRACTORS.CITY" [required]="true"></app-input>
-              
-              <app-input class="field" controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE" [required]="true"></app-input>
-              <app-input class="field" controlName="street" label="GUI.CONTRACTORS.STREET" [required]="true"></app-input>
-              
-              <app-input class="field" controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER" [required]="true"></app-input>
-              <app-input class="field" controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
 
+              <div class="form-grid">
+                <app-input class="field" controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE" [required]="true"></app-input>
+                <app-input class="field" controlName="street" label="GUI.CONTRACTORS.STREET" [required]="true"></app-input>
+              </div>
+              <div class="form-grid">
+                <app-input class="field" controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER" [required]="true"></app-input>
+                <app-input class="field" controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
+              </div>
+              
               <app-input class="field" controlName="email" label="GUI.CONTRACTORS.EMAIL" type="email"></app-input>
               <app-input class="field" controlName="phoneNumber" label="GUI.CONTRACTORS.PHONE"></app-input>
 

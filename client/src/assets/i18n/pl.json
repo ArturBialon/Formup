@@ -7,11 +7,12 @@
     "DASHBOARD": "Panel główny",
     "ORDERS": "Zamówienia",
     "SETTINGS": "Ustawienia",
-    "WORK_CASES": "Teczki",
+    "WORK_CASES_ELEMENT": "Teczki",
     "COSTS": "Koszty",
     "INVOICES": "Faktury",
     "CONTRACTORS_ELEMENT": "Podwykonawcy",
     "CLIENTS": "Klienci",
+    "SELECT_CLIENT": "Wybierz klienta.",
     "MANAGE_USERS": "Zarządzanie użytkownikami",
     "MY_ACCOUNT": "Moje konto",
     "PAGE": "Strona",
@@ -80,6 +81,20 @@
       "CREATE": "Utwórz",
       "NEXT": ">>",
       "PREVIOUS": "<<"
+    },
+    "WORK_CASES": {
+      "TITLE": "Teczki zleceń",
+      "ADD_NEW_BUTTON": "Utwórz nową teczkę",
+      "NAME": "Nazwa teczki",
+      "RELATION": "Relacja",
+      "FORWARDER": "Spedytor",
+      "CLIENT": "Klient",
+      "AMOUNT": "Kwota",
+      "STATUS": "Status",
+      "STATUS_ALL": "Wszystkie statusy",
+      "STATUS_ACTIVE": "Aktywne",
+      "STATUS_ABANDONED": "Porzucone",
+      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria"
     }
   },
   "LOGIN": {
@@ -166,6 +181,7 @@
     "NOT_FOUND": "Nie znaleziono określonego klienta.",
     "HAS_INVOICES": "Nie można usunąć tego klienta, ponieważ są do niego przypisane faktury.",
     "HAS_WORK_CASES": "Nie można usunąć tego klienta, ponieważ posiada aktywne lub historyczne teczki (WorkCases).",
+    "IS_INACTIVE": "Klient jest nieaktywny.",
     "VALIDATION": {
       "ID_REQUIRED": "Identyfikator klienta jest wymagany.",
       "TAX_REQUIRED": "Numer identyfikacji podatkowej (NIP) jest wymagany.",

@@ -1,4 +1,5 @@
-﻿using Application.Common.Results;
+﻿using Application.Common.CurrencyServices;
+using Application.Common.Results;
 using Application.DTOs.Response;
 using Domain.Enums;
 using Domain.Models;
@@ -22,14 +23,15 @@ namespace Application.Features.Clients.Commands
         string? ApartmentNumber = null,
         string? Email = null,
         string? PhoneNumber = null,
-        string Currency = "PLN"
+        string? CurrencyCode = "PLN"
     ) : IRequest<IAppResult<ClientResponse>>;
 
-    public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService)
+    public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService, ICurrencyConverterService currencyConverterService)
     : IRequestHandler<CreateClientCommand, IAppResult<ClientResponse>>
     {
         private readonly FormupContext _context = context;
         private readonly ICurrentUserService _currentUserService = currentUserService;
+        private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
         public async Task<IAppResult<ClientResponse>> Handle(CreateClientCommand request, CancellationToken ct)
         {
@@ -41,10 +43,22 @@ namespace Application.Features.Clients.Commands
                 return AppResult<ClientResponse>.Failure("CLIENT.TAX_ALREADY_EXISTS");
             }
 
-            decimal credit = 0;
+            decimal calculatedCredit = 0;
 
             if (_currentUserService.Role == UserRole.Verifier.ToString())
-                credit = request.Credit;
+            {
+                calculatedCredit = request.Credit;
+
+                if (request.CurrencyCode != null && request.CurrencyCode != "PLN")
+                {
+                    var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode, "PLN", DateTime.Now, ct);
+
+                    if (!calculationResult.IsSuccess)
+                        return AppResult<ClientResponse>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
+
+                    calculatedCredit = calculationResult.Value;
+                }
+            }
 
             var client = new Client
             {
@@ -58,8 +72,8 @@ namespace Application.Features.Clients.Commands
                 ApartmentNumber = request.ApartmentNumber?.Trim(),
                 Email = request.Email?.Trim(),
                 PhoneNumber = request.PhoneNumber?.Trim(),
-                Credit = credit,
-                Currency = request.Currency.Trim(),
+                Credit = calculatedCredit,
+                Currency = "PLN",
                 IsActive = request.IsActive,
             };
 
@@ -79,8 +93,8 @@ namespace Application.Features.Clients.Commands
                 ApartmentNumber = client.ApartmentNumber,
                 Email = client.Email,
                 PhoneNumber = client.PhoneNumber,
-                Credit = client.Credit,
-                Currency = client.Currency,
+                Credit = calculatedCredit,
+                Currency = "PLN",
                 IsActive = client.IsActive
             };
 

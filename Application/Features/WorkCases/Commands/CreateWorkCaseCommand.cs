@@ -7,8 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkCases.Commands
 {
-    public record CreateWorkCaseCommand(decimal Amount, string Relation, Guid ForwarderId, Guid ClientId)
-        : IRequest<AppResult<WorkCaseResponse>>;
+    public record CreateWorkCaseCommand(
+        decimal Amount,
+        string Relation,
+        Guid ForwarderId,
+        Guid ClientId
+        ) : IRequest<AppResult<WorkCaseResponse>>;
 
     public class CreateWorkCaseHandler(FormupContext context)
         : IRequestHandler<CreateWorkCaseCommand, AppResult<WorkCaseResponse>>

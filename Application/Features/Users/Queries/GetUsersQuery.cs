@@ -48,7 +48,7 @@ namespace Application.Features.Users.Queries
             var totalCount = await query.CountAsync(ct);
 
             var items = await query
-                .OrderBy(x => x.Surname)
+                .OrderBy(x => x.Id)
                 .ThenBy(x => x.Name)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)

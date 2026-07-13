@@ -1839,7 +1839,7 @@ export class UserService implements IUserService {
 }
 
 export interface IWorkCaseService {
-    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
+    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderName: string | null | undefined, clientName: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
     getWorkCaseById(id: string): Observable<WorkCaseResponse>;
     addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
     editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
@@ -1863,7 +1863,7 @@ export class WorkCaseService implements IWorkCaseService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderId: string | null | undefined, clientId: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse> {
+    getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderName: string | null | undefined, clientName: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/GetWorkCases?";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
@@ -1875,10 +1875,10 @@ export class WorkCaseService implements IWorkCaseService {
             url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
         if (relation !== undefined && relation !== null)
             url_ += "Relation=" + encodeURIComponent("" + relation) + "&";
-        if (forwarderId !== undefined && forwarderId !== null)
-            url_ += "ForwarderId=" + encodeURIComponent("" + forwarderId) + "&";
-        if (clientId !== undefined && clientId !== null)
-            url_ += "ClientId=" + encodeURIComponent("" + clientId) + "&";
+        if (forwarderName !== undefined && forwarderName !== null)
+            url_ += "ForwarderName=" + encodeURIComponent("" + forwarderName) + "&";
+        if (clientName !== undefined && clientName !== null)
+            url_ += "ClientName=" + encodeURIComponent("" + clientName) + "&";
         if (name !== undefined && name !== null)
             url_ += "Name=" + encodeURIComponent("" + name) + "&";
         if (isAbandoned !== undefined && isAbandoned !== null)
@@ -2429,7 +2429,7 @@ export interface CreateClientCommand {
     apartmentNumber?: string | null;
     email?: string | null;
     phoneNumber?: string | null;
-    currency?: string;
+    currencyCode?: string | null;
 }
 
 export interface UpdateClientCommand {
@@ -2446,7 +2446,7 @@ export interface UpdateClientCommand {
     apartmentNumber?: string | null;
     email?: string | null;
     phoneNumber?: string | null;
-    currency?: string;
+    currencyCode?: string | null;
 }
 
 export interface PagedResultOfCostDetailResponse {

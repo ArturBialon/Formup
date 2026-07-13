@@ -10,10 +10,10 @@ namespace Application.Features.WorkCases.Queries
         int PageNumber = 1,
         int PageSize = 50,
         string? Relation = null,
-        Guid? ForwarderId = null,
-        Guid? ClientId = null,
+        string? ForwarderName = null,
+        string? ClientName = null,
         string? Name = null,
-        bool? IsAbandoned = false
+        bool? IsAbandoned = null
     ) : IRequest<IAppResult<PagedResult<WorkCaseResponse>>>;
 
     public class GetWorkCasesQueryHandler(FormupContext context)
@@ -26,16 +26,16 @@ namespace Application.Features.WorkCases.Queries
             var query = _context.WorkCases.AsNoTracking().AsQueryable();
 
             if (request.IsAbandoned != null)
-                query = query.Where(x => x.IsAbandoned);
+                query = query.Where(x => x.IsAbandoned == request.IsAbandoned);
 
             if (!string.IsNullOrWhiteSpace(request.Relation))
                 query = query.Where(x => x.Relation == request.Relation);
 
-            if (request.ForwarderId.HasValue)
-                query = query.Where(x => x.Forwarder.Id.Equals(request.ForwarderId));
+            if (!string.IsNullOrWhiteSpace(request.ForwarderName))
+                query = query.Where(x => x.Forwarder.Name.Equals(request.ForwarderName));
 
-            if (request.ClientId.HasValue)
-                query = query.Where(x => x.Client.Id.Equals(request.ClientId));
+            if (!string.IsNullOrWhiteSpace(request.ClientName))
+                query = query.Where(x => x.Client.Name.Equals(request.ClientName));
 
             if (!string.IsNullOrWhiteSpace(request.Name))
                 query = query.Where(x => x.Name.Contains(request.Name));
@@ -43,7 +43,7 @@ namespace Application.Features.WorkCases.Queries
             var totalCount = await query.CountAsync(ct);
 
             var items = await query
-                .OrderByDescending(x => x.Id)
+                .OrderBy(x => x.Id)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new WorkCaseResponse
@@ -52,7 +52,7 @@ namespace Application.Features.WorkCases.Queries
                     Name = x.Name,
                     Amount = x.Amount,
                     Relation = x.Relation,
-                    ForwarderName = x.Forwarder.Surname,
+                    ForwarderName = x.Forwarder.FullName,
                     ClientName = x.Client.Name,
                     ClientId = x.Client.Id.Value,
                     ForwarderId = x.Forwarder.Id.Value,

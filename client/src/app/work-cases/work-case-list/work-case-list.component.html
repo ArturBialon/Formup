@@ -1,0 +1,140 @@
+<div class="split-wrapper">
+  <div class="panel-side side-left panel-card">
+    
+    <div class="panel-header d-flex justify-content-between align-items-center">
+      <div>
+        <span>{{ 'GUI.WORK_CASES.TITLE' | translate }} ({{ totalCount() }}) / </span>
+        @if (isLoading()) {
+          <div class="spinner-border spinner-border-sm text-primary ms-1" role="status"></div>
+        }
+        <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);"
+               type="number" 
+               min="1" 
+               [value]="pageSize()" 
+               (change)="onPageSizeChange($event)"
+               class="form-control form-control-sm shadow-none page-size-input d-inline-block ms-1"
+               [placeholder]="'GUI.PAGE_SIZE_PLACEHOLDER' | translate">
+      </div>
+
+      <button type="button" class="btn btn-success btn-sm" routerLink="/dashboard/workcaseadd">
+        + {{ 'GUI.WORK_CASES.ADD_NEW_BUTTON' | translate }}
+      </button>
+    </div>
+
+    <div class="filters-container p-3 border-bottom">
+      <div class="filters-grid" style="grid-template-columns: repeat(4, 1fr);">
+
+        <div class="filter-field">
+          <input type="text" [(ngModel)]="filters.name" [placeholder]="'GUI.WORK_CASES.NAME' | translate"
+                 class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field">
+          <input type="text" [(ngModel)]="filters.relation" [placeholder]="'GUI.WORK_CASES.RELATION' | translate"
+                 class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field">
+          <input type="text" [(ngModel)]="filters.forwarderName" [placeholder]="'GUI.WORK_CASES.FORWARDER' | translate"
+                 class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field">
+          <input type="text" [(ngModel)]="filters.clientName" [placeholder]="'GUI.WORK_CASES.CLIENT' | translate"
+                 class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="field full-width checkbox-field" style="grid-column: span 3;">
+          <div class="triple-switch switch-sm"
+               [class.status-all]="filters.isAbandoned === undefined || filters.isAbandoned === null"
+               [class.status-active]="filters.isAbandoned === false"
+               [class.status-inactive]="filters.isAbandoned === true" 
+               (click)="toggleTripleState()">
+            <span class="slider"></span>
+          </div>
+
+          <label class="checkbox-label" style="color: var(--color-text-light);">
+            @if (filters.isAbandoned === undefined || filters.isAbandoned === null) {
+              {{ 'GUI.WORK_CASES.STATUS_ALL' | translate }}
+            } @else if (filters.isAbandoned === false) {
+              {{ 'GUI.WORK_CASES.STATUS_ACTIVE' | translate }}
+            } @else {
+              {{ 'GUI.WORK_CASES.STATUS_ABANDONED' | translate }}
+            }
+          </label>
+        </div>
+
+        <div class="filter-actions d-flex justify-content-end" style="grid-column: span 1;">
+          <button type="button" class="btn btn-primary btn-sm w-100" (click)="onSearch()">
+            {{ 'GUI.BUTTONS.SEARCH' | translate }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="scrollable-content p-3">
+      @if (workCases().length === 0 && !isLoading()) {
+        <div class="empty-state">{{ 'GUI.WORK_CASES.EMPTY_LIST' | translate }}</div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-borderless align-middle mb-0" style="color: var(--color-text-light);">
+            <thead style="border-bottom: 1px solid var(--glass-border); opacity: 0.8;">
+              <tr>
+                <th class="fw-semibold py-3">{{ 'GUI.WORK_CASES.NAME' | translate }}</th>
+                <th class="fw-semibold py-3">{{ 'GUI.WORK_CASES.RELATION' | translate }}</th>
+                <th class="fw-semibold py-3">{{ 'GUI.WORK_CASES.FORWARDER' | translate }}</th>
+                <th class="fw-semibold py-3">{{ 'GUI.WORK_CASES.CLIENT' | translate }}</th>
+                <th class="fw-semibold py-3 text-end">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</th>
+                <th class="fw-semibold py-3 text-center">{{ 'GUI.WORK_CASES.STATUS' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of workCases(); track item.id) {
+                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                  <td class="py-3 fw-medium">{{ item.name }}</td>
+                  <td class="py-3">
+                    <span class="custom-badge role">{{ item.relation || '-' }}</span>
+                  </td>
+                  <td class="py-3">{{ item.forwarderName || '-' }}</td>
+                  <td class="py-3">{{ item.clientName || '-' }}</td>
+                  <td class="py-3 text-end fw-semibold text-nowrap">
+                    {{ item.amount | number:'1.2-2' }}
+                  </td>
+                  <td class="py-3 text-center">
+                    <span class="custom-badge" 
+                          [class.active-status]="!item.isAbandoned"
+                          [class.badge-inactive]="item.isAbandoned">
+                      {{ (item.isAbandoned ? 'GUI.WORK_CASES.STATUS_ABANDONED' : 'GUI.WORK_CASES.STATUS_ACTIVE') | translate }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+
+    <div class="panel-footer">
+      <button type="button" class="btn btn-sm btn-outline-secondary" 
+              [disabled]="pageNumber() <= 1 || isLoading()"
+              (click)="changePage(pageNumber() - 1)"
+              style="border-color: var(--glass-border); color: var(--color-text-light);">
+        {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
+      </button>
+
+      <span class="text-sm fw-medium" style="color: var(--color-text-light);">
+        {{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}
+      </span>
+
+      <button type="button" class="btn btn-sm btn-outline-secondary"
+              [disabled]="pageNumber() >= totalPagesNumber() || isLoading()" 
+              (click)="changePage(pageNumber() + 1)"
+              style="border-color: var(--glass-border); color: var(--color-text-light);">
+        {{ 'GUI.BUTTONS.NEXT' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

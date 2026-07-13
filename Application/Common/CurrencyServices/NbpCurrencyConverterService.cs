@@ -18,48 +18,16 @@ namespace Application.Common.CurrencyServices
             DateTime serviceDate,
             CancellationToken ct)
         {
-            targetCurrency = targetCurrency.ToUpper();
+            targetCurrency = targetCurrency.ToUpper().Trim();
             DateTime targetDate = serviceDate.Date.AddDays(-1);
-            List<NbpTableA>? nbpTables = [];
 
-            for (int i = 0; i < 7; i++)
+            var ratesResult = await GetRatesTable(targetDate, ct);
+            if (!ratesResult.IsSuccess)
             {
-                try
-                {
-                    await Task.Delay(100, ct);
-                    string formattedDate = targetDate.ToString("yyyy-MM-dd");
-                    string url = $"https://api.nbp.pl/api/exchangerates/tables/a/{formattedDate}/?format=json";
-
-                    var response = await _httpClient.GetAsync(url, ct);
-
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        nbpTables = await response.Content.ReadFromJsonAsync<List<NbpTableA>>(cancellationToken: ct);
-                        if (nbpTables != null && nbpTables.Count != 0)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (response.StatusCode != HttpStatusCode.NotFound)
-                    {
-                        return AppResult<CurrencyConversionResult>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
-                    }
-                }
-                catch
-                {
-                    if (i == 6)
-                        return AppResult<CurrencyConversionResult>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
-                }
-
-                targetDate = targetDate.AddDays(-1);
+                return AppResult<CurrencyConversionResult>.Failure(ratesResult.ErrorCode, ratesResult.ErrorData);
             }
 
-            var tableA = nbpTables?.FirstOrDefault();
-            if (tableA?.Rates == null) return AppResult<CurrencyConversionResult>.Failure("CURRENCY.TABLE_A_EMPTY");
-
-            var ratesMap = tableA.Rates.ToDictionary(x => x.Code.ToUpper(), x => x.Mid);
-            ratesMap.Add("PLN", 1.0m);
+            var ratesMap = ratesResult.Value!;
 
             if (!ratesMap.ContainsKey(targetCurrency))
             {
@@ -71,7 +39,7 @@ namespace Application.Common.CurrencyServices
 
             foreach (var item in items)
             {
-                if (!ratesMap.ContainsKey(item.Currency.ToUpper()))
+                if (!ratesMap.ContainsKey(item.Currency.ToUpper().Trim()))
                 {
                     return AppResult<CurrencyConversionResult>.Failure(
                         "CURRENCY.VALIDATION.ITEM_CURRENCY_NOT_SUPPORTED",
@@ -85,7 +53,7 @@ namespace Application.Common.CurrencyServices
 
             foreach (var item in items)
             {
-                var itemCurrency = item.Currency.ToUpper();
+                var itemCurrency = item.Currency.ToUpper().Trim();
                 decimal finalItemAmount;
                 decimal appliedRate;
 
@@ -122,6 +90,92 @@ namespace Application.Common.CurrencyServices
 
             result.TotalTargetAmount = totalTargetAmount;
             return AppResult<CurrencyConversionResult>.Success(result);
+        }
+
+        public async Task<AppResult<decimal>> ConvertToTargetCurrency(
+            decimal amount,
+            string sourceCurrency,
+            string targetCurrency,
+            DateTime serviceDate,
+            CancellationToken ct)
+        {
+            sourceCurrency = sourceCurrency.ToUpper().Trim();
+            targetCurrency = targetCurrency.ToUpper().Trim();
+            DateTime targetDate = serviceDate.Date.AddDays(-1);
+
+            if (sourceCurrency == targetCurrency)
+            {
+                return AppResult<decimal>.Success(decimal.Round(amount, 2));
+            }
+
+            var ratesResult = await GetRatesTable(targetDate, ct);
+            if (!ratesResult.IsSuccess)
+            {
+                return AppResult<decimal>.Failure(ratesResult.ErrorCode, ratesResult.ErrorData);
+            }
+
+            var ratesMap = ratesResult.Value!;
+
+            if (!ratesMap.TryGetValue(sourceCurrency, out decimal rateFrom))
+            {
+                return AppResult<decimal>.Failure("CURRENCY.VALIDATION.SOURCE_CURRENCY_NOT_SUPPORTED", new { UnsupportedCurrency = sourceCurrency });
+            }
+
+            if (!ratesMap.TryGetValue(targetCurrency, out decimal rateTo))
+            {
+                return AppResult<decimal>.Failure("CURRENCY.VALIDATION.TARGET_CURRENCY_NOT_SUPPORTED", new { UnsupportedCurrency = targetCurrency });
+            }
+
+            decimal appliedRate = rateFrom / rateTo;
+            var finalAmount = decimal.Round(amount * appliedRate, 2);
+
+            return AppResult<decimal>.Success(finalAmount);
+        }
+
+        private async Task<AppResult<Dictionary<string, decimal>>> GetRatesTable(DateTime targetDate, CancellationToken ct)
+        {
+            List<NbpTableA>? nbpTables = null;
+
+            for (int i = 0; i < 7; i++)
+            {
+                try
+                {
+                    string formattedDate = targetDate.ToString("yyyy-MM-dd");
+                    string url = $"https://api.nbp.pl/api/exchangerates/tables/a/{formattedDate}/?format=json";
+
+                    var response = await _httpClient.GetAsync(url, ct);
+
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        nbpTables = await response.Content.ReadFromJsonAsync<List<NbpTableA>>(cancellationToken: ct);
+                        if (nbpTables != null && nbpTables.Count > 0)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (response.StatusCode != HttpStatusCode.NotFound)
+                    {
+                        return AppResult<Dictionary<string, decimal>>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
+                    }
+                }
+                catch
+                {
+                    if (i == 6)
+                        return AppResult<Dictionary<string, decimal>>.Failure("CURRENCY.API_NBP_UNAVAILABLE");
+                }
+
+                targetDate = targetDate.AddDays(-1);
+            }
+
+            var tableA = nbpTables?.FirstOrDefault();
+            if (tableA?.Rates == null)
+                return AppResult<Dictionary<string, decimal>>.Failure("CURRENCY.TABLE_A_EMPTY");
+
+            var ratesMap = tableA.Rates.ToDictionary(x => x.Code.ToUpper().Trim(), x => x.Mid);
+            ratesMap.TryAdd("PLN", 1.0m);
+
+            return AppResult<Dictionary<string, decimal>>.Success(ratesMap);
         }
     }
 }

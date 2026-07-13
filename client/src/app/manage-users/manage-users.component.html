@@ -118,7 +118,7 @@
             <app-input class="field" controlName="surname" label="GUI.USERS.LAST_NAME" [required]="true"></app-input>
             <app-input class="field full-width" controlName="email" label="GUI.USERS.EMAIL" type="email"
               [required]="true"></app-input>
-            <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX"></app-input>
+            <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX" [required]="true"></app-input>
 
             <div class="field">
               <label class="light-text">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</label>
@@ -150,7 +150,7 @@
               @if (isSaving()) {
               <span class="spinner-border spinner-border-sm me-2" role="status"></span>
               }
-              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE_USER' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
             </button>
           </div>
         </form>

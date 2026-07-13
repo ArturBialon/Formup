@@ -1,7 +1,6 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
-import { catchError, of, tap } from 'rxjs';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { 
@@ -13,11 +12,12 @@ import {
 import { NotificationService } from '../_services/notification.service';
 import { AccountService } from '../_services/account.service';
 import { InputComponent } from '../shared/input/input.component';
+import { ClientListSelectorComponent } from '../shared/client-list-selector/client-list-selector.component';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, TranslatePipe, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe, InputComponent, ClientListSelectorComponent],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss'
 })
@@ -27,28 +27,15 @@ export class ClientsComponent {
   private notation = inject(NotificationService);
   private accountService = inject(AccountService);
 
-  public clients = signal<ClientListItemResponse[]>([]);
+  @ViewChild(ClientListSelectorComponent) clientListSelector!: ClientListSelectorComponent;
+
   public selectedClient = signal<ClientListItemResponse | null>(null);
-  
   public isCreateMode = signal<boolean>(false);
-  public isLoading = signal<boolean>(false);
   public isSaving = signal<boolean>(false);
   
-  public pageNumber = signal<number>(1);
-  public totalPagesNumber = signal<number>(1);
-  public pageSize = signal<number>(100);
-
   public canManageCredit = computed(() => {
     return this.accountService.isVerifier() || this.accountService.isManagement();
   });
-
-  public filters = {
-    name: '',
-    tax: '',
-    city: '',
-    country: '',
-    isActive: undefined as boolean | undefined
-  };
 
   public clientForm: FormGroup;
 
@@ -57,11 +44,11 @@ export class ClientsComponent {
       id: [{ value: '', disabled: true }],
       name: ['', Validators.required],
       tax: ['', Validators.required],
-      country: [''],
-      city: [''],
-      zip: [''],
-      street: [''],
-      houseNumber: [''],
+      country: ['', Validators.required],
+      city: ['', Validators.required],
+      zip: ['', Validators.required],
+      street: ['', Validators.required],
+      houseNumber: ['', Validators.required],
       apartmentNumber: [null],
       email: ['', Validators.email],
       phoneNumber: [''],
@@ -69,54 +56,6 @@ export class ClientsComponent {
       currency: ['PLN'],
       isActive: [true]
     });
-
-    this.loadClients();
-  }
-
-  public loadClients() {
-    this.isLoading.set(true);
-    
-    const name = this.filters.name.trim() || undefined;
-    const tax = this.filters.tax.trim() || undefined;
-    const street = undefined;
-    const zip = undefined;
-    const coutry = this.filters.country.trim() || undefined;
-    
-    const isActive = (this.filters.isActive === true || this.filters.isActive === false) 
-      ? this.filters.isActive 
-      : undefined;
-
-    this.apiClient.getClients(tax, name, street, zip, coutry, this.pageNumber(), this.pageSize(), isActive)
-      .pipe(
-        tap(res => {
-          this.clients.set(res.items || []);
-          this.isLoading.set(false);
-          this.totalPagesNumber.set(res.totalCount ? Math.ceil(res.totalCount / this.pageSize()) : 1);
-        }),
-        catchError((error) => {
-          this.notation.apiError(error);
-          this.isLoading.set(false);
-          return of({ items: [], totalCount: 0 });
-        })
-      ).subscribe();
-  }
-
-  public onSearch() {
-    this.pageNumber.set(1);
-    this.loadClients();
-  }
-
-  public changePage(newPage: number) {
-    if (newPage < 1) return;
-    this.pageNumber.set(newPage);
-    this.loadClients();
-  }
-
-  public onPageSizeChange(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    this.pageSize.set(Number(inputElement.value));
-    this.pageNumber.set(1);
-    this.loadClients();
   }
 
   public selectClient(client: ClientListItemResponse) {
@@ -176,16 +115,6 @@ export class ClientsComponent {
     }
   }
 
-  public toggleTripleState() {
-    if (this.filters.isActive === undefined) {
-      this.filters.isActive = true;
-    } else if (this.filters.isActive === true) {
-      this.filters.isActive = false;
-    } else {
-      this.filters.isActive = undefined;
-    }
-  }
-
   public onSubmit() {
     if (this.clientForm.invalid) return;
     if (!this.isCreateMode() && !this.selectedClient()) return;
@@ -206,7 +135,7 @@ export class ClientsComponent {
         email: formValues.email,
         phoneNumber: formValues.phoneNumber,
         credit: formValues.credit,
-        currency: formValues.currency,
+        currencyCode: formValues.currency,
         isActive: formValues.isActive
       };
 
@@ -215,7 +144,7 @@ export class ClientsComponent {
           this.notation.success('GUI.CONTRACTORS.CREATE_SUCCESS');
           this.isSaving.set(false);
           this.isCreateMode.set(false);
-          this.loadClients();
+          this.clientListSelector.loadClients();
         },
         error: (err) => {
           this.notation.apiError(err);
@@ -237,7 +166,7 @@ export class ClientsComponent {
         email: formValues.email,
         phoneNumber: formValues.phoneNumber,
         credit: formValues.credit,
-        currency: formValues.currency,
+        currencyCode: formValues.currency,
         isActive: formValues.isActive
       };
 
@@ -245,7 +174,7 @@ export class ClientsComponent {
         next: () => {
           this.notation.success('GUI.CONTRACTORS.UPDATE_SUCCESS');
           this.isSaving.set(false);
-          this.loadClients();
+          this.clientListSelector.loadClients();
         },
         error: (err) => {
           this.notation.apiError(err);
