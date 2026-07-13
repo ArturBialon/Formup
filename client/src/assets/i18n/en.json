@@ -18,6 +18,7 @@
     "PAGE": "Page",
     "SEARCH_PLACEHOLDER": "Search phrase...",
     "PAGE_SIZE_PLACEHOLDER": "Page size",
+    "CURRENCY": "Currency",
     "USERS": {
       "LIST_TITLE": "User List",
       "EMPTY_LIST": "No users found",
@@ -68,8 +69,7 @@
       "SELECT_PROMPT": "Select a contractor from the list on the left to edit, or add a new one.",
       "CREATE_SUCCESS": "Contractor has been successfully added!",
       "UPDATE_SUCCESS": "Contractor details have been successfully updated!",
-      "TRADE_LIMIT": "Credit limit",
-      "CURRENCY": "Currency"
+      "TRADE_LIMIT": "Credit limit"
     },
     "WORK_CASES": {
       "TITLE": "Work Cases",

@@ -2678,6 +2678,7 @@ export interface WorkCaseResponse {
     id?: string;
     name?: string;
     amount?: number | null;
+    currency?: string;
     relation?: string;
     forwarderId?: string;
     forwarderName?: string;

@@ -18,6 +18,7 @@
     "PAGE": "Strona",
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
     "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
+    "CURRENCY": "Waluta",
     "USERS": {
       "LIST_TITLE": "Lista użytkowników",
       "EMPTY_LIST": "Brak użytkowników do wyświetlenia",
@@ -68,8 +69,7 @@
       "SELECT_PROMPT": "Wybierz kontrahenta z listy po lewej stronie, aby go edytować, lub dodaj nowego.",
       "CREATE_SUCCESS": "Kontrahent został pomyślnie dodany!",
       "UPDATE_SUCCESS": "Dane kontrahenta zostały pomyślnie zaktualizowane!",
-      "TRADE_LIMIT": "Limit kredytowy",
-      "CURRENCY": "Waluta"
+      "TRADE_LIMIT": "Limit kredytowy"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Zapisz zmiany",

@@ -51,11 +51,13 @@ namespace Application.Features.WorkCases.Queries
                     Id = x.Id.Value,
                     Name = x.Name,
                     Amount = x.Amount,
+                    Currency = x.Currency,
                     Relation = x.Relation,
                     ForwarderName = x.Forwarder.FullName,
                     ClientName = x.Client.Name,
                     ClientId = x.Client.Id.Value,
                     ForwarderId = x.Forwarder.Id.Value,
+                    IsAbandoned = x.IsAbandoned,
                 })
                 .ToListAsync(ct);
 

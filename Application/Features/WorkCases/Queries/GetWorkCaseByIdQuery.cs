@@ -20,11 +20,13 @@ namespace Application.Features.WorkCases.Queries
                     Id = x.Id.Value,
                     Name = x.Name,
                     Amount = x.Amount,
+                    Currency = x.Currency,
                     Relation = x.Relation,
                     ForwarderId = x.Forwarder.Id,
                     ForwarderName = $"{x.Forwarder.Name} {x.Forwarder.Surname}",
                     ClientId = x.Client.Id,
-                    ClientName = x.Client.Name
+                    ClientName = x.Client.Name,
+                    IsAbandoned = x.IsAbandoned,
                 })
                 .FirstOrDefaultAsync(ct);
 

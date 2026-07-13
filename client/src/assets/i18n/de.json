@@ -18,6 +18,7 @@
         "PAGE": "Seite",
         "SEARCH_PLACEHOLDER": "Suchphrase...",
         "PAGE_SIZE_PLACEHOLDER": "Seitengröße",
+        "CURRENCY": "Währung",
         "USERS": {
             "LIST_TITLE": "Benutzerliste",
             "EMPTY_LIST": "Keine Benutzer gefunden",
@@ -68,8 +69,7 @@
             "SELECT_PROMPT": "Wählen Sie einen Vertragspartner aus der Liste links, um ihn zu bearbeiten, oder fügen Sie einen neuen hinzu.",
             "CREATE_SUCCESS": "Vertragspartner wurde erfolgreich hinzugefügt!",
             "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
-            "TRADE_LIMIT": "Kreditlimit",
-            "CURRENCY": "Währung"
+            "TRADE_LIMIT": "Kreditlimit"
         },
         "WORK_CASES": {
             "TITLE": "Transportakten",

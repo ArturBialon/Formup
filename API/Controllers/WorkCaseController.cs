@@ -35,10 +35,7 @@ namespace API.Controllers
         public async Task<IActionResult> AddWorkCase([FromBody] CreateWorkCaseCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
-
-            if (result.IsFailure) return HandleResult(result);
-
-            return CreatedAtAction(nameof(GetWorkCaseById), new { id = result.Value!.Id }, result.Value);
+            return HandleResult(result);
         }
 
         [HttpPut]

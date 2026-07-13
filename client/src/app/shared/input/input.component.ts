@@ -68,7 +68,7 @@ export class InputComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const [firstErrorKey] = Object.entries(control.errors)[0];
+      const [firstErrorKey, errorDetails] = Object.entries(control.errors)[0];
       
       let translationKey = '';
       if (firstErrorKey.includes('.') || firstErrorKey === firstErrorKey.toUpperCase()) {
@@ -77,7 +77,10 @@ export class InputComponent implements OnInit, OnDestroy {
         translationKey = this._customErrorMessages[firstErrorKey as keyof ErrorMessage] || '';
       }
 
-      const translatedText = translationKey ? this.translate.instant(translationKey) : '';
+      const translatedText = translationKey 
+        ? this.translate.instant(translationKey, errorDetails) 
+        : '';
+        
       this.errorMessageSignal.set(translatedText);
     };
 
@@ -85,6 +88,7 @@ export class InputComponent implements OnInit, OnDestroy {
 
     this.sub = merge(
       control.statusChanges,
+      control.valueChanges,
       this.translate.onLangChange
     ).subscribe(() => {
       updateError();

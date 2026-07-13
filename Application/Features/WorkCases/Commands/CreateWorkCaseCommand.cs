@@ -1,5 +1,4 @@
 ﻿using Application.Common.Results;
-using Application.DTOs.Response;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -12,20 +11,21 @@ namespace Application.Features.WorkCases.Commands
         string Relation,
         Guid ForwarderId,
         Guid ClientId
-        ) : IRequest<AppResult<WorkCaseResponse>>;
+        ) : IRequest<AppResult<Unit>>;
 
     public class CreateWorkCaseHandler(FormupContext context)
-        : IRequestHandler<CreateWorkCaseCommand, AppResult<WorkCaseResponse>>
+        : IRequestHandler<CreateWorkCaseCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<WorkCaseResponse>> Handle(CreateWorkCaseCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
             var forwarder = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(request.ForwarderId), ct);
-            if (forwarder == null) return AppResult<WorkCaseResponse>.Failure("FORWARDER.NOT_FOUND");
+            if (forwarder == null) return AppResult<Unit>.Failure("FORWARDER.NOT_FOUND");
 
             var client = await _context.Clients.FirstOrDefaultAsync(c => c.Id.Equals(request.ClientId), ct);
-            if (client == null) return AppResult<WorkCaseResponse>.Failure("CLIENT.NOT_FOUND");
+            if (client == null) return AppResult<Unit>.Failure("CLIENT.NOT_FOUND");
+            if (!client.IsActive) return AppResult<Unit>.Failure("CLIENT.IS_INACTIVE");
 
             var totalAmountTaken = await _context.WorkCases
                 .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
@@ -33,7 +33,7 @@ namespace Application.Features.WorkCases.Commands
 
             if (!client.CanAssignAmount(request.Amount, totalAmountTaken, out var exceededBy))
             {
-                return AppResult<WorkCaseResponse>.Failure(
+                return AppResult<Unit>.Failure(
                     "CLIENT.VALIDATION.CREDIT_EXCEEDED",
                     new { ExceededBy = exceededBy }
                 );
@@ -53,19 +53,7 @@ namespace Application.Features.WorkCases.Commands
             var created = _context.WorkCases.Add(workCase);
             await _context.SaveChangesAsync(ct);
 
-            var result = new WorkCaseResponse
-            {
-                Id = created.Entity.Id.Value,
-                Name = name,
-                Amount = request.Amount,
-                Relation = request.Relation,
-                ForwarderId = forwarder.Id.Value,
-                ForwarderName = forwarder.Surname,
-                ClientId = client.Id.Value,
-                ClientName = client.Name,
-            };
-
-            return AppResult<WorkCaseResponse>.Success(result);
+            return AppResult<Unit>.Success(Unit.Value);
         }
 
         private async Task<string> CreateWorkCaseNameAsync(CreateWorkCaseCommand request, User forwarder, CancellationToken ct)
