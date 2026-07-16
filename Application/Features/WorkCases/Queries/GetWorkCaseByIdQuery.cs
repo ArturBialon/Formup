@@ -20,7 +20,7 @@ namespace Application.Features.WorkCases.Queries
                     Id = x.Id.Value,
                     Name = x.Name,
                     Amount = x.Amount,
-                    Currency = x.Currency,
+                    Currency = x.CurrencyCode,
                     Relation = x.Relation,
                     ForwarderId = x.Forwarder.Id,
                     ForwarderName = $"{x.Forwarder.Name} {x.Forwarder.Surname}",

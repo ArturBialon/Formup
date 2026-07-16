@@ -120,9 +120,9 @@
               [required]="true"></app-input>
             <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX" [required]="true"></app-input>
 
-            <div class="field">
-              <label class="light-text">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</label>
-              <select formControlName="role" class="input form-control shadow-none mt-1">
+            <div class="select-wrapper">
+              <span class="mock-label">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</span>
+              <select formControlName="role" class="input form-control shadow-none">
                 @for (role of roles; track role.value) {
                   <option [ngValue]="role.value">
                     {{ 'GUI.USERS.ROLES.' + role.name | translate }}

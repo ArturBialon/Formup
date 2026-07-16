@@ -51,7 +51,7 @@ namespace Application.Features.WorkCases.Queries
                     Id = x.Id.Value,
                     Name = x.Name,
                     Amount = x.Amount,
-                    Currency = x.Currency,
+                    Currency = x.CurrencyCode,
                     Relation = x.Relation,
                     ForwarderName = x.Forwarder.FullName,
                     ClientName = x.Client.Name,

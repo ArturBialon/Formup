@@ -44,7 +44,7 @@ namespace Application.Features.WorkCaseItems.Commands
             {
                 Name = request.Name,
                 Amount = request.Amount,
-                Currency = request.Currency,
+                CurrencyCode = request.Currency,
                 Tax = request.Tax,
                 WorkCase = workCase
             };

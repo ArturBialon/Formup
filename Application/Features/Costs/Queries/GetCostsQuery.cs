@@ -34,7 +34,7 @@ namespace Application.Features.Costs.Queries
             if (!string.IsNullOrWhiteSpace(request.Currency))
             {
                 var currency = request.Currency.Trim().ToUpper();
-                query = query.Where(x => x.Currency == currency);
+                query = query.Where(x => x.CurrencyCode == currency);
             }
 
             if (request.ServiceContractorId.HasValue)
@@ -61,7 +61,7 @@ namespace Application.Features.Costs.Queries
                     Id = c.Id.Value,
                     Name = c.Name,
                     Amount = c.Amount,
-                    Currency = c.Currency,
+                    Currency = c.CurrencyCode,
                     Tax = c.Tax,
                     IssueDate = c.IssueDate,
                     ServiceDate = c.ServiceDate,

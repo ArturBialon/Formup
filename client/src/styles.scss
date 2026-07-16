@@ -32,3 +32,18 @@
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.mock-label {
+  font-size: 14px; 
+  margin-bottom: 4px;
+}
+
+.form-control {
+  height: 38px;
+  box-sizing: border-box;
+}

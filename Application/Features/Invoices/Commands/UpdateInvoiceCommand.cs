@@ -61,7 +61,7 @@ namespace Application.Features.Invoices.Commands
             }
 
             var conversionInputs = requestedItems
-                .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.Currency))
+                .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.CurrencyCode))
                 .ToList();
 
             var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(
@@ -75,9 +75,9 @@ namespace Application.Features.Invoices.Commands
             var conversionData = conversionResult.Value!;
 
             invoice.Amount = conversionData.TotalTargetAmount;
-            invoice.Currency = conversionData.TargetCurrency;
-            invoice.IssueDate = request.IssueDate;
-            invoice.ServiceDate = request.ServiceDate;
+            invoice.CurrencyCode = conversionData.TargetCurrency;
+            invoice.IssueDateUtc = request.IssueDate;
+            invoice.ServiceDateUtc = request.ServiceDate;
             invoice.Tax = request.TaxRate;
 
             await _context.SaveChangesAsync(ct);

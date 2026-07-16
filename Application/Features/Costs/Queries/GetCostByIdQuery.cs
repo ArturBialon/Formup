@@ -21,7 +21,7 @@ namespace Application.Features.Costs.Queries
                 {
                     Id = c.Id.Value,
                     Amount = c.Amount,
-                    Currency = c.Currency,
+                    Currency = c.CurrencyCode,
                     Tax = c.Tax,
                     Name = c.Name,
                     IssueDate = c.IssueDate,

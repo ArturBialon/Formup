@@ -61,7 +61,7 @@ namespace Application.Features.Costs.Commands
             }
 
             cost.Amount = request.Amount;
-            cost.Currency = request.Currency.Trim().ToUpper();
+            cost.CurrencyCode = request.Currency.Trim().ToUpper();
             cost.Tax = request.Tax;
             cost.Name = request.Name.Trim();
             cost.IssueDate = request.IssueDate;

@@ -2377,7 +2377,7 @@ export interface ClientDetailResponse {
     email?: string | null;
     phoneNumber?: string | null;
     credit?: number | null;
-    currency?: string;
+    currencyCode?: string;
     isActive?:boolean | null;
     WorkCases?: { [key: string]: string; };
     Invoices?: { [key: string]: string; };
@@ -2476,8 +2476,8 @@ export interface InvoiceResponse {
     invoiceNumber?: string;
     amount?: number | null;
     currency?: string;
-    issueDate?: Date | string;
-    serviceDate?: Date | string;
+    issueDateUtc?: Date | string;
+    serviceDateUtc?: Date | string;
     tax?: number | null;
     isPaid?:boolean | null;
     isAbandoned?:boolean | null;
@@ -2491,8 +2491,8 @@ export interface InvoiceDetailResponse {
     invoiceNumber?: string;
     amount?: number | null;
     currency?: string;
-    issueDate?: Date | string;
-    serviceDate?: Date | string;
+    issueDateUtc?: Date | string;
+    serviceDateUtc?: Date | string;
     tax?: number | null;
     isAbandoned?:boolean | null;
     workCaseId?: string;
@@ -2508,7 +2508,7 @@ export interface InvoiceItemDetail {
     name?: string;
     amount?: number | null;
     currency?: string;
-    createdAt?: Date | string;
+    createdAtUtc?: Date | string;
 }
 
 export interface CreateInvoiceCommand {
@@ -2662,12 +2662,14 @@ export interface WorkCaseResponse {
 export interface CreateWorkCaseCommand {
     amount?: number | null;
     relation?: string;
+    currencyCode?: string;
     forwarderId?: string;
     clientId?: string;
 }
 
 export interface UpdateWorkCaseCommand {
     amount?: number | null;
+    currencyCode?: string;
     relation?: string;
     forwarderId?: string;
     clientId?: string;
@@ -2680,7 +2682,7 @@ export interface WorkCaseItemResponse {
     amount?: number | null;
     currency?: string;
     tax?: number | null;
-    createdAt?: Date | string;
+    createdAtUtc?: Date | string;
     isInvoiced?:boolean | null;
     invoiceId?: string | null;
     costs?: CostResponse[];

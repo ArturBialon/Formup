@@ -12,7 +12,7 @@ namespace Infrastructure.Configurations
                 .HasColumnType("decimal(12, 2)")
                 .IsRequired();
 
-            entity.Property(e => e.Currency)
+            entity.Property(e => e.CurrencyCode)
                 .IsRequired()
                 .HasMaxLength(3)
                 .IsUnicode(false);

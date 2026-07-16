@@ -1,4 +1,5 @@
-﻿using Application.Common.Results;
+﻿using Application.Common.CurrencyServices;
+using Application.Common.Results;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -9,14 +10,16 @@ namespace Application.Features.WorkCases.Commands
     public record CreateWorkCaseCommand(
         decimal Amount,
         string Relation,
+        string CurrencyCode,
         Guid ForwarderId,
         Guid ClientId
         ) : IRequest<AppResult<Unit>>;
 
-    public class CreateWorkCaseHandler(FormupContext context)
+    public class CreateWorkCaseHandler(FormupContext context, ICurrencyConverterService currencyConverterService)
         : IRequestHandler<CreateWorkCaseCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
+        private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
         public async Task<AppResult<Unit>> Handle(CreateWorkCaseCommand request, CancellationToken ct)
         {
@@ -27,20 +30,22 @@ namespace Application.Features.WorkCases.Commands
             if (client == null) return AppResult<Unit>.Failure("CLIENT.NOT_FOUND");
             if (!client.IsActive) return AppResult<Unit>.Failure("CLIENT.IS_INACTIVE");
 
+            var requestedAmountInPln = await _currencyConverterService.ConvertToTargetCurrency(request.Amount, request.CurrencyCode, "PLN", DateTime.UtcNow, ct);
+
             var totalAmountTaken = await _context.WorkCases
                 .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
                 .Select(wc => new
                 {
-                    wc.Amount,
+                    wc.AmountInPln,
                     PaidAmount = wc.Invoices.Where(i => i.IsPaid).Sum(i => (decimal?)i.AmountInPln) ?? 0m
                 })
-                .SumAsync(x => x.Amount - x.PaidAmount, ct);
+                .SumAsync(x => x.AmountInPln - x.PaidAmount, ct);
 
-            if (!client.CanAssignAmount(request.Amount, totalAmountTaken, out var exceededBy))
+            if (!client.CanAssignAmount(requestedAmountInPln.Value, totalAmountTaken, out var exceededBy))
             {
                 return AppResult<Unit>.Failure(
                     "CLIENT.VALIDATION.CREDIT_EXCEEDED",
-                    new { ExceededBy = exceededBy }
+                    new { ExceededBy = exceededBy } // PLN only
                 );
             }
 
@@ -50,6 +55,8 @@ namespace Application.Features.WorkCases.Commands
             {
                 Name = name,
                 Amount = request.Amount,
+                AmountInPln = requestedAmountInPln.Value,
+                CurrencyCode = request.CurrencyCode,
                 Relation = request.Relation,
                 Forwarder = forwarder,
                 Client = client
@@ -66,7 +73,7 @@ namespace Application.Features.WorkCases.Commands
             var now = DateTime.UtcNow;
 
             var monthlyWorkCaseAmount = await _context.WorkCases
-                .CountAsync(x => x.Forwarder.Id == forwarder.Id && x.CreatedAt.Month == now.Month, ct);
+                .CountAsync(x => x.Forwarder.Id == forwarder.Id && x.CreatedAtUtc.Month == now.Month, ct);
 
             return $"{request.Relation}/{monthlyWorkCaseAmount + 1}/{forwarder.Prefix}/{now.Month}/{now.Year}";
         }

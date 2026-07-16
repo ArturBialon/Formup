@@ -48,7 +48,7 @@ namespace Application.Features.WorkCaseItems.Commands
 
             workCaseItem.Name = request.Name;
             workCaseItem.Amount = request.Amount;
-            workCaseItem.Currency = request.Currency;
+            workCaseItem.CurrencyCode = request.Currency;
             workCaseItem.Tax = request.Tax;
 
             await _context.SaveChangesAsync(ct);

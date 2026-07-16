@@ -32,7 +32,7 @@ namespace Application.Features.Clients.Queries
                     c.Email,
                     c.PhoneNumber,
                     c.Credit,
-                    c.Currency,
+                    c.CurrencyCode,
                     c.IsActive,
                     WorkCases = c.WorkCases
                         .Select(w => new
@@ -70,7 +70,7 @@ namespace Application.Features.Clients.Queries
                 Email = client.Email,
                 PhoneNumber = client.PhoneNumber,
                 Credit = client.Credit,
-                Currency = client.Currency,
+                CurrencyCode = client.CurrencyCode,
                 IsActive = client.IsActive,
                 WorkCases = client.WorkCases.ToDictionary(wc => wc.Id, wc => wc.Name),
                 Invoices = client.Invoices.ToDictionary(inv => inv.Id, inv => inv.InvoiceNumber)

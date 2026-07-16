@@ -8,9 +8,9 @@ namespace Domain.Models
     {
         public required string Name { get; set; }
         public decimal Amount { get; set; }
-        public string Currency { get; set; } = "PLN";
+        public string CurrencyCode { get; set; } = "PLN";
         public decimal Tax { get; set; }
-        public DateTime CreatedAt { get; init; } = DateTime.Now;
+        public DateTime CreatedAtUtc { get; init; } = DateTime.UtcNow;
         public bool IsInvoiced => Invoice != null;
         public bool HasCosts => Costs.Count != 0;
 

@@ -12,8 +12,8 @@
     </div>
     <div class="content-panel">
       @if (!selectedClient()) {
-        <div class="alert alert-info text-center shadow-none m-3" role="alert">
-          {{"GUI.SELECT_CLIENT" | translate}}
+        <div class="client-box-alert">
+          {{ "GUI.SELECT_CLIENT" | translate }}
         </div>
       }
 
@@ -22,31 +22,50 @@
             [style.pointer-events]="selectedClient() && !isSaving() ? 'all' : 'none'">
         
         @if (selectedClient()) {
-          <div class="mb-4 p-3 rounded d-flex justify-content-between align-items-center" 
-              style="background: rgba(0, 55, 128, 0.1); border: 1px solid rgba(255,255,255,0.1);">
-            
-            <div>
-              <strong class="d-block fs-5" 
+          <div class="client-box-selected">
+            <div class="client-info">
+              <strong class="client-name" 
                       [class.text-success]="isClientActive()" 
                       [class.text-danger]="!isClientActive()">
                 {{ selectedClient()?.name }}
               </strong>
-              <span class="text-muted small">NIP: {{ selectedClient()?.tax }}</span>
+              <span class="client-nip">{{"GUI.CONTRACTORS.TAX_NIP" | translate}} : {{ selectedClient()?.tax }}</span>
             </div>
-            <div class="text-end">
-              
+            
+            <div class="client-actions">
             </div>
-
           </div>
         }
 
-        <div class="form-grid d-flex flex-column gap-3">
-          <select class="input form-control shadow-none" formControlName="relation">
-            <option value="SE">SE</option>
-            <option value="SI">SI</option>
-            <option value="NA">NA</option>
-          </select>
+        <div class="form-grid">
           <app-input class="field full-width" controlName="amount" label="GUI.WORK_CASES.AMOUNT" type="number" [required]="true"></app-input>
+          <div class="select-wrapper">
+            <span class="mock-label">{{"GUI.CURRENCY" | translate}}</span>
+            <select class="input form-control shadow-none" formControlName="currency">
+              <option value="PLN">PLN</option>
+              <option value="EUR">EUR</option>
+              <option value="USD">USD</option>
+              <option value="CAD">CAD</option>
+              <option value="GBP">GBP</option>
+              <option value="HKD">HKD</option>
+              <option value="CNY">CNY</option>
+              <option value="HUF">HUF</option>
+              <option value="CHF">CHF</option>
+              <option value="JPY">JPY</option>
+              <option value="CZK">CZK</option>
+              <option value="DKK">DKK</option>
+              <option value="MXN">MXN</option>
+              <option value="ZAR">ZAR</option>
+            </select>
+          </div>
+          <div class="select-wrapper">
+            <span class="mock-label">{{"GUI.WORK_CASES.RELATION" | translate}}</span>
+            <select class="input form-control shadow-none" formControlName="relation">
+              <option value="SE">SE</option>
+              <option value="SI">SI</option>
+              <option value="NA">NA</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-actions d-flex justify-content-end gap-2 mt-4 pt-3 border-top">

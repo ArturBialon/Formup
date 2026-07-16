@@ -41,6 +41,7 @@ export class WorkCaseAddComponent implements OnInit {
     this.workCaseForm = this.fb.group({
       relation: ['SE', Validators.required],
       amount: [0, [Validators.required, Validators.min(0)]],
+      currency: ['PLN', Validators.required],
       clientId: ['', Validators.required],
       forwarderId: ['', Validators.required]
     });

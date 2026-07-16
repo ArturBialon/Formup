@@ -23,9 +23,9 @@ namespace Application.Features.Invoices.Queries
                     Id = i.Id.Value,
                     InvoiceNumber = i.InvoiceNumber,
                     Amount = i.Amount,
-                    Currency = i.Currency,
-                    IssueDate = i.IssueDate,
-                    ServiceDate = i.ServiceDate,
+                    Currency = i.CurrencyCode,
+                    IssueDateUtc = i.IssueDateUtc,
+                    ServiceDateUtc = i.ServiceDateUtc,
                     Tax = i.Tax,
                     IsAbandoned = i.IsAbandoned,
 
@@ -41,7 +41,7 @@ namespace Application.Features.Invoices.Queries
                             ItemId = wi.Id.Value,
                             Name = wi.Name,
                             Amount = wi.Amount,
-                            Currency = wi.Currency
+                            Currency = wi.CurrencyCode
                         })
                         .ToList()
                 })

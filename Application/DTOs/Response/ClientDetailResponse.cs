@@ -14,7 +14,7 @@
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public decimal Credit { get; set; }
-        public string Currency { get; set; } = null!;
+        public string CurrencyCode { get; set; } = null!;
         public bool IsActive { get; set; }
 
         public Dictionary<Guid, string> WorkCases { get; set; } = [];

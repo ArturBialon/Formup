@@ -72,7 +72,7 @@ namespace Application.Features.Clients.Commands
                 Email = request.Email?.Trim(),
                 PhoneNumber = request.PhoneNumber?.Trim(),
                 Credit = calculatedCredit,
-                Currency = "PLN",
+                CurrencyCode = "PLN",
                 IsActive = request.IsActive,
             };
 

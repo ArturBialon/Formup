@@ -74,7 +74,7 @@ namespace Application.Features.Clients.Commands
             client.Email = request.Email?.Trim();
             client.PhoneNumber = request.PhoneNumber?.Trim();
             client.Credit = calculatedCredit;
-            client.Currency = "PLN";
+            client.CurrencyCode = "PLN";
             client.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(ct);

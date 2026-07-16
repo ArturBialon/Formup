@@ -17,7 +17,11 @@ namespace Infrastructure.Configurations
                 .HasColumnType("decimal(12, 2)")
                 .IsRequired();
 
-            entity.Property(e => e.Currency)
+            entity.Property(e => e.AmountInPln)
+                .HasColumnType("decimal(12, 2)")
+                .IsRequired();
+
+            entity.Property(e => e.CurrencyCode)
                 .IsRequired()
                 .HasMaxLength(3)
                 .IsUnicode(false);
@@ -27,7 +31,7 @@ namespace Infrastructure.Configurations
                 .HasMaxLength(2)
                 .IsUnicode(false);
 
-            entity.Property(e => e.CreatedAt)
+            entity.Property(e => e.CreatedAtUtc)
                 .IsRequired()
                 .HasColumnType("datetime");
 

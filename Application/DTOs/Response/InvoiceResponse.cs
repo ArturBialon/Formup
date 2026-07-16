@@ -6,8 +6,8 @@
         public string InvoiceNumber { get; set; } = null!;
         public decimal Amount { get; set; }
         public string Currency { get; set; } = null!;
-        public DateTime IssueDate { get; set; }
-        public DateTime ServiceDate { get; set; }
+        public DateTime IssueDateUtc { get; set; }
+        public DateTime ServiceDateUtc { get; set; }
         public decimal Tax { get; set; }
         public bool IsPaid { get; set; }
         public bool IsAbandoned { get; set; }
