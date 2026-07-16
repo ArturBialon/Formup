@@ -42,7 +42,7 @@
 
         public static string ChangeFirstLetterToLower(this string line)
         {
-            var value = line.Substring(0, 4) + char.ToLower(line[4]) + line.Substring(5);
+            var value = line[..4] + char.ToLower(line[4]) + line.Substring(5);
             return value;
         }
     }

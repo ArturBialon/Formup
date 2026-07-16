@@ -50,12 +50,23 @@ namespace Application.Common.CurrencyServices
 
             var result = new CurrencyConversionResult { TargetCurrency = targetCurrency };
             decimal totalTargetAmount = 0m;
+            decimal totalAmountInPln = 0m;
 
             foreach (var item in items)
             {
                 var itemCurrency = item.Currency.ToUpper().Trim();
                 decimal finalItemAmount;
                 decimal appliedRate;
+
+                if (item.Currency == "PLN")
+                {
+                    totalAmountInPln += item.Amount;
+                }
+                else
+                {
+                    decimal rateFrom = ratesMap[itemCurrency];
+                    totalAmountInPln += decimal.Round(item.Amount * rateFrom, 2);
+                }
 
                 if (itemCurrency == targetCurrency)
                 {
@@ -89,6 +100,7 @@ namespace Application.Common.CurrencyServices
             }
 
             result.TotalTargetAmount = totalTargetAmount;
+            result.TotalAmountInPln = totalAmountInPln;
             return AppResult<CurrencyConversionResult>.Success(result);
         }
 

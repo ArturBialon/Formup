@@ -195,7 +195,7 @@
             "COUNTRY_REQUIRED": "Ländername ist erforderlich.",
             "COUNTRY_TOO_LONG": "Der Ländername darf 54 Zeichen nicht überschreiten.",
             "CREDIT_MIN_VALUE": "Das Kreditlimit darf kein negativer Wert sein.",
-            "CREDIT_EXCEEDED": "Dieser Vorgang überschreitet das aktuelle Kreditlimit des Kunden.",
+            "CREDIT_EXCEEDED": "Dieser Vorgang überschreitet das aktuelle Kreditlimit des Kunden um {{exceededBy}}.",
             "CURRENCY_REQUIRED": "Standard-Währungscode ist erforderlich.",
             "CURRENCY_TOO_LONG": "Der Währungscode muss genau 3 Zeichen lang sein."
         }
@@ -229,7 +229,7 @@
             "WORK_CASE_ID_REQUIRED": "Aktenkennung ist erforderlich.",
             "FORWARDER_ID_REQUIRED": "Die Kennung des zugewiesenen Spediteurs ist erforderlich.",
             "CLIENT_ID_REQUIRED": "Die Kennung des zugewiesenen Kunden ist erforderlich.",
-            "BUDGET_EXCEEDED": "Der Gesamtwert der Positionen überschreitet das definierte Budget für diese Akte.",
+            "BUDGET_EXCEEDED": "Der Gesamtwert der Positionen überschreitet das definierte Budget für diese Akte um {{exceededBy}}.",
             "RELATION": {
                 "REQUIRED": "Transportrelation/Route ist erforderlich.",
                 "INVALID": "Die angegebene Transportrelation ist ungültig oder nicht zulässig."
@@ -270,6 +270,7 @@
         "SOME_ITEMS_NOT_FOUND": "Eine oder mehrere ausgewählte Aktenpositionen wurden nicht gefunden.",
         "SOME_ITEMS_ALREADY_INVOICED": "Eine oder mehrere ausgewählte Positionen wurden bereits einer anderen Rechnung zugewiesen.",
         "NOT_FOUND": "Die angeforderte Rechnung wurde nicht gefunden.",
+        "CANNOT_DELETE_PAID": "Eine bezahlte Rechnung kann nicht geändert werden.",
         "VALIDATION": {
             "ID_REQUIRED": "Rechnungskennung ist erforderlich.",
             "WORK_CASE_ID_REQUIRED": "Die Kennung der zugehörigen Akte ist erforderlich.",

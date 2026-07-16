@@ -1,4 +1,4 @@
-import { Component, Input, inject, computed, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, inject, computed, OnInit, OnDestroy, signal, input } from '@angular/core'; // <-- Dodany import "input"
 import {
   ControlContainer,
   FormControl,
@@ -29,22 +29,21 @@ export class InputComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);
   private sub?: Subscription;
 
-  @Input() controlName: string = '';
-  @Input() label: string = '';
-  @Input() placeholder = '';
-  @Input() disabled: string | undefined;
-  @Input() required = false;
-  @Input() type = 'text';
-  @Input() isMask = false;
-  @Input() autocomplete: string = '';
-  @Input() value: any;
+  controlName = input.required<string>();
+  label = input<string>('');
+  placeholder = input<string>('');
+  disabled = input<string | undefined>(undefined);
+  required = input<boolean>(false);
+  type = input<string>('text');
+  isMask = input<boolean>(false);
+  autocomplete = input<string>('');
+  value = input<any>();
+  customErrorMessages = input<Partial<ErrorMessage>>({});
 
-  private _customErrorMessages: ErrorMessage = DEFAULT_ERROR_MESSAGES;
-
-  @Input()
-  set customErrorMessages(value: Partial<ErrorMessage>) {
-    this._customErrorMessages = { ...DEFAULT_ERROR_MESSAGES, ...value };
-  }
+  private _customErrorMessages = computed(() => ({
+    ...DEFAULT_ERROR_MESSAGES,
+    ...this.customErrorMessages()
+  }));
 
   telephone = createMask({
     mask: '999 999 999',
@@ -52,14 +51,14 @@ export class InputComponent implements OnInit, OnDestroy {
 
   get getControl(): FormControl {
     return this.formGroupDirective.form.controls[
-      this.controlName
+      this.controlName()
     ] as FormControl;
   }
 
   errorMessageSignal = signal<string>('');
 
   ngOnInit() {
-    const control = this.formGroupDirective.form.get(this.controlName);
+    const control = this.formGroupDirective.form.get(this.controlName());
     if (!control) return;
 
     const updateError = () => {
@@ -74,7 +73,7 @@ export class InputComponent implements OnInit, OnDestroy {
       if (firstErrorKey.includes('.') || firstErrorKey === firstErrorKey.toUpperCase()) {
         translationKey = firstErrorKey;
       } else {
-        translationKey = this._customErrorMessages[firstErrorKey as keyof ErrorMessage] || '';
+        translationKey = this._customErrorMessages()[firstErrorKey as keyof ErrorMessage] || '';
       }
 
       const translatedText = translationKey 
@@ -101,11 +100,11 @@ export class InputComponent implements OnInit, OnDestroy {
 
   translatedLabelSignal = computed(() => {
     this.translate.currentLang();
-    return this.label ? this.translate.instant(this.label) : '';
+    return this.label() ? this.translate.instant(this.label()) : '';
   });
 
   translatedPlaceholderSignal = computed(() => {
     this.translate.currentLang();
-    return this.placeholder ? this.translate.instant(this.placeholder) : '';
+    return this.placeholder() ? this.translate.instant(this.placeholder()) : '';
   });
 }

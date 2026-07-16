@@ -70,7 +70,6 @@ namespace Application.Features.Clients.Queries
                     IsActive = client.IsActive
                 })
                 .ToListAsync(ct);
-
             var pagedResult = new PagedResult<ClientListItemResponse>(items, totalCount, request.PageNumber, request.PageSize);
 
             return AppResult<PagedResult<ClientListItemResponse>>.Success(pagedResult);

@@ -13,6 +13,7 @@ namespace Domain.Models
         public required DateTime IssueDate { get; set; }
         public required DateTime ServiceDate { get; set; }
         public string? DocumentUrl { get; set; }
+        public bool IsPaid { get; set; }
 
         public required virtual WorkCaseItem WorkCaseItem { get; set; }
         public required virtual ServiceContractor ServiceContractor { get; set; }

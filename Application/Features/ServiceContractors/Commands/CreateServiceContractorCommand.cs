@@ -1,5 +1,4 @@
 ﻿using Application.Common.Results;
-using Application.DTOs.Response;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -19,19 +18,19 @@ namespace Application.Features.ServiceContractors.Commands
         string? Email,
         string? PhoneNumber,
         bool IsActive
-    ) : IRequest<AppResult<ServiceContractorResponse>>;
+    ) : IRequest<AppResult<Unit>>;
 
     public class CreateServiceContractorHandler(FormupContext context)
-        : IRequestHandler<CreateServiceContractorCommand, AppResult<ServiceContractorResponse>>
+        : IRequestHandler<CreateServiceContractorCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<ServiceContractorResponse>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
         {
             var taxExists = await _context.ServiceContractors.AnyAsync(x => x.Tax == request.Tax, ct);
             if (taxExists)
             {
-                return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
+                return AppResult<Unit>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
             }
 
             var contractor = new ServiceContractor
@@ -52,23 +51,7 @@ namespace Application.Features.ServiceContractors.Commands
             var created = _context.ServiceContractors.Add(contractor);
             await _context.SaveChangesAsync(ct);
 
-            var response = new ServiceContractorResponse
-            {
-                Id = created.Entity.Id.Value,
-                Name = created.Entity.Name,
-                Tax = created.Entity.Tax,
-                Country = created.Entity.Country,
-                City = created.Entity.City,
-                Street = created.Entity.Street,
-                Zip = created.Entity.Zip,
-                HouseNumber = created.Entity.HouseNumber,
-                ApartmentNumber = created.Entity.ApartmentNumber,
-                Email = created.Entity.Email,
-                PhoneNumber = created.Entity.PhoneNumber,
-                IsActive = created.Entity.IsActive
-            };
-
-            return AppResult<ServiceContractorResponse>.Success(response);
+            return AppResult<Unit>.Success(Unit.Value);
         }
     }
 }

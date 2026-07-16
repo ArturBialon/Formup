@@ -195,7 +195,7 @@
       "COUNTRY_REQUIRED": "Nazwa kraju jest wymagana.",
       "COUNTRY_TOO_LONG": "Nazwa kraju nie może przekraczać 54 znaków.",
       "CREDIT_MIN_VALUE": "Limit kredytowy nie może mieć wartości ujemnej.",
-      "CREDIT_EXCEEDED": "Ta operacja powoduje przekroczenie bieżącego limitu kredytowego klienta.",
+      "CREDIT_EXCEEDED": "Ta operacja powoduje przekroczenie bieżącego limitu kredytowego klienta o {{exceededBy}}.",
       "CURRENCY_REQUIRED": "Domyślny kod waluty jest wymagany.",
       "CURRENCY_TOO_LONG": "Kod waluty musi mieć dokładnie 3 znaki."
     }
@@ -229,7 +229,7 @@
       "WORK_CASE_ID_REQUIRED": "Identyfikator teczki jest wymagany.",
       "FORWARDER_ID_REQUIRED": "Identyfikator przypisanego spedytora jest wymagany.",
       "CLIENT_ID_REQUIRED": "Identyfikator przypisanego klienta jest wymagany.",
-      "BUDGET_EXCEEDED": "Łączna wartość pozycji przekracza zdefiniowany budżet dla tej teczki.",
+      "BUDGET_EXCEEDED": "Łączna wartość pozycji przekracza zdefiniowany budżet dla tej teczki o {{exceededBy}}.",
       "RELATION": {
         "REQUIRED": "Trasa/relacja transportowa jest wymagana.",
         "INVALID": "Określona relacja transportowa jest nieprawidłowa lub niedozwolona."
@@ -270,6 +270,7 @@
     "SOME_ITEMS_NOT_FOUND": "Nie znaleziono jednej lub więcej wybranych pozycji teczki.",
     "SOME_ITEMS_ALREADY_INVOICED": "Jedna lub więcej wybranych pozycji została już przypisana do innej faktury.",
     "NOT_FOUND": "Nie znaleziono żądanej faktury.",
+    "CANNOT_DELETE_PAID": "Nie można modyfikować opłaconej faktury",
     "VALIDATION": {
       "ID_REQUIRED": "Identyfikator faktury jest wymagany.",
       "WORK_CASE_ID_REQUIRED": "Identyfikator powiązanej teczki jest wymagany.",

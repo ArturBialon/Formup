@@ -6,46 +6,63 @@
     </app-client-list-selector>
   </div>
 
-  <div class="panel-side side-right panel-card p-3">
-    <div class="panel-header mb-3 border-bottom pb-2">
+  <div class="panel-side side-right panel-card">
+    <div class="panel-header">
       <h5 class="text-white mb-0">{{ 'GUI.WORK_CASES.ADD_NEW_BUTTON' | translate }}</h5>
     </div>
-
-    @if (!selectedClient()) {
-      <div class="alert alert-info text-center shadow-none m-3" role="alert">
-        {{"GUI.SELECT_CLIENT" | translate}}
-      </div>
-    }
-
-    <form [formGroup]="workCaseForm" (ngSubmit)="onSubmit()" class="admin-form" 
-          [style.opacity]="selectedClient() && !isSaving() ? '1' : '0.5'" 
-          [style.pointer-events]="selectedClient() && !isSaving() ? 'all' : 'none'">
-      
-      @if (selectedClient()) {
-        <div class="mb-4 p-3 rounded" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
-          <strong class="text-success d-block fs-5">{{ selectedClient()?.name }}</strong>
-          <span class="text-muted small">NIP: {{ selectedClient()?.tax }}</span>
+    <div class="content-panel">
+      @if (!selectedClient()) {
+        <div class="alert alert-info text-center shadow-none m-3" role="alert">
+          {{"GUI.SELECT_CLIENT" | translate}}
         </div>
       }
 
-      <div class="form-grid d-flex flex-column gap-3">
-        <app-input class="field full-width" controlName="relation" label="GUI.WORK_CASES.RELATION"></app-input>
-        <app-input class="field full-width" controlName="amount" label="GUI.WORK_CASES.AMOUNT" type="number" [required]="true"></app-input>
-      </div>
+      <form [formGroup]="workCaseForm" (ngSubmit)="onSubmit()" class="admin-form" 
+            [style.opacity]="selectedClient() && !isSaving() ? '1' : '0.5'" 
+            [style.pointer-events]="selectedClient() && !isSaving() ? 'all' : 'none'">
+        
+        @if (selectedClient()) {
+          <div class="mb-4 p-3 rounded d-flex justify-content-between align-items-center" 
+              style="background: rgba(0, 55, 128, 0.1); border: 1px solid rgba(255,255,255,0.1);">
+            
+            <div>
+              <strong class="d-block fs-5" 
+                      [class.text-success]="isClientActive()" 
+                      [class.text-danger]="!isClientActive()">
+                {{ selectedClient()?.name }}
+              </strong>
+              <span class="text-muted small">NIP: {{ selectedClient()?.tax }}</span>
+            </div>
+            <div class="text-end">
+              
+            </div>
 
-      <div class="form-actions d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-        <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="/dashboard/workcases" [disabled]="isSaving()">
-          {{ 'GUI.BUTTONS.CANCEL' | translate }}
-        </button>
-        <button class="btn btn-success btn-sm" type="submit" [disabled]="workCaseForm.invalid || isSaving()">
-          @if (isSaving()) {
-            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-          }
-          {{ 'GUI.BUTTONS.CREATE' | translate }}
-        </button>
-      </div>
+          </div>
+        }
 
-    </form>
+        <div class="form-grid d-flex flex-column gap-3">
+          <select class="input form-control shadow-none" formControlName="relation">
+            <option value="SE">SE</option>
+            <option value="SI">SI</option>
+            <option value="NA">NA</option>
+          </select>
+          <app-input class="field full-width" controlName="amount" label="GUI.WORK_CASES.AMOUNT" type="number" [required]="true"></app-input>
+        </div>
+
+        <div class="form-actions d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="/dashboard/workcases" [disabled]="isSaving()">
+            {{ 'GUI.BUTTONS.CANCEL' | translate }}
+          </button>
+          <button class="btn btn-success btn-sm" type="submit" [disabled]="workCaseForm.invalid || isSaving() || !isClientActive()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            }
+            {{ 'GUI.BUTTONS.CREATE' | translate }}
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
 
 </div>

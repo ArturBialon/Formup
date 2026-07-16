@@ -92,7 +92,7 @@
               @for (item of workCases(); track item.id) {
                 <tr 
                   class="clickable-row"
-                  routerLink="/dashboard/workcaseadd"
+                  [routerLink]="['/dashboard/workcase', item.id]"
                   tabindex="0"
                   role="button"
                 >

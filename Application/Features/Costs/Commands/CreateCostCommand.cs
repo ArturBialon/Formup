@@ -16,6 +16,7 @@ namespace Application.Features.Costs.Commands
         string Name,
         DateTime IssueDate,
         DateTime ServiceDate,
+        bool IsPaid,
         Guid WorkCaseItemId,
         Guid ServiceContractorId
     ) : IRequest<IAppResult<Guid>>;
@@ -59,7 +60,8 @@ namespace Application.Features.Costs.Commands
                 ServiceDate = request.ServiceDate,
                 WorkCaseItem = workCaseItem,
                 ServiceContractor = contractor,
-                DocumentUrl = uploadedUrl
+                DocumentUrl = uploadedUrl,
+                IsPaid = request.IsPaid
             };
 
             _context.Costs.Add(cost);

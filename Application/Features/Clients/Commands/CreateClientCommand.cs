@@ -1,6 +1,5 @@
 ﻿using Application.Common.CurrencyServices;
 using Application.Common.Results;
-using Application.DTOs.Response;
 using Domain.Enums;
 using Domain.Models;
 using Infrastructure.Access;
@@ -24,23 +23,23 @@ namespace Application.Features.Clients.Commands
         string? Email = null,
         string? PhoneNumber = null,
         string? CurrencyCode = "PLN"
-    ) : IRequest<IAppResult<ClientResponse>>;
+    ) : IRequest<IAppResult<Unit>>;
 
     public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService, ICurrencyConverterService currencyConverterService)
-    : IRequestHandler<CreateClientCommand, IAppResult<ClientResponse>>
+    : IRequestHandler<CreateClientCommand, IAppResult<Unit>>
     {
         private readonly FormupContext _context = context;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
-        public async Task<IAppResult<ClientResponse>> Handle(CreateClientCommand request, CancellationToken ct)
+        public async Task<IAppResult<Unit>> Handle(CreateClientCommand request, CancellationToken ct)
         {
             var taxExists = await _context.Clients
                 .AnyAsync(x => x.Tax == request.Tax.Trim(), ct);
 
             if (taxExists)
             {
-                return AppResult<ClientResponse>.Failure("CLIENT.TAX_ALREADY_EXISTS");
+                return AppResult<Unit>.Failure("CLIENT.TAX_ALREADY_EXISTS");
             }
 
             decimal calculatedCredit = 0;
@@ -54,7 +53,7 @@ namespace Application.Features.Clients.Commands
                     var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode, "PLN", DateTime.Now, ct);
 
                     if (!calculationResult.IsSuccess)
-                        return AppResult<ClientResponse>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
+                        return AppResult<Unit>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
 
                     calculatedCredit = calculationResult.Value;
                 }
@@ -80,25 +79,8 @@ namespace Application.Features.Clients.Commands
             _context.Clients.Add(client);
             await _context.SaveChangesAsync(ct);
 
-            var responseDto = new ClientResponse
-            {
-                Id = client.Id.Value,
-                Tax = client.Tax,
-                Name = client.Name,
-                Country = client.Country,
-                City = client.City,
-                Zip = client.Zip,
-                Street = client.Street,
-                HouseNumber = client.HouseNumber,
-                ApartmentNumber = client.ApartmentNumber,
-                Email = client.Email,
-                PhoneNumber = client.PhoneNumber,
-                Credit = calculatedCredit,
-                Currency = "PLN",
-                IsActive = client.IsActive
-            };
 
-            return AppResult<ClientResponse>.Success(responseDto);
+            return AppResult<Unit>.Success(Unit.Value);
         }
     }
 }

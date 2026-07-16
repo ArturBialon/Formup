@@ -38,6 +38,10 @@ namespace Infrastructure.Configurations
                 .HasMaxLength(2048)
                 .IsRequired(false);
 
+            entity.Property(e => e.IsPaid)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             entity.HasOne(d => d.WorkCaseItem)
                 .WithMany(p => p.Costs)
                 .OnDelete(DeleteBehavior.Restrict)

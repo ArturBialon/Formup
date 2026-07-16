@@ -27,6 +27,7 @@ namespace Application.Features.Costs.Queries
                     IssueDate = c.IssueDate,
                     ServiceDate = c.ServiceDate,
                     DocumentUrl = c.DocumentUrl,
+                    IsPaid = c.IsPaid,
                     WorkCaseItemId = c.WorkCaseItem.Id.Value,
                     ServiceContractorId = c.ServiceContractor.Id.Value
                 })

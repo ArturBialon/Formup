@@ -29,7 +29,12 @@ namespace Application.Features.WorkCases.Commands
 
             var totalAmountTaken = await _context.WorkCases
                 .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
-                .SumAsync(x => x.Amount, ct);
+                .Select(wc => new
+                {
+                    wc.Amount,
+                    PaidAmount = wc.Invoices.Where(i => i.IsPaid).Sum(i => (decimal?)i.AmountInPln) ?? 0m
+                })
+                .SumAsync(x => x.Amount - x.PaidAmount, ct);
 
             if (!client.CanAssignAmount(request.Amount, totalAmountTaken, out var exceededBy))
             {

@@ -1,5 +1,4 @@
 ﻿using Application.Common.Results;
-using Application.DTOs.Response;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,18 +18,18 @@ namespace Application.Features.ServiceContractors.Commands
         string? Email,
         string? PhoneNumber,
         bool IsActive
-    ) : IRequest<AppResult<ServiceContractorResponse>>;
+    ) : IRequest<AppResult<Unit>>;
 
     public class UpdateServiceContractorHandler(FormupContext context)
-        : IRequestHandler<UpdateServiceContractorCommand, AppResult<ServiceContractorResponse>>
+        : IRequestHandler<UpdateServiceContractorCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<ServiceContractorResponse>> Handle(UpdateServiceContractorCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(UpdateServiceContractorCommand request, CancellationToken ct)
         {
             var contractor = await _context.ServiceContractors.FirstOrDefaultAsync(sc => sc.Id.Equals(request.Id), cancellationToken: ct);
             if (contractor == null)
-                return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.NOT_FOUND");
+                return AppResult<Unit>.Failure("CONTRACTOR.NOT_FOUND");
 
             if (contractor.Tax != request.Tax)
             {
@@ -39,7 +38,7 @@ namespace Application.Features.ServiceContractors.Commands
 
                 if (taxExists)
                 {
-                    return AppResult<ServiceContractorResponse>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
+                    return AppResult<Unit>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
                 }
             }
 
@@ -57,22 +56,7 @@ namespace Application.Features.ServiceContractors.Commands
 
             await _context.SaveChangesAsync(ct);
 
-            var result = new ServiceContractorResponse
-            {
-                Id = contractor.Id.Value,
-                Name = contractor.Name,
-                Tax = contractor.Tax,
-                Country = contractor.Country,
-                City = contractor.City,
-                Zip = contractor.Zip,
-                Street = contractor.Street,
-                HouseNumber = contractor.HouseNumber,
-                ApartmentNumber = contractor.ApartmentNumber,
-                Email = contractor.Email,
-                PhoneNumber = contractor.PhoneNumber
-            };
-
-            return AppResult<ServiceContractorResponse>.Success(result);
+            return AppResult<Unit>.Success(Unit.Value);
         }
     }
 }

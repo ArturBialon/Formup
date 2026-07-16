@@ -38,6 +38,14 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(false);
 
+            entity.Property(e => e.IsPaid)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            entity.Property(e => e.AmountInPln)
+                .HasColumnType("decimal(12, 2)")
+                .IsRequired();
+
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Invoices)
                 .OnDelete(DeleteBehavior.ClientSetNull)

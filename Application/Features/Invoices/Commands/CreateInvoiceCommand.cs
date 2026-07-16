@@ -13,6 +13,7 @@ namespace Application.Features.Invoices.Commands
         DateTime ServiceDate,
         decimal TaxRate,
         string TargetCurrency,
+        bool IsPaid,
         decimal? ManualExchangeRate,
         List<Guid> WorkCaseItemIds
     ) : IRequest<AppResult<InvoiceResponse>>;
@@ -47,11 +48,10 @@ namespace Application.Features.Invoices.Commands
             var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(conversionItems, request.TargetCurrency, request.ManualExchangeRate, request.ServiceDate, ct);
 
             if (conversionResult.IsFailure)
-            {
                 return AppResult<InvoiceResponse>.Failure(conversionResult.ErrorCode, conversionResult.ErrorData);
-            }
 
             var conversionData = conversionResult.Value!;
+
             var invoiceNumber = await CreateInvoiceNumberAsync(workCase.Forwarder, ct);
 
             var invoice = new Invoice
@@ -62,6 +62,8 @@ namespace Application.Features.Invoices.Commands
                 IssueDate = DateTime.Now,
                 ServiceDate = request.ServiceDate,
                 Tax = request.TaxRate,
+                IsPaid = request.IsPaid,
+                AmountInPln = conversionData.TotalTargetAmount,
                 WorkCase = workCase,
                 Client = workCase.Client
             };
@@ -82,6 +84,7 @@ namespace Application.Features.Invoices.Commands
                 IssueDate = invoice.IssueDate,
                 ServiceDate = invoice.ServiceDate,
                 Tax = invoice.Tax,
+                IsPaid = invoice.IsPaid,
                 WorkCaseId = workCase.Id.Value,
                 ClientId = workCase.Client.Id.Value,
                 InvoicedItemIds = [.. itemsToInvoice.Select(x => x.Id.Value)]

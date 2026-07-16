@@ -403,8 +403,8 @@ export class BuggyService implements IBuggyService {
 export interface IClientService {
     getClients(tax: string | null | undefined, name: string | null | undefined, street: string | null | undefined, zip: string | null | undefined, country: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfClientListItemResponse>;
     getClientById(id: string): Observable<ClientDetailResponse>;
-    createClient(command: CreateClientCommand | undefined): Observable<ClientResponse>;
-    updateClient(command: UpdateClientCommand | undefined): Observable<ClientResponse>;
+    createClient(command: CreateClientCommand | undefined): Observable<void>;
+    updateClient(command: UpdateClientCommand | undefined): Observable<void>;
     deleteClient(id: string): Observable<void>;
 }
 
@@ -539,7 +539,7 @@ export class ClientService implements IClientService {
         return _observableOf(null as any);
     }
 
-    createClient(command: CreateClientCommand | undefined): Observable<ClientResponse> {
+    createClient(command: CreateClientCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Client/CreateClient";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -551,7 +551,6 @@ export class ClientService implements IClientService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -562,14 +561,14 @@ export class ClientService implements IClientService {
                 try {
                     return this.processCreateClient(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ClientResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ClientResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processCreateClient(response: HttpResponseBase): Observable<ClientResponse> {
+    protected processCreateClient(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -578,9 +577,7 @@ export class ClientService implements IClientService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ClientResponse;
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -590,7 +587,7 @@ export class ClientService implements IClientService {
         return _observableOf(null as any);
     }
 
-    updateClient(command: UpdateClientCommand | undefined): Observable<ClientResponse> {
+    updateClient(command: UpdateClientCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Client/UpdateClient";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -602,7 +599,6 @@ export class ClientService implements IClientService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -613,14 +609,14 @@ export class ClientService implements IClientService {
                 try {
                     return this.processUpdateClient(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ClientResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ClientResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processUpdateClient(response: HttpResponseBase): Observable<ClientResponse> {
+    protected processUpdateClient(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -629,9 +625,7 @@ export class ClientService implements IClientService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ClientResponse;
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -691,7 +685,7 @@ export class ClientService implements IClientService {
 }
 
 export interface ICostService {
-    getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined): Observable<PagedResultOfCostDetailResponse>;
+    getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined, isPaid: boolean | null | undefined): Observable<PagedResultOfCostDetailResponse>;
     getCostById(id: string): Observable<CostDetailResponse>;
     createCost(command: CreateCostCommand | undefined): Observable<void>;
     updateCost(command: UpdateCostCommand | undefined): Observable<void>;
@@ -711,7 +705,7 @@ export class CostService implements ICostService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined): Observable<PagedResultOfCostDetailResponse> {
+    getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined, isPaid: boolean | null | undefined): Observable<PagedResultOfCostDetailResponse> {
         let url_ = this.baseUrl + "/api/Cost/GetCosts?";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
@@ -731,6 +725,8 @@ export class CostService implements ICostService {
             url_ += "DateFrom=" + encodeURIComponent(dateFrom ? "" + dateFrom.toISOString() : "") + "&";
         if (dateTo !== undefined && dateTo !== null)
             url_ += "DateTo=" + encodeURIComponent(dateTo ? "" + dateTo.toISOString() : "") + "&";
+        if (isPaid !== undefined && isPaid !== null)
+            url_ += "IsPaid=" + encodeURIComponent("" + isPaid) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -981,8 +977,8 @@ export class CostService implements ICostService {
 export interface IInvoiceService {
     getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse>;
     getInvoiceById(invoiceId: string): Observable<InvoiceDetailResponse>;
-    createInvoice(command: CreateInvoiceCommand | undefined): Observable<InvoiceResponse>;
-    updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse>;
+    createInvoice(command: CreateInvoiceCommand | undefined): Observable<void>;
+    updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<void>;
     deleteInvoice(invoiceId: string): Observable<void>;
 }
 
@@ -1129,7 +1125,7 @@ export class InvoiceService implements IInvoiceService {
         return _observableOf(null as any);
     }
 
-    createInvoice(command: CreateInvoiceCommand | undefined): Observable<InvoiceResponse> {
+    createInvoice(command: CreateInvoiceCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Invoice/CreateInvoice";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1141,7 +1137,6 @@ export class InvoiceService implements IInvoiceService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -1152,14 +1147,14 @@ export class InvoiceService implements IInvoiceService {
                 try {
                     return this.processCreateInvoice(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<InvoiceResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<InvoiceResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processCreateInvoice(response: HttpResponseBase): Observable<InvoiceResponse> {
+    protected processCreateInvoice(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1168,9 +1163,7 @@ export class InvoiceService implements IInvoiceService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as InvoiceResponse;
-            return _observableOf(result201);
+            return _observableOf(null as any);
             }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1184,7 +1177,7 @@ export class InvoiceService implements IInvoiceService {
         return _observableOf(null as any);
     }
 
-    updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<InvoiceResponse> {
+    updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/Invoice/UpdateInvoice";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1196,7 +1189,6 @@ export class InvoiceService implements IInvoiceService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -1207,14 +1199,14 @@ export class InvoiceService implements IInvoiceService {
                 try {
                     return this.processUpdateInvoice(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<InvoiceResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<InvoiceResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processUpdateInvoice(response: HttpResponseBase): Observable<InvoiceResponse> {
+    protected processUpdateInvoice(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1223,9 +1215,7 @@ export class InvoiceService implements IInvoiceService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as InvoiceResponse;
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1295,7 +1285,7 @@ export class InvoiceService implements IInvoiceService {
 export interface IServiceContractorService {
     getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfServiceContractorResponse>;
     getServiceContractorById(id: string): Observable<ServiceContractorResponse>;
-    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<ServiceContractorResponse>;
+    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<void>;
     editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<void>;
     deleteServiceContractor(id: string): Observable<void>;
 }
@@ -1433,7 +1423,7 @@ export class ServiceContractorService implements IServiceContractorService {
         return _observableOf(null as any);
     }
 
-    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<ServiceContractorResponse> {
+    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/ServiceContractor/AddServiceContractor";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1445,7 +1435,6 @@ export class ServiceContractorService implements IServiceContractorService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -1456,14 +1445,14 @@ export class ServiceContractorService implements IServiceContractorService {
                 try {
                     return this.processAddServiceContractor(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ServiceContractorResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ServiceContractorResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processAddServiceContractor(response: HttpResponseBase): Observable<ServiceContractorResponse> {
+    protected processAddServiceContractor(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1472,9 +1461,7 @@ export class ServiceContractorService implements IServiceContractorService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ServiceContractorResponse;
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1841,7 +1828,7 @@ export class UserService implements IUserService {
 export interface IWorkCaseService {
     getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderName: string | null | undefined, clientName: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
     getWorkCaseById(id: string): Observable<WorkCaseResponse>;
-    addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
+    addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<void>;
     editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
     abandonWorkCase(id: string): Observable<WorkCaseResponse>;
     getItemsForWorkCase(workCaseId: string): Observable<WorkCaseItemResponse[]>;
@@ -1979,7 +1966,7 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<WorkCaseResponse> {
+    addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/WorkCase/AddWorkCase";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1991,7 +1978,6 @@ export class WorkCaseService implements IWorkCaseService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -2002,14 +1988,14 @@ export class WorkCaseService implements IWorkCaseService {
                 try {
                     return this.processAddWorkCase(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<WorkCaseResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<WorkCaseResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processAddWorkCase(response: HttpResponseBase): Observable<WorkCaseResponse> {
+    protected processAddWorkCase(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2018,9 +2004,7 @@ export class WorkCaseService implements IWorkCaseService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as WorkCaseResponse;
-            return _observableOf(result201);
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2399,23 +2383,6 @@ export interface ClientDetailResponse {
     Invoices?: { [key: string]: string; };
 }
 
-export interface ClientResponse {
-    id?: string;
-    tax?: string;
-    name?: string;
-    country?: string;
-    city?: string;
-    zip?: string;
-    street?: string;
-    houseNumber?: string;
-    apartmentNumber?: string | null;
-    email?: string | null;
-    phoneNumber?: string | null;
-    credit?: number | null;
-    currency?: string;
-    isActive?:boolean | null;
-}
-
 export interface CreateClientCommand {
     tax?: string;
     name?: string;
@@ -2465,6 +2432,7 @@ export interface CostDetailResponse {
     issueDate?: Date | string;
     serviceDate?: Date | string;
     documentUrl?: string | null;
+    isPaid?:boolean | null;
     workCaseItemId?: string;
     serviceContractorId?: string;
 }
@@ -2477,6 +2445,7 @@ export interface CreateCostCommand {
     name?: string;
     issueDate?: Date | string;
     serviceDate?: Date | string;
+    isPaid?:boolean | null;
     workCaseItemId?: string;
     serviceContractorId?: string;
 }
@@ -2490,6 +2459,7 @@ export interface UpdateCostCommand {
     name?: string;
     issueDate?: Date | string;
     serviceDate?: Date | string;
+    isPaid?:boolean | null;
     workCaseItemId?: string;
     serviceContractorId?: string;
 }
@@ -2509,6 +2479,7 @@ export interface InvoiceResponse {
     issueDate?: Date | string;
     serviceDate?: Date | string;
     tax?: number | null;
+    isPaid?:boolean | null;
     isAbandoned?:boolean | null;
     workCaseId?: string;
     clientId?: string;
@@ -2545,6 +2516,7 @@ export interface CreateInvoiceCommand {
     serviceDate?: Date | string;
     taxRate?: number | null;
     targetCurrency?: string;
+    isPaid?:boolean | null;
     manualExchangeRate?: number | null;
     workCaseItemIds?: string[];
 }

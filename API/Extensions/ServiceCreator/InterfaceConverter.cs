@@ -10,7 +10,7 @@
                 lines = [];
                 while (!reader.EndOfStream)
                 {
-                    lines.Add(reader.ReadLine());
+                    lines.Add(reader.ReadLine() ?? "//null line");
                 }
             }
 

@@ -195,7 +195,7 @@
       "COUNTRY_REQUIRED": "Country name is required.",
       "COUNTRY_TOO_LONG": "Country name cannot exceed 54 characters.",
       "CREDIT_MIN_VALUE": "Credit limit cannot be a negative value.",
-      "CREDIT_EXCEEDED": "This operation exceeds the client's current credit limit threshold.",
+      "CREDIT_EXCEEDED": "This operation exceeds the client's current credit limit threshold by {{exceededBy}}.",
       "CURRENCY_REQUIRED": "Default currency code is required.",
       "CURRENCY_TOO_LONG": "Currency code must be exactly 3 characters long."
     }
@@ -229,7 +229,7 @@
       "WORK_CASE_ID_REQUIRED": "Work case identifier is required.",
       "FORWARDER_ID_REQUIRED": "Forwarder assignment identifier is required.",
       "CLIENT_ID_REQUIRED": "Client assignment identifier is required.",
-      "BUDGET_EXCEEDED": "The total value of positions exceeds the defined budget for this work case.",
+      "BUDGET_EXCEEDED": "The total value of positions exceeds the defined budget for this work case by {{exceededBy}}.",
       "RELATION": {
         "REQUIRED": "Transportation relation path is required.",
         "INVALID": "The specified transportation relation is invalid or not allowed."
@@ -270,6 +270,7 @@
     "SOME_ITEMS_NOT_FOUND": "One or more selected work case items could not be found.",
     "SOME_ITEMS_ALREADY_INVOICED": "One or more selected items have already been linked to another invoice.",
     "NOT_FOUND": "The requested invoice could not be found.",
+    "CANNOT_DELETE_PAID": "You cannot modify a paid invoice.",
     "VALIDATION": {
       "ID_REQUIRED": "Invoice identifier is required.",
       "WORK_CASE_ID_REQUIRED": "Work case reference identifier is required.",
