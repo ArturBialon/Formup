@@ -1,5 +1,6 @@
 ﻿using Application.Common.CurrencyServices;
 using Application.Common.Results;
+using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,8 +35,7 @@ namespace Application.Features.WorkCases.Commands
             if (request.Amount != workCase.Amount || request.CurrencyCode != workCase.CurrencyCode)
             {
                 var requestedAmountInPln = await _currencyConverterService.ConvertToTargetCurrency(request.Amount, request.CurrencyCode, "PLN", DateTime.UtcNow, ct);
-
-                var totalAmountTaken = await _context.WorkCases
+                var totalAmountTakenInPln = await _context.WorkCases
                                 .Where(x => x.Client.Id == client.Id && !x.Id.Equals(request.WorkCaseId) && !x.IsAbandoned)
                                 .Select(wc => new
                                 {
@@ -44,11 +44,11 @@ namespace Application.Features.WorkCases.Commands
                                 })
                                 .SumAsync(x => x.AmountInPln - x.PaidAmount, ct);
 
-                if (!client.CanAssignAmount(requestedAmountInPln.Value, totalAmountTaken, out var exceededBy))
+                if (!Client.CanAssignAmount(requestedAmountInPln.Value, totalAmountTakenInPln, client.CreditInPln, out var exceededBy))
                 {
                     return AppResult<Unit>.Failure(
                         "CLIENT.VALIDATION.CREDIT_EXCEEDED",
-                        new { ExceededBy = exceededBy }
+                        new { ExceededBy = exceededBy } // PLN only
                     );
                 }
 

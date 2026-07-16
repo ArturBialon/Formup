@@ -83,7 +83,8 @@
             "STATUS_ALL": "Alle Status",
             "STATUS_ACTIVE": "Aktiv",
             "STATUS_ABANDONED": "Abgebrochen",
-            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden"
+            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden",
+            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",

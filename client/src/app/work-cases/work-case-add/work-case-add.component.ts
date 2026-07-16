@@ -41,7 +41,7 @@ export class WorkCaseAddComponent implements OnInit {
     this.workCaseForm = this.fb.group({
       relation: ['SE', Validators.required],
       amount: [0, [Validators.required, Validators.min(0)]],
-      currency: ['PLN', Validators.required],
+      currencyCode: ['PLN', Validators.required],
       clientId: ['', Validators.required],
       forwarderId: ['', Validators.required]
     });
@@ -80,7 +80,7 @@ export class WorkCaseAddComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.notation.success('GUI.WORK_CASE.CREATE_SUCCESS');
+          this.notation.success('GUI.WORK_CASES.CREATE_SUCCESS');
           this.isSaving.set(false);
         },
         error: (err) => {

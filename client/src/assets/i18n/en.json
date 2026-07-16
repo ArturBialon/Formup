@@ -83,7 +83,8 @@
       "STATUS_ALL": "All Statuses",
       "STATUS_ACTIVE": "Active",
       "STATUS_ABANDONED": "Abandoned",
-      "EMPTY_LIST": "No work cases found on the list"
+      "EMPTY_LIST": "No work cases found on the list",
+      "CREATE_SUCCESS": "Work case successfully created"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",

@@ -42,21 +42,18 @@ namespace Application.Features.Clients.Commands
                 return AppResult<Unit>.Failure("CLIENT.TAX_ALREADY_EXISTS");
             }
 
+            decimal assignableCredit = 0;
             decimal calculatedCredit = 0;
 
             if (_currentUserService.Role == UserRole.Verifier.ToString())
             {
-                calculatedCredit = request.Credit;
+                var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode ?? "PLN", "PLN", DateTime.UtcNow, ct);
 
-                if (request.CurrencyCode != null && request.CurrencyCode != "PLN")
-                {
-                    var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode, "PLN", DateTime.Now, ct);
+                if (!calculationResult.IsSuccess)
+                    return AppResult<Unit>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
 
-                    if (!calculationResult.IsSuccess)
-                        return AppResult<Unit>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
-
-                    calculatedCredit = calculationResult.Value;
-                }
+                calculatedCredit = calculationResult.Value;
+                assignableCredit = request.Credit;
             }
 
             var client = new Client
@@ -71,8 +68,9 @@ namespace Application.Features.Clients.Commands
                 ApartmentNumber = request.ApartmentNumber?.Trim(),
                 Email = request.Email?.Trim(),
                 PhoneNumber = request.PhoneNumber?.Trim(),
-                Credit = calculatedCredit,
-                CurrencyCode = "PLN",
+                Credit = assignableCredit,
+                CreditInPln = calculatedCredit,
+                CurrencyCode = request.CurrencyCode,
                 IsActive = request.IsActive,
             };
 

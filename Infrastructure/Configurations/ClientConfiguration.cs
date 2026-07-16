@@ -11,6 +11,9 @@ namespace Infrastructure.Configurations
             entity.Property(e => e.Credit)
                 .HasColumnType("decimal(12, 2)");
 
+            entity.Property(e => e.CreditInPln)
+                .HasColumnType("decimal(12, 2)");
+
             entity.Property(e => e.CurrencyCode)
                 .IsRequired()
                 .HasMaxLength(3)

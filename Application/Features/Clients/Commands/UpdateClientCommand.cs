@@ -48,19 +48,18 @@ namespace Application.Features.Clients.Commands
 
             decimal calculatedCredit = client.Credit;
 
-            if (_currentUserService.Role == UserRole.Verifier.ToString())
+            if (_currentUserService.Role == UserRole.Verifier.ToString() || (request.Credit == client.Credit && request.CurrencyCode == client.CurrencyCode))
             {
                 calculatedCredit = request.Credit;
+                var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode!, "PLN", DateTime.UtcNow, ct);
 
-                if (request.CurrencyCode != null && request.CurrencyCode != "PLN")
-                {
-                    var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode, "PLN", DateTime.Now, ct);
+                if (!calculationResult.IsSuccess)
+                    return AppResult<Unit>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
 
-                    if (!calculationResult.IsSuccess)
-                        return AppResult<Unit>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
-
-                    calculatedCredit = calculationResult.Value;
-                }
+                calculatedCredit = calculationResult.Value;
+                client.Credit = request.Credit;
+                client.CreditInPln = calculatedCredit;
+                client.CurrencyCode = request.CurrencyCode;
             }
 
             client.Tax = request.Tax.Trim();
@@ -73,8 +72,6 @@ namespace Application.Features.Clients.Commands
             client.ApartmentNumber = request.ApartmentNumber?.Trim();
             client.Email = request.Email?.Trim();
             client.PhoneNumber = request.PhoneNumber?.Trim();
-            client.Credit = calculatedCredit;
-            client.CurrencyCode = "PLN";
             client.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(ct);

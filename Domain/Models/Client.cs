@@ -23,18 +23,23 @@ namespace Domain.Models
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public decimal Credit { get; set; }
+        public decimal CreditInPln { get; set; }
         public string CurrencyCode { get; set; } = "PLN";
         public bool IsActive { get; set; } = false;
 
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<WorkCase> WorkCases { get; set; }
 
-        public bool CanAssignAmount(decimal requestedAmount, decimal currentActiveUsage, out decimal exceededBy)
+        public static bool CanAssignAmount(
+            decimal requestedAmountInPln,
+            decimal currentActiveUsageInPln,
+            decimal clientCreditInPln,
+            out decimal exceededBy)
         {
-            var availableCredit = Credit - currentActiveUsage;
-            if (requestedAmount > availableCredit)
+            var availableCredit = clientCreditInPln - currentActiveUsageInPln;
+            if (requestedAmountInPln > availableCredit)
             {
-                exceededBy = requestedAmount - availableCredit;
+                exceededBy = requestedAmountInPln - availableCredit;
                 return false;
             }
 

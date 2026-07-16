@@ -94,7 +94,8 @@
       "STATUS_ALL": "Wszystkie statusy",
       "STATUS_ACTIVE": "Aktywne",
       "STATUS_ABANDONED": "Porzucone",
-      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria"
+      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
+      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę"
     }
   },
   "LOGIN": {

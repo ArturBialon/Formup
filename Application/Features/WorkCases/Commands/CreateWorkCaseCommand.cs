@@ -31,17 +31,16 @@ namespace Application.Features.WorkCases.Commands
             if (!client.IsActive) return AppResult<Unit>.Failure("CLIENT.IS_INACTIVE");
 
             var requestedAmountInPln = await _currencyConverterService.ConvertToTargetCurrency(request.Amount, request.CurrencyCode, "PLN", DateTime.UtcNow, ct);
+            var totalAmountTakenInPln = await _context.WorkCases
+                            .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
+                            .Select(wc => new
+                            {
+                                wc.AmountInPln,
+                                PaidAmount = wc.Invoices.Where(i => i.IsPaid).Sum(i => (decimal?)i.AmountInPln) ?? 0m
+                            })
+                            .SumAsync(x => x.AmountInPln - x.PaidAmount, ct);
 
-            var totalAmountTaken = await _context.WorkCases
-                .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
-                .Select(wc => new
-                {
-                    wc.AmountInPln,
-                    PaidAmount = wc.Invoices.Where(i => i.IsPaid).Sum(i => (decimal?)i.AmountInPln) ?? 0m
-                })
-                .SumAsync(x => x.AmountInPln - x.PaidAmount, ct);
-
-            if (!client.CanAssignAmount(requestedAmountInPln.Value, totalAmountTaken, out var exceededBy))
+            if (!Client.CanAssignAmount(requestedAmountInPln.Value, totalAmountTakenInPln, client.CreditInPln, out var exceededBy))
             {
                 return AppResult<Unit>.Failure(
                     "CLIENT.VALIDATION.CREDIT_EXCEEDED",
