@@ -228,6 +228,8 @@
   },
   "WORK_CASE": {
     "NOT_FOUND": "The specified work case could not be found.",
+    "CANNOT_ABANDON_INVOICED": "Cannot abandon workcase with issued invoice.",
+    "CANNOT_ABANDON_HAS_ITEMS": "Cannot abandon workcase with cost items.",
     "VALIDATION": {
       "WORK_CASE_ID_REQUIRED": "Work case identifier is required.",
       "FORWARDER_ID_REQUIRED": "Forwarder assignment identifier is required.",

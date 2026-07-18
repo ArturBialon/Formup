@@ -14,6 +14,8 @@ namespace Application.Features.WorkCases.Commands
         {
             var workCase = await _context.WorkCases.FirstOrDefaultAsync(wc => wc.Id.Equals(request.WorkCaseId), cancellationToken: ct);
             if (workCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
+            if (workCase.Invoices.Count != 0) return AppResult<Unit>.Failure("WORK_CASE.CANNOT_ABANDON_INVOICED");
+            if (workCase.WorkCaseItems.Count != 0) return AppResult<Unit>.Failure("WORK_CASE.CANNOT_ABANDON_HAS_ITEMS");
 
             workCase.IsAbandoned = true;
             await _context.SaveChangesAsync(ct);

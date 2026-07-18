@@ -227,6 +227,8 @@
     }
   },
   "WORK_CASE": {
+    "CANNOT_ABANDON_INVOICED": "Nie można porzucić teczki, do której została wystawiona faktura",
+    "CANNOT_ABANDON_HAS_ITEMS": "Nie można porzucić teczki, do której zostały przypisane elementy kosztowe",
     "NOT_FOUND": "Nie znaleziono określonej teczki.",
     "VALIDATION": {
       "WORK_CASE_ID_REQUIRED": "Identyfikator teczki jest wymagany.",

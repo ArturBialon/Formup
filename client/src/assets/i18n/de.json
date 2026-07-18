@@ -228,6 +228,8 @@
     },
     "WORK_CASE": {
         "NOT_FOUND": "Die angegebene Akte wurde nicht gefunden.",
+        "CANNOT_ABANDON_INVOICED": "Ein Arbeitsfall kann nicht abgebrochen werden, wenn bereits eine Rechnung ausgestellt wurde.",
+        "CANNOT_ABANDON_HAS_ITEMS": "Ein Arbeitsfall mit Kostenpositionen kann nicht abgebrochen werden.",
         "VALIDATION": {
             "WORK_CASE_ID_REQUIRED": "Aktenkennung ist erforderlich.",
             "FORWARDER_ID_REQUIRED": "Die Kennung des zugewiesenen Spediteurs ist erforderlich.",

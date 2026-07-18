@@ -1,4 +1,5 @@
-﻿using Application.Common.Results;
+﻿using Application.Common.CurrencyServices;
+using Application.Common.Results;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,17 @@ namespace Application.Features.WorkCaseItems.Commands
         Guid WorkCaseItemId,
         string Name,
         decimal Amount,
-        string Currency,
+        string InvoiceCurrencyCode,
+        decimal CostAmountNet,
+        string CostCurrencyCode,
         decimal Tax
     ) : IRequest<AppResult<Unit>>;
 
-    public class UpdateWorkCaseItemHandler(FormupContext context)
+    public class UpdateWorkCaseItemHandler(FormupContext context, ICurrencyConverterService currencyConverterService)
         : IRequestHandler<UpdateWorkCaseItemCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
+        private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
         public async Task<AppResult<Unit>> Handle(UpdateWorkCaseItemCommand request, CancellationToken ct)
         {
@@ -29,27 +33,43 @@ namespace Application.Features.WorkCaseItems.Commands
             if (workCaseItem.IsInvoiced) return AppResult<Unit>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
 
             var workCase = workCaseItem.WorkCase;
-
             if (workCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
 
-            var otherItemsTotalUsage = await _context.WorkCaseItems
+            var otherWorkCaseItems = await _context.WorkCaseItems
                 .Where(x => x.WorkCase.Id.Equals(workCase.Id) && !x.Id.Equals(request.WorkCaseItemId))
-                .SumAsync(x => x.Amount, ct);
+                .ToListAsync(ct);
 
-            var availableBudget = workCase.Amount - otherItemsTotalUsage;
+            var currencyConversionInputs = otherWorkCaseItems
+                .Select(x => new CurrencyConversionInput(x.Id, x.AmountToInvoice, x.CurrencyCodeInvoice))
+                .ToList();
 
-            if (request.Amount > availableBudget)
+            var otherItemsUsageResult = await _currencyConverterService.ConvertCurrenciesAsync(currencyConversionInputs, "PLN", null, DateTime.UtcNow, ct);
+            if (otherItemsUsageResult.IsFailure)
+                return AppResult<Unit>.Failure(otherItemsUsageResult.ErrorCode, otherItemsUsageResult.ErrorData);
+
+            var requestedAmountInPln = await _currencyConverterService.ConvertToTargetCurrency(request.Amount, request.InvoiceCurrencyCode, "PLN", DateTime.UtcNow, ct);
+            if (requestedAmountInPln.IsFailure)
+                return AppResult<Unit>.Failure(requestedAmountInPln.ErrorCode, requestedAmountInPln.ErrorData);
+
+            var availableBudgetInPln = workCase.AmountInPln - otherItemsUsageResult.Value!.TotalTargetAmount;
+
+            if (requestedAmountInPln.Value > availableBudgetInPln)
             {
+                var exceededByPln = requestedAmountInPln.Value - availableBudgetInPln;
+                var exceededByTargetCurrency = await _currencyConverterService.ConvertToTargetCurrency(exceededByPln, "PLN", request.InvoiceCurrencyCode, DateTime.UtcNow, ct);
+
                 return AppResult<Unit>.Failure(
                     "WORK_CASE.VALIDATION.BUDGET_EXCEEDED",
-                    new { ExceededBy = request.Amount - availableBudget }
+                    new { ExceededBy = exceededByTargetCurrency.Value, Currency = request.InvoiceCurrencyCode }
                 );
             }
 
             workCaseItem.Name = request.Name;
-            workCaseItem.Amount = request.Amount;
-            workCaseItem.CurrencyCode = request.Currency;
-            workCaseItem.Tax = request.Tax;
+            workCaseItem.AmountToInvoice = request.Amount;
+            workCaseItem.CurrencyCodeInvoice = request.InvoiceCurrencyCode;
+            workCaseItem.CostAmountNet = request.CostAmountNet;
+            workCaseItem.CurrencyCodeCost = request.CostCurrencyCode;
+            workCaseItem.TaxInvoice = request.Tax;
 
             await _context.SaveChangesAsync(ct);
 

@@ -30,9 +30,9 @@ namespace Application.Features.WorkCaseItems.Queries
                 {
                     Id = x.Id.Value,
                     Name = x.Name,
-                    Amount = x.Amount,
-                    Currency = x.CurrencyCode,
-                    Tax = x.Tax,
+                    Amount = x.AmountToInvoice,
+                    Currency = x.CurrencyCodeInvoice,
+                    Tax = x.TaxInvoice,
                     CreatedAtUtc = x.CreatedAtUtc,
                     InvoiceId = x.Invoice != null ? x.Invoice.Id : null,
                     Costs = x.Costs.Select(c => new CostResponse

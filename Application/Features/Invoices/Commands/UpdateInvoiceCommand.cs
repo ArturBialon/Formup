@@ -61,7 +61,7 @@ namespace Application.Features.Invoices.Commands
             }
 
             var conversionInputs = requestedItems
-                .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.CurrencyCode))
+                .Select(x => new CurrencyConversionInput(x.Id.Value, x.AmountToInvoice, x.CurrencyCodeInvoice))
                 .ToList();
 
             var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(

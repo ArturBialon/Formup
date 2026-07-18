@@ -40,8 +40,8 @@ namespace Application.Features.Invoices.Queries
                         {
                             ItemId = wi.Id.Value,
                             Name = wi.Name,
-                            Amount = wi.Amount,
-                            Currency = wi.CurrencyCode
+                            Amount = wi.AmountToInvoice,
+                            Currency = wi.CurrencyCodeInvoice
                         })
                         .ToList()
                 })
