@@ -107,11 +107,17 @@ export class ClientsComponent {
   }
 
   private checkCreditAccess() {
-    const control = this.clientForm.get('credit');
+    const creditControl = this.clientForm.get('credit');
     if (this.canManageCredit()) {
-      control?.enable();
+      creditControl?.enable();
     } else {
-      control?.disable();
+      creditControl?.disable();
+    }
+    const currencyControl = this.clientForm.get('currency');
+    if (this.canManageCredit()) {
+      currencyControl?.enable();
+    } else {
+      currencyControl?.disable();
     }
   }
 

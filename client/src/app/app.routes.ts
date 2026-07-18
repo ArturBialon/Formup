@@ -9,6 +9,7 @@ import { ClientsComponent } from './clients/clients.component';
 import { WorkCaseListComponent } from './work-cases/work-case-list/work-case-list.component';
 import { WorkCaseAddComponent } from './work-cases/work-case-add/work-case-add.component';
 import { WorkCaseDetailsComponent } from './work-cases/work-case-details/work-case-details.component';
+import { WorkCaseEditComponent } from './work-cases/work-case-edit/work-case-edit.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -39,13 +40,17 @@ export const routes: Routes = [
         canActivate: [authGuard]
       },
       { 
-        path: 'workcaseadd', 
+        path: 'workcase/add', 
         component: WorkCaseAddComponent,
         canActivate: [authGuard]
       },
       { 
         path: 'workcase/:id', 
         component: WorkCaseDetailsComponent,
+        canActivate: [authGuard]
+      },
+      { path: 'workcase/:id/edit',
+        component: WorkCaseEditComponent ,
         canActivate: [authGuard]
       },
     ],

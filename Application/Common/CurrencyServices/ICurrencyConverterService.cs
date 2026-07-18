@@ -6,14 +6,14 @@ namespace Application.Common.CurrencyServices
     {
         Task<AppResult<decimal>> ConvertToTargetCurrency(
             decimal totalTargetAmount,
-            string currency,
+            string currencyCode,
             string targetCurrency,
             DateTime serviceDate,
             CancellationToken ct);
 
         Task<AppResult<CurrencyConversionResult>> ConvertCurrenciesAsync(
             List<CurrencyConversionInput> items,
-            string targetCurrency,
+            string targetCurrencyCode,
             decimal? manualExchangeRate,
             DateTime serviceDate,
             CancellationToken ct);

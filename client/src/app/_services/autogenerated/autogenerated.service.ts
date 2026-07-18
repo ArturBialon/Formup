@@ -1827,10 +1827,10 @@ export class UserService implements IUserService {
 
 export interface IWorkCaseService {
     getWorkCases(pageNumber: number | undefined, pageSize: number | undefined, relation: string | null | undefined, forwarderName: string | null | undefined, clientName: string | null | undefined, name: string | null | undefined, isAbandoned: boolean | null | undefined): Observable<PagedResultOfWorkCaseResponse>;
-    getWorkCaseById(id: string): Observable<WorkCaseResponse>;
+    getWorkCaseById(id: string): Observable<WorkCaseDetailsResponse>;
     addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<void>;
-    editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse>;
-    abandonWorkCase(id: string): Observable<WorkCaseResponse>;
+    editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<void>;
+    abandonWorkCase(id: string): Observable<void>;
     getItemsForWorkCase(workCaseId: string): Observable<WorkCaseItemResponse[]>;
     addItemToWorkCase(command: AddWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse>;
     updateItemForWorkCase(command: UpdateWorkCaseItemCommand | undefined): Observable<WorkCaseItemResponse>;
@@ -1915,7 +1915,7 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    getWorkCaseById(id: string): Observable<WorkCaseResponse> {
+    getWorkCaseById(id: string): Observable<WorkCaseDetailsResponse> {
         let url_ = this.baseUrl + "/api/WorkCase/GetWorkCaseById?";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined and cannot be null.");
@@ -1938,14 +1938,14 @@ export class WorkCaseService implements IWorkCaseService {
                 try {
                     return this.processGetWorkCaseById(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<WorkCaseResponse>;
+                    return _observableThrow(e) as any as Observable<WorkCaseDetailsResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<WorkCaseResponse>;
+                return _observableThrow(response_) as any as Observable<WorkCaseDetailsResponse>;
         }));
     }
 
-    protected processGetWorkCaseById(response: HttpResponseBase): Observable<WorkCaseResponse> {
+    protected processGetWorkCaseById(response: HttpResponseBase): Observable<WorkCaseDetailsResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1955,7 +1955,7 @@ export class WorkCaseService implements IWorkCaseService {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as WorkCaseResponse;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as WorkCaseDetailsResponse;
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2014,7 +2014,7 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<WorkCaseResponse> {
+    editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/WorkCase/EditWorkCase";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2026,7 +2026,6 @@ export class WorkCaseService implements IWorkCaseService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
             })
         };
 
@@ -2037,14 +2036,14 @@ export class WorkCaseService implements IWorkCaseService {
                 try {
                     return this.processEditWorkCase(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<WorkCaseResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<WorkCaseResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processEditWorkCase(response: HttpResponseBase): Observable<WorkCaseResponse> {
+    protected processEditWorkCase(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2053,9 +2052,7 @@ export class WorkCaseService implements IWorkCaseService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as WorkCaseResponse;
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2065,7 +2062,7 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    abandonWorkCase(id: string): Observable<WorkCaseResponse> {
+    abandonWorkCase(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/WorkCase/AbandonWorkCase?";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined and cannot be null.");
@@ -2077,7 +2074,6 @@ export class WorkCaseService implements IWorkCaseService {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
             })
         };
 
@@ -2088,14 +2084,14 @@ export class WorkCaseService implements IWorkCaseService {
                 try {
                     return this.processAbandonWorkCase(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<WorkCaseResponse>;
+                    return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<WorkCaseResponse>;
+                return _observableThrow(response_) as any as Observable<void>;
         }));
     }
 
-    protected processAbandonWorkCase(response: HttpResponseBase): Observable<WorkCaseResponse> {
+    protected processAbandonWorkCase(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2104,9 +2100,7 @@ export class WorkCaseService implements IWorkCaseService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as WorkCaseResponse;
-            return _observableOf(result200);
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2650,6 +2644,21 @@ export interface WorkCaseResponse {
     id?: string;
     name?: string;
     amount?: number | null;
+    currency?: string;
+    relation?: string;
+    forwarderId?: string;
+    forwarderName?: string;
+    clientId?: string;
+    clientName?: string;
+    isAbandoned?:boolean | null;
+}
+
+export interface WorkCaseDetailsResponse {
+    id?: string;
+    name?: string;
+    amount?: number | null;
+    amountInPln?: number | null;
+    createdAtUtc?: Date | string;
     currency?: string;
     relation?: string;
     forwarderId?: string;

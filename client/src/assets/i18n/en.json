@@ -84,7 +84,9 @@
       "STATUS_ACTIVE": "Active",
       "STATUS_ABANDONED": "Abandoned",
       "EMPTY_LIST": "No work cases found on the list",
-      "CREATE_SUCCESS": "Work case successfully created"
+      "CREATE_SUCCESS": "Work case successfully created",
+      "AMOUNT_PLN": "Amount in PLN:",
+      "CREATED_AT": "Created at (UTC)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",

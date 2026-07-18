@@ -132,7 +132,7 @@
             </div>
 
             <app-input class="field" controlName="password"
-              [label]="isCreateMode() ? 'GUI.USERS.PASSWORD' : 'GUI.USERS.NEW_PASSWORD'" type="password"
+              [label]="isCreateMode() ? 'GUI.LOGIN.PASSWORD_LABEL' : 'GUI.USERS.NEW_PASSWORD'" type="password"
               [placeholder]="'GUI.USERS.PASSWORD_PLACEHOLDER'"></app-input>
 
             <div class="field full-width checkbox-field">
@@ -146,7 +146,7 @@
           </div>
 
           <div class="form-actions">
-            <button class="button" type="submit" [disabled]="userForm.invalid || isSaving()">
+            <button type="submit" [disabled]="userForm.invalid || isSaving()">
               @if (isSaving()) {
               <span class="spinner-border spinner-border-sm me-2" role="status"></span>
               }

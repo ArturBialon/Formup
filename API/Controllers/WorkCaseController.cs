@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(WorkCaseDetailsResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetWorkCaseById([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetWorkCaseByIdQuery(id), ct);
@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> EditWorkCase([FromBody] UpdateWorkCaseCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -47,7 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPatch]
-        [ProducesResponseType(typeof(WorkCaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> AbandonWorkCase([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new AbandonWorkCaseCommand(id), ct);

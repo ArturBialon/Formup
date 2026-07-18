@@ -7,6 +7,7 @@ button {
     cursor: pointer;
     padding: 0.65rem 2rem;
     transition: background-color 0.2s ease;
+    color: black;
 
     &:disabled {
       opacity: 0.5;

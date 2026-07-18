@@ -84,7 +84,9 @@
             "STATUS_ACTIVE": "Aktiv",
             "STATUS_ABANDONED": "Abgebrochen",
             "EMPTY_LIST": "Keine Transportakten in der Liste gefunden",
-            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt"
+            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt",
+            "AMOUNT_PLN": "Betrag in PLN:",
+            "CREATED_AT": "Erstellt um (UTC)"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",

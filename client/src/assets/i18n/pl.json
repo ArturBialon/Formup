@@ -95,7 +95,9 @@
       "STATUS_ACTIVE": "Aktywne",
       "STATUS_ABANDONED": "Porzucone",
       "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
-      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę"
+      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę",
+      "AMOUNT_PLN": "Kwota w PLN:",
+      "CREATED_AT": "Utworzono (UTC)"
     }
   },
   "LOGIN": {

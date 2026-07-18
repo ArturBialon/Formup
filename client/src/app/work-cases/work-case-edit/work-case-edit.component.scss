@@ -1,0 +1,56 @@
+:host {
+  --left-panel-width: 45%;
+
+  height: 100%;
+  display: block;
+}
+
+.alert-info {
+  background: var(--color-alert-info);
+  border-color: var(--color-alert-info-border);
+  color: var(--color-alert-text);
+}
+
+%client-box-base {
+  margin-bottom: 2rem;
+  padding: 16px 20px;
+  border-radius: var(--radius-main);
+  border: 1px solid var(--dark-box-border);
+  background: var(--blue-box-bg);
+  box-sizing: border-box;
+  min-height: 74px;
+}
+
+.client-box-alert {
+  @extend %client-box-base;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-alert-info-text);
+  font-weight: 500;
+  text-align: center;
+}
+
+.client-box-selected {
+  @extend %client-box-base;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .client-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .client-name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    .client-nip {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+    }
+  }
+}

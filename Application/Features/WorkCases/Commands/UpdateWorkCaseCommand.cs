@@ -46,9 +46,11 @@ namespace Application.Features.WorkCases.Commands
 
                 if (!Client.CanAssignAmount(requestedAmountInPln.Value, totalAmountTakenInPln, client.CreditInPln, out var exceededBy))
                 {
+                    var amountInTargetCurrency = await _currencyConverterService.ConvertToTargetCurrency(exceededBy, "PLN", request.CurrencyCode, DateTime.UtcNow, ct);
+
                     return AppResult<Unit>.Failure(
                         "CLIENT.VALIDATION.CREDIT_EXCEEDED",
-                        new { ExceededBy = exceededBy } // PLN only
+                        new { ExceededBy = amountInTargetCurrency.Value, request.CurrencyCode }
                     );
                 }
 

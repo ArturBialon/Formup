@@ -32,10 +32,10 @@ namespace Application.Features.WorkCases.Queries
                 query = query.Where(x => x.Relation == request.Relation);
 
             if (!string.IsNullOrWhiteSpace(request.ForwarderName))
-                query = query.Where(x => x.Forwarder.Name.Equals(request.ForwarderName));
+                query = query.Where(x => x.Forwarder.Name.Contains(request.ForwarderName) || x.Forwarder.Prefix.Contains(request.ForwarderName));
 
             if (!string.IsNullOrWhiteSpace(request.ClientName))
-                query = query.Where(x => x.Client.Name.Equals(request.ClientName));
+                query = query.Where(x => x.Client.Name.Contains(request.ClientName));
 
             if (!string.IsNullOrWhiteSpace(request.Name))
                 query = query.Where(x => x.Name.Contains(request.Name));
@@ -43,7 +43,7 @@ namespace Application.Features.WorkCases.Queries
             var totalCount = await query.CountAsync(ct);
 
             var items = await query
-                .OrderBy(x => x.Id)
+                .OrderByDescending(x => x.CreatedAtUtc)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new WorkCaseResponse
