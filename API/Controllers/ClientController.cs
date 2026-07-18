@@ -11,6 +11,7 @@ namespace API.Controllers
     {
         [HttpGet]
         [ProducesResponseType(typeof(PagedResult<ClientListItemResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetClients([FromQuery] GetClientsQuery query, CancellationToken ct)
         {
             var result = await Mediator.Send(query, ct);
@@ -19,6 +20,7 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(ClientDetailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetClientById([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetClientByIdQuery(id), ct);
@@ -27,6 +29,7 @@ namespace API.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -35,6 +38,7 @@ namespace API.Controllers
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateClient([FromBody] UpdateClientCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -43,6 +47,7 @@ namespace API.Controllers
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> DeleteClient([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteClientCommand(id), ct);

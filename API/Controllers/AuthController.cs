@@ -12,6 +12,8 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -21,6 +23,7 @@ namespace API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetCurrentUser()
         {
             var result = await Mediator.Send(new GetCurrentUserQuery());

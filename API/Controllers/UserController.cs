@@ -14,6 +14,7 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -22,6 +23,8 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(PagedResult<UserListItemResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery query, CancellationToken ct)
         {
             var result = await Mediator.Send(query, ct);
@@ -30,6 +33,8 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(UserDetailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserById([FromQuery] Guid id, CancellationToken ct)
         {
@@ -40,6 +45,7 @@ namespace API.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command, CancellationToken ct)
         {

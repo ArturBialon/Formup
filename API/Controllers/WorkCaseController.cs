@@ -5,7 +5,6 @@ using Application.Features.WorkCaseItems.Commands;
 using Application.Features.WorkCaseItems.Queries;
 using Application.Features.WorkCases.Commands;
 using Application.Features.WorkCases.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -16,6 +15,9 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(PagedResult<WorkCaseResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetWorkCases([FromQuery] GetWorkCasesQuery query, CancellationToken ct)
         {
             var result = await Mediator.Send(query, ct);
@@ -24,6 +26,9 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(WorkCaseDetailsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetWorkCaseById([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetWorkCaseByIdQuery(id), ct);
@@ -32,6 +37,9 @@ namespace API.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddWorkCase([FromBody] CreateWorkCaseCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -40,6 +48,9 @@ namespace API.Controllers
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditWorkCase([FromBody] UpdateWorkCaseCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -48,6 +59,9 @@ namespace API.Controllers
 
         [HttpPatch]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AbandonWorkCase([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new AbandonWorkCaseCommand(id), ct);
@@ -60,6 +74,9 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IReadOnlyCollection<WorkCaseItemResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetItemsForWorkCase([FromQuery] Guid workCaseId, CancellationToken ct)
         {
             var result = await Mediator.Send(new GetWorkCaseItemsQuery(workCaseId), ct);
@@ -67,7 +84,10 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(WorkCaseItemResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddItemToWorkCase([FromBody] AddWorkCaseItemCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -75,7 +95,10 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(WorkCaseItemResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateItemForWorkCase([FromBody] UpdateWorkCaseItemCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -83,7 +106,10 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        [ProducesResponseType(typeof(Unit), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteItemForWorkCase([FromQuery] Guid workCaseItemId, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteWorkCaseItemCommand(workCaseItemId), ct);
