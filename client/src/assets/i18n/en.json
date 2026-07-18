@@ -7,16 +7,18 @@
     "DASHBOARD": "Dashboard",
     "ORDERS": "Orders",
     "SETTINGS": "Settings",
-    "WORK_CASES": "Work Cases",
+    "WORK_CASES_ELEMENT": "Work Cases",
     "COSTS": "Costs",
     "INVOICES": "Invoices",
     "CONTRACTORS_ELEMENT": "Contractors",
     "CLIENTS": "Clients",
+    "SELECT_CLIENT": "Select client.",
     "MANAGE_USERS": "Manage Users",
     "MY_ACCOUNT": "My Account",
     "PAGE": "Page",
     "SEARCH_PLACEHOLDER": "Search phrase...",
     "PAGE_SIZE_PLACEHOLDER": "Page size",
+    "CURRENCY": "Currency",
     "USERS": {
       "LIST_TITLE": "User List",
       "EMPTY_LIST": "No users found",
@@ -67,8 +69,24 @@
       "SELECT_PROMPT": "Select a contractor from the list on the left to edit, or add a new one.",
       "CREATE_SUCCESS": "Contractor has been successfully added!",
       "UPDATE_SUCCESS": "Contractor details have been successfully updated!",
-      "TRADE_LIMIT": "Credit limit",
-      "CURRENCY": "Currency"
+      "TRADE_LIMIT": "Credit limit"
+    },
+    "WORK_CASES": {
+      "TITLE": "Work Cases",
+      "ADD_NEW_BUTTON": "Create New Work Case",
+      "NAME": "Case Name",
+      "RELATION": "Relation",
+      "FORWARDER": "Forwarder",
+      "CLIENT": "Client",
+      "AMOUNT": "Amount",
+      "STATUS": "Status",
+      "STATUS_ALL": "All Statuses",
+      "STATUS_ACTIVE": "Active",
+      "STATUS_ABANDONED": "Abandoned",
+      "EMPTY_LIST": "No work cases found on the list",
+      "CREATE_SUCCESS": "Work case successfully created",
+      "AMOUNT_PLN": "Amount in PLN:",
+      "CREATED_AT": "Created at (UTC)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",
@@ -166,6 +184,7 @@
     "NOT_FOUND": "The specified client could not be found.",
     "HAS_INVOICES": "Cannot delete this client because they have invoices assigned to them.",
     "HAS_WORK_CASES": "Cannot delete this client because they have active or past work cases assigned.",
+    "IS_INACTIVE": "Client is inactive.",
     "VALIDATION": {
       "ID_REQUIRED": "Client identifier is required.",
       "TAX_REQUIRED": "Tax identification number (TIN/NIP) is required.",
@@ -179,7 +198,7 @@
       "COUNTRY_REQUIRED": "Country name is required.",
       "COUNTRY_TOO_LONG": "Country name cannot exceed 54 characters.",
       "CREDIT_MIN_VALUE": "Credit limit cannot be a negative value.",
-      "CREDIT_EXCEEDED": "This operation exceeds the client's current credit limit threshold.",
+      "CREDIT_EXCEEDED": "This operation exceeds the client's current credit limit threshold by {{exceededBy}}.",
       "CURRENCY_REQUIRED": "Default currency code is required.",
       "CURRENCY_TOO_LONG": "Currency code must be exactly 3 characters long."
     }
@@ -213,7 +232,7 @@
       "WORK_CASE_ID_REQUIRED": "Work case identifier is required.",
       "FORWARDER_ID_REQUIRED": "Forwarder assignment identifier is required.",
       "CLIENT_ID_REQUIRED": "Client assignment identifier is required.",
-      "BUDGET_EXCEEDED": "The total value of positions exceeds the defined budget for this work case.",
+      "BUDGET_EXCEEDED": "The total value of positions exceeds the defined budget for this work case by {{exceededBy}}.",
       "RELATION": {
         "REQUIRED": "Transportation relation path is required.",
         "INVALID": "The specified transportation relation is invalid or not allowed."
@@ -254,6 +273,7 @@
     "SOME_ITEMS_NOT_FOUND": "One or more selected work case items could not be found.",
     "SOME_ITEMS_ALREADY_INVOICED": "One or more selected items have already been linked to another invoice.",
     "NOT_FOUND": "The requested invoice could not be found.",
+    "CANNOT_DELETE_PAID": "You cannot modify a paid invoice.",
     "VALIDATION": {
       "ID_REQUIRED": "Invoice identifier is required.",
       "WORK_CASE_ID_REQUIRED": "Work case reference identifier is required.",

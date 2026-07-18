@@ -12,7 +12,7 @@ namespace Infrastructure.Configurations
                 .HasColumnType("decimal(12, 2)")
                 .IsRequired();
 
-            entity.Property(e => e.Currency)
+            entity.Property(e => e.CurrencyCode)
                 .IsRequired()
                 .HasMaxLength(3)
                 .IsUnicode(false);
@@ -37,6 +37,10 @@ namespace Infrastructure.Configurations
             entity.Property(e => e.DocumentUrl)
                 .HasMaxLength(2048)
                 .IsRequired(false);
+
+            entity.Property(e => e.IsPaid)
+                .IsRequired()
+                .HasDefaultValue(false);
 
             entity.HasOne(d => d.WorkCaseItem)
                 .WithMany(p => p.Costs)

@@ -5,6 +5,7 @@
     public class CurrencyConversionResult
     {
         public decimal TotalTargetAmount { get; set; }
+        public decimal TotalAmountInPln { get; set; }
         public string TargetCurrency { get; set; } = null!;
         public List<ConvertedItemDetail> Details { get; set; } = [];
     }

@@ -16,6 +16,7 @@ namespace Application.Features.Costs.Commands
         string Name,
         DateTime IssueDate,
         DateTime ServiceDate,
+        bool IsPaid,
         Guid WorkCaseItemId,
         Guid ServiceContractorId
     ) : IRequest<IAppResult<Unit>>;
@@ -60,11 +61,12 @@ namespace Application.Features.Costs.Commands
             }
 
             cost.Amount = request.Amount;
-            cost.Currency = request.Currency.Trim().ToUpper();
+            cost.CurrencyCode = request.Currency.Trim().ToUpper();
             cost.Tax = request.Tax;
             cost.Name = request.Name.Trim();
             cost.IssueDate = request.IssueDate;
             cost.ServiceDate = request.ServiceDate;
+            cost.IsPaid = request.IsPaid;
 
             await _context.SaveChangesAsync(ct);
 

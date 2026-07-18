@@ -1,0 +1,77 @@
+<div class="split-wrapper">
+
+  <div class="panel-side side-left panel-card">
+    <div class="p-3">
+      ID otwartej teczki to: {{ id() }}
+    </div>
+  </div>
+
+  <div class="panel-side side-right panel-card">
+    @if (isLoading()) {
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <span class="spinner-border text-light" role="status"></span>
+    </div>
+    }
+
+    @if (workCase(); as case) {
+    <div class="panel-header d-flex justify-content-between align-items-center">
+      <h5 class="text-white mb-0">{{ case.name }}</h5>
+
+      <button [routerLink]="['/dashboard/workcase', case.id, 'edit']">
+        <i class="bi bi-pencil me-1"></i> {{ 'GUI.BUTTONS.EDIT' | translate }}
+      </button>
+    </div>
+
+    <div class="content-panel">
+      <div class="d-flex gap-2 mb-4">
+        <span class="custom-badge role">{{ case.relation }}</span>
+        <span class="custom-badge" [class.active-status]="!case.isAbandoned" [class.badge-inactive]="case.isAbandoned">
+          {{ (case.isAbandoned ? 'GUI.WORK_CASES.STATUS_ABANDONED' : 'GUI.WORK_CASES.STATUS_ACTIVE') | translate }}
+        </span>
+      </div>
+
+      <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+          <div class="p-3 rounded"
+            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+            <span class="d-block text-muted small mb-1">{{ 'GUI.WORK_CASES.CLIENT' | translate }}</span>
+            <strong class="text-white fs-6">{{ case.clientName }}</strong>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="p-3 rounded"
+            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+            <span class="d-block text-muted small mb-1">{{ 'GUI.WORK_CASES.FORWARDER' | translate }}</span>
+            <strong class="text-white fs-6">{{ case.forwarderName }}</strong>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="p-3 rounded"
+            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+            <span class="d-block text-muted small mb-1">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</span>
+            <strong class="text-white fs-5">{{ case.amount | number:'1.2-2' }} {{ case.currency }}</strong>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="p-3 rounded"
+            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+            <span class="d-block text-muted small mb-1">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
+            <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <span class="text-muted small">
+            {{ 'GUI.WORK_CASES.CREATED_AT' | translate }}: {{ case.createdAtUtc | date:'dd.MM.yyyy HH:mm' }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+    }
+  </div>
+</div>

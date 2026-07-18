@@ -17,16 +17,16 @@ namespace Infrastructure.Configurations
                 .HasColumnType("decimal(12, 2)")
                 .IsRequired();
 
-            entity.Property(e => e.Currency)
+            entity.Property(e => e.CurrencyCode)
                 .IsRequired()
                 .HasMaxLength(3)
                 .IsUnicode(false);
 
-            entity.Property(e => e.IssueDate)
+            entity.Property(e => e.IssueDateUtc)
                 .HasColumnType("datetime")
                 .HasColumnName("Issue_Date");
 
-            entity.Property(e => e.ServiceDate)
+            entity.Property(e => e.ServiceDateUtc)
                 .HasColumnType("datetime")
                 .HasColumnName("Service_Date");
 
@@ -37,6 +37,14 @@ namespace Infrastructure.Configurations
             entity.Property(e => e.IsAbandoned)
                 .IsRequired()
                 .HasDefaultValue(false);
+
+            entity.Property(e => e.IsPaid)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            entity.Property(e => e.AmountInPln)
+                .HasColumnType("decimal(12, 2)")
+                .IsRequired();
 
             entity.HasOne(d => d.WorkCase)
                 .WithMany(p => p.Invoices)

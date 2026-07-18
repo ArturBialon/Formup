@@ -60,7 +60,7 @@ namespace Application.Features.Users.Commands
                 var passwordWithPepper = $"{request.Password}{pepper}";
 
                 using var hmac = new HMACSHA512();
-                user.PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+                user.PassHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(passwordWithPepper));
                 user.PassSalt = hmac.Key;
             }
 

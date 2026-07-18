@@ -13,6 +13,7 @@ namespace Application.Features.Invoices.Commands
         DateTime ServiceDate,
         decimal TaxRate,
         string TargetCurrency,
+        bool IsPaid,
         decimal? ManualExchangeRate,
         List<Guid> WorkCaseItemIds
     ) : IRequest<AppResult<InvoiceResponse>>;
@@ -41,27 +42,28 @@ namespace Application.Features.Invoices.Commands
                 return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_ALREADY_INVOICED");
 
             var conversionItems = itemsToInvoice
-                .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.Currency))
+                .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.CurrencyCode))
                 .ToList();
 
             var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(conversionItems, request.TargetCurrency, request.ManualExchangeRate, request.ServiceDate, ct);
 
             if (conversionResult.IsFailure)
-            {
                 return AppResult<InvoiceResponse>.Failure(conversionResult.ErrorCode, conversionResult.ErrorData);
-            }
 
             var conversionData = conversionResult.Value!;
+
             var invoiceNumber = await CreateInvoiceNumberAsync(workCase.Forwarder, ct);
 
             var invoice = new Invoice
             {
                 InvoiceNumber = invoiceNumber,
                 Amount = conversionData.TotalTargetAmount,
-                Currency = conversionData.TargetCurrency,
-                IssueDate = DateTime.Now,
-                ServiceDate = request.ServiceDate,
+                CurrencyCode = conversionData.TargetCurrency,
+                IssueDateUtc = DateTime.Now,
+                ServiceDateUtc = request.ServiceDate,
                 Tax = request.TaxRate,
+                IsPaid = request.IsPaid,
+                AmountInPln = conversionData.TotalTargetAmount,
                 WorkCase = workCase,
                 Client = workCase.Client
             };
@@ -78,10 +80,11 @@ namespace Application.Features.Invoices.Commands
             {
                 Id = invoice.Id.Value,
                 Amount = invoice.Amount,
-                Currency = invoice.Currency,
-                IssueDate = invoice.IssueDate,
-                ServiceDate = invoice.ServiceDate,
+                Currency = invoice.CurrencyCode,
+                IssueDateUtc = invoice.IssueDateUtc,
+                ServiceDateUtc = invoice.ServiceDateUtc,
                 Tax = invoice.Tax,
+                IsPaid = invoice.IsPaid,
                 WorkCaseId = workCase.Id.Value,
                 ClientId = workCase.Client.Id.Value,
                 InvoicedItemIds = [.. itemsToInvoice.Select(x => x.Id.Value)]
@@ -93,7 +96,7 @@ namespace Application.Features.Invoices.Commands
             var now = DateTime.UtcNow;
 
             var monthlyInvoiceAmount = await _context.Invoices
-                .CountAsync(x => x.WorkCase.Forwarder.Id == forwarder.Id && x.IssueDate.Month == now.Month, ct);
+                .CountAsync(x => x.WorkCase.Forwarder.Id == forwarder.Id && x.IssueDateUtc.Month == now.Month, ct);
 
             return $"FK/{monthlyInvoiceAmount + 1}/{forwarder.Prefix}/{now.Month}/{now.Year}";
         }

@@ -31,16 +31,16 @@ namespace Application.Features.WorkCaseItems.Queries
                     Id = x.Id.Value,
                     Name = x.Name,
                     Amount = x.Amount,
-                    Currency = x.Currency,
+                    Currency = x.CurrencyCode,
                     Tax = x.Tax,
-                    CreatedAt = x.CreatedAt,
+                    CreatedAtUtc = x.CreatedAtUtc,
                     InvoiceId = x.Invoice != null ? x.Invoice.Id : null,
                     Costs = x.Costs.Select(c => new CostResponse
                     {
                         Id = c.Id.Value,
                         Name = c.Name,
                         Amount = c.Amount,
-                        Currency = c.Currency,
+                        Currency = c.CurrencyCode,
                         Tax = c.Tax,
                         IssueDate = c.IssueDate,
                         ServiceDate = c.ServiceDate

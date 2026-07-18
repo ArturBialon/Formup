@@ -66,12 +66,12 @@ export class ManageUsersComponent {
     this.userForm = this.fb.group({
       id: [{ value: '', disabled: true }],
       email: ['', [Validators.required, Validators.email]],
-      name: ['', Validators.required],
+      name: ['',  Validators.required],
       surname: ['', Validators.required],
       prefix: ['', Validators.required],
       role: [null, Validators.required],
       isActive: [true],
-      password: [''],
+      password: ['', Validators.minLength(6)],
     });
 
     this.loadUsers();
@@ -122,7 +122,7 @@ export class ManageUsersComponent {
   public selectUser(user: UserListItemResponse) {
     this.isCreateMode.set(false);
     this.selectedUser.set(user);
-    this.userForm.get('password')?.setValidators([]);
+    this.userForm.get('password')?.setValidators([Validators.minLength(6)]);
     this.userForm.get('password')?.updateValueAndValidity();
     
     const matchedRole = this.roles.find(r => r.name.toLowerCase() === user.role?.toLowerCase());
@@ -163,7 +163,7 @@ export class ManageUsersComponent {
       password: '',
     });
 
-    this.userForm.get('password')?.setValidators([Validators.required]);
+    this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
     this.userForm.get('password')?.updateValueAndValidity();
   }
 

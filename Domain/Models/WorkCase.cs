@@ -14,9 +14,10 @@ namespace Domain.Models
 
         public required string Name { get; set; }
         public decimal Amount { get; set; }
-        public string Currency { get; set; } = "PLN";
+        public decimal AmountInPln { get; set; }
+        public string CurrencyCode { get; set; } = "PLN";
         public required string Relation { get; set; }
-        public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+        public DateTime CreatedAtUtc { get; init; } = DateTime.UtcNow;
         public bool IsAbandoned { get; set; } = false;
 
         public virtual User Forwarder { get; set; }

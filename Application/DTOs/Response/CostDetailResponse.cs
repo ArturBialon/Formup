@@ -10,6 +10,7 @@
         public required DateTime IssueDate { get; set; }
         public required DateTime ServiceDate { get; set; }
         public string? DocumentUrl { get; set; }
+        public bool IsPaid { get; set; }
 
         public Guid WorkCaseItemId { get; set; }
         public Guid ServiceContractorId { get; set; }

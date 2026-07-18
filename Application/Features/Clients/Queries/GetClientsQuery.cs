@@ -64,13 +64,12 @@ namespace Application.Features.Clients.Queries
                     Email = client.Email,
                     PhoneNumber = client.PhoneNumber,
                     Credit = client.Credit,
-                    Currency = client.Currency,
+                    Currency = client.CurrencyCode,
                     InvoicesCount = client.Invoices.Count(),
                     WorkCasesCount = client.WorkCases.Count(),
                     IsActive = client.IsActive
                 })
                 .ToListAsync(ct);
-
             var pagedResult = new PagedResult<ClientListItemResponse>(items, totalCount, request.PageNumber, request.PageSize);
 
             return AppResult<PagedResult<ClientListItemResponse>>.Success(pagedResult);

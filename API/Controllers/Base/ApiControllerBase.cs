@@ -47,7 +47,7 @@ namespace API.Controllers.Base
             if (errorCodes.Count == 0)
                 errorCodes.Add("SERVER.UNKNOWN_ERROR");
 
-            return BadRequest(new { errors = errorCodes });
+            return BadRequest(new { errors = errorCodes, data = result.ErrorData });
         }
     }
 }

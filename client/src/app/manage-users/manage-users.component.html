@@ -118,11 +118,11 @@
             <app-input class="field" controlName="surname" label="GUI.USERS.LAST_NAME" [required]="true"></app-input>
             <app-input class="field full-width" controlName="email" label="GUI.USERS.EMAIL" type="email"
               [required]="true"></app-input>
-            <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX"></app-input>
+            <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX" [required]="true"></app-input>
 
-            <div class="field">
-              <label class="light-text">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</label>
-              <select formControlName="role" class="input form-control shadow-none mt-1">
+            <div class="select-wrapper">
+              <span class="mock-label">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</span>
+              <select formControlName="role" class="input form-control shadow-none">
                 @for (role of roles; track role.value) {
                   <option [ngValue]="role.value">
                     {{ 'GUI.USERS.ROLES.' + role.name | translate }}
@@ -131,8 +131,8 @@
               </select>
             </div>
 
-            <app-input class="field full-width" controlName="password"
-              [label]="isCreateMode() ? 'GUI.USERS.PASSWORD' : 'GUI.USERS.NEW_PASSWORD'" type="password"
+            <app-input class="field" controlName="password"
+              [label]="isCreateMode() ? 'GUI.LOGIN.PASSWORD_LABEL' : 'GUI.USERS.NEW_PASSWORD'" type="password"
               [placeholder]="'GUI.USERS.PASSWORD_PLACEHOLDER'"></app-input>
 
             <div class="field full-width checkbox-field">
@@ -146,11 +146,11 @@
           </div>
 
           <div class="form-actions">
-            <button class="button" type="submit" [disabled]="userForm.invalid || isSaving()">
+            <button type="submit" [disabled]="userForm.invalid || isSaving()">
               @if (isSaving()) {
               <span class="spinner-border spinner-border-sm me-2" role="status"></span>
               }
-              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE_USER' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
             </button>
           </div>
         </form>

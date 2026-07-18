@@ -1,5 +1,5 @@
-﻿using Application.Common.Results;
-using Application.DTOs.Response;
+﻿using Application.Common.CurrencyServices;
+using Application.Common.Results;
 using Domain.Enums;
 using Domain.Models;
 using Infrastructure.Access;
@@ -22,29 +22,39 @@ namespace Application.Features.Clients.Commands
         string? ApartmentNumber = null,
         string? Email = null,
         string? PhoneNumber = null,
-        string Currency = "PLN"
-    ) : IRequest<IAppResult<ClientResponse>>;
+        string? CurrencyCode = "PLN"
+    ) : IRequest<IAppResult<Unit>>;
 
-    public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService)
-    : IRequestHandler<CreateClientCommand, IAppResult<ClientResponse>>
+    public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService, ICurrencyConverterService currencyConverterService)
+    : IRequestHandler<CreateClientCommand, IAppResult<Unit>>
     {
         private readonly FormupContext _context = context;
         private readonly ICurrentUserService _currentUserService = currentUserService;
+        private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
-        public async Task<IAppResult<ClientResponse>> Handle(CreateClientCommand request, CancellationToken ct)
+        public async Task<IAppResult<Unit>> Handle(CreateClientCommand request, CancellationToken ct)
         {
             var taxExists = await _context.Clients
                 .AnyAsync(x => x.Tax == request.Tax.Trim(), ct);
 
             if (taxExists)
             {
-                return AppResult<ClientResponse>.Failure("CLIENT.TAX_ALREADY_EXISTS");
+                return AppResult<Unit>.Failure("CLIENT.TAX_ALREADY_EXISTS");
             }
 
-            decimal credit = 0;
+            decimal assignableCredit = 0;
+            decimal calculatedCredit = 0;
 
             if (_currentUserService.Role == UserRole.Verifier.ToString())
-                credit = request.Credit;
+            {
+                var calculationResult = await _currencyConverterService.ConvertToTargetCurrency(request.Credit, request.CurrencyCode ?? "PLN", "PLN", DateTime.UtcNow, ct);
+
+                if (!calculationResult.IsSuccess)
+                    return AppResult<Unit>.Failure(calculationResult.ErrorCode, calculationResult.ErrorData);
+
+                calculatedCredit = calculationResult.Value;
+                assignableCredit = request.Credit;
+            }
 
             var client = new Client
             {
@@ -58,33 +68,17 @@ namespace Application.Features.Clients.Commands
                 ApartmentNumber = request.ApartmentNumber?.Trim(),
                 Email = request.Email?.Trim(),
                 PhoneNumber = request.PhoneNumber?.Trim(),
-                Credit = credit,
-                Currency = request.Currency.Trim(),
+                Credit = assignableCredit,
+                CreditInPln = calculatedCredit,
+                CurrencyCode = request.CurrencyCode,
                 IsActive = request.IsActive,
             };
 
             _context.Clients.Add(client);
             await _context.SaveChangesAsync(ct);
 
-            var responseDto = new ClientResponse
-            {
-                Id = client.Id.Value,
-                Tax = client.Tax,
-                Name = client.Name,
-                Country = client.Country,
-                City = client.City,
-                Zip = client.Zip,
-                Street = client.Street,
-                HouseNumber = client.HouseNumber,
-                ApartmentNumber = client.ApartmentNumber,
-                Email = client.Email,
-                PhoneNumber = client.PhoneNumber,
-                Credit = client.Credit,
-                Currency = client.Currency,
-                IsActive = client.IsActive
-            };
 
-            return AppResult<ClientResponse>.Success(responseDto);
+            return AppResult<Unit>.Success(Unit.Value);
         }
     }
 }

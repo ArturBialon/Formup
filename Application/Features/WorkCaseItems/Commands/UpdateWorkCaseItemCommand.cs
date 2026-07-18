@@ -1,5 +1,4 @@
 ﻿using Application.Common.Results;
-using Application.DTOs.Response;
 using Infrastructure.Context;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,26 +11,26 @@ namespace Application.Features.WorkCaseItems.Commands
         decimal Amount,
         string Currency,
         decimal Tax
-    ) : IRequest<AppResult<WorkCaseItemResponse>>;
+    ) : IRequest<AppResult<Unit>>;
 
     public class UpdateWorkCaseItemHandler(FormupContext context)
-        : IRequestHandler<UpdateWorkCaseItemCommand, AppResult<WorkCaseItemResponse>>
+        : IRequestHandler<UpdateWorkCaseItemCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<WorkCaseItemResponse>> Handle(UpdateWorkCaseItemCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(UpdateWorkCaseItemCommand request, CancellationToken ct)
         {
             var workCaseItem = await _context.WorkCaseItems
                 .Include(x => x.WorkCase)
                 .Include(x => x.Invoice)
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
 
-            if (workCaseItem == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.NOT_FOUND");
-            if (workCaseItem.IsInvoiced) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
+            if (workCaseItem == null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.NOT_FOUND");
+            if (workCaseItem.IsInvoiced) return AppResult<Unit>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
 
             var workCase = workCaseItem.WorkCase;
 
-            if (workCase == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE.NOT_FOUND");
+            if (workCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
 
             var otherItemsTotalUsage = await _context.WorkCaseItems
                 .Where(x => x.WorkCase.Id.Equals(workCase.Id) && !x.Id.Equals(request.WorkCaseItemId))
@@ -41,7 +40,7 @@ namespace Application.Features.WorkCaseItems.Commands
 
             if (request.Amount > availableBudget)
             {
-                return AppResult<WorkCaseItemResponse>.Failure(
+                return AppResult<Unit>.Failure(
                     "WORK_CASE.VALIDATION.BUDGET_EXCEEDED",
                     new { ExceededBy = request.Amount - availableBudget }
                 );
@@ -49,23 +48,12 @@ namespace Application.Features.WorkCaseItems.Commands
 
             workCaseItem.Name = request.Name;
             workCaseItem.Amount = request.Amount;
-            workCaseItem.Currency = request.Currency;
+            workCaseItem.CurrencyCode = request.Currency;
             workCaseItem.Tax = request.Tax;
 
             await _context.SaveChangesAsync(ct);
 
-            var response = new WorkCaseItemResponse
-            {
-                Id = workCaseItem.Id.Value,
-                Name = workCaseItem.Name,
-                Amount = workCaseItem.Amount,
-                Currency = workCaseItem.Currency,
-                Tax = workCaseItem.Tax,
-                CreatedAt = workCaseItem.CreatedAt,
-                InvoiceId = null
-            };
-
-            return AppResult<WorkCaseItemResponse>.Success(response);
+            return AppResult<Unit>.Success(Unit.Value);
         }
     }
 }

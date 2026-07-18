@@ -13,7 +13,8 @@ namespace Application.Features.Costs.Queries
         string? Currency = null,
         Guid? ServiceContractorId = null,
         DateTime? DateFrom = null,
-        DateTime? DateTo = null
+        DateTime? DateTo = null,
+        bool? IsPaid = null
     ) : IRequest<IAppResult<PagedResult<CostDetailResponse>>>;
 
     public class GetCostsQueryHandler(FormupContext context) : IRequestHandler<GetCostsQuery, IAppResult<PagedResult<CostDetailResponse>>>
@@ -33,22 +34,21 @@ namespace Application.Features.Costs.Queries
             if (!string.IsNullOrWhiteSpace(request.Currency))
             {
                 var currency = request.Currency.Trim().ToUpper();
-                query = query.Where(x => x.Currency == currency);
+                query = query.Where(x => x.CurrencyCode == currency);
             }
 
             if (request.ServiceContractorId.HasValue)
-            {
                 query = query.Where(x => x.ServiceContractor.Id.Equals(request.ServiceContractorId));
-            }
 
             if (request.DateFrom.HasValue)
-            {
                 query = query.Where(x => x.ServiceDate >= request.DateFrom.Value.Date);
-            }
+
             if (request.DateTo.HasValue)
-            {
                 query = query.Where(x => x.ServiceDate <= request.DateTo.Value.Date);
-            }
+
+            if (request.IsPaid.HasValue)
+                query = query.Where(x => x.IsPaid == request.IsPaid);
+
 
             int totalCount = await query.CountAsync(ct);
 
@@ -61,11 +61,12 @@ namespace Application.Features.Costs.Queries
                     Id = c.Id.Value,
                     Name = c.Name,
                     Amount = c.Amount,
-                    Currency = c.Currency,
+                    Currency = c.CurrencyCode,
                     Tax = c.Tax,
                     IssueDate = c.IssueDate,
                     ServiceDate = c.ServiceDate,
                     DocumentUrl = c.DocumentUrl,
+                    IsPaid = c.IsPaid,
                     WorkCaseItemId = c.WorkCaseItem.Id,
                     ServiceContractorId = c.ServiceContractor.Id
                 })

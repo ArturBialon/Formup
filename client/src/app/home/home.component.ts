@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -19,6 +19,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 export class HomeComponent implements OnInit {
   loginForm!: FormGroup;
+  public isSaving = signal<boolean>(false);
 
   constructor(
     private fb: FormBuilder,
@@ -48,10 +49,13 @@ export class HomeComponent implements OnInit {
     };
 
     try {
+      this.isSaving.set(true);
       await firstValueFrom(this.accountService.userLogin(command));
       this.router.navigateByUrl('/dashboard');
+      this.isSaving.set(false);
     } catch (err) {
       console.error('Login failed', err);
+      this.isSaving.set(false);
     }
   }
 

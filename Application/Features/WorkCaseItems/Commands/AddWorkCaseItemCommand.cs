@@ -1,5 +1,4 @@
 ﻿using Application.Common.Results;
-using Application.DTOs.Response;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -13,19 +12,19 @@ namespace Application.Features.WorkCaseItems.Commands
         decimal Amount,
         string Currency,
         decimal Tax
-    ) : IRequest<AppResult<WorkCaseItemResponse>>;
+    ) : IRequest<AppResult<Unit>>;
 
     public class AddWorkCaseItemHandler(FormupContext context)
-        : IRequestHandler<AddWorkCaseItemCommand, AppResult<WorkCaseItemResponse>>
+        : IRequestHandler<AddWorkCaseItemCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<WorkCaseItemResponse>> Handle(AddWorkCaseItemCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(AddWorkCaseItemCommand request, CancellationToken ct)
         {
             var workCase = await _context.WorkCases
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
-            if (workCase == null) return AppResult<WorkCaseItemResponse>.Failure("WORK_CASE.NOT_FOUND");
+            if (workCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
 
             var currentWorkCaseUsage = await _context.WorkCaseItems
                 .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId))
@@ -35,7 +34,7 @@ namespace Application.Features.WorkCaseItems.Commands
 
             if (request.Amount > availableBudget)
             {
-                return AppResult<WorkCaseItemResponse>.Failure(
+                return AppResult<Unit>.Failure(
                     "WORK_CASE.VALIDATION.BUDGET_EXCEEDED",
                     new { ExceededBy = request.Amount - availableBudget }
                 );
@@ -45,7 +44,7 @@ namespace Application.Features.WorkCaseItems.Commands
             {
                 Name = request.Name,
                 Amount = request.Amount,
-                Currency = request.Currency,
+                CurrencyCode = request.Currency,
                 Tax = request.Tax,
                 WorkCase = workCase
             };
@@ -53,18 +52,7 @@ namespace Application.Features.WorkCaseItems.Commands
             _context.WorkCaseItems.Add(newItem);
             await _context.SaveChangesAsync(ct);
 
-            var response = new WorkCaseItemResponse
-            {
-                Id = newItem.Id.Value,
-                Name = newItem.Name,
-                Amount = newItem.Amount,
-                Currency = newItem.Currency,
-                Tax = newItem.Tax,
-                CreatedAt = newItem.CreatedAt,
-                InvoiceId = null
-            };
-
-            return AppResult<WorkCaseItemResponse>.Success(response);
+            return AppResult<Unit>.Success(Unit.Value);
         }
     }
 }

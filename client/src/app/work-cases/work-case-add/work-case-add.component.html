@@ -1,0 +1,87 @@
+<div class="split-wrapper">
+  
+  <div class="panel-side side-left panel-card">
+    <app-client-list-selector
+        (clientSelected)="onClientSelected($event)">
+    </app-client-list-selector>
+  </div>
+
+  <div class="panel-side side-right panel-card">
+    <div class="panel-header">
+      <h5 class="text-white mb-0">{{ 'GUI.WORK_CASES.ADD_NEW_BUTTON' | translate }}</h5>
+    </div>
+    <div class="content-panel">
+      @if (!selectedClient()) {
+        <div class="client-box-alert">
+          {{ "GUI.SELECT_CLIENT" | translate }}
+        </div>
+      }
+
+      <form [formGroup]="workCaseForm" (ngSubmit)="onSubmit()" class="admin-form" 
+            [style.opacity]="selectedClient() && !isSaving() ? '1' : '0.5'" 
+            [style.pointer-events]="selectedClient() && !isSaving() ? 'all' : 'none'">
+        
+        @if (selectedClient()) {
+          <div class="client-box-selected">
+            <div class="client-info">
+              <strong class="client-name" 
+                      [class.text-success]="isClientActive()" 
+                      [class.text-danger]="!isClientActive()">
+                {{ selectedClient()?.name }}
+              </strong>
+              <span class="client-nip">{{"GUI.CONTRACTORS.TAX_NIP" | translate}} : {{ selectedClient()?.tax }}</span>
+            </div>
+            
+            <div class="client-actions">
+            </div>
+          </div>
+        }
+
+        <div class="form-grid">
+          <app-input class="field full-width" controlName="amount" label="GUI.WORK_CASES.AMOUNT" type="number" [required]="true"></app-input>
+          <div class="select-wrapper">
+            <span class="mock-label">{{"GUI.CURRENCY" | translate}}</span>
+            <select class="input form-control shadow-none" formControlName="currencyCode">
+              <option value="PLN">PLN</option>
+              <option value="EUR">EUR</option>
+              <option value="USD">USD</option>
+              <option value="CAD">CAD</option>
+              <option value="GBP">GBP</option>
+              <option value="HKD">HKD</option>
+              <option value="CNY">CNY</option>
+              <option value="HUF">HUF</option>
+              <option value="CHF">CHF</option>
+              <option value="JPY">JPY</option>
+              <option value="CZK">CZK</option>
+              <option value="DKK">DKK</option>
+              <option value="MXN">MXN</option>
+              <option value="ZAR">ZAR</option>
+            </select>
+          </div>
+          <div class="select-wrapper">
+            <span class="mock-label">{{"GUI.WORK_CASES.RELATION" | translate}}</span>
+            <select class="input form-control shadow-none" formControlName="relation">
+              <option value="SE">SE</option>
+              <option value="SI">SI</option>
+              <option value="NA">NA</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+          <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="/dashboard/workcases" [disabled]="isSaving()">
+            {{ 'GUI.BUTTONS.CANCEL' | translate }}
+          </button>
+          <button class="btn btn-success btn-sm" type="submit" [disabled]="workCaseForm.invalid || isSaving() || !isClientActive()">
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            }
+            {{ 'GUI.BUTTONS.CREATE' | translate }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>

@@ -21,12 +21,13 @@ namespace Application.Features.Costs.Queries
                 {
                     Id = c.Id.Value,
                     Amount = c.Amount,
-                    Currency = c.Currency,
+                    Currency = c.CurrencyCode,
                     Tax = c.Tax,
                     Name = c.Name,
                     IssueDate = c.IssueDate,
                     ServiceDate = c.ServiceDate,
                     DocumentUrl = c.DocumentUrl,
+                    IsPaid = c.IsPaid,
                     WorkCaseItemId = c.WorkCaseItem.Id.Value,
                     ServiceContractorId = c.ServiceContractor.Id.Value
                 })

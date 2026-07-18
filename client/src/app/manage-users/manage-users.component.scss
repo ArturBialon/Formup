@@ -5,20 +5,6 @@
   display: block;
 }
 
-.scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-  }
-}
-
 .user-info {
   display: flex;
   flex-direction: column;
@@ -33,27 +19,6 @@
     color: var(--color-text-muted);
     font-size: 0.85rem;
     opacity: 0.7;
-  }
-}
-
-.filters-container {
-  background-color: var(--bs-body-bg);
-
-  .filters-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-
-    @media (max-width: 480px) {
-      grid-template-columns: 1fr;
-    }
-
-    .filter-actions, .field.full-width {
-      grid-column: span 2;
-      @media (max-width: 480px) {
-        grid-column: span 1;
-      }
-    }
   }
 }
 

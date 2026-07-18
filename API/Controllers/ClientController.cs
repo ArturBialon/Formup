@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ClientResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(ClientResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateClient([FromBody] UpdateClientCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);

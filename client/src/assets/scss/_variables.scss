@@ -4,6 +4,10 @@
   --color-primary-hover: #bce0ff;
   --color-secondary: #FFD977;
   --color-secondary-hover: #d3c8ae;
+  --color-alert-info: rgba(13, 110, 253, 0.1);
+  --color-alert-info-border: rgba(13, 110, 253, 0.2);
+  --color-table-row: rgba(65, 65, 65, 0.1);
+  --color-alert-info-text: #6ea8fe;
   
   // neutral tones
   --color-dark: #1a1a1a;
@@ -21,4 +25,6 @@
   --glass-bg: rgba(0, 0, 0, 0.4);
   --glass-bg-hover: rgba(255, 255, 255, 0.15);
   --glass-border: rgba(255, 255, 255, 0.3);
+  --blue-box-bg: rgba(0, 55, 128, 0.1);
+  --dark-box-border: rgba(255, 255, 255, 0.1);
 }

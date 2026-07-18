@@ -7,16 +7,18 @@
     "DASHBOARD": "Panel główny",
     "ORDERS": "Zamówienia",
     "SETTINGS": "Ustawienia",
-    "WORK_CASES": "Teczki",
+    "WORK_CASES_ELEMENT": "Teczki",
     "COSTS": "Koszty",
     "INVOICES": "Faktury",
     "CONTRACTORS_ELEMENT": "Podwykonawcy",
     "CLIENTS": "Klienci",
+    "SELECT_CLIENT": "Wybierz klienta.",
     "MANAGE_USERS": "Zarządzanie użytkownikami",
     "MY_ACCOUNT": "Moje konto",
     "PAGE": "Strona",
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
     "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
+    "CURRENCY": "Waluta",
     "USERS": {
       "LIST_TITLE": "Lista użytkowników",
       "EMPTY_LIST": "Brak użytkowników do wyświetlenia",
@@ -67,8 +69,7 @@
       "SELECT_PROMPT": "Wybierz kontrahenta z listy po lewej stronie, aby go edytować, lub dodaj nowego.",
       "CREATE_SUCCESS": "Kontrahent został pomyślnie dodany!",
       "UPDATE_SUCCESS": "Dane kontrahenta zostały pomyślnie zaktualizowane!",
-      "TRADE_LIMIT": "Limit kredytowy",
-      "CURRENCY": "Waluta"
+      "TRADE_LIMIT": "Limit kredytowy"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Zapisz zmiany",
@@ -80,6 +81,23 @@
       "CREATE": "Utwórz",
       "NEXT": ">>",
       "PREVIOUS": "<<"
+    },
+    "WORK_CASES": {
+      "TITLE": "Teczki zleceń",
+      "ADD_NEW_BUTTON": "Utwórz nową teczkę",
+      "NAME": "Nazwa teczki",
+      "RELATION": "Relacja",
+      "FORWARDER": "Spedytor",
+      "CLIENT": "Klient",
+      "AMOUNT": "Kwota",
+      "STATUS": "Status",
+      "STATUS_ALL": "Wszystkie statusy",
+      "STATUS_ACTIVE": "Aktywne",
+      "STATUS_ABANDONED": "Porzucone",
+      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
+      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę",
+      "AMOUNT_PLN": "Kwota w PLN:",
+      "CREATED_AT": "Utworzono (UTC)"
     }
   },
   "LOGIN": {
@@ -166,6 +184,7 @@
     "NOT_FOUND": "Nie znaleziono określonego klienta.",
     "HAS_INVOICES": "Nie można usunąć tego klienta, ponieważ są do niego przypisane faktury.",
     "HAS_WORK_CASES": "Nie można usunąć tego klienta, ponieważ posiada aktywne lub historyczne teczki (WorkCases).",
+    "IS_INACTIVE": "Klient jest nieaktywny.",
     "VALIDATION": {
       "ID_REQUIRED": "Identyfikator klienta jest wymagany.",
       "TAX_REQUIRED": "Numer identyfikacji podatkowej (NIP) jest wymagany.",
@@ -179,7 +198,7 @@
       "COUNTRY_REQUIRED": "Nazwa kraju jest wymagana.",
       "COUNTRY_TOO_LONG": "Nazwa kraju nie może przekraczać 54 znaków.",
       "CREDIT_MIN_VALUE": "Limit kredytowy nie może mieć wartości ujemnej.",
-      "CREDIT_EXCEEDED": "Ta operacja powoduje przekroczenie bieżącego limitu kredytowego klienta.",
+      "CREDIT_EXCEEDED": "Ta operacja powoduje przekroczenie bieżącego limitu kredytowego klienta o {{exceededBy}}.",
       "CURRENCY_REQUIRED": "Domyślny kod waluty jest wymagany.",
       "CURRENCY_TOO_LONG": "Kod waluty musi mieć dokładnie 3 znaki."
     }
@@ -213,7 +232,7 @@
       "WORK_CASE_ID_REQUIRED": "Identyfikator teczki jest wymagany.",
       "FORWARDER_ID_REQUIRED": "Identyfikator przypisanego spedytora jest wymagany.",
       "CLIENT_ID_REQUIRED": "Identyfikator przypisanego klienta jest wymagany.",
-      "BUDGET_EXCEEDED": "Łączna wartość pozycji przekracza zdefiniowany budżet dla tej teczki.",
+      "BUDGET_EXCEEDED": "Łączna wartość pozycji przekracza zdefiniowany budżet dla tej teczki o {{exceededBy}}.",
       "RELATION": {
         "REQUIRED": "Trasa/relacja transportowa jest wymagana.",
         "INVALID": "Określona relacja transportowa jest nieprawidłowa lub niedozwolona."
@@ -254,6 +273,7 @@
     "SOME_ITEMS_NOT_FOUND": "Nie znaleziono jednej lub więcej wybranych pozycji teczki.",
     "SOME_ITEMS_ALREADY_INVOICED": "Jedna lub więcej wybranych pozycji została już przypisana do innej faktury.",
     "NOT_FOUND": "Nie znaleziono żądanej faktury.",
+    "CANNOT_DELETE_PAID": "Nie można modyfikować opłaconej faktury",
     "VALIDATION": {
       "ID_REQUIRED": "Identyfikator faktury jest wymagany.",
       "WORK_CASE_ID_REQUIRED": "Identyfikator powiązanej teczki jest wymagany.",

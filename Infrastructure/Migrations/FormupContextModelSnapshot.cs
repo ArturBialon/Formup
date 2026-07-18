@@ -48,7 +48,10 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Credit")
                         .HasColumnType("decimal(12, 2)");
 
-                    b.Property<string>("Currency")
+                    b.Property<decimal>("CreditInPln")
+                        .HasColumnType("decimal(12, 2)");
+
+                    b.Property<string>("CurrencyCode")
                         .IsRequired()
                         .HasMaxLength(3)
                         .IsUnicode(false)
@@ -110,7 +113,7 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12, 2)");
 
-                    b.Property<string>("Currency")
+                    b.Property<string>("CurrencyCode")
                         .IsRequired()
                         .HasMaxLength(3)
                         .IsUnicode(false)
@@ -119,6 +122,11 @@ namespace Infrastructure.Migrations
                     b.Property<string>("DocumentUrl")
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
+
+                    b.Property<bool>("IsPaid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("date");
@@ -163,10 +171,13 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12, 2)");
 
+                    b.Property<decimal>("AmountInPln")
+                        .HasColumnType("decimal(12, 2)");
+
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Currency")
+                    b.Property<string>("CurrencyCode")
                         .IsRequired()
                         .HasMaxLength(3)
                         .IsUnicode(false)
@@ -183,11 +194,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTime>("IssueDate")
+                    b.Property<bool>("IsPaid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("IssueDateUtc")
                         .HasColumnType("datetime")
                         .HasColumnName("Issue_Date");
 
-                    b.Property<DateTime>("ServiceDate")
+                    b.Property<DateTime>("ServiceDateUtc")
                         .HasColumnType("datetime")
                         .HasColumnName("Service_Date");
 
@@ -336,13 +352,16 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12, 2)");
 
+                    b.Property<decimal>("AmountInPln")
+                        .HasColumnType("decimal(12, 2)");
+
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Currency")
+                    b.Property<string>("CurrencyCode")
                         .IsRequired()
                         .HasMaxLength(3)
                         .IsUnicode(false)
@@ -385,10 +404,10 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12, 2)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Currency")
+                    b.Property<string>("CurrencyCode")
                         .IsRequired()
                         .HasMaxLength(3)
                         .IsUnicode(false)

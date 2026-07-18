@@ -43,16 +43,16 @@ namespace Application.Features.Invoices.Queries
                 query = query.Where(x => x.Amount <= request.MaxAmount.Value);
 
             if (request.IssueDateFrom.HasValue)
-                query = query.Where(x => x.IssueDate >= request.IssueDateFrom.Value);
+                query = query.Where(x => x.IssueDateUtc >= request.IssueDateFrom.Value);
 
             if (request.IssueDateTo.HasValue)
-                query = query.Where(x => x.IssueDate <= request.IssueDateTo.Value);
+                query = query.Where(x => x.IssueDateUtc <= request.IssueDateTo.Value);
 
             if (request.ServiceDateFrom.HasValue)
-                query = query.Where(x => x.ServiceDate >= request.ServiceDateFrom.Value);
+                query = query.Where(x => x.ServiceDateUtc >= request.ServiceDateFrom.Value);
 
             if (request.ServiceDateTo.HasValue)
-                query = query.Where(x => x.ServiceDate <= request.ServiceDateTo.Value);
+                query = query.Where(x => x.ServiceDateUtc <= request.ServiceDateTo.Value);
 
             if (request.TaxRate.HasValue)
                 query = query.Where(x => x.Tax == request.TaxRate.Value);
@@ -63,7 +63,7 @@ namespace Application.Features.Invoices.Queries
             var totalCount = await query.CountAsync(ct);
 
             var items = await query
-                .OrderByDescending(x => x.IssueDate)
+                .OrderByDescending(x => x.IssueDateUtc)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(invoice => new InvoiceResponse
@@ -71,9 +71,9 @@ namespace Application.Features.Invoices.Queries
                     Id = invoice.Id.Value,
                     InvoiceNumber = invoice.InvoiceNumber,
                     Amount = invoice.Amount,
-                    Currency = invoice.Currency,
-                    IssueDate = invoice.IssueDate,
-                    ServiceDate = invoice.ServiceDate,
+                    Currency = invoice.CurrencyCode,
+                    IssueDateUtc = invoice.IssueDateUtc,
+                    ServiceDateUtc = invoice.ServiceDateUtc,
                     Tax = invoice.Tax,
                     IsAbandoned = invoice.IsAbandoned,
                     WorkCaseId = invoice.WorkCase.Id.Value,
