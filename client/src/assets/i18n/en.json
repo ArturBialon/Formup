@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "DETAILS_HEADER": "Details",
     "CHANGE_PASSWORD": "Change Password",
     "LANGUAGE": "Language",
     "LOGOUT": "Logout",
@@ -19,6 +20,39 @@
     "SEARCH_PLACEHOLDER": "Search phrase...",
     "PAGE_SIZE_PLACEHOLDER": "Page size",
     "CURRENCY": "Currency",
+    "WORK_CASE_ITEM": {
+      "ADD_NEW": "Add new item",
+      "EDITING": "Edit item",
+      "NAME": "Item name / Service",
+      "SALES": "Sales (Item revenue)",
+      "AMOUNT": "Net amount",
+      "TAX": "VAT rate (%)",
+      "COSTS": "Costs (Carrier / Subcontractor)",
+      "COST_AMOUNT_NET": "Planned net cost",
+      "ESTIMATED_COSTS": "Estimated cost",
+      "INVOICED": "Invoiced",
+      "EMPTY_LIST": "No items assigned to this case. Click 'Create' to add the first one.",
+      "CANNOT_EDIT_INVOICED": "Modification blocked. This item has already been linked to an invoice."
+    },
+    "WORK_CASES": {
+      "ITEMS_TITLE": "Sales and cost items",
+      "TITLE": "Work Cases",
+      "ADD_NEW_BUTTON": "Create New Work Case",
+      "NAME": "Case Name",
+      "RELATION": "Relation",
+      "FORWARDER": "Forwarder",
+      "CLIENT": "Client",
+      "AMOUNT": "Amount",
+      "STATUS": "Status",
+      "STATUS_ALL": "All Statuses",
+      "STATUS_ACTIVE": "Active",
+      "STATUS_ABANDONED": "Abandoned",
+      "EMPTY_LIST": "No work cases found on the list",
+      "CREATE_SUCCESS": "Work case successfully created",
+      "AMOUNT_PLN": "Amount in PLN:",
+      "CREATED_AT_UTC": "Created at (UTC)",
+      "CREATED_AT": "Created at"
+    },
     "USERS": {
       "LIST_TITLE": "User List",
       "EMPTY_LIST": "No users found",
@@ -70,23 +104,6 @@
       "CREATE_SUCCESS": "Contractor has been successfully added!",
       "UPDATE_SUCCESS": "Contractor details have been successfully updated!",
       "TRADE_LIMIT": "Credit limit"
-    },
-    "WORK_CASES": {
-      "TITLE": "Work Cases",
-      "ADD_NEW_BUTTON": "Create New Work Case",
-      "NAME": "Case Name",
-      "RELATION": "Relation",
-      "FORWARDER": "Forwarder",
-      "CLIENT": "Client",
-      "AMOUNT": "Amount",
-      "STATUS": "Status",
-      "STATUS_ALL": "All Statuses",
-      "STATUS_ACTIVE": "Active",
-      "STATUS_ABANDONED": "Abandoned",
-      "EMPTY_LIST": "No work cases found on the list",
-      "CREATE_SUCCESS": "Work case successfully created",
-      "AMOUNT_PLN": "Amount in PLN:",
-      "CREATED_AT": "Created at (UTC)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",

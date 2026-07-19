@@ -101,3 +101,38 @@
   transform: scale(0.8);
   margin-left: -5px;
 }
+
+.cp-pointer {
+  cursor: pointer;
+  user-select: none;
+  
+  &:hover {
+    color: var(--text-white, var(--color-primary)) !important;
+  }
+}
+
+.chevron-icon {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+// Nowoczesne animowanie wysokości bez JS i bez podawania "sztywnego" max-height
+.collapsible-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+
+  &.is-expanded {
+    grid-template-rows: 1fr;
+  }
+
+  // Wymagane przez specyfikację CSS Grid do poprawnego obliczania wysokości dzieci
+  .collapsible-content {
+    min-height: 0;
+  }
+}

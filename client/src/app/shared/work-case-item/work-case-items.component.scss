@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-bar {
+  display: flex;
+  
+  &.right-aligned {
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  
+  &.space-between {
+    justify-content: space-between;
+    
+    .actions-right {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}

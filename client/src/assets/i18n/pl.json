@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "DETAILS_HEADER": "Szczegóły",
     "CHANGE_PASSWORD": "Zmień hasło",
     "LANGUAGE": "Język",
     "LOGOUT": "Wyloguj się",
@@ -19,6 +20,39 @@
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
     "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
     "CURRENCY": "Waluta",
+    "WORK_CASE_ITEM": {
+      "ADD_NEW": "Dodaj nową pozycję",
+      "EDITING": "Edycja pozycji",
+      "NAME": "Nazwa pozycji / Usługa",
+      "SALES": "Sprzedaż (Przychód z pozycji)",
+      "AMOUNT": "Wartość netto",
+      "TAX": "Stawka VAT (%)",
+      "COSTS": "Koszty (Przewoźnik / Podwykonawca)",
+      "COST_AMOUNT_NET": "Planowany koszt netto",
+      "ESTIMATED_COSTS": "Szacowany koszt",
+      "INVOICED": "Zafakturowano",
+      "EMPTY_LIST": "Brak pozycji przypisanych do tego zlecenia. Kliknij „Utwórz”, aby dodać pierwszą.",
+      "CANNOT_EDIT_INVOICED": "Modyfikacja zablokowana. Ta pozycja została już powiązana z fakturą."
+    },
+    "WORK_CASES": {
+      "ITEMS_TITLE": "Pozycje sprzedażowo-kosztowe",
+      "TITLE": "Teczki zleceń",
+      "ADD_NEW_BUTTON": "Utwórz nową teczkę",
+      "NAME": "Nazwa teczki",
+      "RELATION": "Relacja",
+      "FORWARDER": "Spedytor",
+      "CLIENT": "Klient",
+      "AMOUNT": "Kwota",
+      "STATUS": "Status",
+      "STATUS_ALL": "Wszystkie statusy",
+      "STATUS_ACTIVE": "Aktywne",
+      "STATUS_ABANDONED": "Porzucone",
+      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
+      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę",
+      "AMOUNT_PLN": "Kwota w PLN:",
+      "CREATED_AT_UTC": "Utworzono (UTC)",
+      "CREATED_AT": "Utworzono"
+    },
     "USERS": {
       "LIST_TITLE": "Lista użytkowników",
       "EMPTY_LIST": "Brak użytkowników do wyświetlenia",
@@ -81,23 +115,6 @@
       "CREATE": "Utwórz",
       "NEXT": ">>",
       "PREVIOUS": "<<"
-    },
-    "WORK_CASES": {
-      "TITLE": "Teczki zleceń",
-      "ADD_NEW_BUTTON": "Utwórz nową teczkę",
-      "NAME": "Nazwa teczki",
-      "RELATION": "Relacja",
-      "FORWARDER": "Spedytor",
-      "CLIENT": "Klient",
-      "AMOUNT": "Kwota",
-      "STATUS": "Status",
-      "STATUS_ALL": "Wszystkie statusy",
-      "STATUS_ACTIVE": "Aktywne",
-      "STATUS_ABANDONED": "Porzucone",
-      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
-      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę",
-      "AMOUNT_PLN": "Kwota w PLN:",
-      "CREATED_AT": "Utworzono (UTC)"
     }
   },
   "LOGIN": {

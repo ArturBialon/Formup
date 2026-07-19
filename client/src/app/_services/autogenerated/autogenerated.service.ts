@@ -2726,9 +2726,11 @@ export interface UpdateWorkCaseCommand {
 export interface WorkCaseItemResponse {
     id?: string;
     name?: string;
-    amount?: number | null;
-    currency?: string;
+    amountToInvoice?: number | null;
+    invoiceCurrencyCode?: string;
     tax?: number | null;
+    costAmount?: number | null;
+    costCurrencyCode?: string;
     createdAtUtc?: Date | string;
     isInvoiced?:boolean | null;
     invoiceId?: string | null;

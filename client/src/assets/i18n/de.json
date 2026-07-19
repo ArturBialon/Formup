@@ -1,5 +1,6 @@
 {
     "GUI": {
+        "DETAILS_HEADER": "Nähere",
         "CHANGE_PASSWORD": "Passwort ändern",
         "LANGUAGE": "Sprache",
         "LOGOUT": "Abmelden",
@@ -19,6 +20,39 @@
         "SEARCH_PLACEHOLDER": "Suchphrase...",
         "PAGE_SIZE_PLACEHOLDER": "Seitengröße",
         "CURRENCY": "Währung",
+        "WORK_CASE_ITEM": {
+            "ADD_NEW": "Neue Position hinzufügen",
+            "EDITING": "Position bearbeiten",
+            "NAME": "Positionsname / Dienstleistung",
+            "SALES": "Verkauf (Erlös aus Position)",
+            "AMOUNT": "Nettobetrag",
+            "TAX": "MwSt.-Satz (%)",
+            "COSTS": "Kosten (Frachtführer / Subunternehmer)",
+            "COST_AMOUNT_NET": "Geplante Nettokosten",
+            "ESTIMATED_COSTS": "Geschätzte Kosten",
+            "INVOICED": "Fakturiert",
+            "EMPTY_LIST": "Diesem Auftrag sind keine Positionen zugeordnet. Klicken Sie auf „Erstellen“, um die erste hinzuzufügen.",
+            "CANNOT_EDIT_INVOICED": "Bearbeitung gesperrt. Diese Position wurde bereits mit einer Rechnung verknüpft."
+            },
+        "WORK_CASES": {
+            "ITEMS_TITLE": "Verkaufs- und Kostenpositionen",
+            "TITLE": "Transportakten",
+            "ADD_NEW_BUTTON": "Neue Akte erstellen",
+            "NAME": "Aktenname",
+            "RELATION": "Relation",
+            "FORWARDER": "Spediteur",
+            "CLIENT": "Kunde",
+            "AMOUNT": "Betrag",
+            "STATUS": "Status",
+            "STATUS_ALL": "Alle Status",
+            "STATUS_ACTIVE": "Aktiv",
+            "STATUS_ABANDONED": "Abgebrochen",
+            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden",
+            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt",
+            "AMOUNT_PLN": "Betrag in PLN:",
+            "CREATED_AT_UTC": "Erstellt um (UTC)",
+            "CREATED_AT": "Erstellt um"
+        },
         "USERS": {
             "LIST_TITLE": "Benutzerliste",
             "EMPTY_LIST": "Keine Benutzer gefunden",
@@ -70,23 +104,6 @@
             "CREATE_SUCCESS": "Vertragspartner wurde erfolgreich hinzugefügt!",
             "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
             "TRADE_LIMIT": "Kreditlimit"
-        },
-        "WORK_CASES": {
-            "TITLE": "Transportakten",
-            "ADD_NEW_BUTTON": "Neue Akte erstellen",
-            "NAME": "Aktenname",
-            "RELATION": "Relation",
-            "FORWARDER": "Spediteur",
-            "CLIENT": "Kunde",
-            "AMOUNT": "Betrag",
-            "STATUS": "Status",
-            "STATUS_ALL": "Alle Status",
-            "STATUS_ACTIVE": "Aktiv",
-            "STATUS_ABANDONED": "Abgebrochen",
-            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden",
-            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt",
-            "AMOUNT_PLN": "Betrag in PLN:",
-            "CREATED_AT": "Erstellt um (UTC)"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",
