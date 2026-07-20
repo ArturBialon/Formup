@@ -42,11 +42,6 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(false);
 
-            entity.HasOne(d => d.WorkCaseItem)
-                .WithMany(p => p.Costs)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("FK_Costs_WorkCaseItems");
-
             entity.HasOne(d => d.ServiceContractor)
                 .WithMany(p => p.Costs)
                 .OnDelete(DeleteBehavior.Restrict)

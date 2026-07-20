@@ -39,6 +39,13 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasColumnType("datetime");
 
+            entity.HasOne(d => d.Cost)
+                .WithOne(c => c.WorkCaseItem)
+                .HasForeignKey<Cost>("WorkCaseItemId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_Costs_WorkCaseItems");
+
             entity.HasOne(d => d.Invoice)
                 .WithMany(p => p.WorkCaseItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)

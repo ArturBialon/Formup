@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FormupContext))]
-    partial class FormupContextModelSnapshot : ModelSnapshot
+    [Migration("20260720194911_CostAdjustment")]
+    partial class CostAdjustment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,12 +149,17 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Tax")
                         .HasColumnType("decimal(7, 3)");
 
+                    b.Property<Guid?>("WorkCaseId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("WorkCaseItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceContractorId");
+
+                    b.HasIndex("WorkCaseId");
 
                     b.HasIndex("WorkCaseItemId")
                         .IsUnique()
@@ -452,6 +460,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("Costs_Service_Contractors");
 
+                    b.HasOne("Domain.Models.WorkCase", null)
+                        .WithMany("Costs")
+                        .HasForeignKey("WorkCaseId");
+
                     b.HasOne("Domain.Models.WorkCaseItem", "WorkCaseItem")
                         .WithOne("Cost")
                         .HasForeignKey("Domain.Models.Cost", "WorkCaseItemId")
@@ -540,6 +552,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
+                    b.Navigation("Costs");
+
                     b.Navigation("Invoices");
 
                     b.Navigation("WorkCaseItems");

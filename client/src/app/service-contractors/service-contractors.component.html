@@ -120,7 +120,7 @@
         @if (selectedContractor() || isCreateMode()) {
           <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()" class="admin-form">
             
-            <div class="form-grid">
+            <div class="form-grid-2">
               
               <app-input class="field full-width" controlName="name" label="GUI.CONTRACTORS.NAME" [required]="true"></app-input>
               <app-input class="field full-width" controlName="tax" label="GUI.CONTRACTORS.TAX_NIP" [required]="true"></app-input>
@@ -128,11 +128,11 @@
               <app-input class="field" controlName="country" label="GUI.CONTRACTORS.COUNTRY" [required]="true"></app-input>
               <app-input class="field" controlName="city" label="GUI.CONTRACTORS.CITY" [required]="true"></app-input>
 
-              <div class="form-grid">
+              <div class="form-grid-2">
                 <app-input class="field" controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE" [required]="true"></app-input>
                 <app-input class="field" controlName="street" label="GUI.CONTRACTORS.STREET" [required]="true"></app-input>
               </div>
-              <div class="form-grid">
+              <div class="form-grid-2">
                 <app-input class="field" controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER" [required]="true"></app-input>
                 <app-input class="field" controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
               </div>

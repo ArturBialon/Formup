@@ -20,7 +20,7 @@
 
 .tile-container{
   border-radius: 0.5rem;
-  padding: 2%;
+  padding: 1rem;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.15);
 }
@@ -44,7 +44,7 @@
   flex-direction: column;
 }
 
-.mock-label {
+.select-label {
   font-size: 14px; 
   margin-bottom: 4px;
 }

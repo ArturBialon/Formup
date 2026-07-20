@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Invoices.Commands
 {
-    public record DeleteInvoiceCommand(Guid InvoiceId) : IRequest<AppResult<Unit>>;
+    public record AbandonInvoiceCommand(Guid InvoiceId) : IRequest<AppResult<Unit>>;
 
-    public class DeleteInvoiceHandler(FormupContext context) : IRequestHandler<DeleteInvoiceCommand, AppResult<Unit>>
+    public class DeleteInvoiceHandler(FormupContext context) : IRequestHandler<AbandonInvoiceCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<Unit>> Handle(DeleteInvoiceCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(AbandonInvoiceCommand request, CancellationToken ct)
         {
             var invoice = await _context.Invoices
                 .Include(x => x.WorkCaseItems)

@@ -59,9 +59,9 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteInvoice([FromQuery] Guid invoiceId)
+        public async Task<IActionResult> AbandonInvoice([FromQuery] Guid invoiceId)
         {
-            var result = await Mediator.Send(new DeleteInvoiceCommand(invoiceId));
+            var result = await Mediator.Send(new AbandonInvoiceCommand(invoiceId));
             return HandleResult(result);
         }
     }

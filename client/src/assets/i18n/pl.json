@@ -265,7 +265,7 @@
   "WORK_CASE_ITEM": {
     "NOT_FOUND": "Nie znaleziono określonej pozycji operacyjnej.",
     "CANNOT_DELETE_IS_INVOICED": "Nie można usunąć tej pozycji, ponieważ została już powiązana z fakturą sprzedaży.",
-    "CANNOT_DELETE_WITH_COSTS": "Nie można usunąć tej pozycji, ponieważ są do niej przypisane koszty zakupu.",
+    "CANNOT_DELETE_WITH_COST": "Nie można usunąć tej pozycji, ponieważ jest do niej przypisana faktura kosztowa.",
     "VALIDATION": {
       "WORK_CASE_ID": {
         "REQUIRED": "Identyfikator teczki nadrzędnej jest wymagany."

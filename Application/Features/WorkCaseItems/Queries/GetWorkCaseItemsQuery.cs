@@ -18,10 +18,7 @@ namespace Application.Features.WorkCaseItems.Queries
             var workCaseExists = await _context.WorkCases
                 .AnyAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
-            if (!workCaseExists)
-            {
-                return AppResult<IReadOnlyCollection<WorkCaseItemResponse>>.Failure("WORK_CASE.NOT_FOUND");
-            }
+            if (!workCaseExists) return AppResult<IReadOnlyCollection<WorkCaseItemResponse>>.Failure("WORK_CASE.NOT_FOUND");
 
             var items = await _context.WorkCaseItems
                 .AsNoTracking()
@@ -37,16 +34,16 @@ namespace Application.Features.WorkCaseItems.Queries
                     Tax = x.TaxInvoice,
                     CreatedAtUtc = x.CreatedAtUtc,
                     InvoiceId = x.Invoice != null ? x.Invoice.Id : null,
-                    Costs = x.Costs.Select(c => new CostResponse
+                    Cost = x.Cost != null ? new CostResponse
                     {
-                        Id = c.Id.Value,
-                        Name = c.Name,
-                        Amount = c.Amount,
-                        Currency = c.CurrencyCode,
-                        Tax = c.Tax,
-                        IssueDate = c.IssueDate,
-                        ServiceDate = c.ServiceDate
-                    }).ToList()
+                        Id = x.Cost.Id.Value,
+                        Name = x.Cost.Name,
+                        Amount = x.Cost.Amount,
+                        Currency = x.Cost.CurrencyCode,
+                        Tax = x.Cost.Tax,
+                        IssueDate = x.Cost.IssueDate,
+                        ServiceDate = x.Cost.ServiceDate
+                    } : null
                 })
                 .ToListAsync(ct);
 

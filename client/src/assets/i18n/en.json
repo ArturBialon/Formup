@@ -265,7 +265,7 @@
   "WORK_CASE_ITEM": {
     "NOT_FOUND": "The specified operational item could not be found.",
     "CANNOT_DELETE_IS_INVOICED": "Cannot delete this item because it has already been linked to a sales invoice.",
-    "CANNOT_DELETE_WITH_INCORES": "Cannot delete this item because it has purchase costs linked to it.",
+    "CANNOT_DELETE_WITH_COST": "Cannot delete this item because it has purchase cost linked to it.",
     "VALIDATION": {
       "WORK_CASE_ID": {
         "REQUIRED": "The parent work case identifier is missing or required."

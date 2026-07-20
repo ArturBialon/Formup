@@ -51,11 +51,11 @@
             </div>
           }
 
-          <div class="form-grid">
+          <div class="form-grid-2">
             <app-input class="field full-width" controlName="amount" label="GUI.WORK_CASES.AMOUNT" type="number" [required]="true"></app-input>
             
             <div class="select-wrapper">
-              <span class="mock-label">{{"GUI.CURRENCY" | translate}}</span>
+              <span class="select-label">{{"GUI.CURRENCY" | translate}}</span>
               <select class="input form-control shadow-none" formControlName="currencyCode">
                 <option value="PLN">PLN</option>
                 <option value="EUR">EUR</option>
@@ -75,7 +75,7 @@
             </div>
 
             <div class="select-wrapper">
-              <span class="mock-label">{{"GUI.WORK_CASES.RELATION" | translate}}</span>
+              <span class="select-label">{{"GUI.WORK_CASES.RELATION" | translate}}</span>
               <select class="input form-control shadow-none" formControlName="relation">
                 <option value="SE">SE</option>
                 <option value="SI">SI</option>

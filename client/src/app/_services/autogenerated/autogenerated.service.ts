@@ -806,7 +806,7 @@ export interface IInvoiceService {
     getInvoiceById(invoiceId: string): Observable<InvoiceDetailResponse>;
     createInvoice(command: CreateInvoiceCommand | undefined): Observable<void>;
     updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<void>;
-    deleteInvoice(invoiceId: string): Observable<void>;
+    abandonInvoice(invoiceId: string): Observable<void>;
 }
 
 @Injectable({
@@ -1092,8 +1092,8 @@ export class InvoiceService implements IInvoiceService {
         return _observableOf(null as any);
     }
 
-    deleteInvoice(invoiceId: string): Observable<void> {
-        let url_ = this.baseUrl + "/api/Invoice/DeleteInvoice?";
+    abandonInvoice(invoiceId: string): Observable<void> {
+        let url_ = this.baseUrl + "/api/Invoice/AbandonInvoice?";
         if (invoiceId === undefined || invoiceId === null)
             throw new globalThis.Error("The parameter 'invoiceId' must be defined and cannot be null.");
         else
@@ -1108,11 +1108,11 @@ export class InvoiceService implements IInvoiceService {
         };
 
         return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteInvoice(response_);
+            return this.processAbandonInvoice(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeleteInvoice(response_ as any);
+                    return this.processAbandonInvoice(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -1121,7 +1121,7 @@ export class InvoiceService implements IInvoiceService {
         }));
     }
 
-    protected processDeleteInvoice(response: HttpResponseBase): Observable<void> {
+    protected processAbandonInvoice(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2734,7 +2734,7 @@ export interface WorkCaseItemResponse {
     createdAtUtc?: Date | string;
     isInvoiced?:boolean | null;
     invoiceId?: string | null;
-    costs?: CostResponse[];
+    cost?: CostResponse | null;
 }
 
 export interface CostResponse {
@@ -2745,6 +2745,8 @@ export interface CostResponse {
     name?: string;
     issueDate?: Date | string;
     serviceDate?: Date | string;
+    documentUrl?: string | null;
+    isPaid?:boolean | null;
 }
 
 export interface AddWorkCaseItemCommand {

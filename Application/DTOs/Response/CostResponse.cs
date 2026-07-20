@@ -9,5 +9,7 @@
         public required string Name { get; set; }
         public required DateTime IssueDate { get; set; }
         public required DateTime ServiceDate { get; set; }
+        public string? DocumentUrl { get; set; }
+        public bool IsPaid { get; set; }
     }
 }

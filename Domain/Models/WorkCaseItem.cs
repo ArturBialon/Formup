@@ -14,10 +14,10 @@ namespace Domain.Models
         public required string CurrencyCodeCost { get; set; }
         public DateTime CreatedAtUtc { get; init; } = DateTime.UtcNow;
         public bool IsInvoiced => Invoice != null;
-        public bool HasCosts => Costs.Count != 0;
+        public bool HasCost => Cost != null;
 
         public virtual Invoice? Invoice { get; set; }
-        public virtual ICollection<Cost> Costs { get; set; } = [];
+        public virtual Cost? Cost { get; set; }
         public required virtual WorkCase WorkCase { get; set; }
     }
 }

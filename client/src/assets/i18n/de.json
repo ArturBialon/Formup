@@ -265,7 +265,7 @@
     "WORK_CASE_ITEM": {
         "NOT_FOUND": "Die angegebene operative Position wurde nicht gefunden.",
         "CANNOT_DELETE_IS_INVOICED": "Diese Position kann nicht gelöscht werden, da sie bereits mit einer Ausgangsrechnung verknüpft ist.",
-        "CANNOT_DELETE_WITH_COSTS": "Diese Position kann nicht gelöscht werden, da ihr Einkaufskosten zugewiesen sind.",
+        "CANNOT_DELETE_WITH_COST": "Dieser Artikel kann nicht gelöscht werden, da ihm eine Kostenrechnung zugeordnet ist.",
         "VALIDATION": {
             "WORK_CASE_ID": {
                 "REQUIRED": "Die Kennung der übergeordneten Akte ist erforderlich."

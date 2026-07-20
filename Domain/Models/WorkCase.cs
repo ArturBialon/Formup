@@ -8,7 +8,6 @@ namespace Domain.Models
     {
         public WorkCase()
         {
-            Costs = new HashSet<Cost>();
             Invoices = new HashSet<Invoice>();
         }
 
@@ -22,7 +21,6 @@ namespace Domain.Models
 
         public virtual User Forwarder { get; set; }
         public virtual Client Client { get; set; }
-        public virtual ICollection<Cost> Costs { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<WorkCaseItem> WorkCaseItems { get; set; }
     }

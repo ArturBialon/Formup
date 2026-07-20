@@ -1,5 +1,3 @@
-$color-error: #d9001b;
-$color-primary: #0052a5;
 $transition-speed: 0.15s;
 
 :host {
@@ -9,11 +7,11 @@ $transition-speed: 0.15s;
 
 .form-group {
   position: relative;
-  padding-bottom: 20px; 
+  padding-bottom: 1.2rem; 
 
   &.required label::after {
     content: " *";
-    color: $color-error;
+    color: var(--color-error);
   }
 }
 
@@ -30,16 +28,16 @@ label {
 
   &.invalid {
     padding-bottom: 6px;
-    border-bottom: 3px solid $color-error;
+    border-bottom: 3px solid var(--color-error);
 
     &:focus {
-      border-bottom: 3px solid $color-error;
+      border-bottom: 3px solid var(--color-error);
     }
   }
 
   &:focus {
     padding-bottom: 6px;
-    border-bottom: 3px solid $color-primary;
+    border-bottom: 3px solid var(--color-primary);
   }
 }
 
@@ -51,7 +49,7 @@ label {
   visibility: hidden;
   opacity: 0;
   font-size: 0.8rem;
-  color: $color-error;
+  color: var(--color-error);
   transition: opacity $transition-speed linear, visibility $transition-speed linear;
 
   &.show-invalid {
