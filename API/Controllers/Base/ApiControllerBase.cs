@@ -16,7 +16,7 @@ namespace API.Controllers.Base
         private ISender? _mediator;
         protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 
-        protected IActionResult HandleResult<T>(IAppResult<T> result)
+        protected IActionResult HandleResult<T>(AppResult<T> result)
         {
             if (result.IsSuccess) return Ok(result.Value);
 

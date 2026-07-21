@@ -7,18 +7,18 @@ using Serilog;
 
 namespace Application.Features.Costs.Commands
 {
-    public record DeleteCostCommand(Guid Id) : IRequest<IAppResult<Unit>>;
+    public record DeleteCostCommand(Guid Id) : IRequest<AppResult<Unit>>;
 
     public class DeleteCostCommandHandler(
         FormupContext context,
         ILogger logger,
-        IFileStorageService fileStorageService) : IRequestHandler<DeleteCostCommand, IAppResult<Unit>>
+        IFileStorageService fileStorageService) : IRequestHandler<DeleteCostCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
         private readonly ILogger _logger = logger;
         private readonly IFileStorageService _fileStorageService = fileStorageService;
 
-        public async Task<IAppResult<Unit>> Handle(DeleteCostCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(DeleteCostCommand request, CancellationToken ct)
         {
             var cost = await _context.Costs
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);

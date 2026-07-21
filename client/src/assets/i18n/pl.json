@@ -32,7 +32,12 @@
       "ESTIMATED_COSTS": "Szacowany koszt",
       "INVOICED": "Zafakturowano",
       "EMPTY_LIST": "Brak pozycji przypisanych do tego zlecenia. Kliknij „Utwórz”, aby dodać pierwszą.",
-      "CANNOT_EDIT_INVOICED": "Modyfikacja zablokowana. Ta pozycja została już powiązana z fakturą."
+      "CANNOT_EDIT_INVOICED": "Modyfikacja zablokowana. Ta pozycja została już powiązana z fakturą.",
+      "ACTUAL_COST": "Rzeczywisty koszt",
+      "NO_ACTUAL_COST": "Brak zarejestrowanego kosztu",
+      "ADD_COST": "Dodaj koszt",
+      "VIEW_COST": "Podgląd kosztu",
+      "COST_NO_NAME": "Koszt bez nazwy"
     },
     "WORK_CASES": {
       "ITEMS_TITLE": "Pozycje sprzedażowo-kosztowe",
@@ -224,6 +229,8 @@
     "WORK_CASE_ITEM_NOT_FOUND": "Nie znaleziono wybranej pozycji teczki.",
     "CONTRACTOR_NOT_FOUND": "Nie znaleziono wybranego podwykonawcy.",
     "COST_ALREADY_EXISTS": "Ten dokument kosztowy został już zarejestrowany w systemie.",
+    "WORK_CASE_ITEM_HAS_COST": "Do tego elementu teczki został już przypisany koszt",
+    "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Kwota kosztów różni się od przewidywanej",
     "NOT_FOUND": "Nie znaleziono określonego rekordu kosztu.",
     "VALIDATION": {
       "ID_REQUIRED": "Identyfikator kosztu jest wymagany.",

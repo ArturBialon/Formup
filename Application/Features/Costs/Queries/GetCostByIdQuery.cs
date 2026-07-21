@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Costs.Queries
 {
-    public record GetCostByIdQuery(Guid Id) : IRequest<IAppResult<CostDetailResponse>>;
+    public record GetCostByIdQuery(Guid WorkCaseItemId) : IRequest<AppResult<CostDetailResponse>>;
 
-    public class GetCostByIdQueryHandler(FormupContext context) : IRequestHandler<GetCostByIdQuery, IAppResult<CostDetailResponse>>
+    public class GetCostByIdQueryHandler(FormupContext context) : IRequestHandler<GetCostByIdQuery, AppResult<CostDetailResponse>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<CostDetailResponse>> Handle(GetCostByIdQuery request, CancellationToken ct)
+        public async Task<AppResult<CostDetailResponse>> Handle(GetCostByIdQuery request, CancellationToken ct)
         {
             var costDto = await _context.Costs
                 .AsNoTracking()
-                .Where(x => x.Id.Equals(request.Id))
+                .Where(x => x.WorkCaseItem.Id.Equals(request.WorkCaseItemId))
                 .Select(c => new CostDetailResponse
                 {
                     Id = c.Id.Value,
@@ -28,15 +28,13 @@ namespace Application.Features.Costs.Queries
                     ServiceDate = c.ServiceDate,
                     DocumentUrl = c.DocumentUrl,
                     IsPaid = c.IsPaid,
+                    ServiceContractorName = c.ServiceContractor.Name + ": " + c.ServiceContractor.Tax,
                     WorkCaseItemId = c.WorkCaseItem.Id.Value,
                     ServiceContractorId = c.ServiceContractor.Id.Value
                 })
                 .FirstOrDefaultAsync(ct);
 
-            if (costDto == null)
-            {
-                return AppResult<CostDetailResponse>.Failure("COST.NOT_FOUND");
-            }
+            if (costDto == null) return AppResult<CostDetailResponse>.Failure("COST.NOT_FOUND");
 
             return AppResult<CostDetailResponse>.Success(costDto);
         }

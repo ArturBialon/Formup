@@ -32,7 +32,12 @@
       "ESTIMATED_COSTS": "Estimated cost",
       "INVOICED": "Invoiced",
       "EMPTY_LIST": "No items assigned to this case. Click 'Create' to add the first one.",
-      "CANNOT_EDIT_INVOICED": "Modification blocked. This item has already been linked to an invoice."
+      "CANNOT_EDIT_INVOICED": "Modification blocked. This item has already been linked to an invoice.",
+      "ACTUAL_COST": "Actual cost",
+      "NO_ACTUAL_COST": "No registered cost",
+      "ADD_COST": "Add cost",
+      "VIEW_COST": "View cost",
+      "COST_NO_NAME": "Unnamed cost"
     },
     "WORK_CASES": {
       "ITEMS_TITLE": "Sales and cost items",
@@ -224,6 +229,8 @@
     "WORK_CASE_ITEM_NOT_FOUND": "The selected work case item was not found.",
     "CONTRACTOR_NOT_FOUND": "The selected service contractor was not found.",
     "COST_ALREADY_EXISTS": "This cost document has already been registered in the system.",
+    "WORK_CASE_ITEM_HAS_COST": "A cost has already been assigned to this folder item.",
+    "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Cost amount differs with prediction",
     "NOT_FOUND": "The specified cost record could not be found.",
     "VALIDATION": {
       "ID_REQUIRED": "Cost identifier is required.",

@@ -32,7 +32,12 @@
             "ESTIMATED_COSTS": "Geschätzte Kosten",
             "INVOICED": "Fakturiert",
             "EMPTY_LIST": "Diesem Auftrag sind keine Positionen zugeordnet. Klicken Sie auf „Erstellen“, um die erste hinzuzufügen.",
-            "CANNOT_EDIT_INVOICED": "Bearbeitung gesperrt. Diese Position wurde bereits mit einer Rechnung verknüpft."
+            "CANNOT_EDIT_INVOICED": "Bearbeitung gesperrt. Diese Position wurde bereits mit einer Rechnung verknüpft.",
+            "ACTUAL_COST": "Tatsächliche Kosten",
+            "NO_ACTUAL_COST": "Keine erfassten Kosten",
+            "ADD_COST": "Kosten hinzufügen",
+            "VIEW_COST": "Kosten anzeigen",
+            "COST_NO_NAME": "Unbenannte Kosten"
             },
         "WORK_CASES": {
             "ITEMS_TITLE": "Verkaufs- und Kostenpositionen",
@@ -224,6 +229,8 @@
         "WORK_CASE_ITEM_NOT_FOUND": "Die ausgewählte Aktenposition wurde nicht gefunden.",
         "CONTRACTOR_NOT_FOUND": "Der ausgewählte Subunternehmer wurde nicht gefunden.",
         "COST_ALREADY_EXISTS": "Dieses Kostendokument wurde bereits im System registriert.",
+        "WORK_CASE_ITEM_HAS_COST": "Diesem Ordnereintrag wurden bereits Kosten zugewiesen.",
+        "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Die Kostenhöhe weicht von der Prognose ab.",
         "NOT_FOUND": "Der angegebene Kostenbeleg wurde nicht gefunden.",
         "VALIDATION": {
             "ID_REQUIRED": "Kostenkennung ist erforderlich.",

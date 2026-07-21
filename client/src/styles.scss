@@ -25,6 +25,10 @@
   border: 1px solid rgba(255,255,255,0.15);
 }
 
+.is-invoiced{
+  background-color: var(--color-alert-info-border);
+}
+
 .dark-text {
   color: var(--color-dark);
 }

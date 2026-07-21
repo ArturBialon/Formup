@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.WorkCaseItems.Queries
 {
-    public record GetWorkCaseItemsQuery(Guid WorkCaseId) : IRequest<IAppResult<IReadOnlyCollection<WorkCaseItemResponse>>>;
+    public record GetWorkCaseItemsQuery(Guid WorkCaseId) : IRequest<AppResult<IReadOnlyCollection<WorkCaseItemResponse>>>;
 
     public class GetWorkCaseItemsQueryHandler(FormupContext context)
-        : IRequestHandler<GetWorkCaseItemsQuery, IAppResult<IReadOnlyCollection<WorkCaseItemResponse>>>
+        : IRequestHandler<GetWorkCaseItemsQuery, AppResult<IReadOnlyCollection<WorkCaseItemResponse>>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<IReadOnlyCollection<WorkCaseItemResponse>>> Handle(GetWorkCaseItemsQuery request, CancellationToken ct)
+        public async Task<AppResult<IReadOnlyCollection<WorkCaseItemResponse>>> Handle(GetWorkCaseItemsQuery request, CancellationToken ct)
         {
             var workCaseExists = await _context.WorkCases
                 .AnyAsync(x => x.Id.Equals(request.WorkCaseId), ct);
@@ -42,7 +42,8 @@ namespace Application.Features.WorkCaseItems.Queries
                         Currency = x.Cost.CurrencyCode,
                         Tax = x.Cost.Tax,
                         IssueDate = x.Cost.IssueDate,
-                        ServiceDate = x.Cost.ServiceDate
+                        ServiceDate = x.Cost.ServiceDate,
+                        ServiceContractorName = x.Cost.ServiceContractor.Name + " " + x.Cost.ServiceContractor.Tax
                     } : null
                 })
                 .ToListAsync(ct);

@@ -23,16 +23,16 @@ namespace Application.Features.Clients.Commands
         string? Email = null,
         string? PhoneNumber = null,
         string? CurrencyCode = "PLN"
-    ) : IRequest<IAppResult<Unit>>;
+    ) : IRequest<AppResult<Unit>>;
 
     public class CreateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService, ICurrencyConverterService currencyConverterService)
-    : IRequestHandler<CreateClientCommand, IAppResult<Unit>>
+    : IRequestHandler<CreateClientCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
-        public async Task<IAppResult<Unit>> Handle(CreateClientCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(CreateClientCommand request, CancellationToken ct)
         {
             var taxExists = await _context.Clients
                 .AnyAsync(x => x.Tax == request.Tax.Trim(), ct);

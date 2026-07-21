@@ -14,14 +14,14 @@ namespace Application.Features.ServiceContractors.Queries
         string? City = null,
         string? Country = null,
         bool? IsActive = null
-    ) : IRequest<IAppResult<PagedResult<ServiceContractorResponse>>>;
+    ) : IRequest<AppResult<PagedResult<ServiceContractorResponse>>>;
 
     public class GetServiceContractorsQueryHandler(FormupContext context)
-        : IRequestHandler<GetServiceContractorsQuery, IAppResult<PagedResult<ServiceContractorResponse>>>
+        : IRequestHandler<GetServiceContractorsQuery, AppResult<PagedResult<ServiceContractorResponse>>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<PagedResult<ServiceContractorResponse>>> Handle(GetServiceContractorsQuery request, CancellationToken ct)
+        public async Task<AppResult<PagedResult<ServiceContractorResponse>>> Handle(GetServiceContractorsQuery request, CancellationToken ct)
         {
             var query = _context.ServiceContractors.AsNoTracking();
 

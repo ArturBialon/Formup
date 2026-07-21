@@ -24,12 +24,27 @@ export class NotificationService {
     if (typeof errorMessage === 'string' && errorMessage.includes('An unexpected server error occurred.')) return;
     if (typeof errorMessage === 'string' && errorMessage.includes('A server side error occurred.')) return;
     
-    if (actualError?.errors && Array.isArray(actualError.errors)) {
+    if (actualError?.errors) {
       const formattedData = this.formatDataValues(actualError.data);
+      let errorCodesToDisplay: string[] = [];
 
-      actualError.errors.forEach((errorCode: string) => {
+      if (Array.isArray(actualError.errors)) {
+        errorCodesToDisplay = actualError.errors;
+      } 
+      else if (typeof actualError.errors === 'object') {
+        Object.values(actualError.errors).forEach((codes: any) => {
+          if (Array.isArray(codes)) {
+            errorCodesToDisplay.push(...codes);
+          }
+        });
+      }
+
+      const uniqueErrorCodes = [...new Set(errorCodesToDisplay)];
+      
+      uniqueErrorCodes.forEach((errorCode: string) => {
         this.showDynamicToast(errorCode, formattedData);
       });
+      
       return;
     }
 

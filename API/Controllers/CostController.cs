@@ -3,6 +3,7 @@ using Application.Common.Results;
 using Application.DTOs.Response;
 using Application.Features.Costs.Commands;
 using Application.Features.Costs.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -25,13 +26,14 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCostById([FromQuery] Guid id, CancellationToken ct)
+        public async Task<IActionResult> GetCostById([FromQuery] Guid workCaseItemId, CancellationToken ct)
         {
-            var result = await Mediator.Send(new GetCostByIdQuery(id), ct);
+            var result = await Mediator.Send(new GetCostByIdQuery(workCaseItemId), ct);
             return HandleResult(result);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Clients.Commands
 {
-    public record DeleteClientCommand(Guid Id) : IRequest<IAppResult<Unit>>;
+    public record DeleteClientCommand(Guid Id) : IRequest<AppResult<Unit>>;
 
-    public class DeleteClientCommandHandler(FormupContext context) : IRequestHandler<DeleteClientCommand, IAppResult<Unit>>
+    public class DeleteClientCommandHandler(FormupContext context) : IRequestHandler<DeleteClientCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<Unit>> Handle(DeleteClientCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(DeleteClientCommand request, CancellationToken ct)
         {
             var client = await _context.Clients
                 .Include(x => x.Invoices)

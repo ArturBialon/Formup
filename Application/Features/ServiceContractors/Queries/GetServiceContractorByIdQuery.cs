@@ -6,15 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.ServiceContractors.Queries
 {
-    public record GetServiceContractorByIdQuery(Guid Id) : IRequest<IAppResult<ServiceContractorResponse>>;
+    public record GetServiceContractorByIdQuery(Guid Id) : IRequest<AppResult<ServiceContractorResponse>>;
 
     // Modern Handler z użyciem Primary Constructor (C# 12)
     public class GetServiceContractorByIdQueryHandler(FormupContext context)
-        : IRequestHandler<GetServiceContractorByIdQuery, IAppResult<ServiceContractorResponse>>
+        : IRequestHandler<GetServiceContractorByIdQuery, AppResult<ServiceContractorResponse>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<ServiceContractorResponse>> Handle(
+        public async Task<AppResult<ServiceContractorResponse>> Handle(
             GetServiceContractorByIdQuery request,
             CancellationToken ct)
         {

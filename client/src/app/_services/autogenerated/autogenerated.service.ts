@@ -453,7 +453,7 @@ export class ClientService implements IClientService {
 
 export interface ICostService {
     getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined, isPaid: boolean | null | undefined): Observable<PagedResultOfCostDetailResponse>;
-    getCostById(id: string): Observable<CostDetailResponse>;
+    getCostById(workCaseItemId: string): Observable<CostDetailResponse>;
     createCost(command: CreateCostCommand | undefined): Observable<void>;
     updateCost(command: UpdateCostCommand | undefined): Observable<void>;
     deleteCost(id: string): Observable<void>;
@@ -551,12 +551,12 @@ export class CostService implements ICostService {
         return _observableOf(null as any);
     }
 
-    getCostById(id: string): Observable<CostDetailResponse> {
+    getCostById(workCaseItemId: string): Observable<CostDetailResponse> {
         let url_ = this.baseUrl + "/api/Cost/GetCostById?";
-        if (id === undefined || id === null)
-            throw new globalThis.Error("The parameter 'id' must be defined and cannot be null.");
+        if (workCaseItemId === undefined || workCaseItemId === null)
+            throw new globalThis.Error("The parameter 'workCaseItemId' must be defined and cannot be null.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "workCaseItemId=" + encodeURIComponent("" + workCaseItemId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2465,6 +2465,7 @@ export interface CostDetailResponse {
     serviceDate?: Date | string;
     documentUrl?: string | null;
     isPaid?:boolean | null;
+    serviceContractorName?: string;
     workCaseItemId?: string;
     serviceContractorId?: string;
 }
@@ -2747,6 +2748,7 @@ export interface CostResponse {
     serviceDate?: Date | string;
     documentUrl?: string | null;
     isPaid?:boolean | null;
+    serviceContractorName?: string;
 }
 
 export interface AddWorkCaseItemCommand {

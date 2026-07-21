@@ -176,39 +176,72 @@
         }
         @else {
         <div class="tile-container" [class.is-invoiced]="item.isInvoiced">
-            <div class="tile-header">
+            <!-- NAGŁÓWEK KAFELKA -->
+            <div class="tile-header d-flex justify-content-between align-items-center mb-3">
                 <strong class="text-white fs-5">{{ item.name }}</strong>
-                <div class="actions">
+                <div class="d-flex align-items-center gap-2">
                     @if (item.isInvoiced) {
                     <span class="badge-invoiced">{{ 'GUI.WORK_CASE_ITEM.INVOICED' | translate }}</span>
                     }
+                    <button type="button" class="btn-icon" (click)="startEdit(item)"
+                        [disabled]="editingItemId() !== null || item.isInvoiced">
+                        {{ 'GUI.BUTTONS.EDIT' | translate }}
+                    </button>
                 </div>
             </div>
-            <div class="form-grid-2">
-                <div class="form-grid-2 mt-3">
-                    <div>
-                        <span class="d-block text-muted small">{{ 'GUI.WORK_CASE_ITEM.SALES' | translate }}</span>
-                        <span class="text-white">{{ item.amountToInvoice| number:'1.2-2' }} {{ item.invoiceCurrencyCode }}
-                            <small class="text-muted">(VAT: {{ item.tax }}%)</small></span>
-                    </div>
-                    <div>
-                        <span class="d-block text-muted small">{{ 'GUI.WORK_CASE_ITEM.ESTIMATED_COSTS' | translate }}</span>
-                        <span class="text-white">
-                            {{ item.costAmount }} {{ item.costCurrencyCode }}
-                        </span>
-                    </div>
-                    <div>
-                        <button type="button" class="btn-icon" (click)="startEdit(item)"
-                            [disabled]="editingItemId() !== null || item.isInvoiced">
-                            {{ 'GUI.BUTTONS.EDIT' | translate }}
-                        </button>
-                    </div>
+
+            <!-- SEKCJA FINANSOWA (SPRZEDAŻ I SZACOWANY KOSZT) -->
+            <div class="form-grid mb-3">
+                <div>
+                    <span class="d-block text-muted small">{{ 'GUI.WORK_CASE_ITEM.SALES' | translate }}</span>
+                    <span class="text-white fw-semibold">
+                        {{ item.amountToInvoice | number:'1.2-2' }} {{ item.invoiceCurrencyCode }}
+                        <small class="text-muted fw-normal">(VAT: {{ item.tax }}%)</small>
+                    </span>
                 </div>
-                <div class="form-grid-2">
-                    <div>
-                        <!-- cost -->
-                    </div>
+                <div>
+                    <span class="d-block text-muted small">{{ 'GUI.WORK_CASE_ITEM.ESTIMATED_COSTS' | translate }}</span>
+                    <span class="text-white fw-semibold">
+                        {{ item.costAmount ? (item.costAmount | number:'1.2-2') : '0.00' }} {{ item.costCurrencyCode }}
+                    </span>
                 </div>
+            </div>
+
+            <!-- SEKCJA RZECZYWISTEGO KOSZTU -->
+            <div class="cost-section pt-3 border-top border-secondary">
+                <span class="d-block text-muted small mb-2">{{ 'GUI.WORK_CASE_ITEM.ACTUAL_COST' | translate }}</span>
+
+                @if (item.cost) {
+                <!-- STAN: KOSZT ISTNIEJE -->
+                <div
+                    class="d-flex justify-content-between align-items-center p-2 rounded bg-dark border border-secondary">
+                    <div class="cost-info">
+                        <div class="text-white fw-medium">
+                            {{ item.cost.name || ('GUI.WORK_CASE_ITEM.COST_NO_NAME' | translate) }}
+                        </div>
+                        <div class="text-muted small">
+                            <span>{{ item.cost.serviceContractorName || '-' }}</span>
+                            @if (item.cost.serviceDate) {
+                            <span class="mx-1">•</span>
+                            <span>{{ item.cost.serviceDate | date:'dd.MM.yyyy' }}</span>
+                            }
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary"
+                        (click)="openCostDetails(item.cost.id || item.id)">
+                        {{ 'GUI.WORK_CASE_ITEM.VIEW_COST' | translate }}
+                    </button>
+                </div>
+                } @else {
+                <!-- STAN: BRAK KOSZTU -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small fst-italic">{{ 'GUI.WORK_CASE_ITEM.NO_ACTUAL_COST' | translate
+                        }}</span>
+                    <button type="button" class="btn btn-sm btn-outline-success" (click)="addCostForItem(item.id!)">
+                        + {{ 'GUI.WORK_CASE_ITEM.ADD_COST' | translate }}
+                    </button>
+                </div>
+                }
             </div>
         </div>
         }

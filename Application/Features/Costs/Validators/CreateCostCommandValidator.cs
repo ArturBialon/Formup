@@ -25,11 +25,11 @@ namespace Application.Features.Costs.Validators
 
             RuleFor(x => x.IssueDate)
                 .NotEmpty().WithErrorCode("COST.VALIDATION.ISSUE_DATE_REQUIRED")
-                .LessThanOrEqualTo(_ => DateTime.Now.Date).WithErrorCode("COST.VALIDATION.ISSUE_DATE_FUTURE");
+                .LessThanOrEqualTo(_ => DateTime.UtcNow.Date).WithErrorCode("COST.VALIDATION.ISSUE_DATE_FUTURE");
 
             RuleFor(x => x.ServiceDate)
                 .NotEmpty().WithErrorCode("COST.VALIDATION.SERVICE_DATE_REQUIRED")
-                .LessThanOrEqualTo(_ => DateTime.Now.Date).WithErrorCode("COST.VALIDATION.SERVICE_DATE_FUTURE");
+                .LessThanOrEqualTo(_ => DateTime.UtcNow.Date).WithErrorCode("COST.VALIDATION.SERVICE_DATE_FUTURE");
 
             RuleFor(x => x.WorkCaseItemId)
                 .NotEmpty().WithErrorCode("COST.VALIDATION.WORK_CASE_ITEM_ID_REQUIRED");

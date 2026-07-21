@@ -15,14 +15,14 @@ namespace Application.Features.Clients.Queries
         int PageNumber = 1,
         int PageSize = 50,
         bool? IsActive = null
-    ) : IRequest<IAppResult<PagedResult<ClientListItemResponse>>>;
+    ) : IRequest<AppResult<PagedResult<ClientListItemResponse>>>;
 
     public class GetClientsQueryHandler(FormupContext context)
-    : IRequestHandler<GetClientsQuery, IAppResult<PagedResult<ClientListItemResponse>>>
+    : IRequestHandler<GetClientsQuery, AppResult<PagedResult<ClientListItemResponse>>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<PagedResult<ClientListItemResponse>>> Handle(GetClientsQuery request, CancellationToken ct)
+        public async Task<AppResult<PagedResult<ClientListItemResponse>>> Handle(GetClientsQuery request, CancellationToken ct)
         {
             var query = _context.Clients.AsNoTracking().AsQueryable();
 

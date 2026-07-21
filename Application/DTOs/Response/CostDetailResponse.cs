@@ -11,6 +11,7 @@
         public required DateTime ServiceDate { get; set; }
         public string? DocumentUrl { get; set; }
         public bool IsPaid { get; set; }
+        public string ServiceContractorName { get; set; } = string.Empty;
 
         public Guid WorkCaseItemId { get; set; }
         public Guid ServiceContractorId { get; set; }

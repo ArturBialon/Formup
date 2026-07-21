@@ -81,8 +81,6 @@ export class WorkCaseItemsComponent {
       this.notation.warning('GUI.WORK_CASE_ITEM.CANNOT_EDIT_INVOICED');
       return;
     }
-    
-    const primaryCost = item.cost;
 
     this.itemForm.patchValue({
       name: item.name,
@@ -149,6 +147,17 @@ export class WorkCaseItemsComponent {
         },
         error: (err) => this.handleError(err)
       });
+  }
+
+  openCostDetails(costIdOrItemId?: string): void {
+    if (!costIdOrItemId) return;
+    // TODO: W kolejnym kroku otworzymy tutaj modal lub wyemitujemy event
+    console.log('Otwieram podgląd kosztu dla ID:', costIdOrItemId);
+  }
+
+  addCostForItem(itemId: string): void {
+    // TODO: W kolejnym kroku otworzymy tutaj modal dodawania kosztu
+    console.log('Dodaję koszt dla pozycji zlecenia ID:', itemId);
   }
 
   private handleSuccess(): void {

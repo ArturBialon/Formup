@@ -15,13 +15,13 @@ namespace Application.Features.Costs.Queries
         DateTime? DateFrom = null,
         DateTime? DateTo = null,
         bool? IsPaid = null
-    ) : IRequest<IAppResult<PagedResult<CostDetailResponse>>>;
+    ) : IRequest<AppResult<PagedResult<CostDetailResponse>>>;
 
-    public class GetCostsQueryHandler(FormupContext context) : IRequestHandler<GetCostsQuery, IAppResult<PagedResult<CostDetailResponse>>>
+    public class GetCostsQueryHandler(FormupContext context) : IRequestHandler<GetCostsQuery, AppResult<PagedResult<CostDetailResponse>>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<PagedResult<CostDetailResponse>>> Handle(GetCostsQuery request, CancellationToken ct)
+        public async Task<AppResult<PagedResult<CostDetailResponse>>> Handle(GetCostsQuery request, CancellationToken ct)
         {
             var query = _context.Costs.AsNoTracking();
 
