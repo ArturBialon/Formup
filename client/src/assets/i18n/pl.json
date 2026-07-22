@@ -24,7 +24,7 @@
       "ADD_NEW": "Dodaj nową pozycję",
       "EDITING": "Edycja pozycji",
       "NAME": "Nazwa pozycji / Usługa",
-      "SALES": "Sprzedaż (Przychód z pozycji)",
+      "SALES": "Sprzedaż (kwota faktury sprzedażowej)",
       "AMOUNT": "Wartość netto",
       "TAX": "Stawka VAT (%)",
       "COSTS": "Koszty (Przewoźnik / Podwykonawca)",
@@ -36,7 +36,7 @@
       "ACTUAL_COST": "Rzeczywisty koszt",
       "NO_ACTUAL_COST": "Brak zarejestrowanego kosztu",
       "ADD_COST": "Dodaj koszt",
-      "VIEW_COST": "Podgląd kosztu",
+      "VIEW_COST": "Podgląd",
       "COST_NO_NAME": "Koszt bez nazwy"
     },
     "WORK_CASES": {

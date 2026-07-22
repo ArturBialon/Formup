@@ -152,7 +152,7 @@ export class WorkCaseItemsComponent {
   openCostDetails(costIdOrItemId?: string): void {
     if (!costIdOrItemId) return;
     // TODO: W kolejnym kroku otworzymy tutaj modal lub wyemitujemy event
-    console.log('Otwieram podgląd kosztu dla ID:', costIdOrItemId);
+    console.log('Otwieram Podgląd dla ID:', costIdOrItemId);
   }
 
   addCostForItem(itemId: string): void {

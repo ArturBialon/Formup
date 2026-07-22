@@ -24,7 +24,7 @@
       "ADD_NEW": "Add new item",
       "EDITING": "Edit item",
       "NAME": "Item name / Service",
-      "SALES": "Sales (Item revenue)",
+      "SALES": "Sales (Sale invoice amount)",
       "AMOUNT": "Net amount",
       "TAX": "VAT rate (%)",
       "COSTS": "Costs (Carrier / Subcontractor)",
