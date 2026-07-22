@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Clients.Queries
 {
-    public record GetClientByIdQuery(Guid Id) : IRequest<IAppResult<ClientDetailResponse>>;
+    public record GetClientByIdQuery(Guid Id) : IRequest<AppResult<ClientDetailResponse>>;
 
     public class GetClientByIdQueryHandler(FormupContext context)
-    : IRequestHandler<GetClientByIdQuery, IAppResult<ClientDetailResponse>>
+    : IRequestHandler<GetClientByIdQuery, AppResult<ClientDetailResponse>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<ClientDetailResponse>> Handle(GetClientByIdQuery request, CancellationToken ct)
+        public async Task<AppResult<ClientDetailResponse>> Handle(GetClientByIdQuery request, CancellationToken ct)
         {
             var client = await _context.Clients
                 .AsNoTracking()

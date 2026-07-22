@@ -112,7 +112,7 @@
       <div class="scrollable-content p-4">
         @if (selectedUser() || isCreateMode()) {
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="admin-form">
-          <div class="form-grid">
+          <div class="form-grid-2">
 
             <app-input class="field" controlName="name" label="GUI.USERS.FIRST_NAME" [required]="true"></app-input>
             <app-input class="field" controlName="surname" label="GUI.USERS.LAST_NAME" [required]="true"></app-input>
@@ -121,7 +121,7 @@
             <app-input class="field" controlName="prefix" label="GUI.USERS.PREFIX" [required]="true"></app-input>
 
             <div class="select-wrapper">
-              <span class="mock-label">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</span>
+              <span class="select-label">{{ 'GUI.USERS.SYSTEM_ROLE' | translate }}</span>
               <select formControlName="role" class="input form-control shadow-none">
                 @for (role of roles; track role.value) {
                   <option [ngValue]="role.value">

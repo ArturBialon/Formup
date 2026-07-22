@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "DETAILS_HEADER": "Szczegóły",
     "CHANGE_PASSWORD": "Zmień hasło",
     "LANGUAGE": "Język",
     "LOGOUT": "Wyloguj się",
@@ -19,6 +20,44 @@
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
     "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
     "CURRENCY": "Waluta",
+    "WORK_CASE_ITEM": {
+      "ADD_NEW": "Dodaj nową pozycję",
+      "EDITING": "Edycja pozycji",
+      "NAME": "Nazwa pozycji / Usługa",
+      "SALES": "Sprzedaż (Przychód z pozycji)",
+      "AMOUNT": "Wartość netto",
+      "TAX": "Stawka VAT (%)",
+      "COSTS": "Koszty (Przewoźnik / Podwykonawca)",
+      "COST_AMOUNT_NET": "Planowany koszt netto",
+      "ESTIMATED_COSTS": "Szacowany koszt",
+      "INVOICED": "Zafakturowano",
+      "EMPTY_LIST": "Brak pozycji przypisanych do tego zlecenia. Kliknij „Utwórz”, aby dodać pierwszą.",
+      "CANNOT_EDIT_INVOICED": "Modyfikacja zablokowana. Ta pozycja została już powiązana z fakturą.",
+      "ACTUAL_COST": "Rzeczywisty koszt",
+      "NO_ACTUAL_COST": "Brak zarejestrowanego kosztu",
+      "ADD_COST": "Dodaj koszt",
+      "VIEW_COST": "Podgląd kosztu",
+      "COST_NO_NAME": "Koszt bez nazwy"
+    },
+    "WORK_CASES": {
+      "ITEMS_TITLE": "Pozycje sprzedażowo-kosztowe",
+      "TITLE": "Teczki zleceń",
+      "ADD_NEW_BUTTON": "Utwórz nową teczkę",
+      "NAME": "Nazwa teczki",
+      "RELATION": "Relacja",
+      "FORWARDER": "Spedytor",
+      "CLIENT": "Klient",
+      "AMOUNT": "Kwota",
+      "STATUS": "Status",
+      "STATUS_ALL": "Wszystkie statusy",
+      "STATUS_ACTIVE": "Aktywne",
+      "STATUS_ABANDONED": "Porzucone",
+      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
+      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę",
+      "AMOUNT_PLN": "Kwota w PLN:",
+      "CREATED_AT_UTC": "Utworzono (UTC)",
+      "CREATED_AT": "Utworzono"
+    },
     "USERS": {
       "LIST_TITLE": "Lista użytkowników",
       "EMPTY_LIST": "Brak użytkowników do wyświetlenia",
@@ -81,23 +120,6 @@
       "CREATE": "Utwórz",
       "NEXT": ">>",
       "PREVIOUS": "<<"
-    },
-    "WORK_CASES": {
-      "TITLE": "Teczki zleceń",
-      "ADD_NEW_BUTTON": "Utwórz nową teczkę",
-      "NAME": "Nazwa teczki",
-      "RELATION": "Relacja",
-      "FORWARDER": "Spedytor",
-      "CLIENT": "Klient",
-      "AMOUNT": "Kwota",
-      "STATUS": "Status",
-      "STATUS_ALL": "Wszystkie statusy",
-      "STATUS_ACTIVE": "Aktywne",
-      "STATUS_ABANDONED": "Porzucone",
-      "EMPTY_LIST": "Brak teczek zleceń spełniających kryteria",
-      "CREATE_SUCCESS": "Pomyślnie utworzono teczkę",
-      "AMOUNT_PLN": "Kwota w PLN:",
-      "CREATED_AT": "Utworzono (UTC)"
     }
   },
   "LOGIN": {
@@ -207,6 +229,8 @@
     "WORK_CASE_ITEM_NOT_FOUND": "Nie znaleziono wybranej pozycji teczki.",
     "CONTRACTOR_NOT_FOUND": "Nie znaleziono wybranego podwykonawcy.",
     "COST_ALREADY_EXISTS": "Ten dokument kosztowy został już zarejestrowany w systemie.",
+    "WORK_CASE_ITEM_HAS_COST": "Do tego elementu teczki został już przypisany koszt",
+    "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Kwota kosztów różni się od przewidywanej",
     "NOT_FOUND": "Nie znaleziono określonego rekordu kosztu.",
     "VALIDATION": {
       "ID_REQUIRED": "Identyfikator kosztu jest wymagany.",
@@ -227,6 +251,8 @@
     }
   },
   "WORK_CASE": {
+    "CANNOT_ABANDON_INVOICED": "Nie można porzucić teczki, do której została wystawiona faktura",
+    "CANNOT_ABANDON_HAS_ITEMS": "Nie można porzucić teczki, do której zostały przypisane elementy kosztowe",
     "NOT_FOUND": "Nie znaleziono określonej teczki.",
     "VALIDATION": {
       "WORK_CASE_ID_REQUIRED": "Identyfikator teczki jest wymagany.",
@@ -246,7 +272,7 @@
   "WORK_CASE_ITEM": {
     "NOT_FOUND": "Nie znaleziono określonej pozycji operacyjnej.",
     "CANNOT_DELETE_IS_INVOICED": "Nie można usunąć tej pozycji, ponieważ została już powiązana z fakturą sprzedaży.",
-    "CANNOT_DELETE_WITH_COSTS": "Nie można usunąć tej pozycji, ponieważ są do niej przypisane koszty zakupu.",
+    "CANNOT_DELETE_WITH_COST": "Nie można usunąć tej pozycji, ponieważ jest do niej przypisana faktura kosztowa.",
     "VALIDATION": {
       "WORK_CASE_ID": {
         "REQUIRED": "Identyfikator teczki nadrzędnej jest wymagany."

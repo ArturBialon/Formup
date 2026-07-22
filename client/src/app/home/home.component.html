@@ -16,8 +16,8 @@
       </div>
       
       <div class="row d-flex mt-4">
-        <div class="col text-end">
-          <button class="btn btn-blue" [disabled]="loginForm.invalid || isSaving()" type="submit">{{ 'LOGIN.SUBMIT_BUTTON' | translate }}
+        <div class="col">
+          <button class="btn-blue" [disabled]="loginForm.invalid || isSaving()" type="submit">{{ 'LOGIN.SUBMIT_BUTTON' | translate }}
             @if (isSaving()) {
               <span class="spinner-border spinner-border-sm me-2" role="status"></span>
             }</button>

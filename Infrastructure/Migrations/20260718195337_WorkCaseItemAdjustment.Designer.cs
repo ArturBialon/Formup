@@ -4,6 +4,7 @@ using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(FormupContext))]
-    partial class FormupContextModelSnapshot : ModelSnapshot
+    [Migration("20260718195337_WorkCaseItemAdjustment")]
+    partial class WorkCaseItemAdjustment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,16 +149,19 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Tax")
                         .HasColumnType("decimal(7, 3)");
 
-                    b.Property<Guid?>("WorkCaseItemId")
+                    b.Property<Guid?>("WorkCaseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkCaseItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceContractorId");
 
-                    b.HasIndex("WorkCaseItemId")
-                        .IsUnique()
-                        .HasFilter("[WorkCaseItemId] IS NOT NULL");
+                    b.HasIndex("WorkCaseId");
+
+                    b.HasIndex("WorkCaseItemId");
 
                     b.ToTable("Costs");
                 });
@@ -452,10 +458,15 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("Costs_Service_Contractors");
 
+                    b.HasOne("Domain.Models.WorkCase", null)
+                        .WithMany("Costs")
+                        .HasForeignKey("WorkCaseId");
+
                     b.HasOne("Domain.Models.WorkCaseItem", "WorkCaseItem")
-                        .WithOne("Cost")
-                        .HasForeignKey("Domain.Models.Cost", "WorkCaseItemId")
+                        .WithMany("Costs")
+                        .HasForeignKey("WorkCaseItemId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
                         .HasConstraintName("FK_Costs_WorkCaseItems");
 
                     b.Navigation("ServiceContractor");
@@ -540,6 +551,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.WorkCase", b =>
                 {
+                    b.Navigation("Costs");
+
                     b.Navigation("Invoices");
 
                     b.Navigation("WorkCaseItems");
@@ -547,7 +560,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.WorkCaseItem", b =>
                 {
-                    b.Navigation("Cost");
+                    b.Navigation("Costs");
                 });
 #pragma warning restore 612, 618
         }

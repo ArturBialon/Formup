@@ -1,6 +1,8 @@
-﻿namespace Application.Common.CurrencyServices
+﻿using Domain.Models;
+
+namespace Application.Common.CurrencyServices
 {
-    public record CurrencyConversionInput(Guid ItemId, decimal Amount, string Currency);
+    public record CurrencyConversionInput(WorkCaseItem.EntityId WorCaseItemId, decimal Amount, string Currency);
 
     public class CurrencyConversionResult
     {

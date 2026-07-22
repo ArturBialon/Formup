@@ -15,12 +15,12 @@ namespace Application.Features.WorkCaseItems.Commands
         {
             var workCaseItem = await _context.WorkCaseItems
                 .Include(x => x.Invoice)
-                .Include(x => x.Costs)
+                .Include(x => x.Cost)
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
 
             if (workCaseItem == null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.NOT_FOUND");
             if (workCaseItem.IsInvoiced) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_IS_INVOICED");
-            if (workCaseItem.HasCosts) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_WITH_COSTS");
+            if (workCaseItem.HasCost) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_WITH_COST");
 
 
             _context.WorkCaseItems.Remove(workCaseItem);

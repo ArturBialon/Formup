@@ -42,15 +42,17 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(false);
 
-            entity.HasOne(d => d.WorkCaseItem)
-                .WithMany(p => p.Costs)
-                .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("FK_Costs_WorkCaseItems");
-
             entity.HasOne(d => d.ServiceContractor)
                 .WithMany(p => p.Costs)
                 .OnDelete(DeleteBehavior.Restrict)
-                .HasConstraintName("Costs_Service_Contractors");
+                .HasConstraintName("FK_Costs_ServiceContractors");
+
+            entity.HasOne(d => d.WorkCaseItem)
+                .WithOne(p => p.Cost)
+                .HasForeignKey<Cost>("WorkCaseItemId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_Costs_WorkCaseItems");
         }
     }
 }

@@ -14,14 +14,14 @@ namespace Application.Features.WorkCases.Queries
         string? ClientName = null,
         string? Name = null,
         bool? IsAbandoned = null
-    ) : IRequest<IAppResult<PagedResult<WorkCaseResponse>>>;
+    ) : IRequest<AppResult<PagedResult<WorkCaseResponse>>>;
 
     public class GetWorkCasesQueryHandler(FormupContext context)
-        : IRequestHandler<GetWorkCasesQuery, IAppResult<PagedResult<WorkCaseResponse>>>
+        : IRequestHandler<GetWorkCasesQuery, AppResult<PagedResult<WorkCaseResponse>>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<IAppResult<PagedResult<WorkCaseResponse>>> Handle(GetWorkCasesQuery request, CancellationToken ct)
+        public async Task<AppResult<PagedResult<WorkCaseResponse>>> Handle(GetWorkCasesQuery request, CancellationToken ct)
         {
             var query = _context.WorkCases.AsNoTracking().AsQueryable();
 

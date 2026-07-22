@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "DETAILS_HEADER": "Details",
     "CHANGE_PASSWORD": "Change Password",
     "LANGUAGE": "Language",
     "LOGOUT": "Logout",
@@ -19,6 +20,44 @@
     "SEARCH_PLACEHOLDER": "Search phrase...",
     "PAGE_SIZE_PLACEHOLDER": "Page size",
     "CURRENCY": "Currency",
+    "WORK_CASE_ITEM": {
+      "ADD_NEW": "Add new item",
+      "EDITING": "Edit item",
+      "NAME": "Item name / Service",
+      "SALES": "Sales (Item revenue)",
+      "AMOUNT": "Net amount",
+      "TAX": "VAT rate (%)",
+      "COSTS": "Costs (Carrier / Subcontractor)",
+      "COST_AMOUNT_NET": "Planned net cost",
+      "ESTIMATED_COSTS": "Estimated cost",
+      "INVOICED": "Invoiced",
+      "EMPTY_LIST": "No items assigned to this case. Click 'Create' to add the first one.",
+      "CANNOT_EDIT_INVOICED": "Modification blocked. This item has already been linked to an invoice.",
+      "ACTUAL_COST": "Actual cost",
+      "NO_ACTUAL_COST": "No registered cost",
+      "ADD_COST": "Add cost",
+      "VIEW_COST": "View cost",
+      "COST_NO_NAME": "Unnamed cost"
+    },
+    "WORK_CASES": {
+      "ITEMS_TITLE": "Sales and cost items",
+      "TITLE": "Work Cases",
+      "ADD_NEW_BUTTON": "Create New Work Case",
+      "NAME": "Case Name",
+      "RELATION": "Relation",
+      "FORWARDER": "Forwarder",
+      "CLIENT": "Client",
+      "AMOUNT": "Amount",
+      "STATUS": "Status",
+      "STATUS_ALL": "All Statuses",
+      "STATUS_ACTIVE": "Active",
+      "STATUS_ABANDONED": "Abandoned",
+      "EMPTY_LIST": "No work cases found on the list",
+      "CREATE_SUCCESS": "Work case successfully created",
+      "AMOUNT_PLN": "Amount in PLN:",
+      "CREATED_AT_UTC": "Created at (UTC)",
+      "CREATED_AT": "Created at"
+    },
     "USERS": {
       "LIST_TITLE": "User List",
       "EMPTY_LIST": "No users found",
@@ -70,23 +109,6 @@
       "CREATE_SUCCESS": "Contractor has been successfully added!",
       "UPDATE_SUCCESS": "Contractor details have been successfully updated!",
       "TRADE_LIMIT": "Credit limit"
-    },
-    "WORK_CASES": {
-      "TITLE": "Work Cases",
-      "ADD_NEW_BUTTON": "Create New Work Case",
-      "NAME": "Case Name",
-      "RELATION": "Relation",
-      "FORWARDER": "Forwarder",
-      "CLIENT": "Client",
-      "AMOUNT": "Amount",
-      "STATUS": "Status",
-      "STATUS_ALL": "All Statuses",
-      "STATUS_ACTIVE": "Active",
-      "STATUS_ABANDONED": "Abandoned",
-      "EMPTY_LIST": "No work cases found on the list",
-      "CREATE_SUCCESS": "Work case successfully created",
-      "AMOUNT_PLN": "Amount in PLN:",
-      "CREATED_AT": "Created at (UTC)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",
@@ -207,6 +229,8 @@
     "WORK_CASE_ITEM_NOT_FOUND": "The selected work case item was not found.",
     "CONTRACTOR_NOT_FOUND": "The selected service contractor was not found.",
     "COST_ALREADY_EXISTS": "This cost document has already been registered in the system.",
+    "WORK_CASE_ITEM_HAS_COST": "A cost has already been assigned to this folder item.",
+    "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Cost amount differs with prediction",
     "NOT_FOUND": "The specified cost record could not be found.",
     "VALIDATION": {
       "ID_REQUIRED": "Cost identifier is required.",
@@ -228,6 +252,8 @@
   },
   "WORK_CASE": {
     "NOT_FOUND": "The specified work case could not be found.",
+    "CANNOT_ABANDON_INVOICED": "Cannot abandon workcase with issued invoice.",
+    "CANNOT_ABANDON_HAS_ITEMS": "Cannot abandon workcase with cost items.",
     "VALIDATION": {
       "WORK_CASE_ID_REQUIRED": "Work case identifier is required.",
       "FORWARDER_ID_REQUIRED": "Forwarder assignment identifier is required.",
@@ -246,7 +272,7 @@
   "WORK_CASE_ITEM": {
     "NOT_FOUND": "The specified operational item could not be found.",
     "CANNOT_DELETE_IS_INVOICED": "Cannot delete this item because it has already been linked to a sales invoice.",
-    "CANNOT_DELETE_WITH_INCORES": "Cannot delete this item because it has purchase costs linked to it.",
+    "CANNOT_DELETE_WITH_COST": "Cannot delete this item because it has purchase cost linked to it.",
     "VALIDATION": {
       "WORK_CASE_ID": {
         "REQUIRED": "The parent work case identifier is missing or required."

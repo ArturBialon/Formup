@@ -42,7 +42,7 @@ namespace Application.Features.Invoices.Commands
                 return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_ALREADY_INVOICED");
 
             var conversionItems = itemsToInvoice
-                .Select(x => new CurrencyConversionInput(x.Id.Value, x.Amount, x.CurrencyCode))
+                .Select(x => new CurrencyConversionInput(x.Id.Value, x.AmountToInvoice, x.CurrencyCodeInvoice))
                 .ToList();
 
             var conversionResult = await _currencyConverter.ConvertCurrenciesAsync(conversionItems, request.TargetCurrency, request.ManualExchangeRate, request.ServiceDate, ct);

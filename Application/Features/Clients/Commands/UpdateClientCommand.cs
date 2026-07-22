@@ -23,16 +23,16 @@ namespace Application.Features.Clients.Commands
         string? Email = null,
         string? PhoneNumber = null,
         string? CurrencyCode = "PLN"
-    ) : IRequest<IAppResult<Unit>>;
+    ) : IRequest<AppResult<Unit>>;
 
     public class UpdateClientCommandHandler(FormupContext context, ICurrentUserService currentUserService, ICurrencyConverterService currencyConverterService)
-        : IRequestHandler<UpdateClientCommand, IAppResult<Unit>>
+        : IRequestHandler<UpdateClientCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
-        public async Task<IAppResult<Unit>> Handle(UpdateClientCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(UpdateClientCommand request, CancellationToken ct)
         {
             var client = await _context.Clients
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);

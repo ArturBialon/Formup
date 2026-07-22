@@ -48,6 +48,8 @@ namespace Application.Common.Behaviors
                         return (TResponse)appResultFailure!;
                     }
                 }
+
+                throw new ValidationException(failures);
             }
 
             return await next(ct);

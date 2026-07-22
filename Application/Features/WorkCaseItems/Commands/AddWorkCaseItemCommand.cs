@@ -1,4 +1,5 @@
-﻿using Application.Common.Results;
+﻿using Application.Common.CurrencyServices;
+using Application.Common.Results;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -10,14 +11,17 @@ namespace Application.Features.WorkCaseItems.Commands
         Guid WorkCaseId,
         string Name,
         decimal Amount,
-        string Currency,
+        string InvoiceCurrencyCode,
+        decimal CostAmountNet,
+        string CostCurrencyCode,
         decimal Tax
     ) : IRequest<AppResult<Unit>>;
 
-    public class AddWorkCaseItemHandler(FormupContext context)
+    public class AddWorkCaseItemHandler(FormupContext context, ICurrencyConverterService currencyConverterService)
         : IRequestHandler<AddWorkCaseItemCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
+        private readonly ICurrencyConverterService _currencyConverterService = currencyConverterService;
 
         public async Task<AppResult<Unit>> Handle(AddWorkCaseItemCommand request, CancellationToken ct)
         {
@@ -26,26 +30,37 @@ namespace Application.Features.WorkCaseItems.Commands
 
             if (workCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
 
-            var currentWorkCaseUsage = await _context.WorkCaseItems
-                .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId))
-                .SumAsync(x => x.Amount, ct);
+            var workCaseItems = await _context.WorkCaseItems.Where(x => x.WorkCase.Id.Equals(request.WorkCaseId)).ToListAsync(ct);
+            var currencyConversionInputs = workCaseItems.Select(x => new CurrencyConversionInput(x.Id, x.AmountToInvoice, x.CurrencyCodeInvoice)).ToList();
 
-            var availableBudget = workCase.Amount - currentWorkCaseUsage;
+            var currentWorkCaseUsageResult = await _currencyConverterService.ConvertCurrenciesAsync(currencyConversionInputs, "PLN", null, DateTime.UtcNow, ct);
+            if (currentWorkCaseUsageResult.IsFailure)
+                return AppResult<Unit>.Failure(currentWorkCaseUsageResult.ErrorCode, currentWorkCaseUsageResult.ErrorData);
 
-            if (request.Amount > availableBudget)
+            var requestedAmountInPln = await _currencyConverterService.ConvertToTargetCurrency(request.Amount, request.InvoiceCurrencyCode, "PLN", DateTime.UtcNow, ct);
+            if (requestedAmountInPln.IsFailure)
+                return AppResult<Unit>.Failure(requestedAmountInPln.ErrorCode, requestedAmountInPln.ErrorData);
+
+            var availableBudgetInPln = workCase.AmountInPln - currentWorkCaseUsageResult.Value!.TotalTargetAmount;
+
+            if (requestedAmountInPln.Value > availableBudgetInPln)
             {
+                var exceededByInPln = requestedAmountInPln.Value - availableBudgetInPln;
+                var exceededByTargetCurrency = await _currencyConverterService.ConvertToTargetCurrency(exceededByInPln, "PLN", request.InvoiceCurrencyCode, DateTime.UtcNow, ct);
                 return AppResult<Unit>.Failure(
                     "WORK_CASE.VALIDATION.BUDGET_EXCEEDED",
-                    new { ExceededBy = request.Amount - availableBudget }
+                    new { ExceededBy = exceededByTargetCurrency.Value, request.InvoiceCurrencyCode }
                 );
             }
 
             var newItem = new WorkCaseItem
             {
                 Name = request.Name,
-                Amount = request.Amount,
-                CurrencyCode = request.Currency,
-                Tax = request.Tax,
+                AmountToInvoice = request.Amount,
+                CostAmountNet = request.CostAmountNet,
+                CurrencyCodeInvoice = request.InvoiceCurrencyCode,
+                CurrencyCodeCost = request.CostCurrencyCode,
+                TaxInvoice = request.Tax,
                 WorkCase = workCase
             };
 

@@ -18,7 +18,15 @@ namespace Application.Features.WorkCaseItems.Validators
                 .NotEmpty().WithErrorCode("WORK_CASE_ITEM.VALIDATION.AMOUNT.REQUIRED")
                 .GreaterThan(0).WithErrorCode("WORK_CASE_ITEM.VALIDATION.AMOUNT.MUST_BE_POSITIVE");
 
-            RuleFor(x => x.Currency)
+            RuleFor(x => x.InvoiceCurrencyCode)
+                .NotEmpty().WithErrorCode("WORK_CASE_ITEM.VALIDATION.CURRENCY.REQUIRED")
+                .MaximumLength(3).WithErrorCode("WORK_CASE_ITEM.VALIDATION.CURRENCY.TOO_LONG");
+
+            RuleFor(x => x.CostAmountNet)
+                .NotEmpty().WithErrorCode("WORK_CASE_ITEM.VALIDATION.AMOUNT.REQUIRED")
+                .GreaterThan(0).WithErrorCode("WORK_CASE_ITEM.VALIDATION.AMOUNT.MUST_BE_POSITIVE");
+
+            RuleFor(x => x.CostCurrencyCode)
                 .NotEmpty().WithErrorCode("WORK_CASE_ITEM.VALIDATION.CURRENCY.REQUIRED")
                 .MaximumLength(3).WithErrorCode("WORK_CASE_ITEM.VALIDATION.CURRENCY.TOO_LONG");
 

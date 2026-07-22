@@ -1,5 +1,6 @@
 {
     "GUI": {
+        "DETAILS_HEADER": "Nähere",
         "CHANGE_PASSWORD": "Passwort ändern",
         "LANGUAGE": "Sprache",
         "LOGOUT": "Abmelden",
@@ -19,6 +20,44 @@
         "SEARCH_PLACEHOLDER": "Suchphrase...",
         "PAGE_SIZE_PLACEHOLDER": "Seitengröße",
         "CURRENCY": "Währung",
+        "WORK_CASE_ITEM": {
+            "ADD_NEW": "Neue Position hinzufügen",
+            "EDITING": "Position bearbeiten",
+            "NAME": "Positionsname / Dienstleistung",
+            "SALES": "Verkauf (Erlös aus Position)",
+            "AMOUNT": "Nettobetrag",
+            "TAX": "MwSt.-Satz (%)",
+            "COSTS": "Kosten (Frachtführer / Subunternehmer)",
+            "COST_AMOUNT_NET": "Geplante Nettokosten",
+            "ESTIMATED_COSTS": "Geschätzte Kosten",
+            "INVOICED": "Fakturiert",
+            "EMPTY_LIST": "Diesem Auftrag sind keine Positionen zugeordnet. Klicken Sie auf „Erstellen“, um die erste hinzuzufügen.",
+            "CANNOT_EDIT_INVOICED": "Bearbeitung gesperrt. Diese Position wurde bereits mit einer Rechnung verknüpft.",
+            "ACTUAL_COST": "Tatsächliche Kosten",
+            "NO_ACTUAL_COST": "Keine erfassten Kosten",
+            "ADD_COST": "Kosten hinzufügen",
+            "VIEW_COST": "Kosten anzeigen",
+            "COST_NO_NAME": "Unbenannte Kosten"
+            },
+        "WORK_CASES": {
+            "ITEMS_TITLE": "Verkaufs- und Kostenpositionen",
+            "TITLE": "Transportakten",
+            "ADD_NEW_BUTTON": "Neue Akte erstellen",
+            "NAME": "Aktenname",
+            "RELATION": "Relation",
+            "FORWARDER": "Spediteur",
+            "CLIENT": "Kunde",
+            "AMOUNT": "Betrag",
+            "STATUS": "Status",
+            "STATUS_ALL": "Alle Status",
+            "STATUS_ACTIVE": "Aktiv",
+            "STATUS_ABANDONED": "Abgebrochen",
+            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden",
+            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt",
+            "AMOUNT_PLN": "Betrag in PLN:",
+            "CREATED_AT_UTC": "Erstellt um (UTC)",
+            "CREATED_AT": "Erstellt um"
+        },
         "USERS": {
             "LIST_TITLE": "Benutzerliste",
             "EMPTY_LIST": "Keine Benutzer gefunden",
@@ -70,23 +109,6 @@
             "CREATE_SUCCESS": "Vertragspartner wurde erfolgreich hinzugefügt!",
             "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
             "TRADE_LIMIT": "Kreditlimit"
-        },
-        "WORK_CASES": {
-            "TITLE": "Transportakten",
-            "ADD_NEW_BUTTON": "Neue Akte erstellen",
-            "NAME": "Aktenname",
-            "RELATION": "Relation",
-            "FORWARDER": "Spediteur",
-            "CLIENT": "Kunde",
-            "AMOUNT": "Betrag",
-            "STATUS": "Status",
-            "STATUS_ALL": "Alle Status",
-            "STATUS_ACTIVE": "Aktiv",
-            "STATUS_ABANDONED": "Abgebrochen",
-            "EMPTY_LIST": "Keine Transportakten in der Liste gefunden",
-            "CREATE_SUCCESS": "Arbeitsfall erfolgreich erstellt",
-            "AMOUNT_PLN": "Betrag in PLN:",
-            "CREATED_AT": "Erstellt um (UTC)"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",
@@ -207,6 +229,8 @@
         "WORK_CASE_ITEM_NOT_FOUND": "Die ausgewählte Aktenposition wurde nicht gefunden.",
         "CONTRACTOR_NOT_FOUND": "Der ausgewählte Subunternehmer wurde nicht gefunden.",
         "COST_ALREADY_EXISTS": "Dieses Kostendokument wurde bereits im System registriert.",
+        "WORK_CASE_ITEM_HAS_COST": "Diesem Ordnereintrag wurden bereits Kosten zugewiesen.",
+        "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Die Kostenhöhe weicht von der Prognose ab.",
         "NOT_FOUND": "Der angegebene Kostenbeleg wurde nicht gefunden.",
         "VALIDATION": {
             "ID_REQUIRED": "Kostenkennung ist erforderlich.",
@@ -228,6 +252,8 @@
     },
     "WORK_CASE": {
         "NOT_FOUND": "Die angegebene Akte wurde nicht gefunden.",
+        "CANNOT_ABANDON_INVOICED": "Ein Arbeitsfall kann nicht abgebrochen werden, wenn bereits eine Rechnung ausgestellt wurde.",
+        "CANNOT_ABANDON_HAS_ITEMS": "Ein Arbeitsfall mit Kostenpositionen kann nicht abgebrochen werden.",
         "VALIDATION": {
             "WORK_CASE_ID_REQUIRED": "Aktenkennung ist erforderlich.",
             "FORWARDER_ID_REQUIRED": "Die Kennung des zugewiesenen Spediteurs ist erforderlich.",
@@ -246,7 +272,7 @@
     "WORK_CASE_ITEM": {
         "NOT_FOUND": "Die angegebene operative Position wurde nicht gefunden.",
         "CANNOT_DELETE_IS_INVOICED": "Diese Position kann nicht gelöscht werden, da sie bereits mit einer Ausgangsrechnung verknüpft ist.",
-        "CANNOT_DELETE_WITH_COSTS": "Diese Position kann nicht gelöscht werden, da ihr Einkaufskosten zugewiesen sind.",
+        "CANNOT_DELETE_WITH_COST": "Dieser Artikel kann nicht gelöscht werden, da ihm eine Kostenrechnung zugeordnet ist.",
         "VALIDATION": {
             "WORK_CASE_ID": {
                 "REQUIRED": "Die Kennung der übergeordneten Akte ist erforderlich."

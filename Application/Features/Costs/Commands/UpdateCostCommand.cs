@@ -19,14 +19,14 @@ namespace Application.Features.Costs.Commands
         bool IsPaid,
         Guid WorkCaseItemId,
         Guid ServiceContractorId
-    ) : IRequest<IAppResult<Unit>>;
+    ) : IRequest<AppResult<Unit>>;
 
-    public class UpdateCostCommandHandler(FormupContext context, IFileStorageService fileStorageService) : IRequestHandler<UpdateCostCommand, IAppResult<Unit>>
+    public class UpdateCostCommandHandler(FormupContext context, IFileStorageService fileStorageService) : IRequestHandler<UpdateCostCommand, AppResult<Unit>>
     {
         private readonly FormupContext _context = context;
         private readonly IFileStorageService _fileStorageService = fileStorageService;
 
-        public async Task<IAppResult<Unit>> Handle(UpdateCostCommand request, CancellationToken ct)
+        public async Task<AppResult<Unit>> Handle(UpdateCostCommand request, CancellationToken ct)
         {
             var cost = await _context.Costs
                 .Include(c => c.WorkCaseItem)

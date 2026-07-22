@@ -1,4 +1,5 @@
-﻿using Application.Errors;
+﻿using Application.Common.Results;
+using Application.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -22,6 +23,16 @@ namespace Application.Middleware
             try
             {
                 await _next(context);
+            }
+            catch (ValidationException validationEx)
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                var result = AppResult<object>.ValidationFailure(validationEx.Errors);
+
+                var json = JsonSerializer.Serialize(result, _jsonOptions);
+                await context.Response.WriteAsync(json);
             }
             catch (Exception ex)
             {

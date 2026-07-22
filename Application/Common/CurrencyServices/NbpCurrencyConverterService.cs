@@ -43,7 +43,7 @@ namespace Application.Common.CurrencyServices
                 {
                     return AppResult<CurrencyConversionResult>.Failure(
                         "CURRENCY.VALIDATION.ITEM_CURRENCY_NOT_SUPPORTED",
-                        new { item.ItemId, UnsupportedCurrency = item.Currency }
+                        new { item.WorCaseItemId, UnsupportedCurrency = item.Currency }
                     );
                 }
             }
@@ -91,7 +91,7 @@ namespace Application.Common.CurrencyServices
 
                 result.Details.Add(new ConvertedItemDetail
                 {
-                    ItemId = item.ItemId,
+                    ItemId = item.WorCaseItemId,
                     OriginalAmount = item.Amount,
                     OriginalCurrency = item.Currency,
                     ConvertedAmount = finalItemAmount,
