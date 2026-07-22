@@ -24,7 +24,7 @@
             "ADD_NEW": "Neue Position hinzufügen",
             "EDITING": "Position bearbeiten",
             "NAME": "Positionsname / Dienstleistung",
-            "SALES": "Verkauf (Erlös aus Position)",
+            "SALES": "Verkauf (Verkaufsrechnungsbetrag)",
             "AMOUNT": "Nettobetrag",
             "TAX": "MwSt.-Satz (%)",
             "COSTS": "Kosten (Frachtführer / Subunternehmer)",
