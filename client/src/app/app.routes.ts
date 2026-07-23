@@ -53,18 +53,18 @@ export const routes: Routes = [
       { 
         path: 'workcase/:id', 
         component: WorkCaseDetailsComponent,
-        canActivate: [authGuard],
-        children: [
-          {
-            path: ':itemId/cost/new',
-            component: CostFormComponent
-          },
-          {
-            path: ':itemId/cost/:costId',
-            component: CostFormComponent
-          }
-        ]
+        canActivate: [authGuard]
       },
+      { 
+        path: 'workcase-item/:itemId/cost/new', 
+        component: CostFormComponent,
+        canActivate: [authGuard]
+      },
+      { 
+        path: 'workcase-item/:itemId/cost/:costId', 
+        component: CostFormComponent,
+        canActivate: [authGuard]
+      }
     ],
     canActivate: [authGuard]
   },

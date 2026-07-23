@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Costs.Queries
 {
-    public record GetCostByIdQuery(Guid WorkCaseItemId) : IRequest<AppResult<CostDetailResponse>>;
+    public record GetCostByIdQuery(Guid CostId) : IRequest<AppResult<CostDetailResponse>>;
 
     public class GetCostByIdQueryHandler(FormupContext context) : IRequestHandler<GetCostByIdQuery, AppResult<CostDetailResponse>>
     {
@@ -16,7 +16,7 @@ namespace Application.Features.Costs.Queries
         {
             var costDto = await _context.Costs
                 .AsNoTracking()
-                .Where(x => x.WorkCaseItem.Id.Equals(request.WorkCaseItemId))
+                .Where(x => x.Id.Equals(request.CostId))
                 .Select(c => new CostDetailResponse
                 {
                     Id = c.Id.Value,

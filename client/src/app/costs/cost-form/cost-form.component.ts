@@ -67,15 +67,16 @@ export class CostFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const cId = this.route.snapshot.paramMap.get('costId');
-    const wcItemId = this.route.snapshot.paramMap.get('workCaseItemId');
+    const workCaseItemId = this.route.snapshot.paramMap.get('itemId');
+    const costId = this.route.snapshot.paramMap.get('costId');
 
-    if (cId) {
-      this.costId.set(cId);
+    if (costId) {
+      this.costId.set(costId);
       this.isCreateMode.set(false);
-      this.loadCostDetails(cId);
-    } else if (wcItemId) {
-      this.workCaseItemId.set(wcItemId);
+      this.loadCostDetails(costId);
+    }
+    if (workCaseItemId) {
+      this.workCaseItemId.set(workCaseItemId);
       this.isCreateMode.set(true);
 
       const today = new Date().toISOString().substring(0, 10);
@@ -87,11 +88,6 @@ export class CostFormComponent implements OnInit {
     this.selectedContractor.set(contractor);
     this.costForm.patchValue({ serviceContractorId: contractor.id });
     this.costForm.get('serviceContractorId')?.markAsTouched();
-  }
-
-  public initCreateContractor() {
-    // Opcjonalna obsługa, jeśli potrzebujesz zainicjować dodawanie nowego kontrahenta
-    // np. otwarcie modala lub nawigacja do formularza kontrahenta
   }
 
   private loadCostDetails(id: string) {
@@ -112,7 +108,7 @@ export class CostFormComponent implements OnInit {
           tax: cost.tax,
           issueDate: issueDate,
           serviceDate: serviceDate,
-          isPaid: cost.isPaid,
+          isPaid: false,
           serviceContractorId: cost.serviceContractorId,
         });
 
