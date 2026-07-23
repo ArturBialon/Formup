@@ -3,6 +3,7 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Router, ActivatedRoute } from '@angular/router'; // <-- 1. Import routera i route
 
 import { NotificationService } from '../../_services/notification.service';
 import { 
@@ -26,6 +27,8 @@ export class WorkCaseItemsComponent {
   private notation = inject(NotificationService);
   private destroyRef = inject(DestroyRef);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   workCaseId = input.required<string>();
 
@@ -90,7 +93,7 @@ export class WorkCaseItemsComponent {
       costAmountNet: item.costAmount,
       costCurrencyCode: item.costCurrencyCode
     });
-    
+     
     this.editingItemId.set(item.id!);
   }
 
@@ -149,15 +152,12 @@ export class WorkCaseItemsComponent {
       });
   }
 
-  openCostDetails(costIdOrItemId?: string): void {
-    if (!costIdOrItemId) return;
-    // TODO: W kolejnym kroku otworzymy tutaj modal lub wyemitujemy event
-    console.log('Otwieram Podgląd dla ID:', costIdOrItemId);
-  }
-
-  addCostForItem(itemId: string): void {
-    // TODO: W kolejnym kroku otworzymy tutaj modal dodawania kosztu
-    console.log('Dodaję koszt dla pozycji zlecenia ID:', itemId);
+  openCostForm(itemId: string, costId?: string): void {
+    if (costId) {
+      this.router.navigate([itemId, 'cost', costId], { relativeTo: this.route });
+    } else {
+      this.router.navigate([itemId, 'cost', 'new'], { relativeTo: this.route });
+    }
   }
 
   private handleSuccess(): void {

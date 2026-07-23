@@ -10,7 +10,7 @@
             [placeholder]="'GUI.USERS.PAGE_SIZE_PLACEHOLDER' | translate">
     </div>
 
-    @if (showAddButton) {
+    @if (showAddButton()) {
     <button type="button" class="btn btn-success btn-sm" (click)="requestAdd()">
         + {{ 'GUI.CONTRACTORS.ADD_NEW_BUTTON' | translate }}
     </button>
@@ -67,7 +67,7 @@
 
 <div class="scrollable-content">
     @for (item of clients(); track item.id) {
-    <button type="button" class="user-item-btn" [class.active]="activeClient?.id === item.id"
+    <button type="button" class="user-item-btn" [class.active]="activeClient()?.id === item.id"
         (click)="selectClient(item)">
 
         <div class="user-info">

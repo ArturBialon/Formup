@@ -4,12 +4,13 @@ import { authGuard } from './_guards/auth.guard';
 import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { adminGuard } from './_guards/admin.guard';
-import { ServiceContractorsComponent } from './service-contractors/service-contractors.component';
+import { ServiceContractorsComponent } from './service-contractors/service-contractors-form/service-contractors.component';
 import { ClientsComponent } from './clients/client-form/clients.component';
 import { WorkCaseListComponent } from './work-cases/work-case-list/work-case-list.component';
 import { WorkCaseAddComponent } from './work-cases/work-case-add/work-case-add.component';
 import { WorkCaseDetailsComponent } from './work-cases/work-case-details/work-case-details.component';
 import { WorkCaseEditComponent } from './work-cases/work-case-edit/work-case-edit.component';
+import { CostFormComponent } from './costs/cost-form/cost-form.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -45,13 +46,24 @@ export const routes: Routes = [
         canActivate: [authGuard]
       },
       { 
-        path: 'workcase/:id', 
-        component: WorkCaseDetailsComponent,
+        path: 'workcase/:id/edit',
+        component: WorkCaseEditComponent,
         canActivate: [authGuard]
       },
-      { path: 'workcase/:id/edit',
-        component: WorkCaseEditComponent ,
-        canActivate: [authGuard]
+      { 
+        path: 'workcase/:id', 
+        component: WorkCaseDetailsComponent,
+        canActivate: [authGuard],
+        children: [
+          {
+            path: ':itemId/cost/new',
+            component: CostFormComponent
+          },
+          {
+            path: ':itemId/cost/:costId',
+            component: CostFormComponent
+          }
+        ]
       },
     ],
     canActivate: [authGuard]
