@@ -62,6 +62,29 @@ button {
     }
 }
 
+.icon-edit-button {
+  width: 3rem;
+  height: 3rem;
+  aspect-ratio: 1 / 1;
+  
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  
+  background-image: url('../icons/pen.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem 2rem;
+  filter: invert(1) brightness(2); 
+  cursor: pointer;
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease;
+}
+
+.icon-edit-button:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 .user-item-btn {
     width: 100%;
     background: transparent;

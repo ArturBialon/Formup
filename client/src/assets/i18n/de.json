@@ -1,5 +1,6 @@
 {
     "GUI": {
+        "TOKEN_EXPIRED": "Token abgelaufen, bitte erneut anmelden.",
         "DETAILS_HEADER": "Nähere",
         "CHANGE_PASSWORD": "Passwort ändern",
         "LANGUAGE": "Sprache",

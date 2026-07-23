@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "TOKEN_EXPIRED": "Koniec ważności tokenu, zaloguj się ponownie.",
     "DETAILS_HEADER": "Szczegóły",
     "CHANGE_PASSWORD": "Zmień hasło",
     "LANGUAGE": "Język",

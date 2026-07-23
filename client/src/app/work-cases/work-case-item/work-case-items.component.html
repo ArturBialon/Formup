@@ -15,15 +15,13 @@
         <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
 
             <div class="form-grid-2 mb-3">
-                <app-input class="field-full" controlName="name" label="GUI.WORK_CASE_ITEM.NAME"
-                    [required]="true"></app-input>
+                <app-input class="field-full" controlName="name" label="GUI.WORK_CASE_ITEM.NAME" [required]="true"></app-input>
             </div>
 
             <!-- SEKCJA SPRZEDAŻY -->
             <span class="d-block text-white small mb-2">{{ 'GUI.WORK_CASE_ITEM.SALES' | translate }}</span>
             <div class="form-grid-2 mb-4">
-                <app-input class="field" controlName="amount" label="GUI.WORK_CASE_ITEM.AMOUNT"
-                    [required]="true"></app-input>
+                <app-input class="field" controlName="amount" label="GUI.WORK_CASE_ITEM.AMOUNT" [required]="true"></app-input>
 
                 <div class="select-wrapper field">
                     <span class="select-label">{{"GUI.CURRENCY" | translate}}</span>
@@ -78,9 +76,7 @@
             <div class="action-bar right-aligned mt-4 pt-3 border-top border-secondary">
                 <button type="button" class="btn-yellow" (click)="cancelEdit()">{{ 'GUI.BUTTONS.CANCEL' | translate
                     }}</button>
-                <button type="submit" [disabled]="isLoading()">{{ 'GUI.BUTTONS.SAVE_CHANGES' |
-                    translate
-                    }}</button>
+                <button type="submit" [disabled]="isLoading()">{{ 'GUI.BUTTONS.SAVE_CHANGES' | translate }}</button>
             </div>
         </form>
     </div>
@@ -98,14 +94,12 @@
             <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
 
                 <div class="form-grid-2 mb-3">
-                    <app-input class="field-full" controlName="name" label="GUI.WORK_CASE_ITEM.NAME"
-                        [required]="true"></app-input>
+                    <app-input class="field-full" controlName="name" label="GUI.WORK_CASE_ITEM.NAME" [required]="true"></app-input>
                 </div>
 
                 <span class="d-block text-white small mb-2">{{ 'GUI.WORK_CASE_ITEM.SALES' | translate }}</span>
                 <div class="form-grid-2 mb-4">
-                    <app-input class="field" controlName="amount" label="GUI.WORK_CASE_ITEM.AMOUNT"
-                        [required]="true"></app-input>
+                    <app-input class="field" controlName="amount" label="GUI.WORK_CASE_ITEM.AMOUNT" [required]="true"></app-input>
 
                     <div class="select-wrapper field">
                         <span class="select-label">{{"GUI.CURRENCY" | translate}}</span>
@@ -127,14 +121,12 @@
                         </select>
                     </div>
 
-                    <app-input class="field" controlName="tax" label="GUI.WORK_CASE_ITEM.TAX"
-                        [required]="true"></app-input>
+                    <app-input class="field" controlName="tax" label="GUI.WORK_CASE_ITEM.TAX" [required]="true"></app-input>
                 </div>
 
                 <span class="d-block text-white small mb-2">{{ 'GUI.WORK_CASE_ITEM.COSTS' | translate }}</span>
                 <div class="form-grid-2">
-                    <app-input class="field" controlName="costAmountNet"
-                        label="GUI.WORK_CASE_ITEM.COST_AMOUNT_NET"></app-input>
+                    <app-input class="field" controlName="costAmountNet" label="GUI.WORK_CASE_ITEM.COST_AMOUNT_NET"></app-input>
 
                     <div class="select-wrapper field">
                         <span class="select-label">{{"GUI.CURRENCY" | translate}}</span>
@@ -159,16 +151,10 @@
 
                 <div class="action-bar space-between mt-4 pt-3 border-top border-secondary">
                     <button type="button" class="btn-danger" (click)="deleteItem(item.id!)"
-                        [disabled]="item.isInvoiced">
-                        {{ 'GUI.BUTTONS.DELETE' | translate }}
-                    </button>
+                        [disabled]="item.isInvoiced"> {{ 'GUI.BUTTONS.DELETE' | translate }} </button>
                     <div class="actions-right">
-                        <button type="button" class="btn-yellow" (click)="cancelEdit()">{{ 'GUI.BUTTONS.CANCEL' |
-                            translate
-                            }}</button>
-                        <button type="submit" [disabled]="isLoading()">{{ 'GUI.BUTTONS.SAVE_CHANGES'
-                            |
-                            translate }}</button>
+                        <button type="button" class="btn-yellow" (click)="cancelEdit()">{{ 'GUI.BUTTONS.CANCEL' | translate }}</button>
+                        <button type="submit" [disabled]="isLoading()">{{ 'GUI.BUTTONS.SAVE_CHANGES' | translate }}</button>
                     </div>
                 </div>
             </form>
@@ -183,9 +169,8 @@
                     @if (item.isInvoiced) {
                     <span class="badge-invoiced">{{ 'GUI.WORK_CASE_ITEM.INVOICED' | translate }}</span>
                     }
-                    <button type="button" class="btn-yellow" (click)="startEdit(item)"
-                        [disabled]="editingItemId() !== null || item.isInvoiced">
-                        {{ 'GUI.BUTTONS.EDIT' | translate }}
+                    <button type="button" class="icon-edit-button" (click)="startEdit(item)" [disabled]="editingItemId() !== null || item.isInvoiced">
+                        
                     </button>
                 </div>
             </div>
@@ -236,7 +221,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-muted small fst-italic">{{ 'GUI.WORK_CASE_ITEM.NO_ACTUAL_COST' | translate
                         }}</span>
-                    <button type="button" class="btn-green" (click)="addCostForItem(item.id!)">
+                    <button type="button" class="btn-blue" (click)="addCostForItem(item.id!)">
                         + {{ 'GUI.WORK_CASE_ITEM.ADD_COST' | translate }}
                     </button>
                 </div>

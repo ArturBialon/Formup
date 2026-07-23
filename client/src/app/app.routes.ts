@@ -5,7 +5,7 @@ import { DashboardComponent } from './shared/dashboard/dashboard.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { adminGuard } from './_guards/admin.guard';
 import { ServiceContractorsComponent } from './service-contractors/service-contractors.component';
-import { ClientsComponent } from './clients/clients.component';
+import { ClientsComponent } from './clients/client-form/clients.component';
 import { WorkCaseListComponent } from './work-cases/work-case-list/work-case-list.component';
 import { WorkCaseAddComponent } from './work-cases/work-case-add/work-case-add.component';
 import { WorkCaseDetailsComponent } from './work-cases/work-case-details/work-case-details.component';

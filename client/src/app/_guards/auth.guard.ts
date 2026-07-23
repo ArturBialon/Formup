@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { AccountService } from '../_services/account.service';
 import { filter, map, take } from 'rxjs/operators';
 
@@ -12,9 +12,7 @@ export const authGuard: CanActivateFn = () => {
     take(1),
     map((user) => {
       if (user) return true;
-
-      router.navigateByUrl('/home');
-      return false;
+      return router.createUrlTree(['/home']);
     })
   );
 };

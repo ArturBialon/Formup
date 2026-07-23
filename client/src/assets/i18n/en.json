@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "TOKEN_EXPIRED": "Token expired, please log in again.",
     "DETAILS_HEADER": "Details",
     "CHANGE_PASSWORD": "Change Password",
     "LANGUAGE": "Language",
