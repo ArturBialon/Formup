@@ -1,0 +1,130 @@
+public class TransmissionSyncService
+{
+    private readonly SourceDbContext _sourceDb;
+    private readonly AzureDbContext _azureDb;
+    private readonly ILogger<TransmissionSyncService> _logger;
+
+    public TransmissionSyncService(
+        SourceDbContext sourceDb,
+        AzureDbContext azureDb,
+        ILogger<TransmissionSyncService> logger)
+    {
+        _sourceDb = sourceDb;
+        _azureDb = azureDb;
+        _logger = logger;
+    }
+
+    public async Task RunAsync()
+    {
+        var transmissions = await _sourceDb.Transmissions
+            .OrderBy(x => x.TransmissionDateTime)
+            .ToListAsync();
+
+        _logger.LogInformation("Found {Count} transmissions to sync.", transmissions.Count);
+
+        foreach (var sourceTransmission in transmissions)
+        {
+            await SyncTransmissionAsync(sourceTransmission);
+        }
+
+        var saved = await _azureDb.SaveChangesAsync();
+        _logger.LogInformation("Saved {Count} changes to Azure DB.", saved);
+    }
+
+    private async Task SyncTransmissionAsync(SourceTransmission sourceTransmission)
+    {
+        var azureTransmission = await _azureDb.Transmissions
+            .FirstOrDefaultAsync(x => x.TransmissionId == sourceTransmission.TransmissionId);
+
+        if (azureTransmission == null)
+        {
+            azureTransmission = new AzureTransmission
+            {
+                TransmissionId = sourceTransmission.TransmissionId,
+                VendAccount = sourceTransmission.VendAccount,
+                TransmissionDateTime = sourceTransmission.TransmissionDateTime,
+                DataAreaId = sourceTransmission.DataAreaId
+            };
+
+            _azureDb.Transmissions.Add(azureTransmission);
+        }
+        else if (HasTransmissionChanged(azureTransmission, sourceTransmission))
+        {
+            azureTransmission.VendAccount = sourceTransmission.VendAccount;
+            azureTransmission.TransmissionDateTime = sourceTransmission.TransmissionDateTime;
+            azureTransmission.DataAreaId = sourceTransmission.DataAreaId;
+        }
+
+        var sourceDetails = await _sourceDb.TransmissionDetails
+            .Where(x => x.TransmissionId == sourceTransmission.TransmissionId)
+            .ToListAsync();
+
+        foreach (var detail in sourceDetails)
+        {
+            await SyncDetailAsync(detail);
+        }
+    }
+
+    private async Task SyncDetailAsync(SourceTransmissionDetail detail)
+    {
+        var existingLine = await _azureDb.TransmissionDetails
+            .FirstOrDefaultAsync(x => x.TransmissionDetailsId == detail.TransmissionDetailsId);
+
+        if (existingLine == null)
+        {
+            _azureDb.TransmissionDetails.Add(new AzureTransmissionDetail
+            {
+                TransmissionDetailsId = detail.TransmissionDetailsId,
+                TransmissionId = detail.TransmissionId,
+                ItemId = detail.ItemId,
+                ItemName = detail.ItemName,
+                UnitId = detail.UnitId,
+                PurchId = detail.PurchId,
+                LineNumber = detail.LineNumber,
+                Qty = detail.Qty,
+                CurrencyCode = detail.CurrencyCode,
+                CallDeliveryDate = detail.CallDeliveryDate
+            });
+
+            return;
+        }
+
+        if (HasLineChanged(existingLine, detail))
+        {
+            existingLine.TransmissionId = detail.TransmissionId;
+            existingLine.ItemId = detail.ItemId;
+            existingLine.ItemName = detail.ItemName;
+            existingLine.UnitId = detail.UnitId;
+            existingLine.PurchId = detail.PurchId;
+            existingLine.LineNumber = detail.LineNumber;
+            existingLine.Qty = detail.Qty;
+            existingLine.CurrencyCode = detail.CurrencyCode;
+            existingLine.CallDeliveryDate = detail.CallDeliveryDate;
+        }
+    }
+
+    private static bool HasTransmissionChanged(
+        AzureTransmission existing,
+        SourceTransmission source)
+    {
+        return existing.VendAccount != source.VendAccount
+            || existing.TransmissionDateTime != source.TransmissionDateTime
+            || existing.DataAreaId != source.DataAreaId;
+    }
+
+    private static bool HasLineChanged(
+        AzureTransmissionDetail existing,
+        SourceTransmissionDetail source)
+    {
+        return existing.TransmissionId != source.TransmissionId
+            || existing.ItemId != source.ItemId
+            || existing.ItemName != source.ItemName
+            || existing.UnitId != source.UnitId
+            || existing.PurchId != source.PurchId
+            || existing.LineNumber != source.LineNumber
+            || Math.Abs(existing.Qty - source.Qty) > 0.0001
+            || existing.CurrencyCode != source.CurrencyCode
+            || existing.CallDeliveryDate != source.CallDeliveryDate;
+    }
+
+czy to rozwiązanie jest ok? tych TransmissionDetails mogą być miliony w bazie danych
