@@ -1,14 +1,16 @@
-import { Component, OnInit, inject, signal, ViewChild } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
-  FormsModule,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import {
   ServiceContractorResponse,
@@ -20,13 +22,24 @@ import { NotificationService } from '../../_services/notification.service';
 import { InputComponent } from '../../shared/input/input.component';
 import { ServiceContractorListSelectorComponent } from '../../service-contractors/service-contractors-list-selector/service-contractors-list-selector.component';
 
+// 1. Definicja interfejsu dla silnie typowanego formularza
+interface CostFormState {
+  name: FormControl<string>;
+  amount: FormControl<number | null>;
+  currency: FormControl<string>;
+  tax: FormControl<number | null>;
+  issueDate: FormControl<string>;
+  serviceDate: FormControl<string>;
+  isPaid: FormControl<boolean>;
+  serviceContractorId: FormControl<string | null>;
+}
+
 @Component({
   selector: 'app-cost-form',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
     TranslatePipe,
     InputComponent,
     ServiceContractorListSelectorComponent,
@@ -35,36 +48,29 @@ import { ServiceContractorListSelectorComponent } from '../../service-contractor
   styleUrl: './cost-form.component.scss',
 })
 export class CostFormComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
-  private costService = inject(CostService);
-  private notation = inject(NotificationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly costService = inject(CostService);
+  private readonly notation = inject(NotificationService);
 
-  @ViewChild(ServiceContractorListSelectorComponent) 
-  contractorListSelector!: ServiceContractorListSelectorComponent;
+  public readonly workCaseItemId = signal<string | null>(null);
+  public readonly costId = signal<string | null>(null);
+  public readonly isCreateMode = signal<boolean>(true);
+  public readonly selectedContractor = signal<ServiceContractorResponse | null>(null);
+  public readonly isLoadingCost = signal<boolean>(false);
+  public readonly isSaving = signal<boolean>(false);
 
-  public workCaseItemId = signal<string | null>(null);
-  public costId = signal<string | null>(null);
-  public isCreateMode = signal<boolean>(true);
-
-  public selectedContractor = signal<ServiceContractorResponse | null>(null);
-  public isLoadingCost = signal<boolean>(false);
-  public isSaving = signal<boolean>(false);
-  public costForm: FormGroup;
-
-  constructor() {
-    this.costForm = this.fb.group({
-      name: ['', Validators.required],
-      amount: [null, [Validators.required, Validators.min(0.01)]],
-      currency: ['PLN', Validators.required],
-      tax: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
-      issueDate: ['', Validators.required],
-      serviceDate: ['', Validators.required],
-      isPaid: [false],
-      serviceContractorId: [null, Validators.required],
-    });
-  }
+  public readonly costForm: FormGroup<CostFormState> = this.fb.group({
+    name: this.fb.nonNullable.control('', Validators.required),
+    amount: this.fb.control<number | null>(null, [Validators.required, Validators.min(0.01)]),
+    currency: this.fb.nonNullable.control('PLN', Validators.required),
+    tax: this.fb.control<number | null>(null, [Validators.required, Validators.min(0), Validators.max(100)]),
+    issueDate: this.fb.nonNullable.control('', Validators.required),
+    serviceDate: this.fb.nonNullable.control('', Validators.required),
+    isPaid: this.fb.nonNullable.control(false),
+    serviceContractorId: this.fb.control<string | null>(null, Validators.required),
+  });
 
   ngOnInit(): void {
     const workCaseItemId = this.route.snapshot.paramMap.get('itemId');
@@ -74,116 +80,112 @@ export class CostFormComponent implements OnInit {
       this.costId.set(costId);
       this.isCreateMode.set(false);
       this.loadCostDetails(costId);
-    }
-    if (workCaseItemId) {
+    } else if (workCaseItemId) {
       this.workCaseItemId.set(workCaseItemId);
       this.isCreateMode.set(true);
-
-      const today = new Date().toISOString().substring(0, 10);
+      
+      const today = this.formatDateForInput(new Date());
       this.costForm.patchValue({ issueDate: today, serviceDate: today });
     }
   }
 
-  public selectContractor(contractor: ServiceContractorResponse) {
+  public selectContractor(contractor: ServiceContractorResponse): void {
     this.selectedContractor.set(contractor);
-    this.costForm.patchValue({ serviceContractorId: contractor.id });
-    this.costForm.get('serviceContractorId')?.markAsTouched();
+    this.costForm.controls.serviceContractorId.setValue(contractor.id);
+    this.costForm.controls.serviceContractorId.markAsTouched();
   }
 
-  private loadCostDetails(id: string) {
-    this.isLoadingCost.set(true);
-    this.costService.getCostById(id).subscribe({
-      next: (cost) => {
-        const issueDate = cost.issueDate
-          ? new Date(cost.issueDate).toISOString().substring(0, 10)
-          : '';
-        const serviceDate = cost.serviceDate
-          ? new Date(cost.serviceDate).toISOString().substring(0, 10)
-          : '';
-
-        this.costForm.patchValue({
-          name: cost.name,
-          amount: cost.amount,
-          currency: cost.currency,
-          tax: cost.tax,
-          issueDate: issueDate,
-          serviceDate: serviceDate,
-          isPaid: false,
-          serviceContractorId: cost.serviceContractorId,
-        });
-
-        this.isLoadingCost.set(false);
-      },
-      error: (err) => {
-        this.notation.apiError(err);
-        this.isLoadingCost.set(false);
-        this.onCancel();
-      },
-    });
-  }
-
-  public onCancel() {
+  public onCancel(): void {
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     this.costForm.markAllAsTouched();
-    if (this.costForm.invalid) return;
+    if (this.costForm.invalid || this.isSaving()) return;
 
     this.isSaving.set(true);
+
     const formValues = this.costForm.getRawValue();
+    const basePayload = {
+      ...formValues,
+      currencyCode: formValues.currency,
+      workCaseItemId: this.workCaseItemId() || undefined,
+    };
+
+    let request$: Observable<void>;
+    let successMessage: string;
+    let navigateSteps: string;
 
     if (this.isCreateMode()) {
-      const command: CreateCostCommand = {
-        ...formValues,
-        workCaseItemId: this.workCaseItemId(),
-      };
-
-      this.costService.createCost(command).subscribe({
-        next: () => {
-          this.notation.success('GUI.COSTS.CREATE_SUCCESS');
-          this.isSaving.set(false);
-          this.router.navigate(['../../..'], { relativeTo: this.route });
-        },
-        error: (err) => this.handleError(err),
-      });
+      request$ = this.costService.createCost(basePayload as CreateCostCommand);
+      successMessage = 'GUI.COSTS.CREATE_SUCCESS';
+      navigateSteps = '../../..';
     } else {
-      const command: UpdateCostCommand = {
+      const updatePayload: UpdateCostCommand = {
+        ...basePayload,
         id: this.costId()!,
-        ...formValues,
-        workCaseItemId: this.workCaseItemId(),
       };
-
-      this.costService.updateCost(command).subscribe({
-        next: () => {
-          this.notation.success('GUI.COSTS.UPDATE_SUCCESS');
-          this.isSaving.set(false);
-          this.router.navigate(['../../../..'], { relativeTo: this.route });
-        },
-        error: (err) => this.handleError(err),
-      });
+      request$ = this.costService.updateCost(updatePayload);
+      successMessage = 'GUI.COSTS.UPDATE_SUCCESS';
+      navigateSteps = '../../../..';
     }
+
+    request$
+      .pipe(finalize(() => this.isSaving.set(false)))
+      .subscribe({
+        next: () => {
+          this.notation.success(successMessage);
+          this.router.navigate([navigateSteps], { relativeTo: this.route });
+        },
+        error: (err) => this.notation.apiError(err),
+      });
   }
 
-  public onDelete() {
+  public onDelete(): void {
     const id = this.costId();
-    if (!id) return;
+    if (!id || !confirm('Czy na pewno chcesz usunąć ten koszt?')) return;
 
-    if (confirm('Czy na pewno chcesz usunąć ten koszt?')) {
-      this.isSaving.set(true);
-      this.costService.deleteCost(id).subscribe({
+    this.isSaving.set(true);
+    this.costService
+      .deleteCost(id)
+      .pipe(finalize(() => this.isSaving.set(false)))
+      .subscribe({
         next: () => {
           this.notation.success('GUI.COSTS.DELETE_SUCCESS');
-          this.isSaving.set(false);
           this.router.navigate(['../../../..'], { relativeTo: this.route });
         },
-        error: (err) => this.handleError(err),
+        error: (err) => this.notation.apiError(err),
       });
-    }
   }
 
-  private handleError(err: any) {
-    this.notation.apiError(err);
-    this.isSaving.set(false);
+  private loadCostDetails(id: string): void {
+    this.isLoadingCost.set(true);
+    this.costService
+      .getCostById(id)
+      .pipe(finalize(() => this.isLoadingCost.set(false)))
+      .subscribe({
+        next: (cost) => {
+          this.costForm.patchValue({
+            name: cost.name,
+            amount: cost.amount,
+            currency: cost.currency,
+            tax: cost.tax,
+            issueDate: this.formatDateForInput(cost.issueDate),
+            serviceDate: this.formatDateForInput(cost.serviceDate),
+            isPaid: false,
+            serviceContractorId: cost.serviceContractorId,
+          });
+        },
+        error: (err) => {
+          this.notation.apiError(err);
+          this.onCancel();
+        },
+      });
+  }
+
+  private formatDateForInput(date: Date | string | undefined | null): string {
+    if (!date) return '';
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return isNaN(d.getTime()) ? '' : d.toISOString().substring(0, 10);
   }
 }
