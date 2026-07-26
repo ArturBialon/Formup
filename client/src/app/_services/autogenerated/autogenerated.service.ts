@@ -618,17 +618,14 @@ export class CostService implements ICostService {
         let url_ = this.baseUrl + "/api/Cost/CreateCost";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = new FormData();
-        if (command === null || command === undefined)
-            throw new globalThis.Error("The parameter 'command' cannot be null.");
-        else
-            content_.append("command", JSON.stringify(command));
+        const content_ = JSON.stringify(command);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
             })
         };
 

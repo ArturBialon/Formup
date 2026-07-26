@@ -3,106 +3,14 @@
   <div class="panel-side side-left">
     <div class="panel-card">
       
-      <div class="panel-header d-flex justify-content-between align-items-center">
-        <div>
-          <span>{{ 'GUI.CONTRACTORS.LIST_TITLE' | translate }} ({{ contractors().length }}) / </span>
-          @if (isLoading()) {
-            <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          }
-          <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);" type="number"
-            min="1" [value]="pageSize()" (change)="onPageSizeChange($event)"
-            class="form-control form-control-sm shadow-none page-size-input d-inline-block ms-1"
-            [placeholder]="'GUI.USERS.PAGE_SIZE_PLACEHOLDER' | translate">
+      <div class="panel-card">
+            <app-service-contractor-list-selector
+                [activeContractor]="selectedContractor()"
+                [showAddButton]="true"
+                (contractorSelected)="selectContractor($event)"
+                (addRequested)="initCreateContractor()">
+            </app-service-contractor-list-selector>
         </div>
-
-        <button type="button" class="btn btn-success btn-sm" (click)="initCreateContractor()">
-          + {{ 'GUI.CONTRACTORS.ADD_NEW_BUTTON' | translate }}
-        </button>
-      </div>
-
-      <div class="filters-container p-3 border-bottom">
-        <div class="filters-grid">
-          <div class="filter-field">
-            <input type="text" [(ngModel)]="filters.name" [placeholder]="'GUI.CONTRACTORS.NAME' | translate"
-              class="form-control form-control-sm shadow-none">
-          </div>
-
-          <div class="filter-field">
-            <input type="text" [(ngModel)]="filters.tax" [placeholder]="'GUI.CONTRACTORS.TAX_NIP' | translate"
-              class="form-control form-control-sm shadow-none">
-          </div>
-
-          <div class="filter-field">
-            <input type="text" [(ngModel)]="filters.city" [placeholder]="'GUI.CONTRACTORS.CITY' | translate"
-              class="form-control form-control-sm shadow-none">
-          </div>
-          
-          <div class="filter-field">
-            <input type="text" [(ngModel)]="filters.country" [placeholder]="'GUI.CONTRACTORS.COUNTRY' | translate"
-              class="form-control form-control-sm shadow-none">
-          </div>
-
-          <div class="field full-width checkbox-field">
-            <div class="triple-switch switch-sm" 
-                [class.status-all]="filters.isActive === undefined"
-                [class.status-active]="filters.isActive === true"
-                [class.status-inactive]="filters.isActive === false"
-                (click)="toggleTripleState()">
-              <span class="slider"></span>
-            </div>
-            
-            <label class="checkbox-label">
-              @if (filters.isActive === undefined) {
-                {{ 'GUI.USERS.STATUS_ALL' | translate }}
-              } @else if (filters.isActive === true) {
-                {{ 'GUI.USERS.STATUS_ACTIVE' | translate }}
-              } @else {
-                {{ 'GUI.USERS.STATUS_INACTIVE' | translate }}
-              }
-            </label>
-          </div>
-
-          <div class="filter-actions">
-            <button type="button" class="btn btn-primary btn-sm w-100" (click)="onSearch()">
-              {{ 'GUI.BUTTONS.SEARCH' | translate }}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="scrollable-content">
-        @for (item of contractors(); track item.id) {
-          <button type="button" class="user-item-btn" [class.active]="selectedContractor()?.id === item.id" (click)="selectContractor(item)">
-            
-            <div class="user-info">
-              <span class="user-name">{{ item.name }}</span>
-              <span class="user-email">NIP: {{ item.tax }} | {{ item.city }}{{ item.country ? ', ' + item.country : '' }}</span>
-            </div>
-            <div class="user-badges">
-              <span class="custom-badge" [class.active-status]="item.isActive" [class.badge-inactive]="!item.isActive">
-                {{ (item.isActive ? 'GUI.USERS.STATUS_ACTIVE' : 'GUI.USERS.STATUS_INACTIVE') | translate }}
-              </span>
-            </div>
-
-          </button>
-        } @empty {
-          @if (!isLoading()) {
-            <div class="empty-state">{{ 'GUI.CONTRACTORS.EMPTY_LIST' | translate }}</div>
-          }
-        }
-      </div>
-
-      <div class="panel-footer">
-        <button type="button" class="btn btn-sm" [disabled]="pageNumber() <= 1 || isLoading()"
-          (click)="changePage(pageNumber() - 1)">
-          {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
-        </button>
-        <span class="text-sm fw-medium">{{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}</span>
-        <button type="button" class="btn btn-sm"
-          [disabled]="contractors().length < pageSize() || isLoading()" (click)="changePage(pageNumber() + 1)">
-          {{ 'GUI.BUTTONS.NEXT' | translate }}
-        </button>
-      </div>
 
     </div>
   </div>

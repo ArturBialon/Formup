@@ -38,7 +38,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateCost([FromForm] CreateCostCommand command, CancellationToken ct)
+        public async Task<IActionResult> CreateCost([FromBody] CreateCostCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
@@ -49,7 +49,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateCost([FromForm] UpdateCostCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateCost([FromBody] UpdateCostCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);

@@ -2,14 +2,12 @@
 using Application.Common.Results;
 using Infrastructure.Context;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Costs.Commands
 {
     public record UpdateCostCommand(
         Guid Id,
-        IFormFile? File,
         decimal Amount,
         string Currency,
         decimal Tax,
@@ -53,12 +51,6 @@ namespace Application.Features.Costs.Commands
             }
 
             string? oldUrlToDelete = null;
-
-            if (request.File != null)
-            {
-                using var stream = request.File.OpenReadStream();
-                cost.DocumentUrl = await _fileStorageService.UploadFileAsync(stream, request.Name, ct);
-            }
 
             cost.Amount = request.Amount;
             cost.CurrencyCode = request.Currency.Trim().ToUpper();
