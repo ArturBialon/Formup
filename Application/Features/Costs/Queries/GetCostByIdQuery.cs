@@ -30,7 +30,22 @@ namespace Application.Features.Costs.Queries
                     IsPaid = c.IsPaid,
                     ServiceContractorName = c.ServiceContractor.Name + ": " + c.ServiceContractor.Tax,
                     WorkCaseItemId = c.WorkCaseItem.Id.Value,
-                    ServiceContractorId = c.ServiceContractor.Id.Value
+                    ServiceContractorId = c.ServiceContractor.Id.Value,
+                    ServiceContractorResponse = c.ServiceContractor == null ? null : new ServiceContractorResponse
+                    {
+                        Id = c.ServiceContractor.Id.Value,
+                        Name = c.ServiceContractor.Name,
+                        Tax = c.ServiceContractor.Tax,
+                        Country = c.ServiceContractor.Country,
+                        City = c.ServiceContractor.City,
+                        Zip = c.ServiceContractor.Zip,
+                        Street = c.ServiceContractor.Street,
+                        HouseNumber = c.ServiceContractor.HouseNumber,
+                        ApartmentNumber = c.ServiceContractor.ApartmentNumber,
+                        Email = c.ServiceContractor.Email,
+                        PhoneNumber = c.ServiceContractor.PhoneNumber,
+                        IsActive = c.ServiceContractor.IsActive
+                    }
                 })
                 .FirstOrDefaultAsync(ct);
 

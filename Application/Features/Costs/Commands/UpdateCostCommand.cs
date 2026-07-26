@@ -17,38 +17,41 @@ namespace Application.Features.Costs.Commands
         bool IsPaid,
         Guid WorkCaseItemId,
         Guid ServiceContractorId
-    ) : IRequest<AppResult<Unit>>;
+    ) : IRequest<AppResult<Guid>>;
 
-    public class UpdateCostCommandHandler(FormupContext context, IFileStorageService fileStorageService) : IRequestHandler<UpdateCostCommand, AppResult<Unit>>
+    public class UpdateCostCommandHandler(FormupContext context, IFileStorageService fileStorageService) : IRequestHandler<UpdateCostCommand, AppResult<Guid>>
     {
         private readonly FormupContext _context = context;
         private readonly IFileStorageService _fileStorageService = fileStorageService;
 
-        public async Task<AppResult<Unit>> Handle(UpdateCostCommand request, CancellationToken ct)
+        public async Task<AppResult<Guid>> Handle(UpdateCostCommand request, CancellationToken ct)
         {
             var cost = await _context.Costs
                 .Include(c => c.WorkCaseItem)
                 .Include(c => c.ServiceContractor)
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.Id), ct);
 
-            if (cost == null) return AppResult<Unit>.Failure("COST.NOT_FOUND");
+            if (cost == null) return AppResult<Guid>.Failure("COST.NOT_FOUND");
 
-            var nameTaken = await _context.Costs.AnyAsync(x => x.Id.Value != request.Id && x.ServiceContractor.Id.Equals(request.ServiceContractorId) && x.Name == request.Name, ct);
-            if (nameTaken) return AppResult<Unit>.Failure("COST.COST_ALREADY_EXISTS");
+            var nameTaken = await _context.Costs.AnyAsync(x => !x.Id.Equals(request.Id) && x.ServiceContractor.Id.Equals(request.ServiceContractorId) && x.Name == request.Name, ct);
+            if (nameTaken) return AppResult<Guid>.Failure("COST.COST_ALREADY_EXISTS");
 
             if (cost.WorkCaseItem.Id.Value != request.WorkCaseItemId)
             {
                 var newWorkCaseItem = await _context.WorkCaseItems.FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
-                if (newWorkCaseItem == null) return AppResult<Unit>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
+                if (newWorkCaseItem == null) return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
                 cost.WorkCaseItem = newWorkCaseItem;
             }
 
             if (cost.ServiceContractor.Id.Value != request.ServiceContractorId)
             {
                 var newContractor = await _context.ServiceContractors.FirstOrDefaultAsync(x => x.Id.Equals(request.ServiceContractorId), ct);
-                if (newContractor == null) return AppResult<Unit>.Failure("COST.CONTRACTOR_NOT_FOUND");
+                if (newContractor == null) return AppResult<Guid>.Failure("COST.CONTRACTOR_NOT_FOUND");
                 cost.ServiceContractor = newContractor;
             }
+
+            if (cost.WorkCaseItem.CostAmountNet != request.Amount || cost.WorkCaseItem.CurrencyCodeCost != request.Currency)
+                return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_AMOUNT_MISSMATCH");
 
             string? oldUrlToDelete = null;
 
@@ -75,7 +78,7 @@ namespace Application.Features.Costs.Commands
                 }
             }
 
-            return AppResult<Unit>.Success(Unit.Value);
+            return AppResult<Guid>.Success(request.Id);
         }
     }
 }

@@ -1,16 +1,10 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 import {
   ServiceContractorResponse,
@@ -22,14 +16,10 @@ import { NotificationService } from '../../_services/notification.service';
 import { InputComponent } from '../../shared/input/input.component';
 import { ServiceContractorListSelectorComponent } from '../../service-contractors/service-contractors-list-selector/service-contractors-list-selector.component';
 
-interface CostFormState {
-  name: FormControl<string>;
-  amount: FormControl<number | null>;
-  currency: FormControl<string>;
-  tax: FormControl<number | null>;
-  issueDate: FormControl<string>;
-  serviceDate: FormControl<string>;
-  serviceContractorId: FormControl<string | null>;
+function formatDateForInput(date: Date | string | undefined | null): string {
+  if (!date) return '';
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return isNaN(d.getTime()) ? '' : d.toISOString().substring(0, 10);
 }
 
 @Component({
@@ -61,52 +51,46 @@ export class CostFormComponent implements OnInit {
   );
   public readonly isLoadingCost = signal<boolean>(false);
   public readonly isSaving = signal<boolean>(false);
+  public readonly selectedFile = signal<File | null>(null);
 
-  public readonly costForm: FormGroup<CostFormState> = this.fb.group({
-    name: this.fb.nonNullable.control('', Validators.required),
-    amount: this.fb.control<number | null>(null, [
-      Validators.required,
-      Validators.min(0.01),
-    ]),
-    currency: this.fb.nonNullable.control('PLN', Validators.required),
-    tax: this.fb.control<number | null>(null, [
-      Validators.required,
-      Validators.min(0),
-      Validators.max(100),
-    ]),
-    issueDate: this.fb.nonNullable.control('', Validators.required),
-    serviceDate: this.fb.nonNullable.control('', Validators.required),
-    serviceContractorId: this.fb.control<string | null>(
-      null,
-      Validators.required
-    ),
+  public readonly costForm = this.fb.group({
+    name: ['', Validators.required],
+    amount: [<number | null>null, [Validators.required, Validators.min(0.01)]],
+    currency: ['PLN', Validators.required],
+    tax: [
+      <number | null>null,
+      [Validators.required, Validators.min(0), Validators.max(100)],
+    ],
+    issueDate: ['', Validators.required],
+    serviceDate: ['', Validators.required],
+    serviceContractorId: [<string | null>null, Validators.required],
   });
 
   ngOnInit(): void {
-    const workCaseItemId = this.route.snapshot.paramMap.get('itemId');
     const costId = this.route.snapshot.paramMap.get('costId');
+    const itemId = this.route.snapshot.paramMap.get('itemId');
 
     if (costId) {
       this.costId.set(costId);
       this.isCreateMode.set(false);
       this.loadCostDetails(costId);
-    } else if (workCaseItemId) {
-      this.workCaseItemId.set(workCaseItemId);
-      this.isCreateMode.set(true);
-
-      const today = this.formatDateForInput(new Date());
+    }
+    if (itemId) {
+      this.workCaseItemId.set(itemId);
+      const today = formatDateForInput(new Date());
       this.costForm.patchValue({ issueDate: today, serviceDate: today });
     }
   }
 
   public selectContractor(contractor: ServiceContractorResponse): void {
     this.selectedContractor.set(contractor);
-    this.costForm.controls.serviceContractorId.setValue(contractor.id!);
+    this.costForm.patchValue({ serviceContractorId: contractor.id! });
     this.costForm.controls.serviceContractorId.markAsTouched();
   }
 
-  public onCancel(): void {
-    this.location.back();
+  public onFileSelected(event: Event): void {
+    const files = (event.target as HTMLInputElement).files;
+    this.selectedFile.set(files?.length ? files[0] : null);
   }
 
   public onSubmit(): void {
@@ -114,61 +98,34 @@ export class CostFormComponent implements OnInit {
     if (this.costForm.invalid || this.isSaving()) return;
 
     this.isSaving.set(true);
-    const formValues = this.costForm.getRawValue();
 
-    let request$: Observable<void>;
-    let successMessage: string;
+    const saveCost$ = this.isCreateMode()
+      ? this.costService.createCost(this.buildCreatePayload())
+      : this.costService
+          .updateCost(this.buildUpdatePayload())
+          .pipe(map(() => this.costId()!));
 
-    if (this.isCreateMode()) {
-      const createPayload: CreateCostCommand = {
-        name: formValues.name,
-        amount: formValues.amount,
-        currency: formValues.currency,
-        tax: formValues.tax,
-        issueDate: formValues.issueDate,
-        serviceDate: formValues.serviceDate,
-        serviceContractorId: formValues.serviceContractorId!,
-        workCaseItemId: this.workCaseItemId() || undefined,
-        file: null,
-        isPaid: false,
-      };
-
-      request$ = this.costService.createCost(createPayload);
-      successMessage = 'GUI.COSTS.CREATE_SUCCESS';
-    } else {
-      const updatePayload: UpdateCostCommand = {
-        id: this.costId()!,
-        file: null,
-        amount: formValues.amount,
-        currency: formValues.currency,
-        tax: formValues.tax,
-        name: formValues.name,
-        issueDate: formValues.issueDate,
-        serviceDate: formValues.serviceDate,
-        isPaid: false,
-        workCaseItemId: this.workCaseItemId()!,
-        serviceContractorId: formValues.serviceContractorId!,
-      };
-
-      request$ = this.costService.updateCost(updatePayload);
-      successMessage = 'GUI.COSTS.UPDATE_SUCCESS';
-    }
-
-    request$.pipe(finalize(() => this.isSaving.set(false))).subscribe({
-      next: () => {
-        this.notation.success(successMessage);
-        this.location.back();
-      },
-      error: (err) => this.notation.apiError(err),
-    });
+    saveCost$
+      .pipe(
+        switchMap((costId) => this.uploadFileIfPresent(costId)),
+        finalize(() => this.isSaving.set(false))
+      )
+      .subscribe({
+        next: () => {
+          const msg = this.isCreateMode()
+            ? 'GUI.COSTS.CREATE_SUCCESS'
+            : 'GUI.COSTS.UPDATE_SUCCESS';
+          this.notation.success(msg);
+          this.onCancel();
+        },
+        error: (err) => this.notation.apiError(err),
+      });
   }
 
   public onDelete(): void {
     const id = this.costId();
-    if (!id) return;
-
-    const confirmMessage = this.translate.instant('GUI.COSTS.DELETE_CONFIRM');
-    if (!confirm(confirmMessage)) return;
+    if (!id || !confirm(this.translate.instant('GUI.COSTS.DELETE_CONFIRM')))
+      return;
 
     this.isSaving.set(true);
     this.costService
@@ -177,10 +134,55 @@ export class CostFormComponent implements OnInit {
       .subscribe({
         next: () => {
           this.notation.success('GUI.COSTS.DELETE_SUCCESS');
-          this.location.back();
+          this.onCancel();
         },
         error: (err) => this.notation.apiError(err),
       });
+  }
+
+  public onCancel(): void {
+    this.location.back();
+  }
+
+  private uploadFileIfPresent(costId: string): Observable<unknown> {
+    const file = this.selectedFile();
+    if (!file || !costId) return of(null);
+
+    return this.costService.uploadCostFile(costId, {
+      data: file,
+      fileName: file.name,
+    });
+  }
+
+  private buildCreatePayload(): CreateCostCommand {
+    const val = this.costForm.getRawValue();
+    return {
+      name: val.name!,
+      amount: val.amount!,
+      currency: val.currency!,
+      tax: val.tax!,
+      issueDate: val.issueDate!,
+      serviceDate: val.serviceDate!,
+      serviceContractorId: val.serviceContractorId!,
+      workCaseItemId: this.workCaseItemId()!,
+      isPaid: false,
+    };
+  }
+
+  private buildUpdatePayload(): UpdateCostCommand {
+    const val = this.costForm.getRawValue();
+    return {
+      id: this.costId()!,
+      name: val.name!,
+      amount: val.amount!,
+      currency: val.currency!,
+      tax: val.tax!,
+      issueDate: val.issueDate!,
+      serviceDate: val.serviceDate!,
+      serviceContractorId: val.serviceContractorId!,
+      workCaseItemId: this.workCaseItemId()!,
+      isPaid: false,
+    };
   }
 
   private loadCostDetails(id: string): void {
@@ -195,21 +197,18 @@ export class CostFormComponent implements OnInit {
             amount: cost.amount,
             currency: cost.currency,
             tax: cost.tax,
-            issueDate: this.formatDateForInput(cost.issueDate),
-            serviceDate: this.formatDateForInput(cost.serviceDate),
+            issueDate: formatDateForInput(cost.issueDate),
+            serviceDate: formatDateForInput(cost.serviceDate),
             serviceContractorId: cost.serviceContractorId,
           });
+          if (cost.serviceContractorResponse) {
+            this.selectContractor(cost.serviceContractorResponse)
+          }
         },
         error: (err) => {
           this.notation.apiError(err);
           this.onCancel();
         },
       });
-  }
-
-  private formatDateForInput(date: Date | string | undefined | null): string {
-    if (!date) return '';
-    const d = typeof date === 'string' ? new Date(date) : date;
-    return isNaN(d.getTime()) ? '' : d.toISOString().substring(0, 10);
   }
 }

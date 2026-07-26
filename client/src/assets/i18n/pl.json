@@ -30,6 +30,7 @@
       "AMOUNT": "Kwota",
       "CURRENCY": "Waluta",
       "TAX": "Stawka VAT (%)",
+      "FILE": "Plik",
       "ISSUE_DATE": "Data wystawienia",
       "SERVICE_DATE": "Data wykonania usługi",
       "CREATE_SUCCESS": "Koszt został pomyślnie dodany.",

@@ -30,6 +30,7 @@
       "AMOUNT": "Amount",
       "CURRENCY": "Currency",
       "TAX": "Tax rate (%)",
+      "FILE": "File",
       "ISSUE_DATE": "Issue date",
       "SERVICE_DATE": "Service date",
       "CREATE_SUCCESS": "Cost has been added successfully.",

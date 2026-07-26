@@ -30,6 +30,7 @@
             "AMOUNT": "Betrag",
             "CURRENCY": "Währung",
             "TAX": "MwSt.-Satz (%)",
+            "FILE": "Datei",
             "ISSUE_DATE": "Ausstellungsdatum",
             "SERVICE_DATE": "Leistungsdatum",
             "CREATE_SUCCESS": "Kosten wurden erfolgreich hinzugefügt.",

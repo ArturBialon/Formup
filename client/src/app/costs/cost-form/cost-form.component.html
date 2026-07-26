@@ -2,7 +2,9 @@
 
     <div class="panel-side side-left">
         <div class="panel-card">
-            <app-service-contractor-list-selector [activeContractor]="selectedContractor()" [showAddButton]="false"
+            <app-service-contractor-list-selector
+                [activeContractor]="selectedContractor()"
+                [showAddButton]="false"
                 (contractorSelected)="selectContractor($event)">
             </app-service-contractor-list-selector>
         </div>
@@ -49,6 +51,14 @@
 
                         <app-input class="field" controlName="issueDate" label="GUI.COSTS.ISSUE_DATE" type="date" [required]="true"></app-input>
                         <app-input class="field" controlName="serviceDate" label="GUI.COSTS.SERVICE_DATE" type="date" [required]="true"></app-input>
+                        <div class="mb-3">
+                            <label class="form-label">{{ 'GUI.COSTS.FILE' | translate }}</label>
+                            <input 
+                                type="file" 
+                                class="form-control" 
+                                (change)="onFileSelected($event)" 
+                                accept=".pdf,.png,.jpg,.jpeg" />
+                        </div>
                     </div>
 
                     <div class="form-actions mt-auto pt-3">

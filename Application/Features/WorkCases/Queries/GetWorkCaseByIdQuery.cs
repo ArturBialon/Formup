@@ -24,11 +24,28 @@ namespace Application.Features.WorkCases.Queries
                     CreatedAtUtc = x.CreatedAtUtc,
                     Currency = x.CurrencyCode,
                     Relation = x.Relation,
-                    ForwarderId = x.Forwarder.Id,
+                    ForwarderId = x.Forwarder.Id.Value,
                     ForwarderName = $"{x.Forwarder.Name} {x.Forwarder.Surname}",
-                    ClientId = x.Client.Id,
+                    ClientId = x.Client.Id.Value,
                     ClientName = x.Client.Name,
                     IsAbandoned = x.IsAbandoned,
+                    ClientResponse = x.Client == null ? null : new ClientResponse
+                    {
+                        Id = x.Client.Id.Value,
+                        Tax = x.Client.Tax,
+                        Name = x.Client.Name,
+                        Country = x.Client.Country,
+                        City = x.Client.City,
+                        Zip = x.Client.Zip,
+                        Street = x.Client.Street,
+                        HouseNumber = x.Client.HouseNumber,
+                        ApartmentNumber = x.Client.ApartmentNumber,
+                        Email = x.Client.Email,
+                        PhoneNumber = x.Client.PhoneNumber,
+                        Credit = x.Client.Credit,
+                        Currency = x.Client.CurrencyCode,
+                        IsActive = x.Client.IsActive
+                    }
                 })
                 .FirstOrDefaultAsync(ct);
 

@@ -14,5 +14,6 @@
         public Guid ClientId { get; set; }
         public string ClientName { get; set; } = string.Empty;
         public bool IsAbandoned { get; set; }
+        public ClientResponse? ClientResponse { get; set; }
     }
 }

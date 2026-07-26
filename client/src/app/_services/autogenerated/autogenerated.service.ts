@@ -454,9 +454,10 @@ export class ClientService implements IClientService {
 export interface ICostService {
     getCosts(pageNumber: number | undefined, pageSize: number | undefined, searchTerm: string | null | undefined, currency: string | null | undefined, serviceContractorId: string | null | undefined, dateFrom: Date | null | undefined, dateTo: Date | null | undefined, isPaid: boolean | null | undefined): Observable<PagedResultOfCostDetailResponse>;
     getCostById(workCaseItemId: string): Observable<CostDetailResponse>;
-    createCost(command: CreateCostCommand | undefined): Observable<void>;
-    updateCost(command: UpdateCostCommand | undefined): Observable<void>;
+    createCost(command: CreateCostCommand | undefined): Observable<string>;
+    updateCost(command: UpdateCostCommand | undefined): Observable<string>;
     deleteCost(id: string): Observable<void>;
+    uploadCostFile(costId: string, file: FileParameter | undefined): Observable<string>;
 }
 
 @Injectable({
@@ -614,7 +615,7 @@ export class CostService implements ICostService {
         return _observableOf(null as any);
     }
 
-    createCost(command: CreateCostCommand | undefined): Observable<void> {
+    createCost(command: CreateCostCommand | undefined): Observable<string> {
         let url_ = this.baseUrl + "/api/Cost/CreateCost";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -626,6 +627,7 @@ export class CostService implements ICostService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -636,14 +638,14 @@ export class CostService implements ICostService {
                 try {
                     return this.processCreateCost(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processCreateCost(response: HttpResponseBase): Observable<void> {
+    protected processCreateCost(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -652,7 +654,9 @@ export class CostService implements ICostService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
+            return _observableOf(result200);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -674,21 +678,19 @@ export class CostService implements ICostService {
         return _observableOf(null as any);
     }
 
-    updateCost(command: UpdateCostCommand | undefined): Observable<void> {
+    updateCost(command: UpdateCostCommand | undefined): Observable<string> {
         let url_ = this.baseUrl + "/api/Cost/UpdateCost";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = new FormData();
-        if (command === null || command === undefined)
-            throw new globalThis.Error("The parameter 'command' cannot be null.");
-        else
-            content_.append("command", JSON.stringify(command));
+        const content_ = JSON.stringify(command);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -699,14 +701,14 @@ export class CostService implements ICostService {
                 try {
                     return this.processUpdateCost(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processUpdateCost(response: HttpResponseBase): Observable<void> {
+    protected processUpdateCost(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -715,7 +717,9 @@ export class CostService implements ICostService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
+            return _observableOf(result200);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -776,6 +780,75 @@ export class CostService implements ICostService {
         if (status === 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    uploadCostFile(costId: string, file: FileParameter | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/Cost/UploadCostFile/{costId}/file";
+        if (costId === undefined || costId === null)
+            throw new globalThis.Error("The parameter 'costId' must be defined.");
+        url_ = url_.replace("{costId}", encodeURIComponent("" + costId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new globalThis.Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadCostFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadCostFile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string>;
+        }));
+    }
+
+    protected processUploadCostFile(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
+            return _observableOf(result200);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2465,10 +2538,25 @@ export interface CostDetailResponse {
     serviceContractorName?: string;
     workCaseItemId?: string;
     serviceContractorId?: string;
+    serviceContractorResponse?: ServiceContractorResponse | null;
+}
+
+export interface ServiceContractorResponse {
+    id?: string;
+    name?: string;
+    tax?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    isActive?:boolean | null;
 }
 
 export interface CreateCostCommand {
-    file?: string | null;
     amount?: number | null;
     currency?: string;
     tax?: number | null;
@@ -2482,7 +2570,6 @@ export interface CreateCostCommand {
 
 export interface UpdateCostCommand {
     id?: string;
-    file?: string | null;
     amount?: number | null;
     currency?: string;
     tax?: number | null;
@@ -2567,21 +2654,6 @@ export interface PagedResultOfServiceContractorResponse {
     totalCount?: number | null;
     pageNumber?: number | null;
     pageSize?: number | null;
-}
-
-export interface ServiceContractorResponse {
-    id?: string;
-    name?: string;
-    tax?: string;
-    country?: string;
-    city?: string;
-    zip?: string;
-    street?: string;
-    houseNumber?: string;
-    apartmentNumber?: string | null;
-    email?: string | null;
-    phoneNumber?: string | null;
-    isActive?:boolean | null;
 }
 
 export interface CreateServiceContractorCommand {
@@ -2702,6 +2774,24 @@ export interface WorkCaseDetailsResponse {
     clientId?: string;
     clientName?: string;
     isAbandoned?:boolean | null;
+    clientResponse?: ClientResponse | null;
+}
+
+export interface ClientResponse {
+    id?: string;
+    tax?: string;
+    name?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    street?: string;
+    houseNumber?: string;
+    apartmentNumber?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    credit?: number | null;
+    currency?: string;
+    isActive?:boolean | null;
 }
 
 export interface CreateWorkCaseCommand {
@@ -2766,6 +2856,11 @@ export interface UpdateWorkCaseItemCommand {
     costAmountNet?: number | null;
     costCurrencyCode?: string;
     tax?: number | null;
+}
+
+export interface FileParameter {
+    data?: any;
+    fileName?: string;
 }
 
 export class ApiException extends Error {
