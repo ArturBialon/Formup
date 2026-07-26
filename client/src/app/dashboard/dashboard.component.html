@@ -1,4 +1,4 @@
-<div class="dashboard-layout">
+<div class="dashboard-layout" style="margin-top: 5vh;">
   
   <aside class="sidebar">
     
@@ -7,12 +7,12 @@
     <app-tile labelKey="GUI.INVOICES" iconName="invoiceIcon.svg" routePath="/dashboard/invoices"></app-tile>
     <app-tile labelKey="GUI.CLIENTS" iconName="clientIcon.svg" routePath="/dashboard/clients"></app-tile>
     
-    @if (accountService.isAdmin()) {
-        <app-tile labelKey="GUI.MANAGE_USERS" iconName="peopleIcon.svg" routePath="/dashboard/manage-users"></app-tile>
-    }
     
     <div class="flex-grow-1"></div>
 
+    @if (accountService.isAdmin()) {
+        <app-tile labelKey="GUI.MANAGE_USERS" iconName="peopleIcon.svg" routePath="/dashboard/manage-users"></app-tile>
+    }
     <app-tile labelKey="GUI.MY_ACCOUNT" iconName="userIcon.svg" routePath="/dashboard/account"></app-tile>
   </aside>
 

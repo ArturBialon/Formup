@@ -3,10 +3,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 110px;
+  border-radius: 0.5rem;
+  height: 100px;
   width: 100%;
-  color: var(--color-text-dark);
-  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  background-color: var(--color-primary-glass);
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -35,6 +36,7 @@
     width: 2.5rem;
     height: 2.5rem;
     object-fit: contain;
+    filter: invert(1) brightness(2); 
   }
 
   .tile-label {

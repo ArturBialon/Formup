@@ -1,7 +1,6 @@
 :root {
-  // main colors
   --color-primary: #0077ff;
-  --color-primary-hover: #bce0ff;
+  --color-primary-hover: #4e7aa0;
   --color-yellow: #ffd777;
   --color-yellow-hover: #fff1cf;
   --color-green: #72ff47;
@@ -13,7 +12,6 @@
   --color-alert-info-text: #6ea8fe;
   --color-error: #d9001b;
   
-  // neutral tones
   --color-dark: #1a1a1a;
   --color-dark-panel: rgba(0, 0, 0, 0.0);
   --color-sidebar-bg: rgba(0, 0, 0, 0.1);
@@ -22,7 +20,6 @@
   --color-text-dark: #212529;
   --color-text-muted: #dee2e6;
   
-  // radius and glass effect
   --radius-main: 12px;
   --radius-btn: 5px;
   --radius-login: 10px;
@@ -31,4 +28,5 @@
   --glass-border: rgba(255, 255, 255, 0.3);
   --blue-box-bg: rgba(0, 55, 128, 0.1);
   --dark-box-border: rgba(255, 255, 255, 0.1);
+  --color-primary-glass: rgba(0, 57, 131, 0.9);
 }

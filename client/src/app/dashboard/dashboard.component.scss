@@ -1,8 +1,7 @@
 .dashboard-layout {
   display: flex;
-  height: 90vh;
+  height: 95vh;
   width: 100vw;
-  overflow: hidden;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -44,7 +43,6 @@
       justify-content: center;
       align-items: center;
 
-      // POPRAWIONA SKŁADNIA DEEP:
       ::ng-deep {
         span, p, label, .tile-label { 
           display: none !important; 

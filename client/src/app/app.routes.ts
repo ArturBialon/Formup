@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { authGuard } from './_guards/auth.guard';
-import { DashboardComponent } from './shared/dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { adminGuard } from './_guards/admin.guard';
 import { ServiceContractorsComponent } from './service-contractors/service-contractors-form/service-contractors.component';
