@@ -11,6 +11,8 @@ import { WorkCaseAddComponent } from './work-cases/work-case-add/work-case-add.c
 import { WorkCaseDetailsComponent } from './work-cases/work-case-details/work-case-details.component';
 import { WorkCaseEditComponent } from './work-cases/work-case-edit/work-case-edit.component';
 import { CostFormComponent } from './costs/cost-form/cost-form.component';
+import { InvoiceCreateComponent } from './invoices/invoice-create/invoice-create.component';
+import { InvoiceEditComponent } from './invoices/invoice-edit/invoice-edit.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -64,6 +66,15 @@ export const routes: Routes = [
         path: 'workcase-item/:itemId/cost/:costId', 
         component: CostFormComponent,
         canActivate: [authGuard]
+      },
+      { 
+        path: 'createInvoice/:id',
+        component: InvoiceCreateComponent,
+        canActivate: [authGuard] 
+      },
+      { path: 'editInvoice/:id',
+        component: InvoiceEditComponent,
+        canActivate: [authGuard] 
       }
     ],
     canActivate: [authGuard]

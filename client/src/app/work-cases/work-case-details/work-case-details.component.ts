@@ -23,7 +23,7 @@ export class WorkCaseDetailsComponent {
   
   workCase = signal<WorkCaseDetailsResponse | null>(null);
   isLoading = signal<boolean>(false);
-  isExpanded = signal<boolean>(true); // Poprawiona literówka nazwy sygnału
+  isExpanded = signal<boolean>(true);
 
   constructor() {
     effect(() => {

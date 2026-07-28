@@ -1,0 +1,119 @@
+<div class="split-wrapper">
+
+    <div class="panel-side side-left panel-card">
+        <div class="panel-header  justify-content-between mb-3">
+            <h5 class="text-white">{{ 'GUI.INVOICE.SELECT_ITEMS' | translate }}</h5>
+            <span class="text-muted small">
+                {{ selectedItemIds().length }} / {{ items().length }} 
+            </span>
+        </div>
+
+        @if (isLoading()) {
+        <div class="text-center p-3">
+            <span class="spinner-border text-light" role="status"></span>
+        </div>
+        } @else {
+        <div class="scrollable-content">
+            @if (items().length === 0) {
+            <div class="text-muted small">{{ 'GUI.INVOICE.NO_AVAILABLE_ITEMS' | translate }}</div>
+            }
+
+            @for (item of items(); track item.id) {
+            <div class="tile-container cp-pointer mb-2 selectable-tile"
+                [class.selected-tile]="selectedItemIds().includes(item.id!)" (click)="toggleItemSelection(item.id)">
+
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong class="d-block text-white fs-6">{{ item.name }}</strong>
+                        <span class="text-muted small">
+                            {{ 'GUI.CREATED' | translate }}: {{ item.createdAtUtc | date:'dd.MM.yyyy' }}
+                        </span>
+                    </div>
+                    <div class="text-end">
+                        <strong class="text-white fs-6">
+                            {{ item.amountToInvoice | number:'1.2-2' }} {{ item.invoiceCurrencyCode }}
+                        </strong>
+                        @if (item.tax) {
+                        <span class="d-block text-muted small">Tax: {{ item.tax }}%</span>
+                        }
+                    </div>
+                </div>
+                <div class="selection-indicator">
+                    <i class="bi" [class.bi-check-circle-fill]="selectedItemIds().includes(item.id!)"
+                        [class.bi-circle]="!selectedItemIds().includes(item.id!)"></i>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+
+    <div class="panel-side side-right panel-card">
+
+        <div class="panel-header mb-4">
+            <h5 class="text-white">{{ 'GUI.INVOICE.ADD_NEW' | translate }}</h5>
+        </div>
+        <div class="scrollable-content p-3">
+            <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+
+                <div class="form-grid-2">
+                    <app-input class="field" controlName="serviceDate" label="GUI.INVOICE.SERVICE_DATE" type="date" [required]="true"></app-input>
+                    <app-input class="field" controlName="taxRate" label="GUI.INVOICE.TAX_RATE" type="number" [required]="true"></app-input>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-row pb-3">
+                        <div class="select-wrapper field">
+                            <span class="select-label">{{ 'GUI.CURRENCY' | translate }}</span>
+                            <select class="input form-control shadow-none" formControlName="targetCurrency">
+                                <option value="PLN">PLN</option>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                                <option value="CAD">CAD</option>
+                                <option value="GBP">GBP</option>
+                                <option value="HKD">HKD</option>
+                                <option value="CNY">CNY</option>
+                                <option value="HUF">HUF</option>
+                                <option value="CHF">CHF</option>
+                                <option value="JPY">JPY</option>
+                                <option value="CZK">CZK</option>
+                                <option value="DKK">DKK</option>
+                                <option value="MXN">MXN</option>
+                                <option value="ZAR">ZAR</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <app-input class="field-full" controlName="manualExchangeRate"
+                            label="GUI.INVOICE.MANUAL_EXCHANGE_RATE" type="number"></app-input>
+                    </div>
+                    <div></div>
+                    <div>
+                        <small class="text-warning">
+                            <i class="bi bi-info-circle me-1"></i>
+                            {{ 'GUI.INVOICE.EXCHANGE_RATE_NOTE' | translate }}
+                        </small>
+                    </div>
+                </div>
+
+
+                <div class="d-flex justify-content-end gap-3 mt-4 border-top pt-3 border-secondary">
+                    <button type="button" class="btn-cancel" [routerLink]="['/dashboard/workcase', id()]"
+                        [disabled]="isSaving()">
+                        {{ 'GUI.BUTTONS.CANCEL' | translate }}
+                    </button>
+                    <button type="submit" class="btn-green"
+                        [disabled]="invoiceForm.invalid || isSaving() || selectedItemIds().length === 0">
+                        @if (isSaving()) {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        } @else {
+                        {{ 'GUI.BUTTONS.CREATE' | translate }}
+                        }
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="panel-header justify-content-between mb-3">
     <h5 class="text-white m-0">{{ 'GUI.WORK_CASES.ITEMS_TITLE' | translate }}</h5>
     <button (click)="startAdd()" [disabled]="editingItemId() !== null">
-        {{ 'GUI.BUTTONS.CREATE' | translate }}
+        {{ 'GUI.WORK_CASE_ITEM.ADD_NEW' | translate }}
     </button>
 </div>
 
@@ -83,7 +83,7 @@
     }
 
     <!-- LISTA ELEMENTÓW -->
-    <div class="items-list">
+    <div class="form-grid-2">
         @for (item of items(); track item.id) {
 
         <!-- KAFELEK: TRYB EDYCJI -->
@@ -169,14 +169,12 @@
                     @if (item.isInvoiced) {
                     <span class="badge-invoiced">{{ 'GUI.WORK_CASE_ITEM.INVOICED' | translate }}</span>
                     }
-                    <button type="button" class="icon-edit-button" (click)="startEdit(item)" [disabled]="editingItemId() !== null || item.isInvoiced">
-                        
-                    </button>
+                    <button type="button" class="icon-edit-button" (click)="startEdit(item)" [disabled]="editingItemId() !== null || item.isInvoiced"></button>
                 </div>
             </div>
 
             <!-- SEKCJA FINANSOWA (SPRZEDAŻ I SZACOWANY KOSZT) -->
-            <div class="form-grid mb-3">
+            <div class="form-grid-2 mb-3">
                 <div>
                     <span class="d-block text-muted small">{{ 'GUI.WORK_CASE_ITEM.SALES' | translate }}</span>
                     <span class="text-white fw-semibold">
@@ -197,7 +195,6 @@
                 <span class="d-block text-muted small mb-2">{{ 'GUI.WORK_CASE_ITEM.ACTUAL_COST' | translate }}</span>
 
                 @if (item.cost) {
-                <!-- STAN: KOSZT ISTNIEJE -->
                 <div
                     class="d-flex justify-content-between align-items-center p-2 rounded bg-dark border border-secondary">
                     <div class="cost-info">
@@ -207,8 +204,10 @@
                         <div class="text-muted small">
                             <span>{{ item.cost.serviceContractorName || item.cost.serviceContractorName || '-' }}</span>
                             @if (item.cost.serviceDate) {
-                            <span class="mx-1">•</span>
-                            <span>{{ item.cost.serviceDate | date:'dd.MM.yyyy' }}</span>
+                                <div class="form-grid-2">
+                                    <span>{{ item.cost.serviceDate| date:'dd.MM.yyyy' }}</span>
+                                    <span>{{"GUI.COSTS.TAX" | translate}} {{ item.cost.tax }}</span>
+                                </div>
                             }
                         </div>
                     </div>
@@ -217,7 +216,6 @@
                     </button>
                 </div>
                 } @else {
-                <!-- STAN: BRAK KOSZTU -->
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-muted small fst-italic">{{ 'GUI.WORK_CASE_ITEM.NO_ACTUAL_COST' | translate
                         }}</span>

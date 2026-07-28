@@ -15,5 +15,6 @@
         public string ClientName { get; set; } = string.Empty;
         public bool IsAbandoned { get; set; }
         public ClientResponse? ClientResponse { get; set; }
+        public List<InvoiceResponse> InvoiceResponseList { get; set; } = [];
     }
 }

@@ -45,7 +45,20 @@ namespace Application.Features.WorkCases.Queries
                         Credit = x.Client.Credit,
                         Currency = x.Client.CurrencyCode,
                         IsActive = x.Client.IsActive
-                    }
+                    },
+                    InvoiceResponseList = x.Invoices.Select(invoice => new InvoiceResponse
+                    {
+                        Id = invoice.Id.Value,
+                        InvoiceNumber = invoice.InvoiceNumber,
+                        Amount = invoice.Amount,
+                        Currency = invoice.CurrencyCode,
+                        IssueDateUtc = invoice.IssueDateUtc,
+                        ServiceDateUtc = invoice.ServiceDateUtc,
+                        Tax = invoice.Tax,
+                        IsAbandoned = invoice.IsAbandoned,
+                        WorkCaseId = invoice.WorkCase.Id.Value,
+                        ClientId = invoice.Client.Id.Value
+                    }).ToList()
                 })
                 .FirstOrDefaultAsync(ct);
 

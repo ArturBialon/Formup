@@ -78,7 +78,7 @@ export class WorkCaseEditComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.notation.success('GUI.WORK_CASES.EDIT_SUCCESS');
+          this.notation.success('GUI.EDIT_SUCCESS');
           this.router.navigate(['/dashboard/workcase', this.id()]);
         },
         error: (err) => this.notation.apiError(err),

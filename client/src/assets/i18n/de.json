@@ -21,6 +21,23 @@
         "SEARCH_PLACEHOLDER": "Suchphrase...",
         "PAGE_SIZE_PLACEHOLDER": "Seitengröße",
         "CURRENCY": "Währung",
+        "EDIT_SUCCESS": "Änderungen erfolgreich gespeichert",
+        "INVOICE": {
+            "ADD_NEW": "Neue Rechnung hinzufügen",
+            "SELECT_ITEMS": "Positionen auswählen",
+            "NO_AVAILABLE_ITEMS": "Keine verfügbaren Positionen",
+            "ISSUE_DATE": "Ausstellungsdatum",
+            "SERVICE_DATE": "Leistungsdatum",
+            "TAX_RATE": "Steuersatz (%)",
+            "MANUAL_EXCHANGE_RATE": "Manueller Wechselkurs",
+            "EXCHANGE_RATE_NOTE": "Leer lassen, um den offiziellen Wechselkurs zu verwenden.",
+            "ABANDON": "Rechnung verwerfen",
+            "ABANDON_QUESTION": "Sind Sie sicher, dass Sie diese Rechnung verwerfen möchten?",
+            "ABANDON_SUCCESS": "Rechnung wurde erfolgreich verworfen.",
+            "CREATE_SUCCESS": "Rechnung erfolgreich erstellt.",
+            "UPDATE_SUCCESS": "Rechnung erfolgreich aktualisiert.",
+            "NO_ITEMS_SELECTED": "Keine Positionen ausgewählt."
+        },
         "COSTS": {
             "CREATE_TITLE": "Neue Kosten hinzufügen",
             "EDIT_TITLE": "Kosten bearbeiten",

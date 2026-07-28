@@ -21,6 +21,23 @@
     "SEARCH_PLACEHOLDER": "Search phrase...",
     "PAGE_SIZE_PLACEHOLDER": "Page size",
     "CURRENCY": "Currency",
+    "EDIT_SUCCESS": "Changes saved successfully",
+    "INVOICE": {
+      "ADD_NEW": "Add New Invoice",
+      "SELECT_ITEMS": "Select Items",
+      "NO_AVAILABLE_ITEMS": "No available items",
+      "ISSUE_DATE": "Issue Date",
+      "SERVICE_DATE": "Service Date",
+      "TAX_RATE": "Tax Rate (%)",
+      "MANUAL_EXCHANGE_RATE": "Manual Exchange Rate",
+      "EXCHANGE_RATE_NOTE": "Leave empty to fetch official central bank exchange rate.",
+      "ABANDON": "Abandon Invoice",
+      "ABANDON_QUESTION": "Are you sure you want to abandon this invoice?",
+      "ABANDON_SUCCESS": "Invoice successfully abandoned.",
+      "CREATE_SUCCESS": "Invoice successfully created.",
+      "UPDATE_SUCCESS": "Invoice successfully updated.",
+      "NO_ITEMS_SELECTED": "No items selected."
+    },
     "COSTS": {
       "CREATE_TITLE": "Add new cost",
       "EDIT_TITLE": "Edit cost",

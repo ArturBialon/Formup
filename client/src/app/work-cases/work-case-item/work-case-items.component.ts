@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Router, ActivatedRoute } from '@angular/router'; // <-- 1. Import routera i route
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { NotificationService } from '../../_services/notification.service';
 import {

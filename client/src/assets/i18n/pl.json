@@ -21,6 +21,23 @@
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
     "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
     "CURRENCY": "Waluta",
+    "EDIT_SUCCESS": "Pomyślnie zapisano zmiany",
+    "INVOICE": {
+      "ADD_NEW": "Dodaj nową fakturę",
+      "SELECT_ITEMS": "Wybierz pozycje",
+      "NO_AVAILABLE_ITEMS": "Brak dostępnych pozycji",
+      "ISSUE_DATE": "Data wystawienia",
+      "SERVICE_DATE": "Data wykonania usługi",
+      "TAX_RATE": "Stawka VAT (%)",
+      "MANUAL_EXCHANGE_RATE": "Ręczny kurs waluty",
+      "EXCHANGE_RATE_NOTE": "Pozostaw puste, aby pobrać oficjalny kurs NBP/ECB.",
+      "ABANDON": "Porzuć fakturę",
+      "ABANDON_QUESTION": "Czy na pewno chcesz porzucić tę fakturę?",
+      "ABANDON_SUCCESS": "Faktura została pomyślnie porzucona.",
+      "CREATE_SUCCESS": "Faktura została pomyślnie utworzona.",
+      "UPDATE_SUCCESS": "Faktura została pomyślnie zaktualizowana.",
+      "NO_ITEMS_SELECTED": "Nie wybrano żadnych pozycji."
+    },
     "COSTS": {
       "CREATE_TITLE": "Dodaj nowy koszt",
       "EDIT_TITLE": "Edycja kosztu",

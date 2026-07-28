@@ -1,0 +1,55 @@
+:host {
+  --left-panel-width: 45%;
+
+  height: 100%;
+  display: block;
+}
+
+.selectable-tile {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease-in-out;
+  padding: 1rem 2.5rem 1rem 1rem;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .selection-indicator {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    color: #6c757d;
+    transition: color 0.2s ease;
+  }
+}
+
+.selected-tile {
+  background-color: rgba(25, 135, 84, 0.15) !important;
+  border-color: #198754 !important;
+  
+  .selection-indicator {
+    color: #198754;
+  }
+}
+
+.custom-checkbox {
+  .form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.5);
+    
+    &:checked {
+      background-color: #198754;
+      border-color: #198754;
+    }
+    &:focus {
+      box-shadow: none;
+      border-color: #198754;
+    }
+  }
+}

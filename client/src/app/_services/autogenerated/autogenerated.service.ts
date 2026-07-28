@@ -2775,6 +2775,7 @@ export interface WorkCaseDetailsResponse {
     clientName?: string;
     isAbandoned?:boolean | null;
     clientResponse?: ClientResponse | null;
+    invoiceResponseList?: InvoiceResponse[];
 }
 
 export interface ClientResponse {
