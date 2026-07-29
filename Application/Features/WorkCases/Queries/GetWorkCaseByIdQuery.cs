@@ -46,7 +46,9 @@ namespace Application.Features.WorkCases.Queries
                         Currency = x.Client.CurrencyCode,
                         IsActive = x.Client.IsActive
                     },
-                    InvoiceResponseList = x.Invoices.Select(invoice => new InvoiceResponse
+                    InvoiceResponseList = x.Invoices
+                    .Where(x => !x.IsAbandoned)
+                    .Select(invoice => new InvoiceResponse
                     {
                         Id = invoice.Id.Value,
                         InvoiceNumber = invoice.InvoiceNumber,

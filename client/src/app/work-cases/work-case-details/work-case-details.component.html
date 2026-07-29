@@ -53,8 +53,8 @@
                   <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</span>
                   <strong class="text-white fs-5">{{ case.amount | number:'1.2-2' }} {{ case.currency }}</strong>
                   @if (case.currency !== "PLN") {
-                    <span class="d-block text-muted small mt-2">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
-                    <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
+                  <span class="d-block text-muted small mt-2">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
+                  <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
                   }
                 </div>
               </div>
@@ -70,17 +70,30 @@
                 (UTC) {{ case.createdAtUtc | date:'dd.MM.yyyy HH:mm' }}
               </span>
             </div>
-            <button class="btn-green" [routerLink]="['/dashboard/createInvoice', case.id]">
-                {{ 'GUI.INVOICE.ADD_NEW' | translate }}
-            </button>
-            @if (case.invoiceResponseList!.length > 0) {
-            <div class="field-full">
+
+            @if (case.invoiceResponseList && case.invoiceResponseList.length > 0) {
+            <div class="field-full pt-2">
               <div class="tile-container">
-                  <span class="d-block text-muted small">{{ 'GUI.INVOICES' | translate }}</span>
-                  @for (invoice of case.invoiceResponseList; track $index) {
-                    <strong [routerLink]="['/dashboard/editInvoice', invoice.id]" class="text-white fs-5">{{ invoice.invoiceNumber }} - {{invoice.amount}}{{invoice.currency}}</strong>
+                <span class="d-block text-muted small mb-2">{{ 'GUI.INVOICES' | translate }}</span>
+                <button class="btn-green" [routerLink]="['/dashboard/createInvoice', case.id]">
+                  {{ 'GUI.INVOICE.ADD_NEW' | translate }}
+                </button>
+                <div class="invoices-list">
+                  @for (invoice of case.invoiceResponseList; track invoice.id) {
+                  <button type="button" class="invoice-item-btn" [routerLink]="['/dashboard/editInvoice', invoice.id]">
+
+                    <div class="invoice-info">
+                      <span class="invoice-number">{{ invoice.invoiceNumber }}</span>
+                      <span class="invoice-amount">{{ invoice.amount }} {{ invoice.currency }}</span>
+                    </div>
+
+                    <div class="invoice-action">
+                      <i class="bi bi-chevron-right action-icon"></i>
+                    </div>
+                  </button>
                   }
                 </div>
+              </div>
             </div>
             }
 
