@@ -75,6 +75,7 @@
       "COST_NO_NAME": "Koszt bez nazwy"
     },
     "WORK_CASES": {
+      "COMPLETE_CASE": "Zwolnij limit i zakończ",
       "ITEMS_TITLE": "Pozycje sprzedażowo-kosztowe",
       "TITLE": "Teczki zleceń",
       "ADD_NEW_BUTTON": "Utwórz nową teczkę",

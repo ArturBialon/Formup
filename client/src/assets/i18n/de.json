@@ -75,6 +75,7 @@
             "COST_NO_NAME": "Unbenannte Kosten"
             },
         "WORK_CASES": {
+            "COMPLETE_CASE": "Freigabe und Fertigstellung",
             "ITEMS_TITLE": "Verkaufs- und Kostenpositionen",
             "TITLE": "Transportakten",
             "ADD_NEW_BUTTON": "Neue Akte erstellen",

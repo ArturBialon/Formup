@@ -49,13 +49,18 @@
                 </div>
               </div>
               <div class="pb-2">
-                <div class="tile-container">
-                  <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</span>
-                  <strong class="text-white fs-5">{{ case.amount | number:'1.2-2' }} {{ case.currency }}</strong>
-                  @if (case.currency !== "PLN") {
-                  <span class="d-block text-muted small mt-2">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
-                  <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
-                  }
+                <div class="tile-container form-grid-2">
+                  <div>
+                    <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</span>
+                    <strong class="text-white fs-5">{{ case.amount | number:'1.2-2' }} {{ case.currency }}</strong>
+                    @if (case.currency !== "PLN") {
+                    <span class="d-block text-muted small mt-2">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
+                    <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
+                    }
+                  </div>
+                  <div style="align-content: center;">
+                    <button class="btn-yellow-wide" (click)="completeCase()">{{ 'GUI.WORK_CASES.COMPLETE_CASE' | translate }}</button>
+                  </div>
                 </div>
               </div>
             </div>

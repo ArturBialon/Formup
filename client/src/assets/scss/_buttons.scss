@@ -48,6 +48,20 @@ button {
     }
 }
 
+.btn-yellow-wide {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid black;
+    color: black;
+    background-color: var(--color-yellow);
+
+    &:hover {
+        background-color: var(--color-yellow-hover);
+    }
+}
+
 .btn-green {
     min-width: 8rem;
     padding: 10px;

@@ -75,6 +75,7 @@
       "COST_NO_NAME": "Unnamed cost"
     },
     "WORK_CASES": {
+      "COMPLETE_CASE": "Release and complete",
       "ITEMS_TITLE": "Sales and cost items",
       "TITLE": "Work Cases",
       "ADD_NEW_BUTTON": "Create New Work Case",

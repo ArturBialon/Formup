@@ -1839,7 +1839,8 @@ export interface IWorkCaseService {
     getWorkCaseById(id: string): Observable<WorkCaseDetailsResponse>;
     addWorkCase(command: CreateWorkCaseCommand | undefined): Observable<void>;
     editWorkCase(command: UpdateWorkCaseCommand | undefined): Observable<void>;
-    abandonWorkCase(id: string): Observable<void>;
+    abandonWorkCase(workCaseId: string): Observable<void>;
+    completeWorkCase(workCaseId: string): Observable<void>;
     getItemsForWorkCase(workCaseId: string): Observable<WorkCaseItemResponse[]>;
     addItemToWorkCase(command: AddWorkCaseItemCommand | undefined): Observable<void>;
     updateItemForWorkCase(command: UpdateWorkCaseItemCommand | undefined): Observable<void>;
@@ -2119,12 +2120,12 @@ export class WorkCaseService implements IWorkCaseService {
         return _observableOf(null as any);
     }
 
-    abandonWorkCase(id: string): Observable<void> {
+    abandonWorkCase(workCaseId: string): Observable<void> {
         let url_ = this.baseUrl + "/api/WorkCase/AbandonWorkCase?";
-        if (id === undefined || id === null)
-            throw new globalThis.Error("The parameter 'id' must be defined and cannot be null.");
+        if (workCaseId === undefined || workCaseId === null)
+            throw new globalThis.Error("The parameter 'workCaseId' must be defined and cannot be null.");
         else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
+            url_ += "workCaseId=" + encodeURIComponent("" + workCaseId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2149,6 +2150,66 @@ export class WorkCaseService implements IWorkCaseService {
     }
 
     protected processAbandonWorkCase(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    completeWorkCase(workCaseId: string): Observable<void> {
+        let url_ = this.baseUrl + "/api/WorkCase/CompleteWorkCase?";
+        if (workCaseId === undefined || workCaseId === null)
+            throw new globalThis.Error("The parameter 'workCaseId' must be defined and cannot be null.");
+        else
+            url_ += "workCaseId=" + encodeURIComponent("" + workCaseId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompleteWorkCase(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompleteWorkCase(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCompleteWorkCase(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
