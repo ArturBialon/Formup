@@ -32,7 +32,7 @@ namespace Application.Features.WorkCases.Commands
 
             var requestedAmountInPln = await _currencyConverterService.ConvertToTargetCurrency(request.Amount, request.CurrencyCode, "PLN", DateTime.UtcNow, ct);
             var totalAmountTakenInPln = await _context.WorkCases
-                            .Where(x => x.Client.Id == client.Id && !x.IsAbandoned)
+                            .Where(x => x.Client.Id.Equals(client.Id) && !x.IsAbandoned)
                             .Select(wc => new
                             {
                                 wc.AmountInPln,

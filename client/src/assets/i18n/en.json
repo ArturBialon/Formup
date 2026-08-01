@@ -144,7 +144,13 @@
       "SELECT_PROMPT": "Select a contractor from the list on the left to edit, or add a new one.",
       "CREATE_SUCCESS": "Contractor has been successfully added!",
       "UPDATE_SUCCESS": "Contractor details have been successfully updated!",
-      "TRADE_LIMIT": "Credit limit"
+      "TRADE_LIMIT": "Credit limit",
+      "BANK_ACCOUNTS": "Bank accounts",
+      "ADD_BANK_ACCOUNT": "Add bank account",
+      "BANK_ACCOUNT": "Bank account",
+      "MAKE_MAIN": "Set as main",
+      "BANK_NAME": "Bank name",
+      "IBAN": "Account number (IBAN)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Save Changes",
@@ -264,6 +270,7 @@
   "COST": {
     "WORK_CASE_ITEM_NOT_FOUND": "The selected work case item was not found.",
     "CONTRACTOR_NOT_FOUND": "The selected service contractor was not found.",
+    "CONTRACTOR_IS_INACTIVE": "The selected service contractor is inactive.",
     "COST_ALREADY_EXISTS": "This cost document has already been registered in the system.",
     "WORK_CASE_ITEM_HAS_COST": "A cost has already been assigned to this folder item.",
     "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Cost amount differs with prediction",

@@ -23,6 +23,7 @@ namespace Application.Features.Costs.Queries
 
         public async Task<AppResult<PagedResult<CostDetailResponse>>> Handle(GetCostsQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.Costs.AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
@@ -53,8 +54,8 @@ namespace Application.Features.Costs.Queries
 
             var items = await query
                 .OrderByDescending(x => x.ServiceDate)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(c => new CostDetailResponse
                 {
                     Id = c.Id.Value,
@@ -87,7 +88,7 @@ namespace Application.Features.Costs.Queries
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<CostDetailResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<CostDetailResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
             return AppResult<PagedResult<CostDetailResponse>>.Success(pagedResult);
         }

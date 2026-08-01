@@ -19,8 +19,8 @@ namespace Application.Features.WorkCaseItems.Commands
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
 
             if (workCaseItem == null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.NOT_FOUND");
-            if (workCaseItem.IsInvoiced) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_IS_INVOICED");
-            if (workCaseItem.HasCost) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_WITH_COST");
+            if (workCaseItem.Invoice != null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_IS_INVOICED");
+            if (workCaseItem.Cost != null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.CANNOT_DELETE_WITH_COST");
 
 
             _context.WorkCaseItems.Remove(workCaseItem);

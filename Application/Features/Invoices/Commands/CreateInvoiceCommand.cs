@@ -26,21 +26,24 @@ namespace Application.Features.Invoices.Commands
 
         public async Task<AppResult<InvoiceResponse>> Handle(CreateInvoiceCommand request, CancellationToken ct)
         {
-            var workCase = await _context.WorkCases.Include(x => x.Client).Include(x => x.Forwarder)
+            var workCase = await _context.WorkCases
+                .Include(x => x.Client)
+                .Include(x => x.Forwarder)
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseId), ct);
 
             if (workCase == null) return AppResult<InvoiceResponse>.Failure("WORK_CASE.NOT_FOUND");
             if (workCase.Client == null) return AppResult<InvoiceResponse>.Failure("WORK_CASE.CLIENT_ID_REQUIRED");
             if (workCase.Forwarder == null) return AppResult<InvoiceResponse>.Failure("WORK_CASE.FORWARDER_ID_REQUIRED");
 
-            var itemsToInvoice = await _context.WorkCaseItems.Include(x => x.Invoice)
+            var itemsToInvoice = await _context.WorkCaseItems
+                .Include(x => x.Invoice)
                 .Where(x => x.WorkCase.Id.Equals(request.WorkCaseId) && request.WorkCaseItemIds.Contains(x.Id))
                 .ToListAsync(ct);
 
             if (itemsToInvoice.Count != request.WorkCaseItemIds.Count)
                 return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_NOT_FOUND");
 
-            if (itemsToInvoice.Any(x => x.IsInvoiced))
+            if (itemsToInvoice.Any(x => x.Invoice != null))
                 return AppResult<InvoiceResponse>.Failure("INVOICE.SOME_ITEMS_ALREADY_INVOICED");
 
             var conversionItems = itemsToInvoice

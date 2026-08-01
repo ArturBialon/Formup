@@ -18,6 +18,7 @@ namespace Domain.Models
         public required string Relation { get; set; }
         public DateTime CreatedAtUtc { get; init; } = DateTime.UtcNow;
         public bool IsAbandoned { get; set; } = false;
+        public bool IsCompleted { get; set; } = false;
 
         public virtual User Forwarder { get; set; }
         public virtual Client Client { get; set; }

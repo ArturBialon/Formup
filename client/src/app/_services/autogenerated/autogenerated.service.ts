@@ -1226,8 +1226,8 @@ export class InvoiceService implements IInvoiceService {
 export interface IServiceContractorService {
     getServiceContractors(pageNumber: number | undefined, pageSize: number | undefined, name: string | null | undefined, tax: string | null | undefined, city: string | null | undefined, country: string | null | undefined, isActive: boolean | null | undefined): Observable<PagedResultOfServiceContractorResponse>;
     getServiceContractorById(id: string): Observable<ServiceContractorResponse>;
-    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<void>;
-    editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<void>;
+    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<string>;
+    editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<string>;
     deleteServiceContractor(id: string): Observable<void>;
 }
 
@@ -1384,7 +1384,7 @@ export class ServiceContractorService implements IServiceContractorService {
         return _observableOf(null as any);
     }
 
-    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<void> {
+    addServiceContractor(command: CreateServiceContractorCommand | undefined): Observable<string> {
         let url_ = this.baseUrl + "/api/ServiceContractor/AddServiceContractor";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1396,6 +1396,7 @@ export class ServiceContractorService implements IServiceContractorService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -1406,14 +1407,14 @@ export class ServiceContractorService implements IServiceContractorService {
                 try {
                     return this.processAddServiceContractor(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processAddServiceContractor(response: HttpResponseBase): Observable<void> {
+    protected processAddServiceContractor(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1422,7 +1423,9 @@ export class ServiceContractorService implements IServiceContractorService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
+            return _observableOf(result200);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1444,7 +1447,7 @@ export class ServiceContractorService implements IServiceContractorService {
         return _observableOf(null as any);
     }
 
-    editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<void> {
+    editServiceContractor(command: UpdateServiceContractorCommand | undefined): Observable<string> {
         let url_ = this.baseUrl + "/api/ServiceContractor/EditServiceContractor";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1456,6 +1459,7 @@ export class ServiceContractorService implements IServiceContractorService {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -1466,14 +1470,14 @@ export class ServiceContractorService implements IServiceContractorService {
                 try {
                     return this.processEditServiceContractor(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processEditServiceContractor(response: HttpResponseBase): Observable<void> {
+    protected processEditServiceContractor(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1482,7 +1486,9 @@ export class ServiceContractorService implements IServiceContractorService {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
+            return _observableOf(result200);
             }));
         } else if (status === 400) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2615,6 +2621,15 @@ export interface ServiceContractorResponse {
     email?: string | null;
     phoneNumber?: string | null;
     isActive?:boolean | null;
+    bankAccounts?: BankAccountResponse[];
+}
+
+export interface BankAccountResponse {
+    id?: string;
+    bankName?: string;
+    iBAN?: string;
+    currencyCode?: string;
+    isMain?:boolean | null;
 }
 
 export interface CreateCostCommand {
@@ -2729,6 +2744,15 @@ export interface CreateServiceContractorCommand {
     email?: string | null;
     phoneNumber?: string | null;
     isActive?:boolean | null;
+    bankAccounts?: BankAccountRequest[] | null;
+}
+
+export interface BankAccountRequest {
+    id?: string | null;
+    bankName?: string;
+    iBAN?: string;
+    currencyCode?: string;
+    isMain?:boolean | null;
 }
 
 export interface UpdateServiceContractorCommand {
@@ -2744,6 +2768,7 @@ export interface UpdateServiceContractorCommand {
     email?: string | null;
     phoneNumber?: string | null;
     isActive?:boolean | null;
+    bankAccounts?: BankAccountRequest[] | null;
 }
 
 export interface RegisterUserCommand {

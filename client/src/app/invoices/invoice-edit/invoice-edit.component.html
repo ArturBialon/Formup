@@ -26,7 +26,7 @@
                     <div>
                         <strong class="d-block text-white fs-6">{{ item.name }}</strong>
                         <span class="text-muted small">
-                            {{ 'GUI.CREATED' | translate }}: {{ item.createdAtUtc | date:'dd.MM.yyyy' }}
+                            {{ 'GUI.WORK_CASES.CREATED_AT' | translate }}: {{ item.createdAtUtc | date:'dd.MM.yyyy' }}
                         </span>
                     </div>
                     <div class="text-end">
@@ -34,7 +34,7 @@
                             {{ item.amountToInvoice | number:'1.2-2' }} {{ item.invoiceCurrencyCode }}
                         </strong>
                         @if (item.tax) {
-                        <span class="d-block text-muted small">Tax: {{ item.tax }}%</span>
+                        <span class="d-block text-muted small">{{ 'GUI.COSTS.TAX' | translate }} {{ item.tax }}</span>
                         }
                     </div>
                 </div>

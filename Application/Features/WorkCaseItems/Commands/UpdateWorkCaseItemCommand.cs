@@ -30,13 +30,11 @@ namespace Application.Features.WorkCaseItems.Commands
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.WorkCaseItemId), ct);
 
             if (workCaseItem == null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.NOT_FOUND");
-            if (workCaseItem.IsInvoiced) return AppResult<Unit>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
-
-            var workCase = workCaseItem.WorkCase;
-            if (workCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
+            if (workCaseItem.Invoice != null) return AppResult<Unit>.Failure("WORK_CASE_ITEM.ALREADY_INVOICED");
+            if (workCaseItem.WorkCase == null) return AppResult<Unit>.Failure("WORK_CASE.NOT_FOUND");
 
             var otherWorkCaseItems = await _context.WorkCaseItems
-                .Where(x => x.WorkCase.Id.Equals(workCase.Id) && !x.Id.Equals(request.WorkCaseItemId))
+                .Where(x => x.WorkCase.Id.Equals(workCaseItem.WorkCase.Id) && !x.Id.Equals(request.WorkCaseItemId))
                 .ToListAsync(ct);
 
             var currencyConversionInputs = otherWorkCaseItems
@@ -51,7 +49,7 @@ namespace Application.Features.WorkCaseItems.Commands
             if (requestedAmountInPln.IsFailure)
                 return AppResult<Unit>.Failure(requestedAmountInPln.ErrorCode, requestedAmountInPln.ErrorData);
 
-            var availableBudgetInPln = workCase.AmountInPln - otherItemsUsageResult.Value!.TotalTargetAmount;
+            var availableBudgetInPln = workCaseItem.WorkCase.AmountInPln - otherItemsUsageResult.Value!.TotalTargetAmount;
 
             if (requestedAmountInPln.Value > availableBudgetInPln)
             {

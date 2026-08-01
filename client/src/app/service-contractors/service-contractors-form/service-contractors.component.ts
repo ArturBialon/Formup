@@ -1,7 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
-import { catchError, of, tap } from 'rxjs';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, FormsModule, Validators, AbstractControl } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { 
@@ -26,29 +25,25 @@ export class ServiceContractorsComponent {
   private apiClient = inject(ServiceContractorService);
   private notation = inject(NotificationService);
 
-  public contractors = signal<ServiceContractorResponse[]>([]);
+  @ViewChild(ServiceContractorListSelectorComponent) 
+  public listSelector!: ServiceContractorListSelectorComponent;
+
   public selectedContractor = signal<ServiceContractorResponse | null>(null);
-  
   public isCreateMode = signal<boolean>(false);
-  public isLoading = signal<boolean>(false);
   public isSaving = signal<boolean>(false);
   
-  public pageNumber = signal<number>(1);
-  public totalPagesNumber = signal<number>(1);
-  public pageSize = signal<number>(100);
-
-  public filters = {
-    name: '',
-    tax: '',
-    city: '',
-    country: '',
-    isActive: undefined as boolean | undefined
-  };
-
   public contractorForm: FormGroup;
 
+  get bankAccountsFormArray(): FormArray {
+    return this.contractorForm.get('bankAccounts') as FormArray;
+  }
+
   constructor() {
-    this.contractorForm = this.fb.group({
+    this.contractorForm = this.buildForm();
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
       id: [{ value: '', disabled: true }],
       name: ['', Validators.required],
       tax: ['', Validators.required],
@@ -58,59 +53,18 @@ export class ServiceContractorsComponent {
       street: ['', Validators.required],
       houseNumber: ['', Validators.required],
       apartmentNumber: [null],
-      email: ['', Validators.email],
+      email: ['', [Validators.email]],
       phoneNumber: [''],
-      isActive: [true]
+      isActive: [true],
+      bankAccounts: this.fb.array([])
     });
-
-    this.loadContractors();
-  }
-
-  public loadContractors() {
-    this.isLoading.set(true);
-    
-    const name = this.filters.name.trim() || undefined;
-    const tax = this.filters.tax.trim() || undefined;
-    const city = this.filters.city.trim() || undefined;
-    const country = this.filters.country.trim() || undefined;
-    const isActive = this.filters.isActive ? true : undefined;
-
-    this.apiClient.getServiceContractors(this.pageNumber(), this.pageSize(), name, tax, city, country, isActive)
-      .pipe(
-        tap(res => {
-          this.contractors.set(res.items || []);
-          this.isLoading.set(false);
-          this.totalPagesNumber.set(res.totalCount ? Math.ceil(res.totalCount / this.pageSize()) : 1);
-        }),
-        catchError((error) => {
-          this.notation.apiError(error);
-          this.isLoading.set(false);
-          return of({ items: [], totalCount: 0 });
-        })
-      ).subscribe();
-  }
-
-  public onSearch() {
-    this.pageNumber.set(1);
-    this.loadContractors();
-  }
-
-  public changePage(newPage: number) {
-    if (newPage < 1) return;
-    this.pageNumber.set(newPage);
-    this.loadContractors();
-  }
-
-  public onPageSizeChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    this.pageSize.set(Number(selectElement.value));
-    this.pageNumber.set(1);
   }
 
   public selectContractor(contractor: ServiceContractorResponse) {
     this.isCreateMode.set(false);
     this.selectedContractor.set(contractor);
-    
+    this.clearBankAccounts();
+
     this.contractorForm.patchValue({
       id: contractor.id,
       name: contractor.name,
@@ -125,12 +79,21 @@ export class ServiceContractorsComponent {
       phoneNumber: contractor.phoneNumber,
       isActive: contractor.isActive ?? true
     });
+
+    if (contractor.bankAccounts && contractor.bankAccounts.length > 0) {
+      contractor.bankAccounts.forEach(account => {
+        this.bankAccountsFormArray.push(this.createBankAccountGroup(account));
+      });
+    }
+
+    this.contractorForm.markAsPristine();
+    this.contractorForm.markAsUntouched();
   }
 
   public initCreateContractor() {
     this.selectedContractor.set(null);
     this.isCreateMode.set(true);
-    
+    this.clearBankAccounts();
     this.contractorForm.reset({
       id: '',
       name: '',
@@ -145,24 +108,72 @@ export class ServiceContractorsComponent {
       phoneNumber: '',
       isActive: true
     });
+
+    this.addBankAccount();
+
+    this.contractorForm.markAsPristine();
+    this.contractorForm.markAsUntouched();
   }
 
-  public toggleTripleState() {
-    if (this.filters.isActive === undefined) {
-      this.filters.isActive = true;
-    } else if (this.filters.isActive === true) {
-      this.filters.isActive = false;
-    } else {
-      this.filters.isActive = undefined;
+  // --- LOGIKA KONT BANKOWYCH ---
+
+  public asFormGroup(control: AbstractControl): FormGroup {
+    return control as FormGroup;
+  }
+
+  private clearBankAccounts() {
+    while (this.bankAccountsFormArray.length !== 0) {
+      this.bankAccountsFormArray.removeAt(0);
     }
   }
 
+  private createBankAccountGroup(account?: any): FormGroup {
+    return this.fb.group({
+      id: [account?.id || null],
+      bankName: [account?.bankName || '', Validators.required],
+      iban: [account?.iban || '', Validators.required],
+      currencyCode: [account?.currencyCode || 'PLN', Validators.required],
+      isMain: [account?.isMain || false]
+    });
+  }
+
+  public addBankAccount() {
+    const isFirst = this.bankAccountsFormArray.length === 0;
+    this.bankAccountsFormArray.push(this.createBankAccountGroup({ isMain: isFirst }));
+  }
+
+  public removeBankAccount(index: number) {
+    const isMain = this.bankAccountsFormArray.at(index).get('isMain')?.value;
+    this.bankAccountsFormArray.removeAt(index);
+    
+    if (isMain && this.bankAccountsFormArray.length > 0) {
+      this.setMainAccount(0);
+    }
+  }
+
+  public setMainAccount(index: number) {
+    this.bankAccountsFormArray.controls.forEach((control, i) => {
+      control.get('isMain')?.setValue(i === index);
+    });
+  }
+
   public onSubmit() {
-    if (this.contractorForm.invalid) return;
+    if (this.contractorForm.invalid) {
+      this.contractorForm.markAllAsTouched();
+      return;
+    }
     if (!this.isCreateMode() && !this.selectedContractor()) return;
 
     this.isSaving.set(true);
     const formValues = this.contractorForm.getRawValue();
+
+    const bankAccountsPayload = formValues.bankAccounts.map((a: any) => ({
+      id: a.id ? a.id : null,
+      bankName: a.bankName,
+      iban: a.iban,
+      currencyCode: a.currencyCode,
+      isMain: a.isMain
+    }));
 
     if (this.isCreateMode()) {
       const command: CreateServiceContractorCommand = {
@@ -176,7 +187,8 @@ export class ServiceContractorsComponent {
         apartmentNumber: formValues.apartmentNumber || null,
         email: formValues.email || null,
         phoneNumber: formValues.phoneNumber || null,
-        isActive: formValues.isActive
+        isActive: formValues.isActive,
+        bankAccounts: bankAccountsPayload
       };
 
       this.apiClient.addServiceContractor(command).subscribe({
@@ -184,7 +196,7 @@ export class ServiceContractorsComponent {
           this.notation.success('GUI.CONTRACTORS.CREATE_SUCCESS');
           this.isSaving.set(false);
           this.isCreateMode.set(false);
-          this.loadContractors();
+          this.listSelector.loadContractors(); 
         },
         error: (err) => {
           this.notation.apiError(err);
@@ -205,14 +217,15 @@ export class ServiceContractorsComponent {
         apartmentNumber: formValues.apartmentNumber || null,
         email: formValues.email || null,
         phoneNumber: formValues.phoneNumber || null,
-        isActive: formValues.isActive
+        isActive: formValues.isActive,
+        bankAccounts: bankAccountsPayload
       };
 
       this.apiClient.editServiceContractor(command).subscribe({
         next: () => {
           this.notation.success('GUI.CONTRACTORS.UPDATE_SUCCESS');
           this.isSaving.set(false);
-          this.loadContractors();
+          this.listSelector.loadContractors(); 
         },
         error: (err) => {
           this.notation.apiError(err);

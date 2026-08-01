@@ -144,7 +144,13 @@
             "SELECT_PROMPT": "Wählen Sie einen Vertragspartner aus der Liste links, um ihn zu bearbeiten, oder fügen Sie einen neuen hinzu.",
             "CREATE_SUCCESS": "Vertragspartner wurde erfolgreich hinzugefügt!",
             "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
-            "TRADE_LIMIT": "Kreditlimit"
+            "TRADE_LIMIT": "Kreditlimit",
+            "BANK_ACCOUNTS": "Bankverbindungen",
+            "ADD_BANK_ACCOUNT": "Bankverbindung hinzufügen",
+            "BANK_ACCOUNT": "Bankverbindung",
+            "MAKE_MAIN": "Als Hauptkonto festlegen",
+            "BANK_NAME": "Name der Bank",
+            "IBAN": "Kontonummer (IBAN)"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",
@@ -264,6 +270,7 @@
     "COST": {
         "WORK_CASE_ITEM_NOT_FOUND": "Die ausgewählte Aktenposition wurde nicht gefunden.",
         "CONTRACTOR_NOT_FOUND": "Der ausgewählte Subunternehmer wurde nicht gefunden.",
+        "CONTRACTOR_IS_INACTIVE": "Der ausgewählte Subunternehmer ist inaktiv.",
         "COST_ALREADY_EXISTS": "Dieses Kostendokument wurde bereits im System registriert.",
         "WORK_CASE_ITEM_HAS_COST": "Diesem Ordnereintrag wurden bereits Kosten zugewiesen.",
         "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Die Kostenhöhe weicht von der Prognose ab.",

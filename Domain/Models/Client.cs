@@ -29,6 +29,7 @@ namespace Domain.Models
 
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<WorkCase> WorkCases { get; set; }
+        public virtual ICollection<BankAccount> BankAccounts { get; set; }
 
         public static bool CanAssignAmount(
             decimal requestedAmountInPln,

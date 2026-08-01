@@ -8,7 +8,6 @@ namespace Application.Features.ServiceContractors.Queries
 {
     public record GetServiceContractorByIdQuery(Guid Id) : IRequest<AppResult<ServiceContractorResponse>>;
 
-    // Modern Handler z użyciem Primary Constructor (C# 12)
     public class GetServiceContractorByIdQueryHandler(FormupContext context)
         : IRequestHandler<GetServiceContractorByIdQuery, AppResult<ServiceContractorResponse>>
     {
@@ -34,6 +33,15 @@ namespace Application.Features.ServiceContractors.Queries
                     ApartmentNumber = x.ApartmentNumber,
                     Email = x.Email,
                     PhoneNumber = x.PhoneNumber,
+                    IsActive = x.IsActive,
+                    BankAccounts = x.BankAccounts.Select(b => new BankAccountResponse
+                    {
+                        Id = b.Id,
+                        IBAN = b.IBAN,
+                        BankName = b.BankName,
+                        CurrencyCode = b.CurrencyCode,
+                        IsMain = b.IsMain
+                    }).ToList()
                 })
                 .FirstOrDefaultAsync(ct);
 

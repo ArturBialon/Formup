@@ -24,6 +24,7 @@ namespace Application.Features.Clients.Queries
 
         public async Task<AppResult<PagedResult<ClientListItemResponse>>> Handle(GetClientsQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.Clients.AsNoTracking().AsQueryable();
 
             if (request.IsActive != null)
@@ -48,8 +49,8 @@ namespace Application.Features.Clients.Queries
             var totalCount = await query.CountAsync(ct);
 
             var items = await query
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(client => new ClientListItemResponse
                 {
                     Id = client.Id.Value,
@@ -70,7 +71,7 @@ namespace Application.Features.Clients.Queries
                     IsActive = client.IsActive
                 })
                 .ToListAsync(ct);
-            var pagedResult = new PagedResult<ClientListItemResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<ClientListItemResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
             return AppResult<PagedResult<ClientListItemResponse>>.Success(pagedResult);
         }

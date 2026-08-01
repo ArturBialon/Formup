@@ -39,6 +39,8 @@ namespace Application.Features.Costs.Commands
                 return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
             if (contractor == null)
                 return AppResult<Guid>.Failure("COST.CONTRACTOR_NOT_FOUND");
+            if (!contractor.IsActive)
+                return AppResult<Guid>.Failure("COST.CONTRACTOR_IS_INACTIVE");
             if (existingCost != null)
                 return AppResult<Guid>.Failure("COST.COST_ALREADY_EXISTS");
             if (existingCostInItem != null)

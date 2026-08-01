@@ -144,7 +144,13 @@
       "SELECT_PROMPT": "Wybierz kontrahenta z listy po lewej stronie, aby go edytować, lub dodaj nowego.",
       "CREATE_SUCCESS": "Kontrahent został pomyślnie dodany!",
       "UPDATE_SUCCESS": "Dane kontrahenta zostały pomyślnie zaktualizowane!",
-      "TRADE_LIMIT": "Limit kredytowy"
+      "TRADE_LIMIT": "Limit kredytowy",
+      "BANK_ACCOUNTS": "Konta bankowe",
+      "ADD_BANK_ACCOUNT": "Dodaj konto bankowe",
+      "BANK_ACCOUNT": "Konto bankowe",
+      "MAKE_MAIN": "Ustaw jako główne",
+      "BANK_NAME": "Nazwa banku",
+      "IBAN": "Numer rachunku (IBAN)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Zapisz zmiany",
@@ -264,6 +270,7 @@
   "COST": {
     "WORK_CASE_ITEM_NOT_FOUND": "Nie znaleziono wybranej pozycji teczki.",
     "CONTRACTOR_NOT_FOUND": "Nie znaleziono wybranego podwykonawcy.",
+    "CONTRACTOR_IS_INACTIVE": "Wybrany podwykonawca jest nieaktywny",
     "COST_ALREADY_EXISTS": "Ten dokument kosztowy został już zarejestrowany w systemie.",
     "WORK_CASE_ITEM_HAS_COST": "Do tego elementu teczki został już przypisany koszt",
     "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Kwota kosztów różni się od przewidywanej",

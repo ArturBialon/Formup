@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results;
+using Application.DTOs.Request;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
@@ -17,20 +18,31 @@ namespace Application.Features.ServiceContractors.Commands
         string? ApartmentNumber,
         string? Email,
         string? PhoneNumber,
-        bool IsActive
-    ) : IRequest<AppResult<Unit>>;
+        bool IsActive,
+        List<BankAccountRequest>? BankAccounts = null
+    ) : IRequest<AppResult<Guid>>;
 
     public class CreateServiceContractorHandler(FormupContext context)
-        : IRequestHandler<CreateServiceContractorCommand, AppResult<Unit>>
+        : IRequestHandler<CreateServiceContractorCommand, AppResult<Guid>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<Unit>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
+        public async Task<AppResult<Guid>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
         {
             var taxExists = await _context.ServiceContractors.AnyAsync(x => x.Tax == request.Tax, ct);
             if (taxExists)
             {
-                return AppResult<Unit>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
+                return AppResult<Guid>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
+            }
+
+            var mainAccounts = request.BankAccounts?.Where(x => x.IsMain).Skip(1);
+
+            if (mainAccounts != null)
+            {
+                foreach (var account in mainAccounts)
+                {
+                    account.IsMain = false;
+                }
             }
 
             var contractor = new ServiceContractor
@@ -45,13 +57,20 @@ namespace Application.Features.ServiceContractors.Commands
                 ApartmentNumber = request.ApartmentNumber,
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
-                IsActive = request.IsActive
+                IsActive = request.IsActive,
+                BankAccounts = request.BankAccounts?.Select(b => new BankAccount
+                {
+                    BankName = b.BankName,
+                    IBAN = b.IBAN,
+                    CurrencyCode = b.CurrencyCode,
+                    IsMain = b.IsMain
+                }).ToList() ?? []
             };
 
             var created = _context.ServiceContractors.Add(contractor);
             await _context.SaveChangesAsync(ct);
 
-            return AppResult<Unit>.Success(Unit.Value);
+            return AppResult<Guid>.Success(created.Entity.Id);
         }
     }
 }

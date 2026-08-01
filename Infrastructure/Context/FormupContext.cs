@@ -24,6 +24,7 @@ namespace Infrastructure.Context
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<WorkCaseItem> WorkCaseItems { get; set; }
         public virtual DbSet<ServiceContractor> ServiceContractors { get; set; }
+        public virtual DbSet<BankAccount> BankAccounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

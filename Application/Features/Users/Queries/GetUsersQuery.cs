@@ -22,6 +22,7 @@ namespace Application.Features.Users.Queries
 
         public async Task<AppResult<PagedResult<UserListItemResponse>>> Handle(GetUsersQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.Users.AsNoTracking().AsQueryable();
 
             if (request.Role.HasValue)
@@ -50,8 +51,8 @@ namespace Application.Features.Users.Queries
             var items = await query
                 .OrderBy(x => x.Id)
                 .ThenBy(x => x.Name)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(user => new UserListItemResponse
                 {
                     Id = user.Id.Value,
@@ -64,7 +65,7 @@ namespace Application.Features.Users.Queries
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<UserListItemResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<UserListItemResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
 
             return AppResult<PagedResult<UserListItemResponse>>.Success(pagedResult);

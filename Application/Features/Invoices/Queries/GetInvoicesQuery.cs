@@ -28,6 +28,7 @@ namespace Application.Features.Invoices.Queries
 
         public async Task<AppResult<PagedResult<InvoiceResponse>>> Handle(GetInvoicesQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.Invoices.AsNoTracking().AsQueryable();
 
             if (request.ClientId.HasValue)
@@ -64,8 +65,8 @@ namespace Application.Features.Invoices.Queries
 
             var items = await query
                 .OrderByDescending(x => x.IssueDateUtc)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(invoice => new InvoiceResponse
                 {
                     Id = invoice.Id.Value,
@@ -82,7 +83,7 @@ namespace Application.Features.Invoices.Queries
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<InvoiceResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<InvoiceResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
             return AppResult<PagedResult<InvoiceResponse>>.Success(pagedResult);
         }

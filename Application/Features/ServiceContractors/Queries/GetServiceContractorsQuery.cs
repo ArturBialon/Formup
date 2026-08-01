@@ -23,6 +23,7 @@ namespace Application.Features.ServiceContractors.Queries
 
         public async Task<AppResult<PagedResult<ServiceContractorResponse>>> Handle(GetServiceContractorsQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.ServiceContractors.AsNoTracking();
 
             if (request.IsActive != null)
@@ -44,8 +45,8 @@ namespace Application.Features.ServiceContractors.Queries
 
             var items = await query
                 .OrderBy(x => x.Name)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(x => new ServiceContractorResponse
                 {
                     Id = x.Id,
@@ -59,11 +60,19 @@ namespace Application.Features.ServiceContractors.Queries
                     ApartmentNumber = x.ApartmentNumber,
                     Email = x.Email,
                     PhoneNumber = x.PhoneNumber,
-                    IsActive = x.IsActive
+                    IsActive = x.IsActive,
+                    BankAccounts = x.BankAccounts.Select(b => new BankAccountResponse
+                    {
+                        Id = b.Id,
+                        BankName = b.BankName,
+                        IBAN = b.IBAN,
+                        CurrencyCode = b.CurrencyCode,
+                        IsMain = b.IsMain
+                    }).ToList()
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<ServiceContractorResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<ServiceContractorResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
             return AppResult<PagedResult<ServiceContractorResponse>>.Success(pagedResult);
         }
