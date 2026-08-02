@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FormupForwarding API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FormupForwarding_API", Version = "v1" });
 });
 
 var app = builder.Build();
@@ -48,10 +48,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_v1"));
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors();
@@ -59,6 +61,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 using (var scope = app.Services.CreateScope())
 {
