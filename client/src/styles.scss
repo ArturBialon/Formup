@@ -29,6 +29,14 @@
   background-color: var(--color-alert-info-border);
 }
 
+.is-abandoned{
+  background-color: var(--color-abandoned);
+}
+
+.is-completed{
+  background-color: var(--color-completed);
+}
+
 .dark-text {
   color: var(--color-dark);
 }

@@ -10,8 +10,8 @@
     "ORDERS": "Orders",
     "SETTINGS": "Settings",
     "WORK_CASES_ELEMENT": "Work Cases",
-    "COSTS_HEADER": "Costs",
-    "INVOICES": "Invoices",
+    "COSTS_ELEMENT": "Costs",
+    "INVOICES_ELEMENT": "Invoices",
     "CONTRACTORS_ELEMENT": "Contractors",
     "CLIENTS": "Clients",
     "SELECT_CLIENT": "Select client.",
@@ -23,11 +23,24 @@
     "CURRENCY": "Currency",
     "EDIT_SUCCESS": "Changes saved successfully",
     "INVOICE": {
+      "EMPTY_LIST": "No invoices found on the list",
+      "ISSUE_DATE_FROM": "Issue date from",
+      "ISSUE_DATE_TO": "Issue date to",
+      "SERVICE_DATE_FROM": "Service date from",
+      "SERVICE_DATE_TO": "Service date to",
+      "MIN_AMOUNT": "Min amount",
+      "MAX_AMOUNT": "Max amount",
+      "STATUS_PAID": "Paid",
+      "STATUS_UNPAID": "Unpaid",
+      "PAYMENT_STATUS": "Payment Status",
+      "NUMBER": "Invoice Number",
+      "AMOUNT": "Amount",
       "ADD_NEW": "Add New Invoice",
       "SELECT_ITEMS": "Select Items",
       "NO_AVAILABLE_ITEMS": "No available items",
       "ISSUE_DATE": "Issue Date",
       "SERVICE_DATE": "Service Date",
+      "TAX": "TAX",
       "TAX_RATE": "Tax Rate (%)",
       "MANUAL_EXCHANGE_RATE": "Manual Exchange Rate",
       "EXCHANGE_RATE_NOTE": "Leave empty to fetch official central bank exchange rate.",
@@ -75,6 +88,8 @@
       "COST_NO_NAME": "Unnamed cost"
     },
     "WORK_CASES": {
+      "ABANDON_CASE": "Abandon Case",
+      "CASE_COMPLETED": "Case completed",
       "COMPLETE_CASE": "Release and complete",
       "ITEMS_TITLE": "Sales and cost items",
       "TITLE": "Work Cases",
@@ -365,6 +380,7 @@
     "TAX": {
       "NOT_UNIQUE": "A service contractor with this tax identification number (TIN/NIP) already exists."
     },
+    "BANK_ACCOUNT_NOT_UNIQUE": "The specified bank account number (IBAN) is already assigned to another service contractor.",
     "NOT_FOUND": "The specified service contractor could not be found.",
     "CANNOT_DELETE_WITH_INVOICES": "Cannot delete this contractor because there are cost invoices linked to them.",
     "VALIDATION": {

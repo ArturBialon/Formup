@@ -10,8 +10,8 @@
     "ORDERS": "Zamówienia",
     "SETTINGS": "Ustawienia",
     "WORK_CASES_ELEMENT": "Teczki",
-    "COSTS_HEADER": "Koszty",
-    "INVOICES": "Faktury",
+    "COSTS_ELEMENT": "Koszty",
+    "INVOICES_ELEMENT": "Faktury",
     "CONTRACTORS_ELEMENT": "Podwykonawcy",
     "CLIENTS": "Klienci",
     "SELECT_CLIENT": "Wybierz klienta.",
@@ -23,11 +23,24 @@
     "CURRENCY": "Waluta",
     "EDIT_SUCCESS": "Pomyślnie zapisano zmiany",
     "INVOICE": {
+      "EMPTY_LIST": "Brak faktur na liście",
+      "ISSUE_DATE_FROM": "Data wystawienia od",
+      "ISSUE_DATE_TO": "Data wystawienia do",
+      "SERVICE_DATE_FROM": "Data usługi od",
+      "SERVICE_DATE_TO": "Data usługi do",
+      "MIN_AMOUNT": "Kwota min.",
+      "MAX_AMOUNT": "Kwota maks.",
+      "STATUS_PAID": "Opłacona",
+      "STATUS_UNPAID": "Nieopłacona",
+      "PAYMENT_STATUS": "Status płatności",
+      "NUMBER": "Numer faktury",
+      "AMOUNT": "Kwota",
       "ADD_NEW": "Dodaj nową fakturę",
       "SELECT_ITEMS": "Wybierz pozycje",
       "NO_AVAILABLE_ITEMS": "Brak dostępnych pozycji",
       "ISSUE_DATE": "Data wystawienia",
       "SERVICE_DATE": "Data wykonania usługi",
+      "TAX": "VAT",
       "TAX_RATE": "Stawka VAT (%)",
       "MANUAL_EXCHANGE_RATE": "Ręczny kurs waluty",
       "EXCHANGE_RATE_NOTE": "Pozostaw puste, aby pobrać oficjalny kurs NBP/ECB.",
@@ -75,6 +88,8 @@
       "COST_NO_NAME": "Koszt bez nazwy"
     },
     "WORK_CASES": {
+      "ABANDON_CASE": "Porzuć zlecenie",
+      "CASE_COMPLETED": "Teczka zakończona",
       "COMPLETE_CASE": "Zwolnij limit i zakończ",
       "ITEMS_TITLE": "Pozycje sprzedażowo-kosztowe",
       "TITLE": "Teczki zleceń",
@@ -365,6 +380,7 @@
     "TAX": {
       "NOT_UNIQUE": "Podwykonawca o podanym numerze identyfikacji podatkowej (NIP) już istnieje."
     },
+    "BANK_ACCOUNT_NOT_UNIQUE": "Podany numer rachunku bankowego (IBAN) jest już przypisany do innego podwykonawcy.",
     "NOT_FOUND": "Nie znaleziono określonego podwykonawcy.",
     "CANNOT_DELETE_WITH_INVOICES": "Nie można usunąć tego podwykonawcy, ponieważ są z nim powiązane faktury kosztowe.",
     "VALIDATION": {

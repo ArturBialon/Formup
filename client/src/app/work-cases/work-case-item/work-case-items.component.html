@@ -1,6 +1,6 @@
 <div class="panel-header justify-content-between mb-3">
     <h5 class="text-white m-0">{{ 'GUI.WORK_CASES.ITEMS_TITLE' | translate }}</h5>
-    <button (click)="startAdd()" [disabled]="editingItemId() !== null">
+    <button (click)="startAdd()" [disabled]="editingItemId() !== null || workCaseCompletedOrAbandoned()">
         {{ 'GUI.WORK_CASE_ITEM.ADD_NEW' | translate }}
     </button>
 </div>

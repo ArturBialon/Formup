@@ -48,6 +48,7 @@ export class WorkCaseItemsComponent {
   private route = inject(ActivatedRoute);
 
   workCaseId = input.required<string>();
+  workCaseCompletedOrAbandoned = input.required<boolean>();
 
   items = signal<WorkCaseItemResponse[]>([]);
   isLoading = signal<boolean>(false);

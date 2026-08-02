@@ -1,7 +1,9 @@
 <div class="split-wrapper">
 
   <div class="panel-side side-left panel-card">
-    <app-work-case-items [workCaseId]="id()"></app-work-case-items>
+    <app-work-case-items [workCaseId]="id()"
+      [workCaseCompletedOrAbandoned]="workCase()?.isCompleted! || workCase()?.isAbandoned!"
+    ></app-work-case-items>
   </div>
 
   <div class="panel-side side-right panel-card">
@@ -19,7 +21,7 @@
           {{ (case.isAbandoned ? 'GUI.WORK_CASES.STATUS_ABANDONED' : 'GUI.WORK_CASES.STATUS_ACTIVE') | translate }}
         </span>
         <h5 class="text-white">{{ case.name }}</h5>
-        <button [routerLink]="['/dashboard/workcase', case.id, 'edit']">
+        <button [routerLink]="['/dashboard/workcase', case.id, 'edit']" [disabled]="case.isCompleted">
           {{ 'GUI.BUTTONS.EDIT' | translate }}
         </button>
       </div>
@@ -59,8 +61,20 @@
                     }
                   </div>
                   <div style="align-content: center;">
-                    <button class="btn-yellow-wide" (click)="completeCase()">{{ 'GUI.WORK_CASES.COMPLETE_CASE' |
-                      translate }}</button>
+                    <button class="btn-red-wide" (click)="abandonCase()" [disabled]="case.isAbandoned || case.isCompleted" [class.is-completed]="case.isCompleted">
+                      @if (case.isAbandoned) {
+                        {{ 'GUI.WORK_CASES.STATUS_ABANDONED' | translate }}
+                      } @else {
+                        {{ 'GUI.WORK_CASES.ABANDON_CASE' | translate }}
+                      }
+                    </button>
+                    <button class="btn-yellow-wide" (click)="completeCase()" [disabled]="case.isCompleted" [class.is-completed]="case.isCompleted">
+                      @if (case.isCompleted) {
+                        {{ 'GUI.WORK_CASES.CASE_COMPLETED' | translate }}
+                      } @else {
+                        {{ 'GUI.WORK_CASES.COMPLETE_CASE' | translate }}
+                      }
+                    </button>
                   </div>
                 </div>
               </div>

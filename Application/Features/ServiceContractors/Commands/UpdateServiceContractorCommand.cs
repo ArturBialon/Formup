@@ -48,6 +48,26 @@ namespace Application.Features.ServiceContractors.Commands
                 }
             }
 
+            if (request.BankAccounts != null)
+            {
+                var ibansToCheck = request.BankAccounts
+                .Select(x => x.IBAN)
+                .Where(iban => !string.IsNullOrWhiteSpace(iban))
+                .Distinct()
+                .ToList();
+
+                if (ibansToCheck.Count != 0)
+                {
+                    bool accountExists = await _context.BankAccounts
+                        .AnyAsync(x => ibansToCheck.Contains(x.IBAN) && !x.ServiceContractor.Id.Equals(request.Id), ct);
+
+                    if (accountExists)
+                    {
+                        return AppResult<Guid>.Failure("CONTRACTOR.BANK_ACCOUNT_NOT_UNIQUE");
+                    }
+                }
+            }
+
             contractor.Name = request.Name;
             contractor.Tax = request.Tax;
             contractor.Country = request.Country;

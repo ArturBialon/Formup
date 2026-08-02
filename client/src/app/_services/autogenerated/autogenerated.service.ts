@@ -872,7 +872,7 @@ export class CostService implements ICostService {
 }
 
 export interface IInvoiceService {
-    getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse>;
+    getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceDetailResponse>;
     getInvoiceById(invoiceId: string): Observable<InvoiceDetailResponse>;
     createInvoice(command: CreateInvoiceCommand | undefined): Observable<void>;
     updateInvoice(command: UpdateInvoiceCommand | undefined): Observable<void>;
@@ -892,7 +892,7 @@ export class InvoiceService implements IInvoiceService {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceResponse> {
+    getInvoices(pageNumber: number | undefined, pageSize: number | undefined, clientId: string | null | undefined, forwarderId: string | null | undefined, issueDateFrom: Date | null | undefined, issueDateTo: Date | null | undefined, serviceDateFrom: Date | null | undefined, serviceDateTo: Date | null | undefined, relation: string | null | undefined, taxRate: number | null | undefined, minAmount: number | null | undefined, maxAmount: number | null | undefined): Observable<PagedResultOfInvoiceDetailResponse> {
         let url_ = this.baseUrl + "/api/Invoice/GetInvoices?";
         if (pageNumber === null)
             throw new globalThis.Error("The parameter 'pageNumber' cannot be null.");
@@ -939,14 +939,14 @@ export class InvoiceService implements IInvoiceService {
                 try {
                     return this.processGetInvoices(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PagedResultOfInvoiceResponse>;
+                    return _observableThrow(e) as any as Observable<PagedResultOfInvoiceDetailResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<PagedResultOfInvoiceResponse>;
+                return _observableThrow(response_) as any as Observable<PagedResultOfInvoiceDetailResponse>;
         }));
     }
 
-    protected processGetInvoices(response: HttpResponseBase): Observable<PagedResultOfInvoiceResponse> {
+    protected processGetInvoices(response: HttpResponseBase): Observable<PagedResultOfInvoiceDetailResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -956,7 +956,7 @@ export class InvoiceService implements IInvoiceService {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PagedResultOfInvoiceResponse;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PagedResultOfInvoiceDetailResponse;
             return _observableOf(result200);
             }));
         } else if (status === 400) {
@@ -2657,26 +2657,11 @@ export interface UpdateCostCommand {
     serviceContractorId?: string;
 }
 
-export interface PagedResultOfInvoiceResponse {
-    items?: InvoiceResponse[];
+export interface PagedResultOfInvoiceDetailResponse {
+    items?: InvoiceDetailResponse[];
     totalCount?: number | null;
     pageNumber?: number | null;
     pageSize?: number | null;
-}
-
-export interface InvoiceResponse {
-    id?: string;
-    invoiceNumber?: string;
-    amount?: number | null;
-    currency?: string;
-    issueDateUtc?: Date | string;
-    serviceDateUtc?: Date | string;
-    tax?: number | null;
-    isPaid?:boolean | null;
-    isAbandoned?:boolean | null;
-    workCaseId?: string;
-    clientId?: string;
-    invoicedItemIds?: string[];
 }
 
 export interface InvoiceDetailResponse {
@@ -2688,6 +2673,7 @@ export interface InvoiceDetailResponse {
     serviceDateUtc?: Date | string;
     tax?: number | null;
     isAbandoned?:boolean | null;
+    isPaid?:boolean | null;
     workCaseId?: string;
     workCaseRelation?: string;
     clientId?: string;
@@ -2845,6 +2831,7 @@ export interface WorkCaseResponse {
     clientId?: string;
     clientName?: string;
     isAbandoned?:boolean | null;
+    isCompleted?:boolean | null;
 }
 
 export interface WorkCaseDetailsResponse {
@@ -2860,6 +2847,7 @@ export interface WorkCaseDetailsResponse {
     clientId?: string;
     clientName?: string;
     isAbandoned?:boolean | null;
+    isCompleted?:boolean | null;
     clientResponse?: ClientResponse | null;
     invoiceResponseList?: InvoiceResponse[];
 }
@@ -2879,6 +2867,21 @@ export interface ClientResponse {
     credit?: number | null;
     currency?: string;
     isActive?:boolean | null;
+}
+
+export interface InvoiceResponse {
+    id?: string;
+    invoiceNumber?: string;
+    amount?: number | null;
+    currency?: string;
+    issueDateUtc?: Date | string;
+    serviceDateUtc?: Date | string;
+    tax?: number | null;
+    isPaid?:boolean | null;
+    isAbandoned?:boolean | null;
+    workCaseId?: string;
+    clientId?: string;
+    invoicedItemIds?: string[];
 }
 
 export interface CreateWorkCaseCommand {

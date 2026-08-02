@@ -13,6 +13,8 @@ import { WorkCaseEditComponent } from './work-cases/work-case-edit/work-case-edi
 import { CostFormComponent } from './costs/cost-form/cost-form.component';
 import { InvoiceCreateComponent } from './invoices/invoice-create/invoice-create.component';
 import { InvoiceEditComponent } from './invoices/invoice-edit/invoice-edit.component';
+import { InvoiceListComponent } from './invoices/invoices-list/invoice-list.component';
+import { CostListComponent } from './costs/cost-list/cost-list.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -67,6 +69,10 @@ export const routes: Routes = [
         component: CostFormComponent,
         canActivate: [authGuard]
       },
+      { path: 'costs',
+        component: CostListComponent,
+        canActivate: [authGuard] 
+      },
       { 
         path: 'createInvoice/:id',
         component: InvoiceCreateComponent,
@@ -74,6 +80,10 @@ export const routes: Routes = [
       },
       { path: 'editInvoice/:id',
         component: InvoiceEditComponent,
+        canActivate: [authGuard] 
+      },
+      { path: 'invoices',
+        component: InvoiceListComponent,
         canActivate: [authGuard] 
       }
     ],

@@ -91,7 +91,7 @@
             <tbody>
               @for (item of workCases(); track item.id) {
                 <tr 
-                  class="clickable-row"
+                  class="clickable-row" [class.is-completed]="item.isCompleted"
                   [routerLink]="['/dashboard/workcase', item.id]"
                   tabindex="0"
                   role="button"

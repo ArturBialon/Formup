@@ -29,6 +29,7 @@ namespace Application.Features.WorkCases.Queries
                     ClientId = x.Client.Id.Value,
                     ClientName = x.Client.Name,
                     IsAbandoned = x.IsAbandoned,
+                    IsCompleted = x.IsCompleted,
                     ClientResponse = x.Client == null ? null : new ClientResponse
                     {
                         Id = x.Client.Id.Value,

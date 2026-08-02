@@ -19,14 +19,14 @@ namespace Application.Features.Invoices.Queries
         decimal? TaxRate = null,
         decimal? MinAmount = null,
         decimal? MaxAmount = null
-    ) : IRequest<AppResult<PagedResult<InvoiceResponse>>>;
+    ) : IRequest<AppResult<PagedResult<InvoiceDetailResponse>>>;
 
     public class GetInvoicesQueryHandler(FormupContext context)
-        : IRequestHandler<GetInvoicesQuery, AppResult<PagedResult<InvoiceResponse>>>
+        : IRequestHandler<GetInvoicesQuery, AppResult<PagedResult<InvoiceDetailResponse>>>
     {
         private readonly FormupContext _context = context;
 
-        public async Task<AppResult<PagedResult<InvoiceResponse>>> Handle(GetInvoicesQuery request, CancellationToken ct)
+        public async Task<AppResult<PagedResult<InvoiceDetailResponse>>> Handle(GetInvoicesQuery request, CancellationToken ct)
         {
             var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.Invoices.AsNoTracking().AsQueryable();
@@ -67,7 +67,7 @@ namespace Application.Features.Invoices.Queries
                 .OrderByDescending(x => x.IssueDateUtc)
                 .Skip((request.PageNumber - 1) * optimalPageSize)
                 .Take(optimalPageSize)
-                .Select(invoice => new InvoiceResponse
+                .Select(invoice => new InvoiceDetailResponse
                 {
                     Id = invoice.Id.Value,
                     InvoiceNumber = invoice.InvoiceNumber,
@@ -77,15 +77,15 @@ namespace Application.Features.Invoices.Queries
                     ServiceDateUtc = invoice.ServiceDateUtc,
                     Tax = invoice.Tax,
                     IsAbandoned = invoice.IsAbandoned,
-                    WorkCaseId = invoice.WorkCase.Id.Value,
-                    ClientId = invoice.Client.Id.Value,
-                    InvoicedItemIds = invoice.WorkCaseItems.Select(item => item.Id.Value).ToList()
+                    IsPaid = invoice.IsPaid,
+                    ClientName = invoice.Client.Name,
+                    ForwarderName = invoice.WorkCase.Forwarder.Name
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<InvoiceResponse>(items, totalCount, request.PageNumber, optimalPageSize);
+            var pagedResult = new PagedResult<InvoiceDetailResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
-            return AppResult<PagedResult<InvoiceResponse>>.Success(pagedResult);
+            return AppResult<PagedResult<InvoiceDetailResponse>>.Success(pagedResult);
         }
     }
 }

@@ -10,8 +10,8 @@
         "ORDERS": "Bestellungen",
         "SETTINGS": "Einstellungen",
         "WORK_CASES_ELEMENT": "Akten",
-        "COSTS_HEADER": "Kosten",
-        "INVOICES": "Rechnungen",
+        "COSTS_ELEMENT": "Kosten",
+        "INVOICES_ELEMENT": "Rechnungen",
         "CONTRACTORS_ELEMENT": "Subunternehmer",
         "CLIENTS": "Kunden",
         "SELECT_CLIENT": "Einen Kunden auswählen.",
@@ -23,11 +23,24 @@
         "CURRENCY": "Währung",
         "EDIT_SUCCESS": "Änderungen erfolgreich gespeichert",
         "INVOICE": {
+            "EMPTY_LIST": "Keine Rechnungen in der Liste gefunden",
+            "ISSUE_DATE_FROM": "Ausstellungsdatum von",
+            "ISSUE_DATE_TO": "Ausstellungsdatum bis",
+            "SERVICE_DATE_FROM": "Leistungsdatum von",
+            "SERVICE_DATE_TO": "Leistungsdatum bis",
+            "MIN_AMOUNT": "Mindestbetrag",
+            "MAX_AMOUNT": "Maximalbetrag",
+            "STATUS_PAID": "Bezahlt",
+            "STATUS_UNPAID": "Unbezahlt",
+            "PAYMENT_STATUS": "Zahlungsstatus",
+            "NUMBER": "Rechnungsnummer",
+            "AMOUNT": "Betrag",
             "ADD_NEW": "Neue Rechnung hinzufügen",
             "SELECT_ITEMS": "Positionen auswählen",
             "NO_AVAILABLE_ITEMS": "Keine verfügbaren Positionen",
             "ISSUE_DATE": "Ausstellungsdatum",
             "SERVICE_DATE": "Leistungsdatum",
+            "TAX": "Steuersatz",
             "TAX_RATE": "Steuersatz (%)",
             "MANUAL_EXCHANGE_RATE": "Manueller Wechselkurs",
             "EXCHANGE_RATE_NOTE": "Leer lassen, um den offiziellen Wechselkurs zu verwenden.",
@@ -75,6 +88,8 @@
             "COST_NO_NAME": "Unbenannte Kosten"
             },
         "WORK_CASES": {
+            "ABANDOB_CASE": "Akte verwerfen",
+            "CASE_COMPLETED": "Abgeschlossener Ordner",
             "COMPLETE_CASE": "Freigabe und Fertigstellung",
             "ITEMS_TITLE": "Verkaufs- und Kostenpositionen",
             "TITLE": "Transportakten",
@@ -365,6 +380,7 @@
         "TAX": {
             "NOT_UNIQUE": "Ein Subunternehmer mit dieser Steuernummer (USt-IdNr.) existiert bereits."
         },
+        "BANK_ACCOUNT_NOT_UNIQUE": "Der angegebene Bankkontonummer (IBAN) ist bereits einem anderen Subunternehmer zugeordnet.",
         "NOT_FOUND": "Der angegebene Subunternehmer wurde nicht gefunden.",
         "CANNOT_DELETE_WITH_INVOICES": "Dieser Subunternehmer kann nicht gelöscht werden, da mit ihm Eingangsrechnungen verknüpft sind.",
         "VALIDATION": {

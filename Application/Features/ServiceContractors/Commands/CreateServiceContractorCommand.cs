@@ -30,9 +30,26 @@ namespace Application.Features.ServiceContractors.Commands
         public async Task<AppResult<Guid>> Handle(CreateServiceContractorCommand request, CancellationToken ct)
         {
             var taxExists = await _context.ServiceContractors.AnyAsync(x => x.Tax == request.Tax, ct);
-            if (taxExists)
+            if (taxExists) return AppResult<Guid>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
+
+            if (request.BankAccounts != null)
             {
-                return AppResult<Guid>.Failure("CONTRACTOR.TAX.NOT_UNIQUE");
+                var ibansToCheck = request.BankAccounts
+                .Select(x => x.IBAN)
+                .Where(iban => !string.IsNullOrWhiteSpace(iban))
+                .Distinct()
+                .ToList();
+
+                if (ibansToCheck.Count != 0)
+                {
+                    bool accountExists = await _context.BankAccounts
+                        .AnyAsync(x => ibansToCheck.Contains(x.IBAN), ct);
+
+                    if (accountExists)
+                    {
+                        return AppResult<Guid>.Failure("CONTRACTOR.BANK_ACCOUNT_NOT_UNIQUE");
+                    }
+                }
             }
 
             var mainAccounts = request.BankAccounts?.Where(x => x.IsMain).Skip(1);

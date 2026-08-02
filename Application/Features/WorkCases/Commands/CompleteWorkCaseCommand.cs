@@ -29,6 +29,7 @@ namespace Application.Features.WorkCases.Commands
 
             workCase.Amount = conversionResult.Value!.TotalTargetAmount;
             workCase.AmountInPln = conversionResult.Value!.TotalAmountInPln;
+            workCase.IsCompleted = true;
 
             await _context.SaveChangesAsync(ct);
 

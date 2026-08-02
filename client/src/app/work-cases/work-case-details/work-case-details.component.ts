@@ -64,6 +64,20 @@ export class WorkCaseDetailsComponent {
     });
   }
 
+  abandonCase(): void {
+    const currentId = this.id();
+    this.workCaseService.abandonWorkCase(currentId)
+    .subscribe({
+      next: () => {
+        this.notation.success('GUI.EDIT_SUCCESS');
+        this.loadWorkCaseDetails(currentId);
+      },
+      error: (err) => {
+        this.notation.apiError(err);
+      }
+    });
+  }
+
   togglePanel(): void {
     this.isExpanded.update(state => !state);
   }

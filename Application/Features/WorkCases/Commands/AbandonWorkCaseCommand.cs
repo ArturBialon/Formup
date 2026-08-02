@@ -22,6 +22,7 @@ namespace Application.Features.WorkCases.Commands
             if (workCase.WorkCaseItems.Count != 0) return AppResult<Unit>.Failure("WORK_CASE.CANNOT_ABANDON_HAS_ITEMS");
 
             workCase.IsAbandoned = true;
+            workCase.IsCompleted = false;
             await _context.SaveChangesAsync(ct);
 
             return AppResult<Unit>.Success(Unit.Value);

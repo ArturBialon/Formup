@@ -59,6 +59,7 @@ namespace Application.Features.WorkCases.Queries
                     ClientId = x.Client.Id.Value,
                     ForwarderId = x.Forwarder.Id.Value,
                     IsAbandoned = x.IsAbandoned,
+                    IsCompleted = x.IsCompleted
                 })
                 .ToListAsync(ct);
 

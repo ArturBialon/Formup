@@ -14,6 +14,7 @@
         public Guid ClientId { get; set; }
         public string ClientName { get; set; } = string.Empty;
         public bool IsAbandoned { get; set; }
+        public bool IsCompleted { get; set; }
         public ClientResponse? ClientResponse { get; set; }
         public List<InvoiceResponse> InvoiceResponseList { get; set; } = [];
     }
