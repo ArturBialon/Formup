@@ -62,9 +62,20 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AbandonWorkCase([FromQuery] Guid id, CancellationToken ct)
+        public async Task<IActionResult> AbandonWorkCase([FromQuery] Guid workCaseId, CancellationToken ct)
         {
-            var result = await Mediator.Send(new AbandonWorkCaseCommand(id), ct);
+            var result = await Mediator.Send(new AbandonWorkCaseCommand(workCaseId), ct);
+            return HandleResult(result);
+        }
+
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CompleteWorkCase([FromQuery] Guid workCaseId, CancellationToken ct)
+        {
+            var result = await Mediator.Send(new CompleteWorkCaseCommand(workCaseId), ct);
             return HandleResult(result);
         }
 

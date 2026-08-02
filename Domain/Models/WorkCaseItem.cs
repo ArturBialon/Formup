@@ -13,8 +13,6 @@ namespace Domain.Models
         public required decimal CostAmountNet { get; set; }
         public required string CurrencyCodeCost { get; set; }
         public DateTime CreatedAtUtc { get; init; } = DateTime.UtcNow;
-        public bool IsInvoiced => Invoice != null;
-        public bool HasCost => Cost != null;
 
         public virtual Invoice? Invoice { get; set; }
         public virtual Cost? Cost { get; set; }

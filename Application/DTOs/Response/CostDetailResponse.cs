@@ -15,5 +15,6 @@
 
         public Guid WorkCaseItemId { get; set; }
         public Guid ServiceContractorId { get; set; }
+        public ServiceContractorResponse? ServiceContractorResponse { get; set; }
     }
 }

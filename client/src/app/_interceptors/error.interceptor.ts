@@ -1,13 +1,15 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, Injector } from '@angular/core'; // Dodajemy Injector
 import { Router, NavigationExtras } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NotificationService } from '../_services/notification.service';
+import { AccountService } from '../_services/account.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const notifier = inject(NotificationService);
+  const injector = inject(Injector);
 
   return next(req).pipe(
     catchError((error: any) => {
@@ -21,7 +23,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         if (error.status === 401) {
-          router.navigateByUrl('/home');
+          const accountService = injector.get(AccountService);
+          accountService.logout();
         }
 
         if (error.error instanceof Blob) {
@@ -36,7 +39,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           };
           reader.readAsText(error.error);
         } else {
-          notifier.apiError(error.error);
+          if (error.status !== 401) {
+            notifier.apiError(error.error);
+          }
         }
       }
       return throwError(() => error);

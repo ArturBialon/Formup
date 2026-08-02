@@ -2,7 +2,8 @@
   
   <div class="panel-side side-left panel-card">
     <app-client-list-selector
-        (clientSelected)="onClientSelected($event)">
+        (clientSelected)="onClientSelected($event)"
+        [showAddButton] = false>
     </app-client-list-selector>
   </div>
 

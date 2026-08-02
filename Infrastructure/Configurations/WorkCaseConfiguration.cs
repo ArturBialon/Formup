@@ -39,6 +39,10 @@ namespace Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(false);
 
+            entity.Property(e => e.IsCompleted)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             entity.HasOne(d => d.Forwarder)
                 .WithMany(p => p.WorkCases)
                 .OnDelete(DeleteBehavior.ClientSetNull)

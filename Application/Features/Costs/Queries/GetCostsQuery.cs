@@ -23,6 +23,7 @@ namespace Application.Features.Costs.Queries
 
         public async Task<AppResult<PagedResult<CostDetailResponse>>> Handle(GetCostsQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.Costs.AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.SearchTerm))
@@ -49,13 +50,12 @@ namespace Application.Features.Costs.Queries
             if (request.IsPaid.HasValue)
                 query = query.Where(x => x.IsPaid == request.IsPaid);
 
-
             int totalCount = await query.CountAsync(ct);
 
             var items = await query
                 .OrderByDescending(x => x.ServiceDate)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(c => new CostDetailResponse
                 {
                     Id = c.Id.Value,
@@ -67,12 +67,28 @@ namespace Application.Features.Costs.Queries
                     ServiceDate = c.ServiceDate,
                     DocumentUrl = c.DocumentUrl,
                     IsPaid = c.IsPaid,
-                    WorkCaseItemId = c.WorkCaseItem.Id,
-                    ServiceContractorId = c.ServiceContractor.Id
+                    ServiceContractorName = c.ServiceContractor.Name + ": " + c.ServiceContractor.Tax,
+                    WorkCaseItemId = c.WorkCaseItem.Id.Value,
+                    ServiceContractorId = c.ServiceContractor.Id.Value,
+                    ServiceContractorResponse = c.ServiceContractor == null ? null : new ServiceContractorResponse
+                    {
+                        Id = c.ServiceContractor.Id.Value,
+                        Name = c.ServiceContractor.Name,
+                        Tax = c.ServiceContractor.Tax,
+                        Country = c.ServiceContractor.Country,
+                        City = c.ServiceContractor.City,
+                        Zip = c.ServiceContractor.Zip,
+                        Street = c.ServiceContractor.Street,
+                        HouseNumber = c.ServiceContractor.HouseNumber,
+                        ApartmentNumber = c.ServiceContractor.ApartmentNumber,
+                        Email = c.ServiceContractor.Email,
+                        PhoneNumber = c.ServiceContractor.PhoneNumber,
+                        IsActive = c.ServiceContractor.IsActive
+                    }
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<CostDetailResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<CostDetailResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
             return AppResult<PagedResult<CostDetailResponse>>.Success(pagedResult);
         }

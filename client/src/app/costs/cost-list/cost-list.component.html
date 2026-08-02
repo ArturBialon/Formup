@@ -1,0 +1,144 @@
+<div class="split-wrapper">
+    <div class="panel-side side-left panel-card">
+
+        <div class="panel-header d-flex justify-content-between align-items-center">
+            <div>
+                <span>{{ 'GUI.COSTS.NAME' | translate }} ({{ totalCount() }}) / </span>
+                @if (isLoading()) {
+                <div class="spinner-border spinner-border-sm text-primary ms-1" role="status"></div>
+                }
+                <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);"
+                    type="number" min="1" [value]="pageSize()" (change)="onPageSizeChange($event)"
+                    class="form-control form-control-sm shadow-none page-size-input d-inline-block ms-1"
+                    [placeholder]="'GUI.PAGE_SIZE_PLACEHOLDER' | translate">
+            </div>
+        </div>
+
+        <div class="filters-container p-3 border-bottom">
+            <div class="filters-grid" style="grid-template-columns: repeat(4, 1fr);">
+
+                <div class="filter-field">
+                    <label class="form-label text-sm text-muted mb-1">{{ 'GUI.COSTS.NAME' | translate }}</label>
+                    <input type="text" [(ngModel)]="filters.searchTerm" class="form-control form-control-sm shadow-none"
+                        [placeholder]="'GUI.BUTTONS.SEARCH' | translate">
+                </div>
+
+                <div class="filter-field">
+                    <label class="form-label text-sm text-muted mb-1">{{ 'GUI.COSTS.CURRENCY' | translate }}</label>
+                    <input type="text" [(ngModel)]="filters.currency" class="form-control form-control-sm shadow-none"
+                        placeholder="PLN, EUR...">
+                </div>
+
+                <div class="filter-field">
+                    <label class="form-label text-sm text-muted mb-1">{{ 'GUI.INVOICE.ISSUE_DATE_FROM' | translate }}</label>
+                    <input type="date" [(ngModel)]="filters.dateFrom" class="form-control form-control-sm shadow-none">
+                </div>
+
+                <div class="filter-field">
+                    <label class="form-label text-sm text-muted mb-1">{{ 'GUI.INVOICE.ISSUE_DATE_TO' | translate }}</label>
+                    <input type="date" [(ngModel)]="filters.dateTo" class="form-control form-control-sm shadow-none">
+                </div>
+
+                <div class="field full-width checkbox-field d-flex align-items-center gap-2 align-self-end mb-1">
+                    <div class="triple-switch switch-sm"
+                        [class.status-all]="filters.isPaid === undefined || filters.isPaid === null"
+                        [class.status-active]="filters.isPaid === true"
+                        [class.status-inactive]="filters.isPaid === false" (click)="toggleIsPaidState()">
+                        <span class="slider"></span>
+                    </div>
+
+                    <label class="checkbox-label mb-0" style="color: var(--color-text-light); cursor: pointer;"
+                        (click)="toggleIsPaidState()">
+                        @if (filters.isPaid === undefined || filters.isPaid === null) {
+                        {{ 'GUI.WORK_CASES.STATUS_ALL' | translate }}
+                        } @else if (filters.isPaid === true) {
+                        {{ 'GUI.INVOICE.STATUS_PAID' | translate }}
+                        } @else {
+                        {{ 'GUI.INVOICE.STATUS_UNPAID' | translate }}
+                        }
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="filter-actions d-flex justify-content-end align-items-end mt-2">
+                <button type="button" class="btn btn-primary btn-sm w-25" (click)="onSearch()">
+                    {{ 'GUI.BUTTONS.SEARCH' | translate }}
+                </button>
+            </div>
+
+        </div>
+
+        <div class="scrollable-content">
+            @if (costs().length === 0 && !isLoading()) {
+            <div class="empty-state">{{ 'GUI.INVOICE.EMPTY_LIST' | translate }}</div>
+            } @else {
+            <table class="table">
+                <thead style="border-bottom: 1px solid var(--glass-border); opacity: 0.8;">
+                    <tr>
+                        <th class="fw-semibold py-3">{{ 'GUI.COSTS.NAME' | translate }}</th>
+                        <th class="fw-semibold py-3">{{ 'GUI.COSTS.SELECTED_CONTRACTOR' | translate }}</th>
+                        <th class="fw-semibold py-3 text-center">{{ 'GUI.COSTS.ISSUE_DATE' | translate }}</th>
+                        <th class="fw-semibold py-3 text-center">{{ 'GUI.COSTS.SERVICE_DATE' | translate }}</th>
+                        <th class="fw-semibold py-3 text-end">{{ 'GUI.COSTS.AMOUNT' | translate }}</th>
+                        <th class="fw-semibold py-3">{{ 'GUI.COSTS.CURRENCY' | translate }}</th>
+                        <th class="fw-semibold py-3 text-center">{{ 'GUI.COSTS.TAX' | translate }}</th>
+                        <th class="fw-semibold py-3 text-center">{{ 'GUI.INVOICE.PAYMENT_STATUS' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of costs(); track item.id) {
+                    <tr class="clickable-row" 
+                        [routerLink]="item.workCaseItemId && item.id ? ['/dashboard/workcase-item', item.workCaseItemId, 'cost', item.id] : null" 
+                        tabindex="0" 
+                        role="button">
+                        <td class="py-3 fw-medium">{{ item.name || '-' }}</td>
+                        <td class="py-3">{{ item.serviceContractorName || item.serviceContractorResponse?.name || '-' }}
+                        </td>
+                        <td class="py-3 text-center text-nowrap">
+                            {{ item.issueDate ? (item.issueDate | date:'yyyy-MM-dd') : '-' }}
+                        </td>
+                        <td class="py-3 text-center text-nowrap">
+                            {{ item.serviceDate ? (item.serviceDate | date:'yyyy-MM-dd') : '-' }}
+                        </td>
+                        <td class="py-3 text-end fw-semibold text-nowrap">
+                            {{ item.amount !== null && item.amount !== undefined ? (item.amount | number:'1.2-2') : '-'
+                            }}
+                        </td>
+                        <td class="py-3 fw-semibold text-nowrap">{{ item.currency || '-' }}</td>
+                        <td class="py-3 text-center fw-semibold text-nowrap">
+                            {{ item.tax !== null && item.tax !== undefined ? item.tax : '-' }}%
+                        </td>
+                        <td class="py-3 text-center">
+                            <span class="custom-badge" [class.active-status]="item.isPaid"
+                                [class.badge-inactive]="!item.isPaid">
+                                {{ (item.isPaid ? 'GUI.INVOICE.STATUS_PAID' : 'GUI.INVOICE.STATUS_UNPAID') | translate }}
+                            </span>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            }
+        </div>
+
+        <div class="panel-footer">
+            <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="pageNumber() <= 1 || isLoading()"
+                (click)="changePage(pageNumber() - 1)"
+                style="border-color: var(--glass-border); color: var(--color-text-light);">
+                {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
+            </button>
+
+            <span class="text-sm fw-medium" style="color: var(--color-text-light);">
+                {{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}
+            </span>
+
+            <button type="button" class="btn btn-sm btn-outline-secondary"
+                [disabled]="pageNumber() >= totalPagesNumber() || isLoading()" (click)="changePage(pageNumber() + 1)"
+                style="border-color: var(--glass-border); color: var(--color-text-light);">
+                {{ 'GUI.BUTTONS.NEXT' | translate }}
+            </button>
+        </div>
+
+    </div>
+</div>

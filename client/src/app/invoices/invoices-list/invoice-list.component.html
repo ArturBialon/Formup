@@ -1,0 +1,130 @@
+<div class="split-wrapper">
+  <div class="panel-side side-left panel-card">
+
+    <div class="panel-header d-flex justify-content-between align-items-center">
+      <div>
+        <span>{{ 'GUI.INVOICE.TITLE' | translate }} ({{ totalCount() }}) / </span>
+        @if (isLoading()) {
+        <div class="spinner-border spinner-border-sm text-primary ms-1" role="status"></div>
+        }
+        <input style="width: 80px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);" type="number"
+          min="1" [value]="pageSize()" (change)="onPageSizeChange($event)"
+          class="form-control form-control-sm shadow-none page-size-input d-inline-block ms-1"
+          [placeholder]="'GUI.PAGE_SIZE_PLACEHOLDER' | translate">
+      </div>
+    </div>
+
+    <div class="filters-container p-3 border-bottom">
+      <div class="filters-grid" style="grid-template-columns: repeat(4, 1fr);">
+
+        <div class="filter-field">
+          <label class="form-label text-sm text-muted mb-1">{{ 'GUI.INVOICE.ISSUE_DATE_FROM' | translate }}</label>
+          <input type="date" [(ngModel)]="filters.issueDateFrom" class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field">
+          <label class="form-label text-sm text-muted mb-1">{{ 'GUI.INVOICE.ISSUE_DATE_TO' | translate }}</label>
+          <input type="date" [(ngModel)]="filters.issueDateTo" class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field">
+          <label class="form-label text-sm text-muted mb-1">{{ 'GUI.INVOICE.SERVICE_DATE_FROM' | translate }}</label>
+          <input type="date" [(ngModel)]="filters.serviceDateFrom" class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field">
+          <label class="form-label text-sm text-muted mb-1">{{ 'GUI.INVOICE.SERVICE_DATE_TO' | translate }}</label>
+          <input type="date" [(ngModel)]="filters.serviceDateTo" class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field align-self-end">
+          <input type="number" [(ngModel)]="filters.minAmount" [placeholder]="'GUI.INVOICE.MIN_AMOUNT' | translate"
+            class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field align-self-end">
+          <input type="number" [(ngModel)]="filters.maxAmount" [placeholder]="'GUI.INVOICE.MAX_AMOUNT' | translate"
+            class="form-control form-control-sm shadow-none">
+        </div>
+
+        <div class="filter-field align-self-end">
+          <input type="number" [(ngModel)]="filters.taxRate" [placeholder]="'GUI.INVOICE.TAX_RATE' | translate"
+            class="form-control form-control-sm shadow-none">
+        </div>
+
+      </div>
+
+      <div class="filter-actions d-flex justify-content-end align-items-end">
+        <button type="button" class="btn btn-primary btn-sm w-50" (click)="onSearch()">
+          {{ 'GUI.BUTTONS.SEARCH' | translate }}
+        </button>
+      </div>
+      
+    </div>
+
+    <div class="scrollable-content">
+      @if (invoices().length === 0 && !isLoading()) {
+      <div class="empty-state">{{ 'GUI.INVOICES.EMPTY_LIST' | translate }}</div>
+      } @else {
+      <table class="table">
+        <thead style="border-bottom: 1px solid var(--glass-border); opacity: 0.8;">
+          <tr>
+            <th class="fw-semibold py-3">{{ 'GUI.INVOICE.NUMBER' | translate }}</th>
+            <th class="fw-semibold py-3 text-center">{{ 'GUI.INVOICE.ISSUE_DATE' | translate }}</th>
+            <th class="fw-semibold py-3 text-center">{{ 'GUI.INVOICE.SERVICE_DATE' | translate }}</th>
+            <th class="fw-semibold py-3 text-center">{{ 'GUI.INVOICE.AMOUNT' | translate }}</th>
+            <th class="fw-semibold py-3">{{ 'GUI.CURRENCY' | translate }}</th>
+            <th class="fw-semibold py-3 text-center">{{ 'GUI.INVOICE.TAX_RATE' | translate }}</th>
+            <th class="fw-semibold py-3">{{ 'GUI.WORK_CASES.CLIENT' | translate }}</th>
+            <th class="fw-semibold py-3">{{ 'GUI.WORK_CASES.FORWARDER' | translate }}</th>
+            <th class="fw-semibold py-3 text-center">{{ 'GUI.INVOICE.PAYMENT_STATUS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of invoices(); track item.id) {
+          <tr class="clickable-row" [class.is-abandoned]="item.isAbandoned" [routerLink]="['/dashboard/editInvoice', item.id]"
+            tabindex="0" role="button">
+            <td class="py-3 fw-medium">{{ item.invoiceNumber || '-' }}</td>
+            <td class="py-3 text-center text-nowrap">{{ item.issueDateUtc ? (item.issueDateUtc | date:'yyyy-MM-dd') :
+              '-' }}</td>
+            <td class="py-3 text-center text-nowrap">{{ item.serviceDateUtc ? (item.serviceDateUtc | date:'yyyy-MM-dd')
+              : '-' }}</td>
+            <td class="py-3 text-end fw-semibold text-nowrap">{{ item.amount !== null && item.amount !== undefined ?
+              (item.amount | number:'1.2-2') : '-' }}</td>
+            <td class="py-3 fw-semibold text-nowrap">{{ item.currency || '-' }}</td>
+            <td class="py-3 text-center fw-semibold text-nowrap">{{ item.tax !== null && item.tax !== undefined ? item.tax
+              : '-' }}%</td>
+            <td class="py-3">{{ item.clientName || '-' }}</td>
+            <td class="py-3">{{ item.forwarderName || '-' }}</td>
+            <td class="py-3 text-center">
+              <span class="custom-badge" [class.active-status]="item.isPaid" [class.badge-inactive]="!item.isPaid">
+                {{ (item.isPaid ? 'GUI.INVOICE.STATUS_PAID' : 'GUI.INVOICE.STATUS_UNPAID') | translate }}
+              </span>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+    </div>
+
+    <div class="panel-footer">
+      <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="pageNumber() <= 1 || isLoading()"
+        (click)="changePage(pageNumber() - 1)"
+        style="border-color: var(--glass-border); color: var(--color-text-light);">
+        {{ 'GUI.BUTTONS.PREVIOUS' | translate }}
+      </button>
+
+      <span class="text-sm fw-medium" style="color: var(--color-text-light);">
+        {{ 'GUI.PAGE' | translate }} {{ pageNumber() }} / {{ totalPagesNumber() }}
+      </span>
+
+      <button type="button" class="btn btn-sm btn-outline-secondary"
+        [disabled]="pageNumber() >= totalPagesNumber() || isLoading()" (click)="changePage(pageNumber() + 1)"
+        style="border-color: var(--glass-border); color: var(--color-text-light);">
+        {{ 'GUI.BUTTONS.NEXT' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

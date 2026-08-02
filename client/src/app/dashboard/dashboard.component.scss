@@ -1,8 +1,7 @@
 .dashboard-layout {
   display: flex;
-  height: 90vh;
+  height: 95vh;
   width: 100vw;
-  overflow: hidden;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -18,6 +17,12 @@
   height: 100%;
   background-color: var(--color-sidebar-bg);
   overflow-y: auto;
+  background-image: linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0) 5%,
+        rgba(0, 0, 0, 0.65) 20%,
+        rgba(0, 0, 0, 0.85) 40%,
+        rgba(0, 0, 0, 1) 100%);
 
   @media (max-width: 768px) {
     width: 100%;
@@ -44,7 +49,6 @@
       justify-content: center;
       align-items: center;
 
-      // POPRAWIONA SKŁADNIA DEEP:
       ::ng-deep {
         span, p, label, .tile-label { 
           display: none !important; 

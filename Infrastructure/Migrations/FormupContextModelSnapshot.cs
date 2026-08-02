@@ -23,6 +23,50 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Models.BankAccount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid?>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CurrencyCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)")
+                        .HasDefaultValue("PLN");
+
+                    b.Property<string>("IBAN")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(34)");
+
+                    b.Property<bool>("IsMain")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid?>("ServiceContractorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ServiceContractorId");
+
+                    b.ToTable("BankAccounts", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Models.Client", b =>
                 {
                     b.Property<Guid>("Id")
@@ -372,6 +416,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<bool>("IsCompleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -443,6 +492,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("WorkCaseItems");
                 });
 
+            modelBuilder.Entity("Domain.Models.BankAccount", b =>
+                {
+                    b.HasOne("Domain.Models.Client", null)
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("ClientId");
+
+                    b.HasOne("Domain.Models.ServiceContractor", "ServiceContractor")
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("ServiceContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_BankAccounts_ServiceContractors");
+
+                    b.Navigation("ServiceContractor");
+                });
+
             modelBuilder.Entity("Domain.Models.Cost", b =>
                 {
                     b.HasOne("Domain.Models.ServiceContractor", "ServiceContractor")
@@ -450,7 +514,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ServiceContractorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("Costs_Service_Contractors");
+                        .HasConstraintName("FK_Costs_ServiceContractors");
 
                     b.HasOne("Domain.Models.WorkCaseItem", "WorkCaseItem")
                         .WithOne("Cost")
@@ -518,6 +582,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Client", b =>
                 {
+                    b.Navigation("BankAccounts");
+
                     b.Navigation("Invoices");
 
                     b.Navigation("WorkCases");
@@ -530,6 +596,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.ServiceContractor", b =>
                 {
+                    b.Navigation("BankAccounts");
+
                     b.Navigation("Costs");
                 });
 

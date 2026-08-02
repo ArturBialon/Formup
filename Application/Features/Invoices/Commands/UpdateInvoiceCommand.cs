@@ -34,8 +34,7 @@ namespace Application.Features.Invoices.Commands
             if (invoice.IsPaid) return AppResult<Unit>.Failure("INVOICE.CANNOT_DELETE_PAID");
 
             var requestedItems = await _context.WorkCaseItems
-                .Include(x => x.Invoice)
-                .Where(x => x.WorkCase.Id == invoice.WorkCase.Id && request.WorkCaseItemIds.Contains(x.Id.Value))
+                .Where(x => x.WorkCase.Id.Equals(invoice.WorkCase.Id) && request.WorkCaseItemIds.Contains(x.Id))
                 .ToListAsync(ct);
 
             if (requestedItems.Count != request.WorkCaseItemIds.Count)
@@ -47,7 +46,7 @@ namespace Application.Features.Invoices.Commands
 
             var itemsToDetach = await _context.WorkCaseItems
                 .Include(x => x.Invoice)
-                .Where(x => x.WorkCase.Id == invoice.WorkCase.Id && request.WorkCaseItemsToDetachIds.Contains(x.Id.Value))
+                .Where(x => x.WorkCase.Id.Equals(invoice.WorkCase.Id) && request.WorkCaseItemsToDetachIds.Contains(x.Id))
                 .ToListAsync(ct);
 
             foreach (var item in itemsToDetach)

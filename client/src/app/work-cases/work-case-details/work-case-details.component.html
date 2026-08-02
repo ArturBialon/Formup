@@ -1,7 +1,9 @@
 <div class="split-wrapper">
 
   <div class="panel-side side-left panel-card">
-    <app-work-case-items [workCaseId]="id()"></app-work-case-items>
+    <app-work-case-items [workCaseId]="id()"
+      [workCaseCompletedOrAbandoned]="workCase()?.isCompleted! || workCase()?.isAbandoned!"
+    ></app-work-case-items>
   </div>
 
   <div class="panel-side side-right panel-card">
@@ -19,12 +21,12 @@
           {{ (case.isAbandoned ? 'GUI.WORK_CASES.STATUS_ABANDONED' : 'GUI.WORK_CASES.STATUS_ACTIVE') | translate }}
         </span>
         <h5 class="text-white">{{ case.name }}</h5>
-        <button [routerLink]="['/dashboard/workcase', case.id, 'edit']">
+        <button [routerLink]="['/dashboard/workcase', case.id, 'edit']" [disabled]="case.isCompleted">
           {{ 'GUI.BUTTONS.EDIT' | translate }}
         </button>
       </div>
 
-      <div class="content-panel">
+      <div style="padding: 0.5rem;">
 
         <div class="panel-trigger d-flex justify-content-between align-items-center text-muted small cp-pointer mb-3"
           (click)="togglePanel()">
@@ -35,25 +37,45 @@
         <div class="collapsible-wrapper" [class.is-expanded]="isExpanded()">
           <div class="collapsible-content">
 
-            <div class="form-grid-2 mb-3">
-              <div>
+            <div>
+              <div class="pb-2">
                 <div class="tile-container">
                   <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.CLIENT' | translate }}</span>
                   <strong class="text-white fs-5">{{ case.clientName }}</strong>
                 </div>
               </div>
-              <div>
+              <div class="pb-2">
                 <div class="tile-container">
                   <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.FORWARDER' | translate }}</span>
                   <strong class="text-white fs-5">{{ case.forwarderName }}</strong>
                 </div>
               </div>
-              <div>
-                <div class="tile-container">
-                  <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</span>
-                  <strong class="text-white fs-5">{{ case.amount | number:'1.2-2' }} {{ case.currency }}</strong>
-                  <span class="d-block text-muted small mt-2">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
-                  <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
+              <div class="pb-2">
+                <div class="tile-container form-grid-2">
+                  <div>
+                    <span class="d-block text-muted small">{{ 'GUI.WORK_CASES.AMOUNT' | translate }}</span>
+                    <strong class="text-white fs-5">{{ case.amount | number:'1.2-2' }} {{ case.currency }}</strong>
+                    @if (case.currency !== "PLN") {
+                    <span class="d-block text-muted small mt-2">{{ 'GUI.WORK_CASES.AMOUNT_PLN' | translate }}</span>
+                    <strong class="text-white fs-5">{{ case.amountInPln | number:'1.2-2' }} PLN</strong>
+                    }
+                  </div>
+                  <div style="align-content: center;">
+                    <button class="btn-red-wide" (click)="abandonCase()" [disabled]="case.isAbandoned || case.isCompleted" [class.is-completed]="case.isCompleted">
+                      @if (case.isAbandoned) {
+                        {{ 'GUI.WORK_CASES.STATUS_ABANDONED' | translate }}
+                      } @else {
+                        {{ 'GUI.WORK_CASES.ABANDON_CASE' | translate }}
+                      }
+                    </button>
+                    <button class="btn-yellow-wide" (click)="completeCase()" [disabled]="case.isCompleted" [class.is-completed]="case.isCompleted">
+                      @if (case.isCompleted) {
+                        {{ 'GUI.WORK_CASES.CASE_COMPLETED' | translate }}
+                      } @else {
+                        {{ 'GUI.WORK_CASES.COMPLETE_CASE' | translate }}
+                      }
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -63,11 +85,39 @@
                 {{ 'GUI.WORK_CASES.CREATED_AT' | translate }}: {{ case.createdAtUtc + 'Z' | date:'dd.MM.yyyy HH:mm' }}
               </span>
             </div>
-            <div class="field-full pb-2">
+            <div class="field-full mb-3">
               <span class="text-muted small">
                 (UTC) {{ case.createdAtUtc | date:'dd.MM.yyyy HH:mm' }}
               </span>
             </div>
+
+            <button class="btn-green" [routerLink]="['/dashboard/createInvoice', case.id]">
+              {{ 'GUI.INVOICE.ADD_NEW' | translate }}
+            </button>
+
+            @if (case.invoiceResponseList && case.invoiceResponseList.length > 0) {
+            <div class="field-full pt-2">
+              <div class="tile-container">
+                <span class="d-block text-muted small mb-2">{{ 'GUI.INVOICES' | translate }}</span>
+
+                <div class="invoices-list">
+                  @for (invoice of case.invoiceResponseList; track invoice.id) {
+                  <button type="button" class="invoice-item-btn" [routerLink]="['/dashboard/editInvoice', invoice.id]">
+
+                    <div class="invoice-info">
+                      <span class="invoice-number">{{ invoice.invoiceNumber }}</span>
+                      <span class="invoice-amount">{{ invoice.amount }} {{ invoice.currency }}</span>
+                    </div>
+
+                    <div class="invoice-action">
+                      <i class="bi bi-chevron-right action-icon"></i>
+                    </div>
+                  </button>
+                  }
+                </div>
+              </div>
+            </div>
+            }
 
           </div>
         </div>

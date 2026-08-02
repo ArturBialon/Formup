@@ -1,5 +1,6 @@
 {
   "GUI": {
+    "TOKEN_EXPIRED": "Koniec ważności tokenu, zaloguj się ponownie.",
     "DETAILS_HEADER": "Szczegóły",
     "CHANGE_PASSWORD": "Zmień hasło",
     "LANGUAGE": "Język",
@@ -9,8 +10,8 @@
     "ORDERS": "Zamówienia",
     "SETTINGS": "Ustawienia",
     "WORK_CASES_ELEMENT": "Teczki",
-    "COSTS": "Koszty",
-    "INVOICES": "Faktury",
+    "COSTS_ELEMENT": "Koszty",
+    "INVOICES_ELEMENT": "Faktury",
     "CONTRACTORS_ELEMENT": "Podwykonawcy",
     "CLIENTS": "Klienci",
     "SELECT_CLIENT": "Wybierz klienta.",
@@ -20,6 +21,53 @@
     "SEARCH_PLACEHOLDER": "Wyszukaj frazę...",
     "PAGE_SIZE_PLACEHOLDER": "Rozmiar strony",
     "CURRENCY": "Waluta",
+    "EDIT_SUCCESS": "Pomyślnie zapisano zmiany",
+    "INVOICE": {
+      "EMPTY_LIST": "Brak faktur na liście",
+      "ISSUE_DATE_FROM": "Data wystawienia od",
+      "ISSUE_DATE_TO": "Data wystawienia do",
+      "SERVICE_DATE_FROM": "Data usługi od",
+      "SERVICE_DATE_TO": "Data usługi do",
+      "MIN_AMOUNT": "Kwota min.",
+      "MAX_AMOUNT": "Kwota maks.",
+      "STATUS_PAID": "Opłacona",
+      "STATUS_UNPAID": "Nieopłacona",
+      "PAYMENT_STATUS": "Status płatności",
+      "NUMBER": "Numer faktury",
+      "AMOUNT": "Kwota",
+      "ADD_NEW": "Dodaj nową fakturę",
+      "SELECT_ITEMS": "Wybierz pozycje",
+      "NO_AVAILABLE_ITEMS": "Brak dostępnych pozycji",
+      "ISSUE_DATE": "Data wystawienia",
+      "SERVICE_DATE": "Data wykonania usługi",
+      "TAX": "VAT",
+      "TAX_RATE": "Stawka VAT (%)",
+      "MANUAL_EXCHANGE_RATE": "Ręczny kurs waluty",
+      "EXCHANGE_RATE_NOTE": "Pozostaw puste, aby pobrać oficjalny kurs NBP/ECB.",
+      "ABANDON": "Porzuć fakturę",
+      "ABANDON_QUESTION": "Czy na pewno chcesz porzucić tę fakturę?",
+      "ABANDON_SUCCESS": "Faktura została pomyślnie porzucona.",
+      "CREATE_SUCCESS": "Faktura została pomyślnie utworzona.",
+      "UPDATE_SUCCESS": "Faktura została pomyślnie zaktualizowana.",
+      "NO_ITEMS_SELECTED": "Nie wybrano żadnych pozycji."
+    },
+    "COSTS": {
+      "CREATE_TITLE": "Dodaj nowy koszt",
+      "EDIT_TITLE": "Edycja kosztu",
+      "SELECTED_CONTRACTOR": "Wybrany kontrahent",
+      "NO_CONTRACTOR_SELECTED_WARNING": "Nie wybrano kontrahenta. Wybierz go z listy po lewej stronie.",
+      "NAME": "Nazwa kosztu",
+      "AMOUNT": "Kwota",
+      "CURRENCY": "Waluta",
+      "TAX": "Stawka VAT (%)",
+      "FILE": "Plik",
+      "ISSUE_DATE": "Data wystawienia",
+      "SERVICE_DATE": "Data wykonania usługi",
+      "CREATE_SUCCESS": "Koszt został pomyślnie dodany.",
+      "UPDATE_SUCCESS": "Koszt został pomyślnie zaktualizowany.",
+      "DELETE_SUCCESS": "Koszt został usunięty.",
+      "DELETE_CONFIRM": "Czy na pewno chcesz usunąć ten koszt?"
+    },
     "WORK_CASE_ITEM": {
       "ADD_NEW": "Dodaj nową pozycję",
       "EDITING": "Edycja pozycji",
@@ -40,6 +88,9 @@
       "COST_NO_NAME": "Koszt bez nazwy"
     },
     "WORK_CASES": {
+      "ABANDON_CASE": "Porzuć zlecenie",
+      "CASE_COMPLETED": "Teczka zakończona",
+      "COMPLETE_CASE": "Zwolnij limit i zakończ",
       "ITEMS_TITLE": "Pozycje sprzedażowo-kosztowe",
       "TITLE": "Teczki zleceń",
       "ADD_NEW_BUTTON": "Utwórz nową teczkę",
@@ -108,7 +159,13 @@
       "SELECT_PROMPT": "Wybierz kontrahenta z listy po lewej stronie, aby go edytować, lub dodaj nowego.",
       "CREATE_SUCCESS": "Kontrahent został pomyślnie dodany!",
       "UPDATE_SUCCESS": "Dane kontrahenta zostały pomyślnie zaktualizowane!",
-      "TRADE_LIMIT": "Limit kredytowy"
+      "TRADE_LIMIT": "Limit kredytowy",
+      "BANK_ACCOUNTS": "Konta bankowe",
+      "ADD_BANK_ACCOUNT": "Dodaj konto bankowe",
+      "BANK_ACCOUNT": "Konto bankowe",
+      "MAKE_MAIN": "Ustaw jako główne",
+      "BANK_NAME": "Nazwa banku",
+      "IBAN": "Numer rachunku (IBAN)"
     },
     "BUTTONS": {
       "SAVE_CHANGES": "Zapisz zmiany",
@@ -228,6 +285,7 @@
   "COST": {
     "WORK_CASE_ITEM_NOT_FOUND": "Nie znaleziono wybranej pozycji teczki.",
     "CONTRACTOR_NOT_FOUND": "Nie znaleziono wybranego podwykonawcy.",
+    "CONTRACTOR_IS_INACTIVE": "Wybrany podwykonawca jest nieaktywny",
     "COST_ALREADY_EXISTS": "Ten dokument kosztowy został już zarejestrowany w systemie.",
     "WORK_CASE_ITEM_HAS_COST": "Do tego elementu teczki został już przypisany koszt",
     "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Kwota kosztów różni się od przewidywanej",
@@ -322,6 +380,7 @@
     "TAX": {
       "NOT_UNIQUE": "Podwykonawca o podanym numerze identyfikacji podatkowej (NIP) już istnieje."
     },
+    "BANK_ACCOUNT_NOT_UNIQUE": "Podany numer rachunku bankowego (IBAN) jest już przypisany do innego podwykonawcy.",
     "NOT_FOUND": "Nie znaleziono określonego podwykonawcy.",
     "CANNOT_DELETE_WITH_INVOICES": "Nie można usunąć tego podwykonawcy, ponieważ są z nim powiązane faktury kosztowe.",
     "VALIDATION": {

@@ -1,0 +1,90 @@
+<div class="split-wrapper">
+
+    <div class="panel-side side-left">
+        <div class="panel-card">
+            <app-service-contractor-list-selector
+                [activeContractor]="selectedContractor()"
+                [showAddButton]="false"
+                (contractorSelected)="selectContractor($event)">
+            </app-service-contractor-list-selector>
+        </div>
+    </div>
+    
+    <div class="panel-side side-right">
+        <div class="panel-card h-100 d-flex flex-column">
+            <div class="panel-header">
+                <span>
+                    {{ (isCreateMode() ? 'GUI.COSTS.CREATE_TITLE' : 'GUI.COSTS.EDIT_TITLE') | translate }}
+                </span>
+            </div>
+
+            <div class="scrollable-content p-4 flex-grow-1" style="overflow-y: auto;">
+                @if (isLoadingCost()) {
+                <div class="d-flex justify-content-center p-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+                } @else {
+                <form [formGroup]="costForm" (ngSubmit)="onSubmit()" class="admin-form h-100 d-flex flex-column">
+
+                    <div class="mb-4 p-3 rounded"
+                        style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <span class="d-block text-sm opacity-50 mb-1">{{ 'GUI.COSTS.SELECTED_CONTRACTOR' | translate
+                            }}</span>
+
+                        @if (selectedContractor(); as contractor) {
+                        <span class="fs-6 fw-bold text-success">{{ contractor.name }}</span>
+                        <span class="d-block text-sm">NIP: {{ contractor.tax }}</span>
+                        } @else {
+                        <span class="fs-6 text-warning">{{ 'GUI.COSTS.NO_CONTRACTOR_SELECTED_WARNING' | translate
+                            }}</span>
+                        }
+                    </div>
+
+                    <div class="form-grid-2">
+                        <app-input class="field" controlName="name" label="GUI.COSTS.NAME" [required]="true"></app-input>
+
+                        <div class="form-grid-3">
+                            <app-input class="field" controlName="amount" label="GUI.COSTS.AMOUNT" type="number" [required]="true"></app-input>
+                            <app-input class="field" controlName="currency" label="GUI.COSTS.CURRENCY" [required]="true"></app-input>
+                            <app-input class="field" controlName="tax" label="GUI.COSTS.TAX" type="number" [required]="true"></app-input>
+                        </div>
+
+                        <app-input class="field" controlName="issueDate" label="GUI.COSTS.ISSUE_DATE" type="date" [required]="true"></app-input>
+                        <app-input class="field" controlName="serviceDate" label="GUI.COSTS.SERVICE_DATE" type="date" [required]="true"></app-input>
+                        <div class="mb-3">
+                            <label class="form-label">{{ 'GUI.COSTS.FILE' | translate }}</label>
+                            <input 
+                                type="file" 
+                                class="form-control" 
+                                (change)="onFileSelected($event)" 
+                                accept=".pdf,.png,.jpg,.jpeg" />
+                        </div>
+                    </div>
+
+                    <div class="form-actions mt-auto pt-3">
+                        <div>
+                            @if (!isCreateMode()) {
+                            <button class="btn-danger" type="button" [disabled]="isSaving()" (click)="onDelete()">
+                                {{ 'GUI.BUTTONS.DELETE' | translate }}
+                            </button>
+                            }
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn-yellow" type="button" [disabled]="isSaving()" (click)="onCancel()">
+                                {{ 'GUI.BUTTONS.CANCEL' | translate }}
+                            </button>
+                            <button type="submit" [disabled]="costForm.invalid || isSaving()">
+                                @if (isSaving()) {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                }
+                                {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -34,22 +34,22 @@ namespace API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateCost([FromForm] CreateCostCommand command, CancellationToken ct)
+        public async Task<IActionResult> CreateCost([FromBody] CreateCostCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
         }
 
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateCost([FromForm] UpdateCostCommand command, CancellationToken ct)
+        public async Task<IActionResult> UpdateCost([FromBody] UpdateCostCommand command, CancellationToken ct)
         {
             var result = await Mediator.Send(command, ct);
             return HandleResult(result);
@@ -63,6 +63,17 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteCost([FromQuery] Guid id, CancellationToken ct)
         {
             var result = await Mediator.Send(new DeleteCostCommand(id), ct);
+            return HandleResult(result);
+        }
+
+        [HttpPost("{costId:guid}/file")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UploadCostFile([FromRoute] Guid costId, IFormFile file, CancellationToken ct)
+        {
+            var result = await Mediator.Send(new UploadCostFileCommand(costId, file), ct);
             return HandleResult(result);
         }
     }

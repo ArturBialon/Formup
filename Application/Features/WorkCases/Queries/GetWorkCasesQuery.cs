@@ -23,6 +23,7 @@ namespace Application.Features.WorkCases.Queries
 
         public async Task<AppResult<PagedResult<WorkCaseResponse>>> Handle(GetWorkCasesQuery request, CancellationToken ct)
         {
+            var optimalPageSize = Math.Clamp(request.PageSize, 1, 1000);
             var query = _context.WorkCases.AsNoTracking().AsQueryable();
 
             if (request.IsAbandoned != null)
@@ -44,8 +45,8 @@ namespace Application.Features.WorkCases.Queries
 
             var items = await query
                 .OrderByDescending(x => x.CreatedAtUtc)
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.PageNumber - 1) * optimalPageSize)
+                .Take(optimalPageSize)
                 .Select(x => new WorkCaseResponse
                 {
                     Id = x.Id.Value,
@@ -58,10 +59,11 @@ namespace Application.Features.WorkCases.Queries
                     ClientId = x.Client.Id.Value,
                     ForwarderId = x.Forwarder.Id.Value,
                     IsAbandoned = x.IsAbandoned,
+                    IsCompleted = x.IsCompleted
                 })
                 .ToListAsync(ct);
 
-            var pagedResult = new PagedResult<WorkCaseResponse>(items, totalCount, request.PageNumber, request.PageSize);
+            var pagedResult = new PagedResult<WorkCaseResponse>(items, totalCount, request.PageNumber, optimalPageSize);
 
             return AppResult<PagedResult<WorkCaseResponse>>.Success(pagedResult);
         }

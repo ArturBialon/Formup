@@ -3,13 +3,11 @@ using Application.Common.Results;
 using Domain.Models;
 using Infrastructure.Context;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Costs.Commands
 {
     public record CreateCostCommand(
-        IFormFile? File,
         decimal Amount,
         string Currency,
         decimal Tax,
@@ -41,20 +39,16 @@ namespace Application.Features.Costs.Commands
                 return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_NOT_FOUND");
             if (contractor == null)
                 return AppResult<Guid>.Failure("COST.CONTRACTOR_NOT_FOUND");
+            if (!contractor.IsActive)
+                return AppResult<Guid>.Failure("COST.CONTRACTOR_IS_INACTIVE");
             if (existingCost != null)
                 return AppResult<Guid>.Failure("COST.COST_ALREADY_EXISTS");
             if (existingCostInItem != null)
                 return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_HAS_COST");
-            if (workCaseItem.AmountToInvoice != request.Amount)
+            if (workCaseItem.CostAmountNet != request.Amount || workCaseItem.CurrencyCodeCost != request.Currency)
                 return AppResult<Guid>.Failure("COST.WORK_CASE_ITEM_AMOUNT_MISSMATCH");
 
             string uploadedUrl = string.Empty;
-
-            if (request.File != null)
-            {
-                using var stream = request.File.OpenReadStream();
-                uploadedUrl = await _fileStorageService.UploadFileAsync(stream, request.Name, ct);
-            }
 
             var cost = new Cost
             {

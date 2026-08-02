@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, inject, signal, OnInit, Output, EventEmitter, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,10 +17,10 @@ export class ClientListSelectorComponent implements OnInit {
   private apiClient = inject(ClientService);
   private notation = inject(NotificationService);
 
-  @Input() activeClient: ClientListItemResponse | null = null;
-  @Input() showAddButton: boolean = true;
-  @Output() clientSelected = new EventEmitter<ClientListItemResponse>();
-  @Output() addRequested = new EventEmitter<void>();
+  public activeClient = input<ClientListItemResponse | null>(null);
+  public showAddButton = input<boolean>(true);
+  public clientSelected = output <ClientListItemResponse>();
+  public addRequested = output <void>();
 
   public clients = signal<ClientListItemResponse[]>([]);
   public isLoading = signal<boolean>(false);

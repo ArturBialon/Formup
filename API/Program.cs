@@ -27,12 +27,13 @@ builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddLoggingServices();
 builder.Services.AddControllers();
 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? [];
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy
         .AllowAnyHeader()
         .AllowAnyMethod()
-        .WithOrigins("https://localhost:4200"));
+        .WithOrigins(allowedOrigins));
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -73,5 +74,4 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Migration error.");
     }
 }
-await API.Extensions.ServiceCreator.AngularServiceCreator.ConfigureSwaggerAsync();
 app.Run();

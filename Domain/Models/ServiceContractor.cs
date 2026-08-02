@@ -23,5 +23,6 @@ namespace Domain.Models
         public bool IsActive { get; set; } = true;
 
         public virtual ICollection<Cost> Costs { get; set; }
+        public virtual ICollection<BankAccount> BankAccounts { get; set; }
     }
 }

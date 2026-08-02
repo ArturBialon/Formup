@@ -34,6 +34,7 @@ namespace Application.Features.WorkCaseItems.Queries
                     Tax = x.TaxInvoice,
                     CreatedAtUtc = x.CreatedAtUtc,
                     InvoiceId = x.Invoice != null ? x.Invoice.Id : null,
+                    IsInvoiced = x.Invoice != null ? true : false,
                     Cost = x.Cost != null ? new CostResponse
                     {
                         Id = x.Cost.Id.Value,

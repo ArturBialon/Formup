@@ -10,7 +10,7 @@ namespace API.Controllers
     public class InvoiceController : ApiControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(typeof(PagedResult<InvoiceResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<InvoiceDetailResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

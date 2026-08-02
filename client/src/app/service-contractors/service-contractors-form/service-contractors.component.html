@@ -1,0 +1,130 @@
+<div class="split-wrapper">
+
+  <div class="panel-side side-left">
+
+    <div class="panel-card">
+      <app-service-contractor-list-selector [activeContractor]="selectedContractor()" [showAddButton]="true"
+        (contractorSelected)="selectContractor($event)" (addRequested)="initCreateContractor()">
+      </app-service-contractor-list-selector>
+    </div>
+
+  </div>
+
+
+  <div class="panel-side side-right">
+    <div class="panel-card">
+      <div class="panel-header">
+        <span>
+          {{ (isCreateMode() ? 'GUI.CONTRACTORS.CREATE_TITLE' : 'GUI.CONTRACTORS.EDIT_TITLE') | translate }}
+        </span>
+      </div>
+
+      <div class="scrollable-content p-4">
+        @if (selectedContractor() || isCreateMode()) {
+        <form [formGroup]="contractorForm" (ngSubmit)="onSubmit()" class="admin-form">
+
+          <div class="form-grid-2">
+
+            <app-input class="field full-width" controlName="name" label="GUI.CONTRACTORS.NAME" [required]="true"></app-input>
+            <app-input class="field full-width" controlName="tax" label="GUI.CONTRACTORS.TAX_NIP" [required]="true"></app-input>
+
+            <app-input class="field" controlName="country" label="GUI.CONTRACTORS.COUNTRY" [required]="true"></app-input>
+            <app-input class="field" controlName="city" label="GUI.CONTRACTORS.CITY" [required]="true"></app-input>
+
+            <div class="form-grid-2">
+              <app-input class="field" controlName="zip" label="GUI.CONTRACTORS.ZIP_CODE" [required]="true"></app-input>
+              <app-input class="field" controlName="street" label="GUI.CONTRACTORS.STREET" [required]="true"></app-input>
+            </div>
+            <div class="form-grid-2">
+              <app-input class="field" controlName="houseNumber" label="GUI.CONTRACTORS.HOUSE_NUMBER" [required]="true"></app-input>
+              <app-input class="field" controlName="apartmentNumber" label="GUI.CONTRACTORS.APARTMENT_NUMBER"></app-input>
+            </div>
+
+            <app-input class="field" controlName="email" label="GUI.CONTRACTORS.EMAIL" type="email"></app-input>
+            <app-input class="field" controlName="phoneNumber" label="GUI.CONTRACTORS.PHONE"></app-input>
+
+            <div class="field full-width checkbox-field">
+              <label class="switch switch-sm">
+                <input type="checkbox" id="isActiveContractor" formControlName="isActive">
+                <span class="slider"></span>
+              </label>
+              <label for="isActiveContractor" class="checkbox-label">{{ 'GUI.CONTRACTORS.IS_ACTIVE_LABEL' | translate }}</label>
+            </div>
+
+          </div>
+
+          <!-- SEKCJA KONT BANKOWYCH -->
+          <div class="mt-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-white fs-5">{{ 'GUI.CONTRACTORS.BANK_ACCOUNTS' | translate }}</span>
+              <button type="button" class="btn-green" (click)="addBankAccount()">
+                {{ 'GUI.CONTRACTORS.ADD_BANK_ACCOUNT' | translate }}
+              </button>
+            </div>
+
+            <div>
+              @for (account of bankAccountsFormArray.controls; track account; let i = $index) {
+
+              <div class="tile-container mb-3" [formGroup]="asFormGroup(account)"
+                [class.is-invoiced]="account.get('isMain')?.value">
+
+                <div class="tile-header d-flex justify-content-between align-items-center mb-3">
+                  <strong class="text-white fs-5">
+                    {{ 'GUI.CONTRACTORS.BANK_ACCOUNT' | translate }} #{{ i + 1 }}
+                  </strong>
+                  <div class="d-flex align-items-center gap-2">
+                    @if (!account.get('isMain')?.value) {
+                    <button type="button" class="btn-yellow-wide" (click)="setMainAccount(i)">
+                      {{ 'GUI.CONTRACTORS.MAKE_MAIN' | translate }}
+                    </button>
+                    }
+                    <button type="button" class="btn-danger" (click)="removeBankAccount(i)">
+                      {{ 'GUI.BUTTONS.DELETE' | translate }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-grid-3">
+                  <app-input class="field" controlName="bankName" label="GUI.CONTRACTORS.BANK_NAME"[required]="true"></app-input>
+                  <app-input class="field" controlName="iban" label="GUI.CONTRACTORS.IBAN" [required]="true"></app-input>
+
+                  <div class="select-wrapper">
+                    <label>{{ 'GUI.CURRENCY' | translate }}</label>
+                    <select class="input form-control shadow-none" formControlName="currencyCode">
+                      <option value="PLN">PLN</option>
+                      <option value="EUR">EUR</option>
+                      <option value="USD">USD</option>
+                      <option value="GBP">GBP</option>
+                      <option value="CHF">CHF</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              }
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="button" type="submit" [disabled]="contractorForm.invalid || isSaving()">
+              @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              }
+              {{ (isCreateMode() ? 'GUI.BUTTONS.CREATE' : 'GUI.BUTTONS.SAVE_CHANGES') | translate }}
+            </button>
+          </div>
+
+        </form>
+        } @else {
+        <div class="empty-state">
+          <div>
+            <p class="fs-5 mb-1">{{ 'GUI.CONTRACTORS.NO_SELECTED' | translate }}</p>
+            <p class="text-sm opacity-50">{{ 'GUI.CONTRACTORS.SELECT_PROMPT' | translate }}</p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+
+</div>

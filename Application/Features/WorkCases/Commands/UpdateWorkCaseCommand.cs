@@ -40,7 +40,7 @@ namespace Application.Features.WorkCases.Commands
                                 .Select(wc => new
                                 {
                                     wc.AmountInPln,
-                                    PaidAmount = wc.Invoices.Where(i => i.IsPaid).Sum(i => (decimal?)i.AmountInPln) ?? 0m
+                                    PaidAmount = wc.Invoices.Where(i => i.IsPaid).Sum(i => (decimal?)i.AmountInPln ?? 0m)
                                 })
                                 .SumAsync(x => x.AmountInPln - x.PaidAmount, ct);
 

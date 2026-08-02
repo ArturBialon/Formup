@@ -1,5 +1,6 @@
 {
     "GUI": {
+        "TOKEN_EXPIRED": "Token abgelaufen, bitte erneut anmelden.",
         "DETAILS_HEADER": "Nähere",
         "CHANGE_PASSWORD": "Passwort ändern",
         "LANGUAGE": "Sprache",
@@ -9,8 +10,8 @@
         "ORDERS": "Bestellungen",
         "SETTINGS": "Einstellungen",
         "WORK_CASES_ELEMENT": "Akten",
-        "COSTS": "Kosten",
-        "INVOICES": "Rechnungen",
+        "COSTS_ELEMENT": "Kosten",
+        "INVOICES_ELEMENT": "Rechnungen",
         "CONTRACTORS_ELEMENT": "Subunternehmer",
         "CLIENTS": "Kunden",
         "SELECT_CLIENT": "Einen Kunden auswählen.",
@@ -20,6 +21,53 @@
         "SEARCH_PLACEHOLDER": "Suchphrase...",
         "PAGE_SIZE_PLACEHOLDER": "Seitengröße",
         "CURRENCY": "Währung",
+        "EDIT_SUCCESS": "Änderungen erfolgreich gespeichert",
+        "INVOICE": {
+            "EMPTY_LIST": "Keine Rechnungen in der Liste gefunden",
+            "ISSUE_DATE_FROM": "Ausstellungsdatum von",
+            "ISSUE_DATE_TO": "Ausstellungsdatum bis",
+            "SERVICE_DATE_FROM": "Leistungsdatum von",
+            "SERVICE_DATE_TO": "Leistungsdatum bis",
+            "MIN_AMOUNT": "Mindestbetrag",
+            "MAX_AMOUNT": "Maximalbetrag",
+            "STATUS_PAID": "Bezahlt",
+            "STATUS_UNPAID": "Unbezahlt",
+            "PAYMENT_STATUS": "Zahlungsstatus",
+            "NUMBER": "Rechnungsnummer",
+            "AMOUNT": "Betrag",
+            "ADD_NEW": "Neue Rechnung hinzufügen",
+            "SELECT_ITEMS": "Positionen auswählen",
+            "NO_AVAILABLE_ITEMS": "Keine verfügbaren Positionen",
+            "ISSUE_DATE": "Ausstellungsdatum",
+            "SERVICE_DATE": "Leistungsdatum",
+            "TAX": "Steuersatz",
+            "TAX_RATE": "Steuersatz (%)",
+            "MANUAL_EXCHANGE_RATE": "Manueller Wechselkurs",
+            "EXCHANGE_RATE_NOTE": "Leer lassen, um den offiziellen Wechselkurs zu verwenden.",
+            "ABANDON": "Rechnung verwerfen",
+            "ABANDON_QUESTION": "Sind Sie sicher, dass Sie diese Rechnung verwerfen möchten?",
+            "ABANDON_SUCCESS": "Rechnung wurde erfolgreich verworfen.",
+            "CREATE_SUCCESS": "Rechnung erfolgreich erstellt.",
+            "UPDATE_SUCCESS": "Rechnung erfolgreich aktualisiert.",
+            "NO_ITEMS_SELECTED": "Keine Positionen ausgewählt."
+        },
+        "COSTS": {
+            "CREATE_TITLE": "Neue Kosten hinzufügen",
+            "EDIT_TITLE": "Kosten bearbeiten",
+            "SELECTED_CONTRACTOR": "Ausgewählter Auftragnehmer",
+            "NO_CONTRACTOR_SELECTED_WARNING": "Kein Auftragnehmer ausgewählt. Bitte wählen Sie einen aus der Liste links aus.",
+            "NAME": "Kostenbezeichnung",
+            "AMOUNT": "Betrag",
+            "CURRENCY": "Währung",
+            "TAX": "MwSt.-Satz (%)",
+            "FILE": "Datei",
+            "ISSUE_DATE": "Ausstellungsdatum",
+            "SERVICE_DATE": "Leistungsdatum",
+            "CREATE_SUCCESS": "Kosten wurden erfolgreich hinzugefügt.",
+            "UPDATE_SUCCESS": "Kosten wurden erfolgreich aktualisiert.",
+            "DELETE_SUCCESS": "Kosten wurden gelöscht.",
+            "DELETE_CONFIRM": "Sind Sie sicher, dass Sie diese Kosten löschen möchten?"
+            },
         "WORK_CASE_ITEM": {
             "ADD_NEW": "Neue Position hinzufügen",
             "EDITING": "Position bearbeiten",
@@ -40,6 +88,9 @@
             "COST_NO_NAME": "Unbenannte Kosten"
             },
         "WORK_CASES": {
+            "ABANDOB_CASE": "Akte verwerfen",
+            "CASE_COMPLETED": "Abgeschlossener Ordner",
+            "COMPLETE_CASE": "Freigabe und Fertigstellung",
             "ITEMS_TITLE": "Verkaufs- und Kostenpositionen",
             "TITLE": "Transportakten",
             "ADD_NEW_BUTTON": "Neue Akte erstellen",
@@ -108,7 +159,13 @@
             "SELECT_PROMPT": "Wählen Sie einen Vertragspartner aus der Liste links, um ihn zu bearbeiten, oder fügen Sie einen neuen hinzu.",
             "CREATE_SUCCESS": "Vertragspartner wurde erfolgreich hinzugefügt!",
             "UPDATE_SUCCESS": "Vertragspartnerdaten wurden erfolgreich aktualisiert!",
-            "TRADE_LIMIT": "Kreditlimit"
+            "TRADE_LIMIT": "Kreditlimit",
+            "BANK_ACCOUNTS": "Bankverbindungen",
+            "ADD_BANK_ACCOUNT": "Bankverbindung hinzufügen",
+            "BANK_ACCOUNT": "Bankverbindung",
+            "MAKE_MAIN": "Als Hauptkonto festlegen",
+            "BANK_NAME": "Name der Bank",
+            "IBAN": "Kontonummer (IBAN)"
         },
         "BUTTONS": {
             "SAVE_CHANGES": "Änderungen speichern",
@@ -228,6 +285,7 @@
     "COST": {
         "WORK_CASE_ITEM_NOT_FOUND": "Die ausgewählte Aktenposition wurde nicht gefunden.",
         "CONTRACTOR_NOT_FOUND": "Der ausgewählte Subunternehmer wurde nicht gefunden.",
+        "CONTRACTOR_IS_INACTIVE": "Der ausgewählte Subunternehmer ist inaktiv.",
         "COST_ALREADY_EXISTS": "Dieses Kostendokument wurde bereits im System registriert.",
         "WORK_CASE_ITEM_HAS_COST": "Diesem Ordnereintrag wurden bereits Kosten zugewiesen.",
         "WORK_CASE_ITEM_AMOUNT_MISSMATCH": "Die Kostenhöhe weicht von der Prognose ab.",
@@ -322,6 +380,7 @@
         "TAX": {
             "NOT_UNIQUE": "Ein Subunternehmer mit dieser Steuernummer (USt-IdNr.) existiert bereits."
         },
+        "BANK_ACCOUNT_NOT_UNIQUE": "Der angegebene Bankkontonummer (IBAN) ist bereits einem anderen Subunternehmer zugeordnet.",
         "NOT_FOUND": "Der angegebene Subunternehmer wurde nicht gefunden.",
         "CANNOT_DELETE_WITH_INVOICES": "Dieser Subunternehmer kann nicht gelöscht werden, da mit ihm Eingangsrechnungen verknüpft sind.",
         "VALIDATION": {
