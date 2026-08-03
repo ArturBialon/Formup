@@ -1,5 +1,7 @@
 using API.Extensions;
+using Application.Common.Jobs;
 using Application.Middleware;
+using Hangfire;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
@@ -59,6 +61,18 @@ app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/hangfire");
+RecurringJob.AddOrUpdate<IWorkCaseCurrencyJobService>(
+    "recalculate-workcases-nbp",
+    job => job.ProcessWorkCasesBatchAsync(CancellationToken.None),
+    Cron.Daily(3)
+);
+RecurringJob.AddOrUpdate<IWorkCaseCurrencyJobService>(
+    "recalculate-client-credits-nbp",
+    job => job.ProcessClientCreditsBatchAsync(CancellationToken.None),
+    Cron.Daily(4)
+);
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");

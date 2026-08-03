@@ -30,7 +30,6 @@ jobs:
         npm run build -- --configuration production
 
     # Krok 4: Kopiowanie zkompilowanego Angulara do wwwroot API
-    # UWAGA: Dostosuj 'client/dist/client/browser' jeśli Twój Angular wypluwa build pod inną ścieżkę w dist/
     - name: Copy Angular dist to .NET wwwroot
       run: |
         mkdir -p API/wwwroot
