@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results;
+using Domain.Models;
 
 namespace Application.Common.CurrencyServices
 {
@@ -17,5 +18,15 @@ namespace Application.Common.CurrencyServices
             decimal? manualExchangeRate,
             DateTime serviceDate,
             CancellationToken ct);
+
+        Task<AppResult<int>> RecalculateWorkCaseAmountsBatchAsync(
+            List<WorkCase> workCases,
+            DateTime serviceDate,
+            CancellationToken ct = default);
+
+        Task<AppResult<int>> RecalculateClientCreditsBatchAsync(
+            List<Client> clients,
+            DateTime serviceDate,
+            CancellationToken ct = default);
     }
 }

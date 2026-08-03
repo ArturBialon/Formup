@@ -1,4 +1,5 @@
 ﻿using Application.Common.Results;
+using Domain.Models;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -188,6 +189,83 @@ namespace Application.Common.CurrencyServices
             ratesMap.TryAdd("PLN", 1.0m);
 
             return AppResult<Dictionary<string, decimal>>.Success(ratesMap);
+        }
+
+        public async Task<AppResult<int>> RecalculateWorkCaseAmountsBatchAsync(
+            List<WorkCase> workCases,
+            DateTime serviceDate,
+            CancellationToken ct = default)
+        {
+            if (workCases == null || workCases.Count == 0) return AppResult<int>.Success(0);
+
+            DateTime targetDate = serviceDate.Date.AddDays(-1);
+
+            var ratesResult = await GetRatesTable(targetDate, ct);
+            if (!ratesResult.IsSuccess) return AppResult<int>.Failure(ratesResult.ErrorCode, ratesResult.ErrorData);
+
+
+            var ratesMap = ratesResult.Value!;
+            int updatedCount = 0;
+
+            foreach (var workCase in workCases)
+            {
+                var sourceCurrency = workCase.CurrencyCode.ToUpper().Trim();
+
+                if (sourceCurrency == "PLN")
+                {
+                    workCase.AmountInPln = workCase.Amount;
+                    updatedCount++;
+                    continue;
+                }
+
+                if (ratesMap.TryGetValue(sourceCurrency, out decimal rateToPln))
+                {
+                    workCase.AmountInPln = decimal.Round(workCase.Amount * rateToPln, 2);
+                    updatedCount++;
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"Currency {sourceCurrency} not found in NBP table A.");
+                }
+            }
+
+            return AppResult<int>.Success(updatedCount);
+        }
+
+        public async Task<AppResult<int>> RecalculateClientCreditsBatchAsync(
+            List<Client> clients,
+            DateTime serviceDate,
+            CancellationToken ct = default)
+        {
+            if (clients == null || clients.Count == 0) return AppResult<int>.Success(0);
+
+            DateTime targetDate = serviceDate.Date.AddDays(-1);
+            var ratesResult = await GetRatesTable(targetDate, ct);
+
+            if (!ratesResult.IsSuccess) return AppResult<int>.Failure(ratesResult.ErrorCode, ratesResult.ErrorData);
+
+            var ratesMap = ratesResult.Value!;
+            int updatedCount = 0;
+
+            foreach (var client in clients)
+            {
+                var currency = client.CurrencyCode?.ToUpper().Trim();
+
+                if (string.IsNullOrEmpty(currency) || currency == "PLN")
+                {
+                    client.CreditInPln = client.Credit;
+                    updatedCount++;
+                    continue;
+                }
+
+                if (ratesMap.TryGetValue(currency, out decimal rateToPln))
+                {
+                    client.CreditInPln = decimal.Round(client.Credit * rateToPln, 2);
+                    updatedCount++;
+                }
+            }
+
+            return AppResult<int>.Success(updatedCount);
         }
     }
 }
