@@ -50,6 +50,6 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: 'TWOJA_NAZWA_APP_SERVICE_W_AZURE' # <--- Zastąp swoją nazwą z Azure
+        app-name: 'FormupForwarding'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ./publish
