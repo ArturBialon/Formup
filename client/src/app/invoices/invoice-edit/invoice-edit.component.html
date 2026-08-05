@@ -119,8 +119,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end gap-3 mt-4 border-top pt-3 border-secondary">
-                    <button type="button" class="btn-cancel" [routerLink]="['/dashboard/workcase', invoice()?.workCaseId]"
-                        [disabled]="isSaving()">
+                    <button type="button" class="btn-cancel" [disabled]="isSaving()" (click)="onCancel()">
                         {{ 'GUI.BUTTONS.CANCEL' | translate }}
                     </button>
                     <button type="submit" class="btn-green"

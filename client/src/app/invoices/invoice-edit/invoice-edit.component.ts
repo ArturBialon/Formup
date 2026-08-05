@@ -1,5 +1,5 @@
 import { Component, OnInit, input, inject, signal, DestroyRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -31,6 +31,7 @@ export class InvoiceEditComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly notation = inject(NotificationService);
   public readonly id = input.required<string>();
+  private readonly location = inject(Location);
 
   public invoice = signal<InvoiceDetailResponse | null>(null);
   public items = signal<WorkCaseItemResponse[]>([]);
@@ -149,9 +150,12 @@ export class InvoiceEditComponent implements OnInit {
       .subscribe({
         next: () => {
           this.notation.success('GUI.INVOICE.UPDATE_SUCCESS');
-          this.router.navigate(['/dashboard/workcase', this.invoice()?.workCaseId]);
+          this.location.back();
         },
         error: (err) => this.notation.apiError(err)
       });
   }
+    public onCancel(): void {
+      this.location.back();
+    }
 }

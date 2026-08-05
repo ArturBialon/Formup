@@ -3,7 +3,7 @@
 
     <div class="panel-header d-flex justify-content-between align-items-center">
       <div>
-        <span>{{ 'GUI.INVOICE.TITLE' | translate }} ({{ totalCount() }}) / </span>
+        <span>{{ 'GUI.INVOICES_ELEMENT' | translate }} ({{ totalCount() }}) / </span>
         @if (isLoading()) {
         <div class="spinner-border spinner-border-sm text-primary ms-1" role="status"></div>
         }
@@ -55,7 +55,7 @@
       </div>
 
       <div class="filter-actions d-flex justify-content-end align-items-end">
-        <button type="button" class="btn btn-primary btn-sm w-50" (click)="onSearch()">
+        <button type="button" class="btn btn-primary btn-sm w-25" (click)="onSearch()">
           {{ 'GUI.BUTTONS.SEARCH' | translate }}
         </button>
       </div>

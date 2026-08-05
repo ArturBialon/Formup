@@ -36,6 +36,7 @@ export class InvoiceListComponent implements OnInit {
     issueDateTo?: string | null;
     serviceDateFrom?: string | null;
     serviceDateTo?: string | null;
+    isPaid?: boolean | null;
   } = {
     relation: undefined,
     clientId: undefined,
@@ -97,6 +98,16 @@ export class InvoiceListComponent implements OnInit {
       this.pageNumber.set(newPage);
       this.loadInvoices();
     }
+  }
+
+  public toggleIsPaidState(): void {
+      if (this.filters.isPaid === undefined || this.filters.isPaid === null) {
+        this.filters.isPaid = true;
+      } else if (this.filters.isPaid === true) {
+        this.filters.isPaid = false;
+      } else {
+        this.filters.isPaid = undefined;
+      }
   }
 
   public onPageSizeChange(event: Event): void {
